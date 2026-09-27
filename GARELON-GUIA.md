@@ -31,14 +31,21 @@ La carpeta `referencias/` y los `.md` están en `.shopifyignore` y no se suben.
 | 3 | Productos → el sérum | **Revisa la descripción.** Las descripciones importadas suelen traer ingredientes o promesas que no son ciertos (ácido hialurónico, «resultados en X días»…). Deja solo lo que coincida con la información real. |
 | 4 | AutoDS | Comprueba que la sincronización **no sobrescriba título ni descripción** (solo precio/stock). |
 | 5 | Productos → el sérum → Multimedia | Sube las fotos del producto en el orden del apartado 3. |
-| 6 | Tienda online → Páginas | Crea **Contacto** (identificador `contacto`, plantilla `contact`) y **Preguntas frecuentes** (identificador `preguntas-frecuentes`, plantilla `faq`; el contenido de la página puede quedar vacío). |
-| 7 | Configuración → Políticas | Completa: Devoluciones, Privacidad, Términos del servicio, Envío, Información de contacto y Aviso legal. El theme **no inventa** texto legal ni datos de empresa (dirección, NIF, email, teléfono). Aparecen solas en el pie de página. |
+| 6 | Tienda online → Páginas | **Contacto:** usa la página que ya existe (no crees otra) y asígnale la plantilla `contact` para que muestre el formulario. El theme la encuentra sola si su identificador es `contact`, `contacto`, `contactanos`, `contacta-con-nosotros` o `contact-us`. Si tiene otro, elígela en *Personalizar → Configuración del tema → GARELON · Enlaces*. **Preguntas frecuentes:** identificador `preguntas-frecuentes`, plantilla `faq` (el contenido puede quedar vacío). |
+| 7 | Configuración → Políticas | En **Política de reembolso** pega el texto de `GARELON-POLITICA-DEVOLUCIONES.md`. Completa también: Privacidad, Términos del servicio, Envío, Información de contacto y Aviso legal. El theme **no inventa** texto legal ni datos de empresa (dirección, NIF, email, teléfono). Aparecen solas en el pie de página. |
 | 8 | Tienda online → Navegación → `main-menu` | Inicio `/` · Producto (el producto) · Cómo usarlo `/#como-usarlo` · Ingredientes `/#ingredientes` · Preguntas frecuentes (página). |
-| 9 | Tienda online → Navegación → `footer` | Contacto · Envíos (política de envío) · Devoluciones (política de reembolso) · Preguntas frecuentes. |
+| 9 | Tienda online → Navegación | El bloque **Ayuda** del pie ya no depende de un menú: trae su texto y el enlace a contacto. Si enlazas páginas o políticas en tus menús, elígelas desde el selector (no escribas la URL a mano) y comprueba que existan y estén publicadas. |
 | 10 | Configuración → Envío y entrega | Crea la zona **España**. La barra superior dice «Envío disponible en España»; no promete envío gratis. |
 | 11 | Configuración → Privacidad del cliente | Activa el **banner de cookies de Shopify** si lo necesitas. El theme no añade un banner propio. |
 | 12 | Apps | Para reseñas, instala una app (p. ej. Judge.me o Product Reviews) y añade su bloque en *Personalizar → Producto → Añadir bloque → Apps*. Sin app no se muestra ninguna estrella. |
 | 13 | Personalizar → Configuración del tema → Redes sociales | Añade solo las redes que tengas. Vacías = no se muestran. |
+
+
+### Pago con tarjeta y pagos exprés en el checkout
+El checkout lo controla Shopify: el theme no tiene acceso a su contenido. Shopify muestra arriba el bloque **Pago exprés** (Shop Pay, PayPal…) y debajo el pago con tarjeta, y no ofrece ningún ajuste para cambiar ese orden. No se ha tocado nada con CSS ni JavaScript. Opciones oficiales:
+- **Cualquier plan:** una app de *personalización de pagos* de la Shopify App Store (*Configuración → Pagos → Personalizaciones de métodos de pago*) permite reordenar, renombrar u ocultar métodos en la lista de pago. No mueve el bloque exprés.
+- **Shopify Plus:** con una app propia (Shopify Functions, *Payment Customization API*) se pueden ocultar métodos solo del bloque exprés.
+- **Quitar un método exprés** (*Configuración → Pagos → Shopify Payments → Gestionar → Wallets*, o los ajustes de PayPal) es posible, pero **no se ha hecho**: requiere tu autorización.
 
 ---
 
@@ -103,15 +110,17 @@ Los datos estructurados (JSON-LD) de producto los genera Dawn con datos reales. 
 | `sections/garelon-final-cta.liquid` | GARELON Llamada final |
 | `sections/garelon-sticky-atc.liquid` | GARELON Compra fija (solo en la plantilla de producto) |
 
-Snippets: `garelon-image`, `garelon-fallback-image`, `garelon-srcset`, `garelon-icon`, `garelon-logo-fallback`, `garelon-price-inline`, `garelon-packs`.
+Snippets: `garelon-image`, `garelon-fallback-image`, `garelon-srcset`, `garelon-icon`, `garelon-logo-fallback`, `garelon-price-inline`, `garelon-packs`, `garelon-url` (resuelve la URL real de contacto, devoluciones y envíos).
 Assets: `garelon.css` (capa de marca), `garelon.js` (solo se carga en la ficha de producto), imágenes `garelon-*.webp/png`.
 
 ### Archivos de Dawn modificados (cambios mínimos)
 - `layout/theme.liquid`: favicon por defecto, `theme-color`, carga de `garelon.css`.
-- `sections/header.liquid`: el logo ya no es `<h1>` en la home (el H1 lo aporta la Portada); logo GARELON por defecto.
-- `sections/footer.liquid`: logo GARELON por defecto en el bloque de marca.
+- `sections/header.liquid`: el logo ya no es `<h1>` en la home (el H1 lo aporta la Portada); logo GARELON por defecto; isotipo a la izquierda del nombre (ajuste «Mostrar el isotipo GARELON junto al logo»).
+- `sections/footer.liquid`: logo GARELON por defecto en el bloque de marca; bloque «GARELON Ayuda»; enlaces de menú resueltos; la política de reembolsos se muestra como «Política de devoluciones y reembolsos».
+- `snippets/header-dropdown-menu.liquid`, `header-drawer.liquid`, `header-mega-menu.liquid`: los enlaces del menú a contacto y políticas se resuelven a su URL real.
+- `config/settings_schema.json`: grupo «GARELON · Enlaces» (página de contacto y, opcionalmente, de devoluciones y envíos).
 - `sections/featured-product.liquid`: si no eliges producto, usa el primero de la tienda.
-- `sections/main-product.liquid`: nuevo bloque opcional «GARELON Packs».
+- `sections/main-product.liquid`: nuevo bloque opcional «GARELON Packs»; los enlaces de las pestañas desplegables se resuelven a su URL real.
 - `config/settings_data.json`: paleta, tipografías, botones, cart drawer, etc.
 - `sections/header-group.json`, `sections/footer-group.json`, `locales/es.json`.
 

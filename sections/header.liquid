@@ -182,7 +182,13 @@
 
     {%- if section.settings.logo_position != 'middle-center' -%}
       {%- comment -%} GARELON: el H1 de la home lo aporta la sección principal, no el logo. {%- endcomment -%}
-      <a href="{{ routes.root_url }}" class="header__heading-link link link--text focus-inset">
+      <a
+        href="{{ routes.root_url }}"
+        class="header__heading-link link link--text focus-inset{% if section.settings.show_isotype %} garelon-brand-link{% endif %}"
+      >
+        {%- if section.settings.show_isotype -%}
+          {%- render 'garelon-logo-fallback', variant: 'isotype' -%}
+        {%- endif -%}
         {%- if settings.logo != blank -%}
           <div class="header__heading-logo-wrapper">
             {%- assign logo_alt = settings.logo.alt | default: shop.name | escape -%}
@@ -220,7 +226,13 @@
 
     {%- if section.settings.logo_position == 'middle-center' -%}
       {%- comment -%} GARELON: el H1 de la home lo aporta la sección principal, no el logo. {%- endcomment -%}
-      <a href="{{ routes.root_url }}" class="header__heading-link link link--text focus-inset">
+      <a
+        href="{{ routes.root_url }}"
+        class="header__heading-link link link--text focus-inset{% if section.settings.show_isotype %} garelon-brand-link{% endif %}"
+      >
+        {%- if section.settings.show_isotype -%}
+          {%- render 'garelon-logo-fallback', variant: 'isotype' -%}
+        {%- endif -%}
         {%- if settings.logo != blank -%}
           <div class="header__heading-logo-wrapper">
             {%- assign logo_alt = settings.logo.alt | default: shop.name | escape -%}
@@ -518,6 +530,13 @@
       "default": "middle-left",
       "label": "t:sections.header.settings.logo_position.label",
       "info": "t:sections.header.settings.logo_help.content"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_isotype",
+      "label": "Mostrar el isotipo GARELON junto al logo",
+      "info": "Desactívalo si el logo que subas en Configuración del tema ya incluye el isotipo.",
+      "default": true
     },
     {
       "type": "select",

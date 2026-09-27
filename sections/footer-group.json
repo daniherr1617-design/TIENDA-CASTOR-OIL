@@ -12,10 +12,13 @@
           }
         },
         "ayuda": {
-          "type": "link_list",
+          "type": "garelon_help",
           "settings": {
             "heading": "Ayuda",
-            "menu": "footer"
+            "text": "<p>¿Tienes alguna duda sobre tu pedido o nuestros productos? Nuestro equipo está aquí para ayudarte.</p>",
+            "link_label": "Contacta con nuestro equipo",
+            "link": "",
+            "menu": ""
           }
         }
       },

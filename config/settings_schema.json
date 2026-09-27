@@ -1466,5 +1466,32 @@
         "label": "t:settings_schema.customer_accounts.settings.customer_account_menu.label"
       }
     ]
+  },
+  {
+    "name": "GARELON · Enlaces",
+    "settings": [
+      {
+        "type": "paragraph",
+        "content": "Las páginas y políticas se crean en el Admin de Shopify. Si no eliges nada, el tema busca la página de contacto por su identificador habitual (contacto, contact…) y usa las políticas de Configuración → Políticas."
+      },
+      {
+        "type": "page",
+        "id": "garelon_contact_page",
+        "label": "Página de contacto",
+        "info": "Destino de todos los enlaces de contacto del tema (pie de página, preguntas frecuentes, barra de servicio)."
+      },
+      {
+        "type": "page",
+        "id": "garelon_refund_page",
+        "label": "Página de devoluciones (opcional)",
+        "info": "Solo se usa si la política de reembolsos de Configuración → Políticas está vacía."
+      },
+      {
+        "type": "page",
+        "id": "garelon_shipping_page",
+        "label": "Página de envíos (opcional)",
+        "info": "Solo se usa si la política de envío de Configuración → Políticas está vacía."
+      }
+    ]
   }
 ]

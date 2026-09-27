@@ -107,10 +107,95 @@ Cargar un archivo**, y sube uno a uno (mantén exactamente estos nombres):
   }
 }
 
+/* Isotipo a la izquierda del nombre: mismo enlace, misma altura de cabecera. */
+.garelon-brand-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.9rem;
+}
+
+.garelon-brand-link .header__heading-logo-wrapper {
+  flex: 0 0 auto;
+  width: auto;
+}
+
+.garelon-header-isotype {
+  display: block;
+  flex: 0 0 auto;
+  width: auto;
+  height: 2.8rem;
+}
+
+@media screen and (max-width: 749px) {
+  .garelon-brand-link {
+    gap: 0.6rem;
+  }
+
+  .garelon-header-isotype {
+    height: 2.3rem;
+  }
+
+  /* Logo centrado en móvil: el nombre conserva su posición y el isotipo ocupa
+     el hueco libre de la izquierda, sin acercarse a los iconos de la derecha. */
+  .header--mobile-center .garelon-brand-link {
+    margin-left: -2.7rem;
+  }
+}
+
 .footer .garelon-logo--stacked img {
   display: block;
   width: 100%;
   height: auto;
+}
+
+/* ---------- Pie de página: bloque Ayuda ---------- */
+.garelon-help__text > :first-child {
+  margin-top: 0;
+}
+
+.garelon-help__text > :last-child {
+  margin-bottom: 0;
+}
+
+.garelon-help__text {
+  max-width: 34rem;
+}
+
+.garelon-help__link {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.6rem;
+  margin-top: 1.2rem;
+  padding: 0.6rem 0;
+  color: rgb(var(--color-foreground));
+  font-size: 1.4rem;
+  font-weight: 500;
+  text-decoration: none;
+}
+
+.garelon-help__label {
+  text-decoration: underline;
+  text-underline-offset: 0.4rem;
+  text-decoration-thickness: 0.1rem;
+  transition: text-decoration-thickness var(--duration-short) ease;
+}
+
+.garelon-help__link:hover .garelon-help__label {
+  text-decoration-thickness: 0.2rem;
+}
+
+.garelon-help__arrow {
+  display: inline-block;
+  transition: transform var(--duration-short) ease;
+}
+
+.garelon-help__link:hover .garelon-help__arrow,
+.garelon-help__link:focus-visible .garelon-help__arrow {
+  transform: translateX(0.3rem);
+}
+
+.garelon-help__menu {
+  margin-top: 1.2rem;
 }
 
 /* ---------- Estructura de sección ---------- */
@@ -1008,8 +1093,17 @@ input:focus-visible + .g-packs__option {
 /* ---------- Políticas y páginas ---------- */
 .shopify-policy__container {
   max-width: 76rem;
-  padding-top: 4rem;
-  padding-bottom: 6rem;
+  margin-left: auto;
+  margin-right: auto;
+  padding: 4rem 1.5rem 6rem;
+}
+
+@media screen and (min-width: 750px) {
+  .shopify-policy__container {
+    padding-left: 5rem;
+    padding-right: 5rem;
+    max-width: 86rem;
+  }
 }
 
 .shopify-policy__title h1 {
@@ -1027,8 +1121,14 @@ input:focus-visible + .g-packs__option {
   .g-sticky.is-visible,
   .g-packs__option,
   .g-faq__toggle::before,
-  .g-faq__toggle::after {
+  .g-faq__toggle::after,
+  .garelon-help__arrow {
     transition: none;
+  }
+
+  .garelon-help__link:hover .garelon-help__arrow,
+  .garelon-help__link:focus-visible .garelon-help__arrow {
+    transform: none;
   }
 }
 ```
@@ -1173,7 +1273,7 @@ if (!customElements.get('garelon-packs')) {
 
 ---
 
-## Paso 3 · Snippets (7 archivos)
+## Paso 3 · Snippets (8 archivos)
 
 **Snippets → Añadir un nuevo snippet**, escribe el nombre (sin `.liquid`), borra el contenido por defecto y pega.
 
@@ -1413,6 +1513,7 @@ if (!customElements.get('garelon-packs')) {
 
   Accepts:
   - variant: 'wordmark' (por defecto, cabecera) | 'stacked' (isotipo + nombre, pie de página)
+             | 'isotype' (solo el isotipo, a la izquierda del nombre en la cabecera)
 
   Usage:
   {% render 'garelon-logo-fallback', variant: 'stacked' %}
@@ -1434,6 +1535,18 @@ if (!customElements.get('garelon-packs')) {
       loading="lazy"
     >
   </div>
+{%- elsif variant == 'isotype' -%}
+  {%- comment -%}
+    Decorativo: el enlace ya se anuncia con el nombre de la tienda (alt del logo),
+    así que alt vacío evita que los lectores de pantalla lean "GARELON" dos veces.
+  {%- endcomment -%}
+  <img
+    class="garelon-header-isotype"
+    src="{{ 'garelon-isotipo-96.webp' | asset_url }}"
+    width="96"
+    height="104"
+    alt=""
+  >
 {%- else -%}
   {%- assign logo_width = settings.logo_width | default: 150 -%}
   {%- assign logo_height = logo_width | times: 72 | divided_by: 480 -%}
@@ -1528,6 +1641,120 @@ if (!customElements.get('garelon-packs')) {
 ```
 
 ---
+
+### `snippets/garelon-url.liquid`
+
+```liquid
+{%- comment -%}
+  GARELON · Enlaces internos que dependen del contenido del Admin.
+
+  La página de contacto y las políticas se crean en el Admin de Shopify, no en el
+  theme, así que su URL puede variar (/pages/contact, /pages/contacto…) o no existir
+  todavía (una política vacía devuelve 404). Este snippet resuelve la URL real:
+
+  - Contacto: la página elegida en Configuración del tema → GARELON · Enlaces;
+    si no hay ninguna, la primera página publicada con un identificador habitual
+    (contacto, contact, contactanos, contacta-con-nosotros, contact-us).
+  - Devoluciones / Envíos: la política nativa de Shopify si tiene contenido;
+    si no, la página elegida en el tema o una página con identificador habitual.
+  Si no encuentra nada, deja la ruta nativa de Shopify, que empezará a funcionar
+  en cuanto exista ese contenido en el Admin.
+
+  Accepts (uno de los tres):
+  - type: 'contact' | 'refund' | 'shipping' → imprime esa URL.
+  - url: una URL (p. ej. de un ajuste de tipo url) → la imprime resuelta si es una
+    de las rutas anteriores; cualquier otra URL se imprime sin cambios.
+  - html: texto enriquecido → lo imprime con esos enlaces resueltos.
+
+  Usage:
+  <a href="{%- render 'garelon-url', type: 'contact' -%}">Contacto</a>
+  {% render 'garelon-url', html: block.settings.answer %}
+{%- endcomment -%}
+{%- liquid
+  assign contact_url = ''
+  if settings.garelon_contact_page != blank
+    assign contact_url = settings.garelon_contact_page.url
+  else
+    assign handles = 'contacto,contact,contactanos,contacta-con-nosotros,contact-us' | split: ','
+    for handle in handles
+      if pages[handle] != blank
+        assign contact_url = pages[handle].url
+        break
+      endif
+    endfor
+  endif
+  if contact_url == blank
+    assign contact_url = '/pages/contact'
+  endif
+
+  assign refund_url = ''
+  if shop.refund_policy != blank
+    assign refund_url = shop.refund_policy.url
+  elsif settings.garelon_refund_page != blank
+    assign refund_url = settings.garelon_refund_page.url
+  else
+    assign handles = 'politica-de-devoluciones-y-reembolsos,politica-de-devoluciones,devoluciones' | split: ','
+    for handle in handles
+      if pages[handle] != blank
+        assign refund_url = pages[handle].url
+        break
+      endif
+    endfor
+  endif
+  if refund_url == blank
+    assign refund_url = '/policies/refund-policy'
+  endif
+
+  assign shipping_url = ''
+  if shop.shipping_policy != blank
+    assign shipping_url = shop.shipping_policy.url
+  elsif settings.garelon_shipping_page != blank
+    assign shipping_url = settings.garelon_shipping_page.url
+  else
+    assign handles = 'politica-de-envio,politica-de-envios,envios' | split: ','
+    for handle in handles
+      if pages[handle] != blank
+        assign shipping_url = pages[handle].url
+        break
+      endif
+    endfor
+  endif
+  if shipping_url == blank
+    assign shipping_url = '/policies/shipping-policy'
+  endif
+
+  case type
+    when 'contact'
+      echo contact_url
+    when 'refund'
+      echo refund_url
+    when 'shipping'
+      echo shipping_url
+    else
+      if html != blank
+        assign contact_href = 'href="' | append: contact_url | append: '"'
+        assign refund_href = 'href="' | append: refund_url | append: '"'
+        assign shipping_href = 'href="' | append: shipping_url | append: '"'
+        assign resolved = html | replace: 'href="/pages/contacto"', contact_href
+        assign resolved = resolved | replace: 'href="/pages/contact"', contact_href
+        assign resolved = resolved | replace: 'href="/policies/refund-policy"', refund_href
+        assign resolved = resolved | replace: 'href="/policies/shipping-policy"', shipping_href
+        echo resolved
+      else
+        case url
+          when '/pages/contacto', '/pages/contact'
+            echo contact_url
+          when '/policies/refund-policy'
+            echo refund_url
+          when '/policies/shipping-policy'
+            echo shipping_url
+          else
+            echo url
+        endcase
+      endif
+  endcase
+-%}
+```
 
 ## Paso 4 · Secciones (9 archivos)
 
@@ -1829,7 +2056,7 @@ if (!customElements.get('garelon-packs')) {
           {%- render 'garelon-icon', icon: block.settings.icon -%}
           <span class="g-trust__text">
             {%- if block.settings.link != blank -%}
-              <a href="{{ block.settings.link }}" class="g-trust__title link">{{ block.settings.title | escape }}</a>
+              <a href="{%- render 'garelon-url', url: block.settings.link -%}" class="g-trust__title link">{{ block.settings.title | escape }}</a>
             {%- else -%}
               <span class="g-trust__title">{{ block.settings.title | escape }}</span>
             {%- endif -%}
@@ -2713,14 +2940,14 @@ if (!customElements.get('garelon-packs')) {
             <span class="g-faq__toggle" aria-hidden="true"></span>
           </summary>
           <div class="g-faq__answer g-rte">
-            {{ block.settings.answer }}
+            {%- render 'garelon-url', html: block.settings.answer -%}
           </div>
         </details>
       {%- endfor -%}
     </div>
 
     {%- if section.settings.contact_text != blank -%}
-      <div class="g-faq__contact g-rte">{{ section.settings.contact_text }}</div>
+      <div class="g-faq__contact g-rte">{%- render 'garelon-url', html: section.settings.contact_text -%}</div>
     {%- endif -%}
   </div>
 </div>
@@ -3259,6 +3486,354 @@ Hazlo **las dos veces** que aparece cada texto.
     },
     {
       "type": "quantity_selector",
+```
+
+---
+
+#### Isotipo en la cabecera, enlaces reales de contacto/políticas y bloque Ayuda
+
+Haz estos cambios **después** de los anteriores (5.1–5.5).
+
+### 5.6 `sections/header.liquid`
+
+**Enlace del logo (isotipo + GARELON)**
+
+**Busca** (aparece 2 veces: cámbialo en las dos):
+```liquid
+      <a href="{{ routes.root_url }}" class="header__heading-link link link--text focus-inset">
+        {%- if settings.logo != blank -%}
+```
+**Sustituye por:**
+```liquid
+      <a
+        href="{{ routes.root_url }}"
+        class="header__heading-link link link--text focus-inset{% if section.settings.show_isotype %} garelon-brand-link{% endif %}"
+      >
+        {%- if section.settings.show_isotype -%}
+          {%- render 'garelon-logo-fallback', variant: 'isotype' -%}
+        {%- endif -%}
+        {%- if settings.logo != blank -%}
+```
+
+**Ajuste para activar o desactivar el isotipo**
+
+**Busca**:
+```liquid
+      "label": "t:sections.header.settings.logo_position.label",
+      "info": "t:sections.header.settings.logo_help.content"
+    },
+```
+**Sustituye por:**
+```liquid
+      "label": "t:sections.header.settings.logo_position.label",
+      "info": "t:sections.header.settings.logo_help.content"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_isotype",
+      "label": "Mostrar el isotipo GARELON junto al logo",
+      "info": "Desactívalo si el logo que subas en Configuración del tema ya incluye el isotipo.",
+      "default": true
+    },
+```
+
+### 5.7 `sections/footer.liquid`
+
+**Enlaces del menú del pie (resuelve rutas de contacto y políticas)**
+
+**Busca**:
+```liquid
+                            <a
+                              href="{{ link.url }}"
+```
+**Sustituye por:**
+```liquid
+                            <a
+                              href="{%- render 'garelon-url', url: link.url -%}"
+```
+
+**Nuevo bloque «GARELON Ayuda» (cómo se muestra)**
+
+**Busca**:
+```liquid
+                  {%- when 'brand_information' -%}
+```
+**Sustituye por:**
+```liquid
+                  {%- when 'garelon_help' -%}
+                    {%- comment -%} GARELON: bloque de ayuda con enlace a la página de contacto real. {%- endcomment -%}
+                    <div class="footer-block__details-content garelon-help">
+                      {%- if block.settings.text != blank -%}
+                        <div class="rte garelon-help__text">{{ block.settings.text }}</div>
+                      {%- endif -%}
+                      {%- if block.settings.link_label != blank -%}
+                        <a
+                          href="{%- if block.settings.link != blank -%}{%- render 'garelon-url', url: block.settings.link -%}{%- else -%}{%- render 'garelon-url', type: 'contact' -%}{%- endif -%}"
+                          class="link garelon-help__link"
+                        >
+                          <span class="garelon-help__label">{{- block.settings.link_label | escape -}}</span>
+                          <span class="garelon-help__arrow" aria-hidden="true">→</span>
+                        </a>
+                      {%- endif -%}
+                      {%- if block.settings.menu != blank -%}
+                        <ul class="list-unstyled garelon-help__menu">
+                          {%- for link in block.settings.menu.links -%}
+                            <li>
+                              <a
+                                href="{%- render 'garelon-url', url: link.url -%}"
+                                class="link link--text list-menu__item list-menu__item--link{% if link.active %} list-menu__item--active{% endif %}"
+                              >
+                                {{ link.title | escape }}
+                              </a>
+                            </li>
+                          {%- endfor -%}
+                        </ul>
+                      {%- endif -%}
+                    </div>
+                  {%- when 'brand_information' -%}
+```
+
+**Nombre de la política de reembolsos en el pie**
+
+**Busca**:
+```liquid
+                  <small class="copyright__content"
+                    ><a href="{{ policy.url }}">{{ policy.title | escape }}</a></small
+                  >
+```
+**Sustituye por:**
+```liquid
+                  {%- comment -%} GARELON: nombre completo de la política de reembolsos en el pie. {%- endcomment -%}
+                  {%- liquid
+                    assign policy_title = policy.title
+                    if policy.url contains 'refund-policy'
+                      assign policy_title = 'Política de devoluciones y reembolsos'
+                    endif
+                  -%}
+                  <small class="copyright__content"
+                    ><a href="{{ policy.url }}">{{ policy_title | escape }}</a></small
+                  >
+```
+
+**Nuevo bloque «GARELON Ayuda» (ajustes del editor)**
+
+**Busca**:
+```liquid
+    {
+      "type": "brand_information",
+      "name": "t:sections.footer.blocks.brand_information.name",
+```
+**Sustituye por:**
+```liquid
+    {
+      "type": "garelon_help",
+      "name": "GARELON Ayuda",
+      "limit": 1,
+      "settings": [
+        {
+          "type": "inline_richtext",
+          "id": "heading",
+          "label": "Título",
+          "default": "Ayuda"
+        },
+        {
+          "type": "richtext",
+          "id": "text",
+          "label": "Texto",
+          "default": "<p>¿Tienes alguna duda sobre tu pedido o nuestros productos? Nuestro equipo está aquí para ayudarte.</p>"
+        },
+        {
+          "type": "text",
+          "id": "link_label",
+          "label": "Texto del enlace",
+          "default": "Contacta con nuestro equipo"
+        },
+        {
+          "type": "url",
+          "id": "link",
+          "label": "Enlace",
+          "info": "Vacío = la página de contacto (Configuración del tema → GARELON · Enlaces)."
+        },
+        {
+          "type": "link_list",
+          "id": "menu",
+          "label": "Menú opcional debajo del enlace",
+          "info": "Vacío = sin menú. Revisa que todos sus enlaces lleven a páginas publicadas."
+        }
+      ]
+    },
+    {
+      "type": "brand_information",
+      "name": "t:sections.footer.blocks.brand_information.name",
+```
+
+### 5.8 `sections/main-product.liquid`
+
+**Pestañas desplegables: enlaces de contacto y políticas**
+
+**Busca**:
+```liquid
+                        {{ block.settings.content }}
+                        {{ block.settings.page.content }}
+```
+**Sustituye por:**
+```liquid
+                        {%- comment -%} GARELON: enlaces de contacto y políticas resueltos a su URL real. {%- endcomment -%}
+                        {% render 'garelon-url', html: block.settings.content %}
+                        {{ block.settings.page.content }}
+```
+
+### 5.9 `snippets/header-dropdown-menu.liquid`
+
+**Enlace `link` del menú**
+
+**Busca**:
+```liquid
+href="{{ link.url }}"
+```
+**Sustituye por:**
+```liquid
+href="{%- render 'garelon-url', url: link.url -%}"
+```
+
+**Enlace `childlink` del menú**
+
+**Busca**:
+```liquid
+href="{{ childlink.url }}"
+```
+**Sustituye por:**
+```liquid
+href="{%- render 'garelon-url', url: childlink.url -%}"
+```
+
+**Enlace `grandchildlink` del menú**
+
+**Busca**:
+```liquid
+href="{{ grandchildlink.url }}"
+```
+**Sustituye por:**
+```liquid
+href="{%- render 'garelon-url', url: grandchildlink.url -%}"
+```
+
+### 5.10 `snippets/header-drawer.liquid`
+
+**Enlace `link` del menú**
+
+**Busca**:
+```liquid
+href="{{ link.url }}"
+```
+**Sustituye por:**
+```liquid
+href="{%- render 'garelon-url', url: link.url -%}"
+```
+
+**Enlace `childlink` del menú**
+
+**Busca**:
+```liquid
+href="{{ childlink.url }}"
+```
+**Sustituye por:**
+```liquid
+href="{%- render 'garelon-url', url: childlink.url -%}"
+```
+
+**Enlace `grandchildlink` del menú**
+
+**Busca**:
+```liquid
+href="{{ grandchildlink.url }}"
+```
+**Sustituye por:**
+```liquid
+href="{%- render 'garelon-url', url: grandchildlink.url -%}"
+```
+
+### 5.11 `snippets/header-mega-menu.liquid`
+
+**Enlace `link` del menú**
+
+**Busca**:
+```liquid
+href="{{ link.url }}"
+```
+**Sustituye por:**
+```liquid
+href="{%- render 'garelon-url', url: link.url -%}"
+```
+
+**Enlace `childlink` del menú**
+
+**Busca**:
+```liquid
+href="{{ childlink.url }}"
+```
+**Sustituye por:**
+```liquid
+href="{%- render 'garelon-url', url: childlink.url -%}"
+```
+
+**Enlace `grandchildlink` del menú**
+
+**Busca**:
+```liquid
+href="{{ grandchildlink.url }}"
+```
+**Sustituye por:**
+```liquid
+href="{%- render 'garelon-url', url: grandchildlink.url -%}"
+```
+
+### 5.12 `config/settings_schema.json`
+
+**Nuevo grupo «GARELON · Enlaces» al final**
+
+**Busca**:
+```json
+        "label": "t:settings_schema.customer_accounts.settings.customer_account_menu.label"
+      }
+    ]
+  }
+]
+```
+**Sustituye por:**
+```json
+        "label": "t:settings_schema.customer_accounts.settings.customer_account_menu.label"
+      }
+    ]
+  },
+  {
+    "name": "GARELON · Enlaces",
+    "settings": [
+      {
+        "type": "paragraph",
+        "content": "Las páginas y políticas se crean en el Admin de Shopify. Si no eliges nada, el tema busca la página de contacto por su identificador habitual (contacto, contact…) y usa las políticas de Configuración → Políticas."
+      },
+      {
+        "type": "page",
+        "id": "garelon_contact_page",
+        "label": "Página de contacto",
+        "info": "Destino de todos los enlaces de contacto del tema (pie de página, preguntas frecuentes, barra de servicio)."
+      },
+      {
+        "type": "page",
+        "id": "garelon_refund_page",
+        "label": "Página de devoluciones (opcional)",
+        "info": "Solo se usa si la política de reembolsos de Configuración → Políticas está vacía."
+      },
+      {
+        "type": "page",
+        "id": "garelon_shipping_page",
+        "label": "Página de envíos (opcional)",
+        "info": "Solo se usa si la política de envío de Configuración → Políticas está vacía."
+      }
+    ]
+  }
+]
 ```
 
 ---
@@ -4391,7 +4966,8 @@ En **Sections**, abre cada archivo, selecciona todo y pega.
         "mobile_logo_position": "center",
         "margin_bottom": 0,
         "padding_top": 12,
-        "padding_bottom": 12
+        "padding_bottom": 12,
+        "show_isotype": true
       }
     }
   },
@@ -4419,10 +4995,13 @@ En **Sections**, abre cada archivo, selecciona todo y pega.
           }
         },
         "ayuda": {
-          "type": "link_list",
+          "type": "garelon_help",
           "settings": {
             "heading": "Ayuda",
-            "menu": "footer"
+            "text": "<p>¿Tienes alguna duda sobre tu pedido o nuestros productos? Nuestro equipo está aquí para ayudarte.</p>",
+            "link_label": "Contacta con nuestro equipo",
+            "link": "",
+            "menu": ""
           }
         }
       },

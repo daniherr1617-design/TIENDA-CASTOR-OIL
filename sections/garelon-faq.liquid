@@ -32,14 +32,14 @@
             <span class="g-faq__toggle" aria-hidden="true"></span>
           </summary>
           <div class="g-faq__answer g-rte">
-            {{ block.settings.answer }}
+            {%- render 'garelon-url', html: block.settings.answer -%}
           </div>
         </details>
       {%- endfor -%}
     </div>
 
     {%- if section.settings.contact_text != blank -%}
-      <div class="g-faq__contact g-rte">{{ section.settings.contact_text }}</div>
+      <div class="g-faq__contact g-rte">{%- render 'garelon-url', html: section.settings.contact_text -%}</div>
     {%- endif -%}
   </div>
 </div>

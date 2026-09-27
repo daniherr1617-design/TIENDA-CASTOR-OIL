@@ -4,6 +4,7 @@
 
   Accepts:
   - variant: 'wordmark' (por defecto, cabecera) | 'stacked' (isotipo + nombre, pie de página)
+             | 'isotype' (solo el isotipo, a la izquierda del nombre en la cabecera)
 
   Usage:
   {% render 'garelon-logo-fallback', variant: 'stacked' %}
@@ -25,6 +26,18 @@
       loading="lazy"
     >
   </div>
+{%- elsif variant == 'isotype' -%}
+  {%- comment -%}
+    Decorativo: el enlace ya se anuncia con el nombre de la tienda (alt del logo),
+    así que alt vacío evita que los lectores de pantalla lean "GARELON" dos veces.
+  {%- endcomment -%}
+  <img
+    class="garelon-header-isotype"
+    src="{{ 'garelon-isotipo-96.webp' | asset_url }}"
+    width="96"
+    height="104"
+    alt=""
+  >
 {%- else -%}
   {%- assign logo_width = settings.logo_width | default: 150 -%}
   {%- assign logo_height = logo_width | times: 72 | divided_by: 480 -%}
