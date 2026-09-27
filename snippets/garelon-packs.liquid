@@ -1,0 +1,42 @@
+{%- comment -%}
+  GARELON · Selector de cantidad por unidades (1 / 2 / 3).
+  Solo cambia la cantidad que se añade al carrito: NO aplica descuentos.
+  Si en Shopify existen descuentos automáticos reales, se verán en el carrito/checkout.
+
+  Accepts:
+  - block: {Object}
+  - section_id: {String}
+  - product_form_id: {String}
+  - has_quantity_input: {Boolean} true si el bloque "Selector de cantidad" de Dawn está activo
+{%- endcomment -%}
+{%- assign max_units = block.settings.max_units | plus: 0 -%}
+<garelon-packs class="g-packs" data-section="{{ section_id }}" {{ block.shopify_attributes }}>
+  <script src="{{ 'garelon.js' | asset_url }}" defer="defer"></script>
+  <fieldset class="g-packs__fieldset">
+    <legend class="form__label">{{ block.settings.heading | escape }}</legend>
+    <div class="g-packs__options">
+      {%- for n in (1..max_units) -%}
+        <input
+          class="visually-hidden"
+          type="radio"
+          id="Pack-{{ section_id }}-{{ n }}"
+          name="garelon-pack-{{ section_id }}"
+          value="{{ n }}"
+          {% if forloop.first %}
+            checked
+          {% endif %}
+        >
+        <label class="g-packs__option" for="Pack-{{ section_id }}-{{ n }}">
+          {{ n }}
+          {% if n == 1 %}unidad{% else %}unidades{% endif %}
+        </label>
+      {%- endfor -%}
+    </div>
+  </fieldset>
+  {%- unless has_quantity_input -%}
+    <input type="hidden" name="quantity" value="1" form="{{ product_form_id }}" data-pack-quantity>
+  {%- endunless -%}
+  {%- if block.settings.note != blank -%}
+    <p class="g-packs__note">{{ block.settings.note | escape }}</p>
+  {%- endif -%}
+</garelon-packs>

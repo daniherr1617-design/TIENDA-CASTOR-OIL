@@ -1,75 +1,498 @@
 {
   "sections": {
-    "image_banner": {
-      "type": "image-banner",
+    "hero": {
+      "type": "garelon-hero",
       "blocks": {
-        "heading": {
-          "type": "heading",
+        "p-roller": {
+          "type": "point",
           "settings": {
-            "heading": "Browse our latest products",
-            "heading_size": "h0"
+            "icon": "roller",
+            "text": "Aplicador roller"
           }
         },
-        "button": {
-          "type": "buttons",
+        "p-10ml": {
+          "type": "point",
           "settings": {
-            "button_label_1": "Shop all",
-            "button_link_1": "shopify://collections/all",
-            "button_style_secondary_1": true,
-            "button_label_2": "",
-            "button_link_2": "",
-            "button_style_secondary_2": false
+            "icon": "bottle",
+            "text": "10 ml"
+          }
+        },
+        "p-rutina": {
+          "type": "point",
+          "settings": {
+            "icon": "steps",
+            "text": "Rutina sencilla"
           }
         }
       },
       "block_order": [
-        "heading",
-        "button"
+        "p-roller",
+        "p-10ml",
+        "p-rutina"
       ],
       "settings": {
-        "image_overlay_opacity": 40,
-        "image_height": "large",
-        "desktop_content_position": "bottom-center",
-        "show_text_box": false,
-        "image_behavior": "none",
-        "desktop_content_alignment": "center",
-        "color_scheme": "scheme-3",
-        "mobile_content_alignment": "center",
-        "stack_images_on_mobile": false,
-        "show_text_below": false
+        "image_position": "right",
+        "mobile_image_first": true,
+        "eyebrow": "GARELON",
+        "heading": "Una mirada con aspecto más descansado",
+        "use_h1": true,
+        "text": "<p>Sérum para el contorno de ojos con aceite de ricino y aplicador roller, diseñado para aportar hidratación y complementar tu rutina diaria de cuidado.</p>",
+        "show_price": true,
+        "button_label": "Descubrir el sérum",
+        "button2_label": "Cómo se usa",
+        "button2_link": "/#como-usarlo",
+        "color_scheme": "scheme-1",
+        "anchor": "inicio",
+        "padding_top": 24,
+        "padding_bottom": 32
       }
     },
-    "featured_collection": {
-      "type": "featured-collection",
+    "trust": {
+      "type": "garelon-trust-bar",
+      "blocks": {
+        "t-1": {
+          "type": "item",
+          "settings": {
+            "icon": "eye",
+            "title": "Aplicación precisa",
+            "text": ""
+          }
+        },
+        "t-2": {
+          "type": "item",
+          "settings": {
+            "icon": "roller",
+            "title": "Roller metálico",
+            "text": ""
+          }
+        },
+        "t-3": {
+          "type": "item",
+          "settings": {
+            "icon": "steps",
+            "title": "Rutina en 3 pasos",
+            "text": ""
+          }
+        },
+        "t-4": {
+          "type": "item",
+          "settings": {
+            "icon": "leaf",
+            "title": "Fórmula con aceite de ricino",
+            "text": ""
+          }
+        }
+      },
+      "block_order": [
+        "t-1",
+        "t-2",
+        "t-3",
+        "t-4"
+      ],
       "settings": {
-        "title": "Featured products",
-        "heading_size": "h2",
-        "description": "",
-        "show_description": false,
-        "description_style": "body",
-        "collection": "all",
-        "products_to_show": 8,
-        "columns_desktop": 4,
+        "heading": "Características",
+        "show_borders": true,
         "color_scheme": "scheme-1",
-        "full_width": false,
-        "show_view_all": true,
-        "view_all_style": "solid",
-        "enable_desktop_slider": false,
-        "swipe_on_mobile": false,
-        "image_ratio": "adapt",
-        "image_shape": "default",
-        "show_secondary_image": true,
-        "show_vendor": false,
-        "show_rating": false,
-        "quick_add": "none",
-        "columns_mobile": "2",
-        "padding_top": 44,
-        "padding_bottom": 36
+        "anchor": "",
+        "padding_top": 0,
+        "padding_bottom": 8
+      }
+    },
+    "benefits": {
+      "type": "garelon-benefits",
+      "blocks": {
+        "ojeras": {
+          "type": "benefit",
+          "settings": {
+            "icon": "eye-under",
+            "title": "Ojeras",
+            "text": "Contribuye a mejorar la apariencia de la zona oscura del contorno."
+          }
+        },
+        "bolsas": {
+          "type": "benefit",
+          "settings": {
+            "icon": "eye",
+            "title": "Bolsas",
+            "text": "El masaje con roller complementa una rutina orientada a una mirada más descansada."
+          }
+        },
+        "lineas": {
+          "type": "benefit",
+          "settings": {
+            "icon": "lines",
+            "title": "Líneas finas",
+            "text": "La hidratación ayuda a mantener una apariencia más suave."
+          }
+        },
+        "hidratacion": {
+          "type": "benefit",
+          "settings": {
+            "icon": "drop",
+            "title": "Hidratación",
+            "text": "Aporta cuidado e hidratación a la zona del contorno."
+          }
+        }
+      },
+      "block_order": [
+        "ojeras",
+        "bolsas",
+        "lineas",
+        "hidratacion"
+      ],
+      "settings": {
+        "eyebrow": "Beneficios",
+        "heading": "Cuida una de las zonas más delicadas de tu rostro",
+        "text": "<p>La piel del contorno de ojos es más fina y puede mostrar signos de cansancio, sequedad, bolsas y líneas finas. Dedicarle un momento cada día es un gesto sencillo dentro de tu rutina.</p>",
+        "note": "",
+        "alignment": "center",
+        "color_scheme": "scheme-2",
+        "anchor": "beneficios",
+        "padding_top": 56,
+        "padding_bottom": 56
+      }
+    },
+    "showcase": {
+      "type": "garelon-image-text",
+      "settings": {
+        "fallback_image": "producto",
+        "image_shape": "rounded",
+        "image_position": "left",
+        "show_massage_lines": false,
+        "eyebrow": "El producto",
+        "heading": "Cuidado diario. Aplicación sencilla.",
+        "text": "<p>Su formato roller permite distribuir el sérum directamente sobre el contorno de ojos mientras realizas un masaje suave.</p><p>Frasco de vidrio ámbar de 10 ml con aplicador de bola metálica y tapón.</p>",
+        "button_label": "Ver producto",
+        "button_secondary": false,
+        "color_scheme": "scheme-1",
+        "anchor": "producto",
+        "padding_top": 56,
+        "padding_bottom": 56
+      }
+    },
+    "roller": {
+      "type": "garelon-image-text",
+      "settings": {
+        "fallback_image": "roller",
+        "image_shape": "circle",
+        "image_position": "right",
+        "show_massage_lines": true,
+        "eyebrow": "Aplicador roller",
+        "heading": "El ritual comienza con el roller",
+        "text": "<p>Deslízalo suavemente por el contorno de ojos para distribuir el sérum mientras realizas un masaje ligero.</p><p>Roller metálico para una aplicación suave y cómoda.</p>",
+        "button_label": "",
+        "button_secondary": false,
+        "color_scheme": "scheme-2",
+        "anchor": "roller",
+        "padding_top": 56,
+        "padding_bottom": 56
+      }
+    },
+    "ingredients": {
+      "type": "garelon-ingredients",
+      "blocks": {
+        "ricino": {
+          "type": "ingredient",
+          "settings": {
+            "name": "Aceite de ricino",
+            "inci": "Ricinus Communis (Castor) Seed Oil",
+            "text": "Aceite vegetal obtenido de las semillas de ricino."
+          }
+        },
+        "tripeptido": {
+          "type": "ingredient",
+          "settings": {
+            "name": "Acetyl Tripeptide-1",
+            "inci": "",
+            "text": "Péptido de uso cosmético."
+          }
+        },
+        "colageno": {
+          "type": "ingredient",
+          "settings": {
+            "name": "Colágeno",
+            "inci": "Collagen",
+            "text": "Proteína de uso habitual en el cuidado de la piel."
+          }
+        },
+        "boswellia": {
+          "type": "ingredient",
+          "settings": {
+            "name": "Extracto de Boswellia Serrata",
+            "inci": "Boswellia Serrata Extract",
+            "text": "Extracto vegetal procedente de la resina del árbol Boswellia serrata."
+          }
+        },
+        "agua": {
+          "type": "ingredient",
+          "settings": {
+            "name": "Agua",
+            "inci": "Aqua",
+            "text": ""
+          }
+        }
+      },
+      "block_order": [
+        "ricino",
+        "tripeptido",
+        "colageno",
+        "boswellia",
+        "agua"
+      ],
+      "settings": {
+        "eyebrow": "Ingredientes",
+        "heading": "Una fórmula sencilla para tu rutina",
+        "text": "",
+        "show_note": true,
+        "note": "Ingredientes según la información facilitada por el proveedor. Consulta siempre el envase del producto.",
+        "color_scheme": "scheme-1",
+        "anchor": "ingredientes",
+        "padding_top": 56,
+        "padding_bottom": 56
+      }
+    },
+    "how_to": {
+      "type": "garelon-how-to-use",
+      "blocks": {
+        "paso-1": {
+          "type": "step",
+          "settings": {
+            "fallback_image": "paso-1",
+            "label": "01",
+            "title": "Limpia",
+            "text": "Limpia y seca bien el rostro y el contorno de ojos."
+          }
+        },
+        "paso-2": {
+          "type": "step",
+          "settings": {
+            "fallback_image": "paso-2",
+            "label": "02",
+            "title": "Aplica",
+            "text": "Desliza suavemente el roller alrededor del contorno."
+          }
+        },
+        "paso-3": {
+          "type": "step",
+          "settings": {
+            "fallback_image": "paso-3",
+            "label": "03",
+            "title": "Masajea",
+            "text": "Realiza movimientos suaves con la bola metálica para distribuir el sérum."
+          }
+        }
+      },
+      "block_order": [
+        "paso-1",
+        "paso-2",
+        "paso-3"
+      ],
+      "settings": {
+        "eyebrow": "Cómo usarlo",
+        "heading": "3 pasos. Menos de un minuto.",
+        "show_images": true,
+        "note": "Solo para uso externo. Evita el contacto directo con los ojos. Si notas cualquier molestia, interrumpe su uso.",
+        "color_scheme": "scheme-2",
+        "anchor": "como-usarlo",
+        "padding_top": 56,
+        "padding_bottom": 56
+      }
+    },
+    "editorial": {
+      "type": "garelon-image-text",
+      "settings": {
+        "fallback_image": "editorial",
+        "image_shape": "arch",
+        "image_position": "left",
+        "show_massage_lines": false,
+        "eyebrow": "Tu ritual",
+        "heading": "Un pequeño gesto para tu rutina diaria",
+        "text": "<p>Convierte el cuidado del contorno de ojos en uno de esos pequeños momentos que apetece repetir cada día.</p>",
+        "button_label": "",
+        "button_secondary": false,
+        "color_scheme": "scheme-3",
+        "anchor": "",
+        "padding_top": 56,
+        "padding_bottom": 56
+      }
+    },
+    "product_cta": {
+      "type": "featured-product",
+      "blocks": {
+        "eyebrow": {
+          "type": "text",
+          "settings": {
+            "text": "El sérum",
+            "text_style": "uppercase"
+          }
+        },
+        "title": {
+          "type": "title",
+          "settings": {
+            "heading_size": "h2"
+          }
+        },
+        "price": {
+          "type": "price",
+          "settings": {}
+        },
+        "subtitle": {
+          "type": "text",
+          "settings": {
+            "text": "Sérum para el contorno de ojos con aceite de ricino y aplicador roller metálico.",
+            "text_style": "subtitle"
+          }
+        },
+        "variant_picker": {
+          "type": "variant_picker",
+          "settings": {
+            "picker_type": "button",
+            "swatch_shape": "circle"
+          }
+        },
+        "quantity_selector": {
+          "type": "quantity_selector",
+          "settings": {}
+        },
+        "buy_buttons": {
+          "type": "buy_buttons",
+          "settings": {
+            "show_dynamic_checkout": true,
+            "show_gift_card_recipient": false
+          }
+        }
+      },
+      "block_order": [
+        "eyebrow",
+        "title",
+        "price",
+        "subtitle",
+        "variant_picker",
+        "quantity_selector",
+        "buy_buttons"
+      ],
+      "settings": {
+        "color_scheme": "scheme-1",
+        "secondary_background": false,
+        "media_size": "medium",
+        "constrain_to_viewport": true,
+        "media_fit": "contain",
+        "media_position": "left",
+        "image_zoom": "lightbox",
+        "hide_variants": true,
+        "enable_video_looping": false,
+        "padding_top": 56,
+        "padding_bottom": 56
+      }
+    },
+    "faq": {
+      "type": "garelon-faq",
+      "blocks": {
+        "q-que-es": {
+          "type": "question",
+          "settings": {
+            "question": "¿Qué es el sérum de contorno de ojos de GARELON?",
+            "answer": "<p>Es un sérum para el contorno de ojos con aceite de ricino y aplicador roller metálico, en un frasco de vidrio ámbar de 10 ml. GARELON es la tienda desde la que lo comercializamos: el producto procede de un fabricante externo, por lo que en el frasco y en la caja verás la marca original del fabricante.</p>"
+          }
+        },
+        "q-como": {
+          "type": "question",
+          "settings": {
+            "question": "¿Cómo se utiliza?",
+            "answer": "<p>1. Limpia y seca bien el rostro y el contorno de ojos.<br>2. Desliza suavemente el roller por la zona del contorno para que salga el producto.<br>3. Masajea con movimientos suaves usando la bola metálica hasta distribuir el sérum.</p>"
+          }
+        },
+        "q-frecuencia": {
+          "type": "question",
+          "settings": {
+            "question": "¿Con qué frecuencia puedo incorporarlo a mi rutina?",
+            "answer": "<p>Está pensado para formar parte de tu rutina diaria de cuidado. Aplícalo siempre sobre la piel limpia y seca y sigue las indicaciones del envase. Si notas cualquier molestia, interrumpe su uso.</p>"
+          }
+        },
+        "q-cantidad": {
+          "type": "question",
+          "settings": {
+            "question": "¿Cuánto producto contiene?",
+            "answer": "<p>Cada frasco contiene 10 ml (0.34 fl oz).</p>"
+          }
+        },
+        "q-donde": {
+          "type": "question",
+          "settings": {
+            "question": "¿Dónde debo aplicarlo?",
+            "answer": "<p>En la zona del contorno de ojos, deslizando el roller con suavidad. Evita el contacto directo con los ojos. Solo para uso externo.</p>"
+          }
+        },
+        "q-ingredientes": {
+          "type": "question",
+          "settings": {
+            "question": "¿Qué ingredientes contiene?",
+            "answer": "<p>Según la información facilitada por el proveedor: aceite de ricino (Ricinus Communis Seed Oil), Acetyl Tripeptide-1, colágeno (Collagen), extracto de Boswellia Serrata y agua (Aqua). Consulta siempre el envase del producto.</p>"
+          }
+        },
+        "q-envio": {
+          "type": "question",
+          "settings": {
+            "question": "¿Cuándo recibiré mi pedido?",
+            "answer": "<p>Los plazos y costes de envío actualizados se indican en nuestra <a href=\"/policies/shipping-policy\" title=\"Política de envío\">política de envío</a> y durante el proceso de compra.</p>"
+          }
+        },
+        "q-dudas": {
+          "type": "question",
+          "settings": {
+            "question": "¿Qué ocurre si tengo una duda con mi pedido?",
+            "answer": "<p>Escríbenos desde nuestra <a href=\"/pages/contacto\" title=\"Contacto\">página de contacto</a> indicando tu número de pedido y te responderemos lo antes posible. Puedes consultar también nuestra <a href=\"/policies/refund-policy\" title=\"Política de devoluciones\">política de devoluciones</a>.</p>"
+          }
+        }
+      },
+      "block_order": [
+        "q-que-es",
+        "q-como",
+        "q-frecuencia",
+        "q-cantidad",
+        "q-donde",
+        "q-ingredientes",
+        "q-envio",
+        "q-dudas"
+      ],
+      "settings": {
+        "eyebrow": "",
+        "heading": "Preguntas frecuentes",
+        "open_first": false,
+        "contact_text": "",
+        "color_scheme": "scheme-2",
+        "anchor": "preguntas-frecuentes",
+        "padding_top": 56,
+        "padding_bottom": 56
+      }
+    },
+    "final_cta": {
+      "type": "garelon-final-cta",
+      "settings": {
+        "fallback_image": "cta",
+        "show_isotype": true,
+        "heading": "Tu rutina empieza con un pequeño gesto",
+        "text": "<p>Cuidado diario para tu mirada.</p>",
+        "show_price": false,
+        "button_label": "Descubrir GARELON",
+        "color_scheme": "scheme-1",
+        "anchor": "",
+        "padding_top": 56,
+        "padding_bottom": 64
       }
     }
   },
   "order": [
-    "image_banner",
-    "featured_collection"
+    "hero",
+    "trust",
+    "benefits",
+    "showcase",
+    "roller",
+    "ingredients",
+    "how_to",
+    "editorial",
+    "product_cta",
+    "faq",
+    "final_cta"
   ]
 }

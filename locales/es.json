@@ -41,7 +41,7 @@
     },
     "cart": {
       "view": "Ver carrito ({{ count }})",
-      "item_added": "Artículo agregado a tu carrito",
+      "item_added": "Artículo añadido a tu carrito",
       "view_empty_cart": "Ver carrito"
     },
     "share": {
@@ -107,7 +107,7 @@
   },
   "products": {
     "product": {
-      "add_to_cart": "Agregar al carrito",
+      "add_to_cart": "Añadir al carrito",
       "description": "Descripción",
       "on_sale": "Oferta",
       "quantity": {
@@ -163,12 +163,12 @@
       "choose_product_options": "Elegir opciones para {{ product_name }}",
       "value_unavailable": "{{ option_value }}: no disponible",
       "variant_sold_out_or_unavailable": "Variante agotada o no disponible",
-      "inventory_in_stock": "En existencias",
-      "inventory_in_stock_show_count": "{{ quantity }} en existencias",
-      "inventory_low_stock": "Bajas existencias",
-      "inventory_low_stock_show_count": "Bajas existencias: quedan {{ quantity }}",
+      "inventory_in_stock": "En stock",
+      "inventory_in_stock_show_count": "{{ quantity }} en stock",
+      "inventory_low_stock": "Pocas unidades",
+      "inventory_low_stock_show_count": "Pocas unidades: quedan {{ quantity }}",
       "inventory_out_of_stock": "Agotado",
-      "inventory_out_of_stock_continue_selling": "En existencias",
+      "inventory_out_of_stock_continue_selling": "En stock",
       "sku": "SKU",
       "volume_pricing": {
         "title": "Precios por volumen",
@@ -290,12 +290,12 @@
       "caption": "Artículos en el carrito",
       "remove_title": "Eliminar {{ title }}",
       "note": "Instrucciones especiales del pedido",
-      "checkout": "Pagar pedido",
+      "checkout": "Finalizar compra",
       "empty": "Tu carrito esta vacío",
       "product_disclosure": "Aviso sobre el producto",
       "product_disclosures": "Avisos sobre el producto",
       "cart_error": "Hubo un error al actualizar tu carrito de compra. Inténtalo de nuevo.",
-      "cart_quantity_error_html": "Solo puedes agregar {{ quantity }} de este artículo a tu carrito.",
+      "cart_quantity_error_html": "Solo puedes añadir {{ quantity }} de este artículo a tu carrito.",
       "headings": {
         "product": "Producto",
         "price": "Precio",
@@ -369,9 +369,9 @@
       "variant": "Variante",
       "variant_total": "Total de variantes",
       "items_added": {
-        "one": "{{ quantity }} artículo agregado",
-        "other": "{{ quantity }} artículos agregados",
-        "many": "{{ quantity }} artículos agregados"
+        "one": "{{ quantity }} artículo añadido",
+        "other": "{{ quantity }} artículos añadidos",
+        "many": "{{ quantity }} artículos añadidos"
       },
       "items_removed": {
         "one": "{{ quantity }} artículo eliminado",
@@ -386,7 +386,7 @@
       "remove_all_single_item_confirmation": "¿Eliminar 1 artículo de tu carrito?",
       "min_error": "Este artículo tiene un mínimo de {{ min }}.",
       "max_error": "Este artículo tiene un máximo de {{ max }}.",
-      "step_error": "Solo puedes agregar este artículo en incrementos de {{ step }}"
+      "step_error": "Solo puedes añadir este artículo en incrementos de {{ step }}"
     }
   },
   "localization": {

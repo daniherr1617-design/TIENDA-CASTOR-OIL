@@ -1,0 +1,175 @@
+<div
+  {% if section.settings.anchor != blank %}
+    id="{{ section.settings.anchor | handleize }}"
+  {% endif %}
+  class="g-section g-steps color-{{ section.settings.color_scheme }} gradient"
+  style="--g-pt: {{ section.settings.padding_top }}px; --g-pb: {{ section.settings.padding_bottom }}px;"
+>
+  <div class="page-width">
+    <div class="g-heading-group g-heading-group--center">
+      {%- if section.settings.eyebrow != blank -%}
+        <p class="g-eyebrow">{{ section.settings.eyebrow | escape }}</p>
+      {%- endif -%}
+      {%- if section.settings.heading != blank -%}
+        <h2 class="g-h2">{{ section.settings.heading | escape }}</h2>
+      {%- endif -%}
+    </div>
+
+    {%- if section.blocks.size > 0 -%}
+      <ol class="g-steps__list">
+        {%- for block in section.blocks -%}
+          <li class="g-steps__item" {{ block.shopify_attributes }}>
+            {%- if section.settings.show_images -%}
+              <div class="g-steps__media">
+                {%- render 'garelon-fallback-image',
+                  image: block.settings.image,
+                  fallback: block.settings.fallback_image,
+                  alt: block.settings.title,
+                  sizes: '(min-width: 750px) 30vw, 112px',
+                  class: 'g-steps__img'
+                -%}
+              </div>
+            {%- endif -%}
+            <div class="g-steps__body">
+              <p class="g-steps__number" aria-hidden="true">
+                {{- block.settings.label | default: forloop.index | escape -}}
+              </p>
+              <h3 class="g-h3">
+                <span class="visually-hidden">Paso {{ forloop.index }}:</span>
+                {{ block.settings.title | escape }}
+              </h3>
+              {%- if block.settings.text != blank -%}
+                <p class="g-steps__text">{{ block.settings.text | escape }}</p>
+              {%- endif -%}
+            </div>
+          </li>
+        {%- endfor -%}
+      </ol>
+    {%- endif -%}
+
+    {%- if section.settings.note != blank -%}
+      <p class="g-note g-note--center">{{ section.settings.note | escape }}</p>
+    {%- endif -%}
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "GARELON Cómo usarlo",
+  "tag": "section",
+  "class": "section",
+  "max_blocks": 5,
+  "settings": [
+    {
+      "type": "text",
+      "id": "eyebrow",
+      "label": "Antetítulo",
+      "default": "Cómo usarlo"
+    },
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "Título",
+      "default": "3 pasos. Menos de un minuto."
+    },
+    {
+      "type": "checkbox",
+      "id": "show_images",
+      "label": "Mostrar imágenes",
+      "default": true
+    },
+    {
+      "type": "text",
+      "id": "note",
+      "label": "Nota de precaución (opcional)",
+      "default": "Solo para uso externo. Evita el contacto directo con los ojos. Si notas cualquier molestia, interrumpe su uso."
+    },
+    {
+      "type": "color_scheme",
+      "id": "color_scheme",
+      "label": "Esquema de color",
+      "default": "scheme-1"
+    },
+    {
+      "type": "text",
+      "id": "anchor",
+      "label": "ID de ancla",
+      "default": "como-usarlo"
+    },
+    {
+      "type": "range",
+      "id": "padding_top",
+      "min": 0,
+      "max": 100,
+      "step": 4,
+      "unit": "px",
+      "label": "Margen superior",
+      "default": 56
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom",
+      "min": 0,
+      "max": 100,
+      "step": 4,
+      "unit": "px",
+      "label": "Margen inferior",
+      "default": 56
+    }
+  ],
+  "blocks": [
+    {
+      "type": "step",
+      "name": "Paso",
+      "settings": [
+        {
+          "type": "image_picker",
+          "id": "image",
+          "label": "Imagen",
+          "info": "Fotografía real del gesto o del producto."
+        },
+        {
+          "type": "select",
+          "id": "fallback_image",
+          "label": "Foto por defecto si no eliges imagen",
+          "options": [
+            { "value": "paso-1", "label": "Limpiar el rostro" },
+            { "value": "paso-2", "label": "Roller en la mano" },
+            { "value": "paso-3", "label": "Roller sobre el contorno" },
+            { "value": "none", "label": "Ninguna (marcador)" }
+          ],
+          "default": "paso-1"
+        },
+        {
+          "type": "text",
+          "id": "label",
+          "label": "Número visible",
+          "default": "01"
+        },
+        {
+          "type": "text",
+          "id": "title",
+          "label": "Título",
+          "default": "Limpia"
+        },
+        {
+          "type": "textarea",
+          "id": "text",
+          "label": "Texto",
+          "default": "Limpia y seca bien el rostro y el contorno de ojos."
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "GARELON Cómo usarlo",
+      "blocks": [
+        { "type": "step", "settings": { "fallback_image": "paso-1", "label": "01", "title": "Limpia", "text": "Limpia y seca bien el rostro y el contorno de ojos." } },
+        { "type": "step", "settings": { "fallback_image": "paso-2", "label": "02", "title": "Aplica", "text": "Desliza suavemente el roller alrededor del contorno." } },
+        { "type": "step", "settings": { "fallback_image": "paso-3", "label": "03", "title": "Masajea", "text": "Realiza movimientos suaves con la bola metálica para distribuir el sérum." } }
+      ]
+    }
+  ]
+}
+{% endschema %}

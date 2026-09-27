@@ -228,6 +228,18 @@
                       </div>
                     </details>
                   </div>
+                {%- when 'garelon_packs' -%}
+                  {%- assign quantity_blocks = section.blocks | where: 'type', 'quantity_selector' -%}
+                  {%- assign has_quantity_input = false -%}
+                  {%- if quantity_blocks.size > 0 -%}
+                    {%- assign has_quantity_input = true -%}
+                  {%- endif -%}
+                  {%- render 'garelon-packs',
+                    block: block,
+                    section_id: section.id,
+                    product_form_id: product_form_id,
+                    has_quantity_input: has_quantity_input
+                  -%}
                 {%- when 'quantity_selector' -%}
                   <div
                     id="Quantity-Form-{{ section.id }}"
@@ -870,6 +882,39 @@
           "id": "show_inventory_quantity",
           "label": "t:sections.main-product.blocks.inventory.settings.show_inventory_quantity.label",
           "default": true
+        }
+      ]
+    },
+    {
+      "type": "garelon_packs",
+      "name": "GARELON Packs",
+      "limit": 1,
+      "settings": [
+        {
+          "type": "paragraph",
+          "content": "Permite elegir 1, 2 o 3 unidades. Solo cambia la cantidad: no aplica ni anuncia descuentos. Para desactivarlo, oculta o elimina este bloque."
+        },
+        {
+          "type": "text",
+          "id": "heading",
+          "label": "Título",
+          "default": "Unidades"
+        },
+        {
+          "type": "select",
+          "id": "max_units",
+          "label": "Opciones",
+          "options": [
+            { "value": "2", "label": "1 y 2 unidades" },
+            { "value": "3", "label": "1, 2 y 3 unidades" }
+          ],
+          "default": "3"
+        },
+        {
+          "type": "text",
+          "id": "note",
+          "label": "Nota (opcional)",
+          "info": "Menciona descuentos solo si existen de verdad en Shopify."
         }
       ]
     },

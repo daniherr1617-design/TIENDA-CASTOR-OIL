@@ -1,0 +1,154 @@
+<div
+  {% if section.settings.anchor != blank %}
+    id="{{ section.settings.anchor | handleize }}"
+  {% endif %}
+  class="g-section g-ingredients color-{{ section.settings.color_scheme }} gradient"
+  style="--g-pt: {{ section.settings.padding_top }}px; --g-pb: {{ section.settings.padding_bottom }}px;"
+>
+  <div class="page-width">
+    <div class="g-heading-group g-heading-group--center">
+      {%- if section.settings.eyebrow != blank -%}
+        <p class="g-eyebrow">{{ section.settings.eyebrow | escape }}</p>
+      {%- endif -%}
+      {%- if section.settings.heading != blank -%}
+        <h2 class="g-h2">{{ section.settings.heading | escape }}</h2>
+      {%- endif -%}
+      {%- if section.settings.text != blank -%}
+        <div class="g-lead">{{ section.settings.text }}</div>
+      {%- endif -%}
+    </div>
+
+    {%- if section.blocks.size > 0 -%}
+      <ul class="g-ingredients__grid" role="list">
+        {%- for block in section.blocks -%}
+          <li class="g-card g-ingredients__item" {{ block.shopify_attributes }}>
+            <h3 class="g-ingredients__name">{{ block.settings.name | escape }}</h3>
+            {%- if block.settings.inci != blank -%}
+              <p class="g-ingredients__inci">{{ block.settings.inci | escape }}</p>
+            {%- endif -%}
+            {%- if block.settings.text != blank -%}
+              <p class="g-ingredients__text">{{ block.settings.text | escape }}</p>
+            {%- endif -%}
+          </li>
+        {%- endfor -%}
+      </ul>
+    {%- endif -%}
+
+    {%- if section.settings.show_note and section.settings.note != blank -%}
+      <p class="g-note g-note--center">{{ section.settings.note | escape }}</p>
+    {%- endif -%}
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "GARELON Ingredientes",
+  "tag": "section",
+  "class": "section",
+  "max_blocks": 12,
+  "settings": [
+    {
+      "type": "paragraph",
+      "content": "Incluye solo ingredientes confirmados por el proveedor o por el envase. No añadas ingredientes por suposición."
+    },
+    {
+      "type": "text",
+      "id": "eyebrow",
+      "label": "Antetítulo",
+      "default": "Ingredientes"
+    },
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "Título",
+      "default": "Una fórmula sencilla para tu rutina"
+    },
+    {
+      "type": "richtext",
+      "id": "text",
+      "label": "Texto"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_note",
+      "label": "Mostrar nota",
+      "default": true
+    },
+    {
+      "type": "text",
+      "id": "note",
+      "label": "Nota",
+      "default": "Ingredientes según la información facilitada por el proveedor. Consulta siempre el envase del producto."
+    },
+    {
+      "type": "color_scheme",
+      "id": "color_scheme",
+      "label": "Esquema de color",
+      "default": "scheme-2"
+    },
+    {
+      "type": "text",
+      "id": "anchor",
+      "label": "ID de ancla",
+      "default": "ingredientes"
+    },
+    {
+      "type": "range",
+      "id": "padding_top",
+      "min": 0,
+      "max": 100,
+      "step": 4,
+      "unit": "px",
+      "label": "Margen superior",
+      "default": 56
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom",
+      "min": 0,
+      "max": 100,
+      "step": 4,
+      "unit": "px",
+      "label": "Margen inferior",
+      "default": 56
+    }
+  ],
+  "blocks": [
+    {
+      "type": "ingredient",
+      "name": "Ingrediente",
+      "settings": [
+        {
+          "type": "text",
+          "id": "name",
+          "label": "Nombre",
+          "default": "Ingrediente"
+        },
+        {
+          "type": "text",
+          "id": "inci",
+          "label": "Denominación INCI (opcional)"
+        },
+        {
+          "type": "textarea",
+          "id": "text",
+          "label": "Descripción breve (opcional)",
+          "info": "Descripción neutra. Evita atribuir efectos que no puedas justificar."
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "GARELON Ingredientes",
+      "blocks": [
+        { "type": "ingredient", "settings": { "name": "Aceite de ricino", "inci": "Ricinus Communis (Castor) Seed Oil", "text": "Aceite vegetal obtenido de las semillas de ricino." } },
+        { "type": "ingredient", "settings": { "name": "Acetyl Tripeptide-1", "inci": "Acetyl Tripeptide-1", "text": "Péptido de uso cosmético." } },
+        { "type": "ingredient", "settings": { "name": "Colágeno", "inci": "Collagen", "text": "Proteína de uso habitual en el cuidado de la piel." } },
+        { "type": "ingredient", "settings": { "name": "Extracto de Boswellia Serrata", "inci": "Boswellia Serrata Extract", "text": "Extracto vegetal procedente de la resina del árbol Boswellia serrata." } },
+        { "type": "ingredient", "settings": { "name": "Agua", "inci": "Aqua", "text": "" } }
+      ]
+    }
+  ]
+}
+{% endschema %}
