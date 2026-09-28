@@ -1,32 +1,44 @@
-# GARELON · Código para copiar y pegar en Shopify
+# GARELON · Cambios de la ronda 3 (imágenes nuevas, home, navegación y cabecera móvil)
 
-> **Recomendación:** la forma más rápida y segura es subir el archivo **`garelon-theme.zip`** en
-> *Tienda online → Temas → Añadir tema → Subir archivo zip*. Así se instalan de una vez todos los archivos
-> (incluidas las imágenes) sin riesgo de errores al pegar.
->
-> Si prefieres pegarlo a mano, sigue esta guía **en este orden** (si pegas una plantilla antes que sus
-> secciones, Shopify no te dejará guardarla).
+Usa esta guía si **ya tienes el theme GARELON instalado**. No cambia colores, tipografías, botones, carrito ni pie de página: sustituye el sistema de imágenes y ajusta navegación, cabecera móvil, barra superior y enlaces.
 
-## Paso 0 · Preparación (no trabajes sobre el tema publicado)
+Qué incluye:
 
-1. *Tienda online → Temas*. Si no tienes **Dawn**, añádelo gratis desde la Theme Store.
-2. En Dawn: **⋯ → Duplicar**. Trabaja sobre la copia.
-3. En la copia: **⋯ → Editar código**.
+1. **Imágenes nuevas.** Se retiran los 11 recortes de las 7 imágenes antiguas. Se usan 6 de las 10 imágenes nuevas (IMAGEN 1, 10, 7, 5, 4 y 9), solo redimensionadas a WebP, sin recortes ni retoques.
+2. **Home centrada en la compra.** Portada → características → beneficios → roller → ingredientes → cómo usarlo → **compra (con galería)** → preguntas frecuentes → llamada final. Los botones «Comprar el sérum» llevan a la zona de compra de la propia home (`/#comprar`).
+3. **Sin «Catálogo».** Navegación: Inicio · Ingredientes · Preguntas frecuentes · Contacto.
+4. **Cabecera móvil sin solapes.** Menú · [isotipo GARELON] · carrito. La búsqueda y la cuenta pasan dentro del menú.
+5. **Barra superior:** «Envío disponible a toda España» con una bandera pequeña.
+6. **Pie:** nuevo texto de Ayuda y enlaces legales ordenados, sin enlaces vacíos.
 
-Este código está hecho sobre **Dawn 16.0.0**. Si tu Dawn es 15.x también debería funcionar; en el paso 5
-solo se hacen cambios pequeños de "buscar y sustituir" en archivos de Dawn, no se reemplazan enteros.
+Tienes tres formas de aplicarlo. **La A es la más rápida y la más segura.**
 
 ---
 
-## Paso 1 · Imágenes (24 archivos)
+## Opción A · Subir el theme completo (recomendada)
 
-Descomprime **`garelon-imagenes.zip`**. En el editor de código: carpeta **Assets → Añadir un nuevo asset →
-Cargar un archivo**, y sube uno a uno (mantén exactamente estos nombres). Son los 2 archivos de marca
-(logotipo e isotipo, en varios tamaños) y 6 de las 10 imágenes del producto (IMAGEN 1, 4, 5, 7, 9 y 10),
-solo redimensionadas a WebP:
+1. Descarga **`garelon-theme.zip`** (el archivo que te he enviado).
+2. Shopify Admin → **Tienda online → Temas → Añadir tema → Subir archivo zip** y elige `garelon-theme.zip`.
+3. El tema aparece en la **Biblioteca de temas sin publicar**. Pulsa **⋯ → Vista previa** y revísalo en el móvil y en el ordenador (lista del final).
+4. Cuando esté bien, pulsa **Publicar**.
 
-- `garelon-apple-touch-180.png`
-- `garelon-favicon-32.png`
+Qué se conserva al cambiar de tema: productos, AutoDS, inventario, pedidos, páginas, políticas, menús, dominios y ajustes de pago. Todo eso es del Admin, no del tema.
+Qué no se conserva: los cambios que hayas hecho **a mano en el editor visual** del tema anterior. Si hiciste alguno, apúntalo antes y repítelo en el nuevo.
+
+## Opción B · Tema conectado a GitHub
+
+Si instalaste el tema con *Conectar desde GitHub* (rama `claude/great-lamport-8mb0rc`), Shopify ya ha recibido estos cambios. Solo tienes que abrir la **Vista previa** y revisar.
+
+## Opción C · A mano en «Editar código»
+
+> Antes de empezar: *Tienda online → Temas → (tu tema GARELON) → ⋯ → Duplicar* y trabaja sobre la copia.
+> Sigue los pasos **en este orden**. Las plantillas del paso 5 usan ajustes que se crean en los pasos 3 y 4, y Shopify no deja guardarlas antes.
+> Si al guardar una sección del paso 3 Shopify muestra un error por un ajuste antiguo de una plantilla, haz el paso 5 y vuelve a guardar la sección.
+
+### Paso 1 · Subir las imágenes nuevas (18 archivos)
+
+Descomprime **`garelon-imagenes-ronda3.zip`**. En *Editar código* → carpeta **Assets → Añadir un nuevo asset → Cargar un archivo**, súbelas una a una con **estos nombres exactos**:
+
 - `garelon-img01-producto-1080.webp`
 - `garelon-img01-producto-480.webp`
 - `garelon-img01-producto-720.webp`
@@ -45,17 +57,277 @@ solo redimensionadas a WebP:
 - `garelon-img10-presentacion-1080.webp`
 - `garelon-img10-presentacion-480.webp`
 - `garelon-img10-presentacion-720.webp`
-- `garelon-isotipo-96.webp`
-- `garelon-logo-240.webp`
-- `garelon-logo-480.webp`
-- `garelon-wordmark-480.webp`
 
----
+### Paso 2 · Crear los archivos nuevos (5)
 
-## Paso 2 · Assets de código (3 archivos)
+*Añadir un nuevo asset / Añadir un nuevo snippet* → escribe el nombre (sin la extensión) → pega el contenido completo.
 
-**Assets → Añadir un nuevo asset → Crear un asset en blanco**, elige la extensión y escribe el nombre
-`garelon`. Borra lo que aparezca y pega el contenido completo.
+### `assets/garelon-nav.js`
+
+```js
+/*
+  GARELON · Cierra el menú móvil de Dawn al pulsar un enlace a una sección de la
+  página actual (p. ej. /#como-usarlo en la home). Esos enlaces no recargan la
+  página, así que sin esto el menú se quedaría abierto tapando la sección.
+*/
+document.addEventListener('click', (event) => {
+  const link = event.target.closest('header-drawer a[href*="#"]');
+  if (!link) return;
+
+  const url = new URL(link.href, window.location.href);
+  if (!url.hash || url.pathname !== window.location.pathname) return;
+
+  const drawer = link.closest('header-drawer');
+  const summary = drawer && drawer.querySelector('summary');
+  if (!summary || typeof drawer.closeMenuDrawer !== 'function') return;
+
+  drawer.closeMenuDrawer(event, summary);
+  summary.setAttribute('aria-expanded', 'false');
+});
+```
+
+### `snippets/garelon-nav.liquid`
+
+```liquid
+{%- comment -%}
+  GARELON · Navegación principal de la tienda de un solo producto.
+
+  Enlaces: Inicio, las secciones de la home que se activen en la cabecera
+  (Cómo usarlo, Ingredientes, Preguntas frecuentes) y Contacto. No enlaza al catálogo
+  ni a colecciones. Las URLs son dinámicas: routes.root_url y la página de contacto
+  real resuelta por el snippet garelon-url.
+
+  Accepts:
+  - variant: {String} 'inline' (menú de escritorio) | 'drawer' (elementos <li> del menú móvil)
+
+  Usage:
+  {% render 'garelon-nav', variant: 'inline' %}
+{%- endcomment -%}
+{%- liquid
+  capture contact_url
+    render 'garelon-url', type: 'contact'
+  endcapture
+  assign contact_url = contact_url | strip
+  assign home_url = routes.root_url
+
+  assign labels = 'Inicio'
+  assign urls = home_url
+  assign ids = 'inicio'
+  if section.settings.nav_show_how
+    assign labels = labels | append: '|Cómo usarlo'
+    assign urls = urls | append: '|' | append: home_url | append: '#como-usarlo'
+    assign ids = ids | append: '|como-usarlo'
+  endif
+  if section.settings.nav_show_ingredients
+    assign labels = labels | append: '|Ingredientes'
+    assign urls = urls | append: '|' | append: home_url | append: '#ingredientes'
+    assign ids = ids | append: '|ingredientes'
+  endif
+  if section.settings.nav_show_faq
+    assign labels = labels | append: '|Preguntas frecuentes'
+    assign urls = urls | append: '|' | append: home_url | append: '#preguntas-frecuentes'
+    assign ids = ids | append: '|preguntas-frecuentes'
+  endif
+  assign labels = labels | append: '|Contacto'
+  assign urls = urls | append: '|' | append: contact_url
+  assign ids = ids | append: '|contacto'
+
+  assign labels = labels | split: '|'
+  assign urls = urls | split: '|'
+  assign ids = ids | split: '|'
+-%}
+
+{%- if variant == 'drawer' -%}
+  {%- for label in labels -%}
+    {%- liquid
+      assign url = urls[forloop.index0]
+      assign current = false
+      if forloop.first and request.page_type == 'index'
+        assign current = true
+      elsif forloop.last and request.path == contact_url
+        assign current = true
+      endif
+    -%}
+    <li>
+      <a
+        id="HeaderDrawer-{{ ids[forloop.index0] }}"
+        href="{{ url }}"
+        class="menu-drawer__menu-item list-menu__item link link--text focus-inset{% if current %} menu-drawer__menu-item--active{% endif %}"
+        {% if current %}
+          aria-current="page"
+        {% endif %}
+      >
+        {{ label }}
+      </a>
+    </li>
+  {%- endfor -%}
+{%- else -%}
+  <nav class="header__inline-menu">
+    <ul class="list-menu list-menu--inline" role="list">
+      {%- for label in labels -%}
+        {%- liquid
+          assign url = urls[forloop.index0]
+          assign current = false
+          if forloop.first and request.page_type == 'index'
+            assign current = true
+          elsif forloop.last and request.path == contact_url
+            assign current = true
+          endif
+        -%}
+        <li>
+          <a
+            id="HeaderMenu-{{ ids[forloop.index0] }}"
+            href="{{ url }}"
+            class="header__menu-item list-menu__item link link--text focus-inset"
+            {% if current %}
+              aria-current="page"
+            {% endif %}
+          >
+            <span {% if current %}class="header__active-menu-item"{% endif %}>{{ label }}</span>
+          </a>
+        </li>
+      {%- endfor -%}
+    </ul>
+  </nav>
+{%- endif -%}
+```
+
+### `snippets/garelon-flag-es.liquid`
+
+```liquid
+{%- comment -%}
+  GARELON · Bandera de España (franjas roja, amarilla y roja en proporción 1:2:1).
+  SVG en lugar del emoji 🇪🇸 porque Windows no muestra emojis de banderas (saldría «ES»).
+  Decorativa: el texto del anuncio ya dice «España».
+
+  Usage:
+  {% render 'garelon-flag-es' %}
+{%- endcomment -%}
+<svg class="garelon-flag" viewBox="0 0 3 2" width="21" height="14" aria-hidden="true" focusable="false">
+  <rect width="3" height="2" fill="#AA151B"/>
+  <rect y="0.5" width="3" height="1" fill="#F1BF00"/>
+</svg>
+```
+
+### `snippets/garelon-gallery.liquid`
+
+```liquid
+{%- comment -%}
+  GARELON · Galería de la zona de compra de la home.
+
+  Muestra las imágenes del producto incluidas en el tema, en el orden de la historia:
+  producto (IMAGEN 1) → presentación y beneficios (IMAGEN 10) → técnica con roller (IMAGEN 7)
+  → ingredientes (IMAGEN 5) → cómo usarlo (IMAGEN 4) → tamaño (IMAGEN 9).
+
+  Usa el carrusel de Dawn (<slider-component>, definido en global.js): se desliza con el
+  dedo en móvil y tiene flechas y contador en todos los tamaños. Todas las imágenes se
+  cargan en diferido porque la sección está lejos de la primera pantalla.
+
+  Accepts:
+  - section_id: {String} id de la sección, para que los ids del carrusel sean únicos
+
+  Usage:
+  {% render 'garelon-gallery', section_id: section.id %}
+{%- endcomment -%}
+{{ 'component-slider.css' | asset_url | stylesheet_tag }}
+
+{%- liquid
+  assign keys = 'img01-producto,img10-presentacion,img07-roller,img05-ingredientes,img04-uso,img09-tamano' | split: ','
+  assign slider_id = 'Slider-GGallery-' | append: section_id
+-%}
+
+<slider-component class="g-gallery">
+  <ul id="{{ slider_id }}" class="g-gallery__track slider slider--everywhere" role="list">
+    {%- for key in keys -%}
+      <li id="Slide-GGallery-{{ section_id }}-{{ forloop.index }}" class="g-gallery__slide slider__slide">
+        {%- render 'garelon-fallback-image',
+          fallback: key,
+          sizes: '(min-width: 1200px) 560px, (min-width: 750px) 50vw, calc(100vw - 3rem)',
+          class: 'g-gallery__img'
+        -%}
+      </li>
+    {%- endfor -%}
+  </ul>
+  <div class="slider-buttons g-gallery__buttons">
+    <button
+      type="button"
+      class="slider-button slider-button--prev"
+      name="previous"
+      aria-label="{{ 'general.slider.previous_slide' | t }}"
+      aria-controls="{{ slider_id }}"
+    >
+      <span class="svg-wrapper">{{- 'icon-caret.svg' | inline_asset_content -}}</span>
+    </button>
+    <div class="slider-counter caption">
+      <span class="slider-counter--current">1</span>
+      <span aria-hidden="true"> / </span>
+      <span class="visually-hidden">{{ 'general.slider.of' | t }}</span>
+      <span class="slider-counter--total">{{ keys.size }}</span>
+    </div>
+    <button
+      type="button"
+      class="slider-button slider-button--next"
+      name="next"
+      aria-label="{{ 'general.slider.next_slide' | t }}"
+      aria-controls="{{ slider_id }}"
+    >
+      <span class="svg-wrapper">{{- 'icon-caret.svg' | inline_asset_content -}}</span>
+    </button>
+  </div>
+</slider-component>
+```
+
+### `snippets/garelon-stock.liquid`
+
+```liquid
+{%- comment -%}
+  GARELON · Estado de stock para la zona de compra de la home (sección Producto destacado).
+
+  Misma lógica que el bloque «Inventario» de la ficha de producto de Dawn, sin avisos de
+  «pocas unidades» ni número de unidades: solo «En stock» o «Agotado», y solo cuando Shopify
+  controla el inventario de la variante (los datos que sincroniza AutoDS). Si no lo controla,
+  no se afirma nada. El id Inventory-<sección> permite que product-info.js de Dawn lo
+  actualice al cambiar de variante.
+
+  Accepts:
+  - variant: {Object} variante seleccionada o primera disponible
+  - section_id: {String}
+  - block: {Object} bloque, para el editor de temas
+
+  Usage:
+  {% render 'garelon-stock', variant: product.selected_or_first_available_variant, section_id: section.id, block: block %}
+{%- endcomment -%}
+{%- liquid
+  assign tracked = false
+  if variant.inventory_management == 'shopify'
+    assign tracked = true
+  endif
+-%}
+<p
+  id="Inventory-{{ section_id }}"
+  class="product__inventory{% unless tracked %} visibility-hidden{% endunless %}"
+  role="status"
+  {{ block.shopify_attributes }}
+>
+  {%- if tracked -%}
+    {%- if variant.inventory_quantity > 0 or variant.inventory_policy == 'continue' -%}
+      <span class="svg-wrapper" style="color: rgb(62, 214, 96)">
+        {{- 'icon-inventory-status.svg' | inline_asset_content -}}
+      </span>
+      {{- 'products.product.inventory_in_stock' | t -}}
+    {%- else -%}
+      <span class="svg-wrapper" style="color: rgb(200, 200, 200)">
+        {{- 'icon-inventory-status.svg' | inline_asset_content -}}
+      </span>
+      {{- 'products.product.inventory_out_of_stock' | t -}}
+    {%- endif -%}
+  {%- endif -%}
+</p>
+```
+
+### Paso 3 · Sustituir archivos completos (10)
+
+Abre cada archivo, selecciona todo (**Ctrl+A / Cmd+A**), borra y pega el contenido completo.
 
 ### `assets/garelon.css`
 
@@ -1352,232 +1624,56 @@ input:focus-visible + .g-packs__option {
 }
 ```
 
-### `assets/garelon.js`
-
-```js
-/*
-  GARELON · Mejoras ligeras sobre el formulario de producto de Dawn.
-  - <garelon-sticky-atc>: barra fija de compra en móvil. No crea su propio
-    formulario: pulsa el botón real del formulario de Dawn, así el carrito
-    (drawer/AJAX), las apps y los eventos de Shopify siguen funcionando igual.
-  - <garelon-packs>: selector 1/2/3 unidades que solo cambia la cantidad.
-    No aplica descuentos.
-*/
-
-if (!customElements.get('garelon-sticky-atc')) {
-  customElements.define(
-    'garelon-sticky-atc',
-    class GarelonStickyAtc extends HTMLElement {
-      connectedCallback() {
-        this.sectionId = this.dataset.mainSection;
-        this.button = this.querySelector('[data-sticky-button]');
-        this.buttonLabel = this.querySelector('[data-sticky-label]');
-        this.priceTarget = this.querySelector('[data-sticky-price]');
-        this.thumb = this.querySelector('[data-sticky-thumb]');
-        this.defaultLabel = this.buttonLabel ? this.buttonLabel.textContent.trim() : '';
-
-        if (!this.sectionId) {
-          const mainInfo = document.querySelector('product-info[id^="MainProduct-"]');
-          this.sectionId = mainInfo ? mainInfo.dataset.section : null;
-        }
-        if (!this.sectionId || !this.getMainButton()) return;
-
-        this.button.addEventListener('click', this.onClick.bind(this));
-        this.sync();
-        this.observe();
-
-        if (typeof subscribe === 'function' && typeof PUB_SUB_EVENTS !== 'undefined') {
-          this.unsubscribe = subscribe(PUB_SUB_EVENTS.variantChange, (event) => {
-            if (!event || !event.data || event.data.sectionId !== this.sectionId) return;
-            // Dawn actualiza el precio y el botón justo antes de publicar el evento.
-            this.sync(event.data.variant);
-          });
-        }
-      }
-
-      disconnectedCallback() {
-        if (this.unsubscribe) this.unsubscribe();
-        if (this.observer) this.observer.disconnect();
-        document.body.classList.remove('g-sticky-open');
-      }
-
-      getMainButton() {
-        return document.getElementById(`ProductSubmitButton-${this.sectionId}`);
-      }
-
-      observe() {
-        const target = this.getMainButton().closest('.product-form__buttons') || this.getMainButton();
-        this.observer = new IntersectionObserver(([entry]) => {
-          // Visible solo cuando el botón principal ha quedado por encima de la pantalla.
-          const passed = !entry.isIntersecting && entry.boundingClientRect.top < 0;
-          this.toggle(passed);
-        });
-        this.observer.observe(target);
-      }
-
-      toggle(show) {
-        this.classList.toggle('is-visible', show);
-        this.toggleAttribute('inert', !show);
-        document.body.classList.toggle('g-sticky-open', show);
-      }
-
-      sync(variant) {
-        const mainPrice = document.getElementById(`price-${this.sectionId}`);
-        if (mainPrice && this.priceTarget) this.priceTarget.innerHTML = mainPrice.innerHTML;
-
-        const mainButton = this.getMainButton();
-        if (mainButton && this.button) {
-          const disabled = mainButton.hasAttribute('disabled') || mainButton.getAttribute('aria-disabled') === 'true';
-          this.button.disabled = disabled;
-          if (this.buttonLabel) {
-            const mainLabel = mainButton.querySelector('span');
-            this.buttonLabel.textContent = disabled && mainLabel ? mainLabel.textContent.trim() : this.defaultLabel;
-          }
-        }
-
-        const src = variant && variant.featured_media && variant.featured_media.preview_image
-          ? variant.featured_media.preview_image.src
-          : null;
-        if (src && this.thumb) {
-          this.thumb.src = `${src}${src.includes('?') ? '&' : '?'}width=120`;
-          this.thumb.removeAttribute('srcset');
-        }
-      }
-
-      onClick() {
-        const mainButton = this.getMainButton();
-        if (!mainButton || mainButton.hasAttribute('disabled')) return;
-        mainButton.click();
-      }
-    }
-  );
-}
-
-if (!customElements.get('garelon-packs')) {
-  customElements.define(
-    'garelon-packs',
-    class GarelonPacks extends HTMLElement {
-      connectedCallback() {
-        this.radios = Array.from(this.querySelectorAll('input[type="radio"]'));
-        this.radios.forEach((radio) => radio.addEventListener('change', this.onChange.bind(this)));
-
-        const input = this.getQuantityInput();
-        if (input) input.addEventListener('change', this.syncFromInput.bind(this));
-      }
-
-      getQuantityInput() {
-        return (
-          document.getElementById(`Quantity-${this.dataset.section}`) ||
-          this.querySelector('input[data-pack-quantity]')
-        );
-      }
-
-      onChange(event) {
-        const input = this.getQuantityInput();
-        if (!input) return;
-        input.value = event.target.value;
-        input.dispatchEvent(new Event('change', { bubbles: true }));
-      }
-
-      syncFromInput() {
-        const value = this.getQuantityInput().value;
-        this.radios.forEach((radio) => {
-          radio.checked = radio.value === String(value);
-        });
-      }
-    }
-  );
-}
-```
-
-### `assets/garelon-nav.js`
-
-```js
-/*
-  GARELON · Cierra el menú móvil de Dawn al pulsar un enlace a una sección de la
-  página actual (p. ej. /#como-usarlo en la home). Esos enlaces no recargan la
-  página, así que sin esto el menú se quedaría abierto tapando la sección.
-*/
-document.addEventListener('click', (event) => {
-  const link = event.target.closest('header-drawer a[href*="#"]');
-  if (!link) return;
-
-  const url = new URL(link.href, window.location.href);
-  if (!url.hash || url.pathname !== window.location.pathname) return;
-
-  const drawer = link.closest('header-drawer');
-  const summary = drawer && drawer.querySelector('summary');
-  if (!summary || typeof drawer.closeMenuDrawer !== 'function') return;
-
-  drawer.closeMenuDrawer(event, summary);
-  summary.setAttribute('aria-expanded', 'false');
-});
-```
-
----
-
-## Paso 3 · Snippets (12 archivos)
-
-**Snippets → Añadir un nuevo snippet**, escribe el nombre (sin `.liquid`), borra el contenido por defecto y pega.
-
-### `snippets/garelon-icon.liquid`
+### `snippets/garelon-fallback-image.liquid`
 
 ```liquid
 {%- comment -%}
-  GARELON · Iconos lineales discretos (SVG en línea, heredan currentColor).
+  GARELON · Muestra la imagen elegida en el editor o, si está vacía, una de las
+  imágenes del producto incluidas en los assets del tema.
+
+  Los assets garelon-imgNN-*.webp son IMAGEN 1, 4, 5, 7, 9 y 10 (carpeta referencias/)
+  redimensionadas a 480, 720 y 1080 px: sin recortes, sin filtros y sin cambios de texto.
 
   Accepts:
-  - icon: {String} eye | eye-under | drop | lines | roller | leaf | steps | sparkle | lock | chat | truck | return | bottle | check | none
-
-  Usage:
-  {% render 'garelon-icon', icon: 'drop' %}
+  - image: {Object} imagen del image_picker
+  - fallback: {String} img01-producto | img10-presentacion | img07-roller | img05-ingredientes
+              | img04-uso | img09-tamano | none
+  - alt: {String} texto alternativo si la imagen elegida no tiene uno
+  - sizes: {String}
+  - class: {String}
+  - eager: {Boolean} true solo para la imagen principal (LCP)
 {%- endcomment -%}
-{%- if icon != blank and icon != 'none' -%}
-  <svg
-    class="g-icon g-icon--{{ icon }}"
-    aria-hidden="true"
-    focusable="false"
-    viewBox="0 0 24 24"
-    width="24"
-    height="24"
-    fill="none"
-    stroke="currentColor"
-    stroke-width="1.3"
-    stroke-linecap="round"
-    stroke-linejoin="round"
-  >
-    {%- case icon -%}
-      {%- when 'eye' -%}
-        <path d="M2.5 12S6 6 12 6s9.5 6 9.5 6-3.5 6-9.5 6S2.5 12 2.5 12Z"/><circle cx="12" cy="12" r="2.6"/>
-      {%- when 'eye-under' -%}
-        <path d="M3 10.5S6.2 5.5 12 5.5s9 5 9 5-3.2 5-9 5-9-5-9-5Z"/><circle cx="12" cy="10.5" r="2.3"/><path d="M6 18.5c3.8 1.6 8.2 1.6 12 0"/>
-      {%- when 'drop' -%}
-        <path d="M12 3.5s-6 6.6-6 10.9A6 6 0 0 0 18 14.4C18 10.1 12 3.5 12 3.5Z"/><path d="M9.3 14.8a2.8 2.8 0 0 0 2.4 2.5"/>
-      {%- when 'lines' -%}
-        <path d="M3 8c2.2-1.6 4.3-1.6 6.5 0s4.3 1.6 6.5 0 3.3-1.2 5 0"/><path d="M3 12.5c2.2-1.6 4.3-1.6 6.5 0s4.3 1.6 6.5 0 3.3-1.2 5 0"/><path d="M3 17c2.2-1.6 4.3-1.6 6.5 0s4.3 1.6 6.5 0 3.3-1.2 5 0"/>
-      {%- when 'roller' -%}
-        <circle cx="12" cy="6" r="3"/><path d="M9 8.5h6v3H9z"/><path d="M9.5 11.5h5l.5 9h-6z"/>
-      {%- when 'leaf' -%}
-        <path d="M5 19C5 10 10 5 19.5 4.5 19 14 14 19 5 19Z"/><path d="M5 19 13 11"/>
-      {%- when 'steps' -%}
-        <circle cx="12" cy="12" r="8.5"/><path d="M12 7.5V12l3 2"/>
-      {%- when 'sparkle' -%}
-        <path d="M12 3.5c.6 4.4 2.1 5.9 6.5 6.5-4.4.6-5.9 2.1-6.5 6.5-.6-4.4-2.1-5.9-6.5-6.5 4.4-.6 5.9-2.1 6.5-6.5Z"/><path d="M18.5 16v4M16.5 18h4"/>
-      {%- when 'lock' -%}
-        <rect x="5" y="10.5" width="14" height="10" rx="1.5"/><path d="M8 10.5V8a4 4 0 0 1 8 0v2.5"/><path d="M12 14.5v2.5"/>
-      {%- when 'chat' -%}
-        <path d="M4 5.5h16v10.5H9.5L5.5 19.5V16H4z"/><path d="M8 9.5h8M8 12.5h5"/>
-      {%- when 'truck' -%}
-        <path d="M2.5 6.5h11v9.5h-11z"/><path d="M13.5 9.5h4.2l3.3 3.4v3.1h-7.5"/><circle cx="6.5" cy="17.5" r="1.7"/><circle cx="17" cy="17.5" r="1.7"/>
-      {%- when 'return' -%}
-        <path d="M8.5 5 4.5 9l4 4"/><path d="M4.5 9h10a5 5 0 0 1 0 10H9"/>
-      {%- when 'bottle' -%}
-        <path d="M10 2.5h4v3h-4z"/><path d="M9 5.5h6v2.5l1 1.5v11.5H8V9.5l1-1.5z"/><path d="M8 13h8"/>
-      {%- when 'check' -%}
-        <circle cx="12" cy="12" r="8.5"/><path d="m8.3 12.2 2.4 2.4 5-5"/>
-    {%- endcase -%}
-  </svg>
-{%- endif -%}
+{%- liquid
+  assign asset_name = blank
+  assign asset_alt = blank
+  case fallback
+    when 'img01-producto'
+      assign asset_name = 'garelon-img01-producto'
+      assign asset_alt = 'Sérum para el contorno de ojos: frasco roller de vidrio ámbar de 10 ml con bola metálica, tapón negro y su caja'
+    when 'img10-presentacion'
+      assign asset_name = 'garelon-img10-presentacion'
+      assign asset_alt = 'Sérum contorno de ojos con roller metálico de 10 ml: ayuda a reducir la apariencia de ojeras y de bolsas, suaviza la apariencia de líneas finas, hidrata y aporta confort'
+    when 'img07-roller'
+      assign asset_name = 'garelon-img07-roller'
+      assign asset_alt = 'Técnica de masaje con roller para el contorno de ojos: primeros planos de bolsas y ojeras, el frasco con su caja y tres ventajas: aplicador metálico, uso cómodo y cuidado diario'
+    when 'img05-ingredientes'
+      assign asset_name = 'garelon-img05-ingredientes'
+      assign asset_alt = 'Ingredientes principales: aceite de ricino, Acetyl Tripeptide-1, colágeno, extracto de Boswellia Serrata y agua'
+    when 'img04-uso'
+      assign asset_name = 'garelon-img04-modo-de-uso'
+      assign asset_alt = 'Cómo usarlo en 3 pasos: limpia y seca el contorno de ojos, aplica el sérum con el roller y masajea con la bola metálica'
+    when 'img09-tamano'
+      assign asset_name = 'garelon-img09-tamano'
+      assign asset_alt = 'Tamaño del producto: caja de 8,7 cm de alto, 2,2 cm de ancho y 2,2 cm de fondo; frasco de 8,4 cm de alto y 1,9 cm de ancho'
+  endcase
+
+  assign final_alt = alt
+  if image == blank and asset_alt != blank
+    assign final_alt = asset_alt
+  endif
+
+  render 'garelon-image', image: image, fallback: asset_name, fallback_widths: '480,720,1080', fallback_height: 1080, alt: final_alt, sizes: sizes, class: class, eager: eager
+-%}
 ```
 
 ### `snippets/garelon-image.liquid`
@@ -1695,196 +1791,6 @@ document.addEventListener('click', (event) => {
   endif
 -%}
 ```
-
-### `snippets/garelon-fallback-image.liquid`
-
-```liquid
-{%- comment -%}
-  GARELON · Muestra la imagen elegida en el editor o, si está vacía, una de las
-  imágenes del producto incluidas en los assets del tema.
-
-  Los assets garelon-imgNN-*.webp son IMAGEN 1, 4, 5, 7, 9 y 10 (carpeta referencias/)
-  redimensionadas a 480, 720 y 1080 px: sin recortes, sin filtros y sin cambios de texto.
-
-  Accepts:
-  - image: {Object} imagen del image_picker
-  - fallback: {String} img01-producto | img10-presentacion | img07-roller | img05-ingredientes
-              | img04-uso | img09-tamano | none
-  - alt: {String} texto alternativo si la imagen elegida no tiene uno
-  - sizes: {String}
-  - class: {String}
-  - eager: {Boolean} true solo para la imagen principal (LCP)
-{%- endcomment -%}
-{%- liquid
-  assign asset_name = blank
-  assign asset_alt = blank
-  case fallback
-    when 'img01-producto'
-      assign asset_name = 'garelon-img01-producto'
-      assign asset_alt = 'Sérum para el contorno de ojos: frasco roller de vidrio ámbar de 10 ml con bola metálica, tapón negro y su caja'
-    when 'img10-presentacion'
-      assign asset_name = 'garelon-img10-presentacion'
-      assign asset_alt = 'Sérum contorno de ojos con roller metálico de 10 ml: ayuda a reducir la apariencia de ojeras y de bolsas, suaviza la apariencia de líneas finas, hidrata y aporta confort'
-    when 'img07-roller'
-      assign asset_name = 'garelon-img07-roller'
-      assign asset_alt = 'Técnica de masaje con roller para el contorno de ojos: primeros planos de bolsas y ojeras, el frasco con su caja y tres ventajas: aplicador metálico, uso cómodo y cuidado diario'
-    when 'img05-ingredientes'
-      assign asset_name = 'garelon-img05-ingredientes'
-      assign asset_alt = 'Ingredientes principales: aceite de ricino, Acetyl Tripeptide-1, colágeno, extracto de Boswellia Serrata y agua'
-    when 'img04-uso'
-      assign asset_name = 'garelon-img04-modo-de-uso'
-      assign asset_alt = 'Cómo usarlo en 3 pasos: limpia y seca el contorno de ojos, aplica el sérum con el roller y masajea con la bola metálica'
-    when 'img09-tamano'
-      assign asset_name = 'garelon-img09-tamano'
-      assign asset_alt = 'Tamaño del producto: caja de 8,7 cm de alto, 2,2 cm de ancho y 2,2 cm de fondo; frasco de 8,4 cm de alto y 1,9 cm de ancho'
-  endcase
-
-  assign final_alt = alt
-  if image == blank and asset_alt != blank
-    assign final_alt = asset_alt
-  endif
-
-  render 'garelon-image', image: image, fallback: asset_name, fallback_widths: '480,720,1080', fallback_height: 1080, alt: final_alt, sizes: sizes, class: class, eager: eager
--%}
-```
-
-### `snippets/garelon-logo-fallback.liquid`
-
-```liquid
-{%- comment -%}
-  GARELON · Logo de respaldo desde los assets del tema.
-  Se usa solo cuando no hay un logo subido en Configuración del tema.
-
-  Accepts:
-  - variant: 'wordmark' (por defecto, cabecera) | 'stacked' (isotipo + nombre, pie de página)
-             | 'isotype' (solo el isotipo, a la izquierda del nombre en la cabecera)
-
-  Usage:
-  {% render 'garelon-logo-fallback', variant: 'stacked' %}
-{%- endcomment -%}
-{%- if variant == 'stacked' -%}
-  {%- assign logo_width = settings.brand_image_width | default: 120 -%}
-  {%- assign logo_height = logo_width | times: 425 | divided_by: 480 -%}
-  <div
-    class="footer-block__image-wrapper garelon-logo garelon-logo--stacked"
-    style="max-width: min(100%, {{ logo_width }}px);"
-  >
-    <img
-      src="{{ 'garelon-logo-480.webp' | asset_url }}"
-      srcset="{{ 'garelon-logo-240.webp' | asset_url }} 240w, {{ 'garelon-logo-480.webp' | asset_url }} 480w"
-      sizes="{{ logo_width }}px"
-      width="{{ logo_width }}"
-      height="{{ logo_height }}"
-      alt="{{ shop.name | escape }}"
-      loading="lazy"
-    >
-  </div>
-{%- elsif variant == 'isotype' -%}
-  {%- comment -%}
-    Decorativo: el enlace ya se anuncia con el nombre de la tienda (alt del logo),
-    así que alt vacío evita que los lectores de pantalla lean "GARELON" dos veces.
-  {%- endcomment -%}
-  <img
-    class="garelon-header-isotype"
-    src="{{ 'garelon-isotipo-96.webp' | asset_url }}"
-    width="96"
-    height="104"
-    alt=""
-  >
-{%- else -%}
-  {%- assign logo_width = settings.logo_width | default: 150 -%}
-  {%- assign logo_height = logo_width | times: 72 | divided_by: 480 -%}
-  <div class="header__heading-logo-wrapper garelon-logo garelon-logo--wordmark">
-    <img
-      class="header__heading-logo"
-      src="{{ 'garelon-wordmark-480.webp' | asset_url }}"
-      width="{{ logo_width }}"
-      height="{{ logo_height }}"
-      alt="{{ shop.name | escape }}"
-    >
-  </div>
-{%- endif -%}
-```
-
-### `snippets/garelon-price-inline.liquid`
-
-```liquid
-{%- comment -%}
-  GARELON · Precio compacto con datos reales de Shopify (sin valores fijos).
-
-  Accepts:
-  - product: {Object}
-{%- endcomment -%}
-{%- if product != blank -%}
-  {%- assign variant = product.selected_or_first_available_variant -%}
-  <p class="g-price">
-    {%- if product.price_varies -%}
-      <span class="g-price__current">{{ 'products.product.price.from_price_html' | t: price: product.price_min | money }}</span>
-    {%- else -%}
-      {%- if variant.compare_at_price > variant.price -%}
-        <span class="visually-hidden">{{ 'products.product.price.sale_price' | t }}</span>
-        <span class="g-price__current">{{ variant.price | money }}</span>
-        <span class="visually-hidden">{{ 'products.product.price.regular_price' | t }}</span>
-        <s class="g-price__compare">{{ variant.compare_at_price | money }}</s>
-      {%- else -%}
-        <span class="g-price__current">{{ variant.price | money }}</span>
-      {%- endif -%}
-    {%- endif -%}
-    {%- unless product.available -%}
-      <span class="g-price__status">{{ 'products.product.sold_out' | t }}</span>
-    {%- endunless -%}
-  </p>
-{%- endif -%}
-```
-
-### `snippets/garelon-packs.liquid`
-
-```liquid
-{%- comment -%}
-  GARELON · Selector de cantidad por unidades (1 / 2 / 3).
-  Solo cambia la cantidad que se añade al carrito: NO aplica descuentos.
-  Si en Shopify existen descuentos automáticos reales, se verán en el carrito/checkout.
-
-  Accepts:
-  - block: {Object}
-  - section_id: {String}
-  - product_form_id: {String}
-  - has_quantity_input: {Boolean} true si el bloque "Selector de cantidad" de Dawn está activo
-{%- endcomment -%}
-{%- assign max_units = block.settings.max_units | plus: 0 -%}
-<garelon-packs class="g-packs" data-section="{{ section_id }}" {{ block.shopify_attributes }}>
-  <script src="{{ 'garelon.js' | asset_url }}" defer="defer"></script>
-  <fieldset class="g-packs__fieldset">
-    <legend class="form__label">{{ block.settings.heading | escape }}</legend>
-    <div class="g-packs__options">
-      {%- for n in (1..max_units) -%}
-        <input
-          class="visually-hidden"
-          type="radio"
-          id="Pack-{{ section_id }}-{{ n }}"
-          name="garelon-pack-{{ section_id }}"
-          value="{{ n }}"
-          {% if forloop.first %}
-            checked
-          {% endif %}
-        >
-        <label class="g-packs__option" for="Pack-{{ section_id }}-{{ n }}">
-          {{ n }}
-          {% if n == 1 %}unidad{% else %}unidades{% endif %}
-        </label>
-      {%- endfor -%}
-    </div>
-  </fieldset>
-  {%- unless has_quantity_input -%}
-    <input type="hidden" name="quantity" value="1" form="{{ product_form_id }}" data-pack-quantity>
-  {%- endunless -%}
-  {%- if block.settings.note != blank -%}
-    <p class="g-packs__note">{{ block.settings.note | escape }}</p>
-  {%- endif -%}
-</garelon-packs>
-```
-
----
 
 ### `snippets/garelon-url.liquid`
 
@@ -2018,249 +1924,6 @@ document.addEventListener('click', (event) => {
   endcase
 -%}
 ```
-
-### `snippets/garelon-nav.liquid`
-
-```liquid
-{%- comment -%}
-  GARELON · Navegación principal de la tienda de un solo producto.
-
-  Enlaces: Inicio, las secciones de la home que se activen en la cabecera
-  (Cómo usarlo, Ingredientes, Preguntas frecuentes) y Contacto. No enlaza al catálogo
-  ni a colecciones. Las URLs son dinámicas: routes.root_url y la página de contacto
-  real resuelta por el snippet garelon-url.
-
-  Accepts:
-  - variant: {String} 'inline' (menú de escritorio) | 'drawer' (elementos <li> del menú móvil)
-
-  Usage:
-  {% render 'garelon-nav', variant: 'inline' %}
-{%- endcomment -%}
-{%- liquid
-  capture contact_url
-    render 'garelon-url', type: 'contact'
-  endcapture
-  assign contact_url = contact_url | strip
-  assign home_url = routes.root_url
-
-  assign labels = 'Inicio'
-  assign urls = home_url
-  assign ids = 'inicio'
-  if section.settings.nav_show_how
-    assign labels = labels | append: '|Cómo usarlo'
-    assign urls = urls | append: '|' | append: home_url | append: '#como-usarlo'
-    assign ids = ids | append: '|como-usarlo'
-  endif
-  if section.settings.nav_show_ingredients
-    assign labels = labels | append: '|Ingredientes'
-    assign urls = urls | append: '|' | append: home_url | append: '#ingredientes'
-    assign ids = ids | append: '|ingredientes'
-  endif
-  if section.settings.nav_show_faq
-    assign labels = labels | append: '|Preguntas frecuentes'
-    assign urls = urls | append: '|' | append: home_url | append: '#preguntas-frecuentes'
-    assign ids = ids | append: '|preguntas-frecuentes'
-  endif
-  assign labels = labels | append: '|Contacto'
-  assign urls = urls | append: '|' | append: contact_url
-  assign ids = ids | append: '|contacto'
-
-  assign labels = labels | split: '|'
-  assign urls = urls | split: '|'
-  assign ids = ids | split: '|'
--%}
-
-{%- if variant == 'drawer' -%}
-  {%- for label in labels -%}
-    {%- liquid
-      assign url = urls[forloop.index0]
-      assign current = false
-      if forloop.first and request.page_type == 'index'
-        assign current = true
-      elsif forloop.last and request.path == contact_url
-        assign current = true
-      endif
-    -%}
-    <li>
-      <a
-        id="HeaderDrawer-{{ ids[forloop.index0] }}"
-        href="{{ url }}"
-        class="menu-drawer__menu-item list-menu__item link link--text focus-inset{% if current %} menu-drawer__menu-item--active{% endif %}"
-        {% if current %}
-          aria-current="page"
-        {% endif %}
-      >
-        {{ label }}
-      </a>
-    </li>
-  {%- endfor -%}
-{%- else -%}
-  <nav class="header__inline-menu">
-    <ul class="list-menu list-menu--inline" role="list">
-      {%- for label in labels -%}
-        {%- liquid
-          assign url = urls[forloop.index0]
-          assign current = false
-          if forloop.first and request.page_type == 'index'
-            assign current = true
-          elsif forloop.last and request.path == contact_url
-            assign current = true
-          endif
-        -%}
-        <li>
-          <a
-            id="HeaderMenu-{{ ids[forloop.index0] }}"
-            href="{{ url }}"
-            class="header__menu-item list-menu__item link link--text focus-inset"
-            {% if current %}
-              aria-current="page"
-            {% endif %}
-          >
-            <span {% if current %}class="header__active-menu-item"{% endif %}>{{ label }}</span>
-          </a>
-        </li>
-      {%- endfor -%}
-    </ul>
-  </nav>
-{%- endif -%}
-```
-
-### `snippets/garelon-flag-es.liquid`
-
-```liquid
-{%- comment -%}
-  GARELON · Bandera de España (franjas roja, amarilla y roja en proporción 1:2:1).
-  SVG en lugar del emoji 🇪🇸 porque Windows no muestra emojis de banderas (saldría «ES»).
-  Decorativa: el texto del anuncio ya dice «España».
-
-  Usage:
-  {% render 'garelon-flag-es' %}
-{%- endcomment -%}
-<svg class="garelon-flag" viewBox="0 0 3 2" width="21" height="14" aria-hidden="true" focusable="false">
-  <rect width="3" height="2" fill="#AA151B"/>
-  <rect y="0.5" width="3" height="1" fill="#F1BF00"/>
-</svg>
-```
-
-### `snippets/garelon-gallery.liquid`
-
-```liquid
-{%- comment -%}
-  GARELON · Galería de la zona de compra de la home.
-
-  Muestra las imágenes del producto incluidas en el tema, en el orden de la historia:
-  producto (IMAGEN 1) → presentación y beneficios (IMAGEN 10) → técnica con roller (IMAGEN 7)
-  → ingredientes (IMAGEN 5) → cómo usarlo (IMAGEN 4) → tamaño (IMAGEN 9).
-
-  Usa el carrusel de Dawn (<slider-component>, definido en global.js): se desliza con el
-  dedo en móvil y tiene flechas y contador en todos los tamaños. Todas las imágenes se
-  cargan en diferido porque la sección está lejos de la primera pantalla.
-
-  Accepts:
-  - section_id: {String} id de la sección, para que los ids del carrusel sean únicos
-
-  Usage:
-  {% render 'garelon-gallery', section_id: section.id %}
-{%- endcomment -%}
-{{ 'component-slider.css' | asset_url | stylesheet_tag }}
-
-{%- liquid
-  assign keys = 'img01-producto,img10-presentacion,img07-roller,img05-ingredientes,img04-uso,img09-tamano' | split: ','
-  assign slider_id = 'Slider-GGallery-' | append: section_id
--%}
-
-<slider-component class="g-gallery">
-  <ul id="{{ slider_id }}" class="g-gallery__track slider slider--everywhere" role="list">
-    {%- for key in keys -%}
-      <li id="Slide-GGallery-{{ section_id }}-{{ forloop.index }}" class="g-gallery__slide slider__slide">
-        {%- render 'garelon-fallback-image',
-          fallback: key,
-          sizes: '(min-width: 1200px) 560px, (min-width: 750px) 50vw, calc(100vw - 3rem)',
-          class: 'g-gallery__img'
-        -%}
-      </li>
-    {%- endfor -%}
-  </ul>
-  <div class="slider-buttons g-gallery__buttons">
-    <button
-      type="button"
-      class="slider-button slider-button--prev"
-      name="previous"
-      aria-label="{{ 'general.slider.previous_slide' | t }}"
-      aria-controls="{{ slider_id }}"
-    >
-      <span class="svg-wrapper">{{- 'icon-caret.svg' | inline_asset_content -}}</span>
-    </button>
-    <div class="slider-counter caption">
-      <span class="slider-counter--current">1</span>
-      <span aria-hidden="true"> / </span>
-      <span class="visually-hidden">{{ 'general.slider.of' | t }}</span>
-      <span class="slider-counter--total">{{ keys.size }}</span>
-    </div>
-    <button
-      type="button"
-      class="slider-button slider-button--next"
-      name="next"
-      aria-label="{{ 'general.slider.next_slide' | t }}"
-      aria-controls="{{ slider_id }}"
-    >
-      <span class="svg-wrapper">{{- 'icon-caret.svg' | inline_asset_content -}}</span>
-    </button>
-  </div>
-</slider-component>
-```
-
-### `snippets/garelon-stock.liquid`
-
-```liquid
-{%- comment -%}
-  GARELON · Estado de stock para la zona de compra de la home (sección Producto destacado).
-
-  Misma lógica que el bloque «Inventario» de la ficha de producto de Dawn, sin avisos de
-  «pocas unidades» ni número de unidades: solo «En stock» o «Agotado», y solo cuando Shopify
-  controla el inventario de la variante (los datos que sincroniza AutoDS). Si no lo controla,
-  no se afirma nada. El id Inventory-<sección> permite que product-info.js de Dawn lo
-  actualice al cambiar de variante.
-
-  Accepts:
-  - variant: {Object} variante seleccionada o primera disponible
-  - section_id: {String}
-  - block: {Object} bloque, para el editor de temas
-
-  Usage:
-  {% render 'garelon-stock', variant: product.selected_or_first_available_variant, section_id: section.id, block: block %}
-{%- endcomment -%}
-{%- liquid
-  assign tracked = false
-  if variant.inventory_management == 'shopify'
-    assign tracked = true
-  endif
--%}
-<p
-  id="Inventory-{{ section_id }}"
-  class="product__inventory{% unless tracked %} visibility-hidden{% endunless %}"
-  role="status"
-  {{ block.shopify_attributes }}
->
-  {%- if tracked -%}
-    {%- if variant.inventory_quantity > 0 or variant.inventory_policy == 'continue' -%}
-      <span class="svg-wrapper" style="color: rgb(62, 214, 96)">
-        {{- 'icon-inventory-status.svg' | inline_asset_content -}}
-      </span>
-      {{- 'products.product.inventory_in_stock' | t -}}
-    {%- else -%}
-      <span class="svg-wrapper" style="color: rgb(200, 200, 200)">
-        {{- 'icon-inventory-status.svg' | inline_asset_content -}}
-      </span>
-      {{- 'products.product.inventory_out_of_stock' | t -}}
-    {%- endif -%}
-  {%- endif -%}
-</p>
-```
-
-## Paso 4 · Secciones (9 archivos)
-
-**Sections → Añadir una nueva sección**, escribe el nombre (sin `.liquid`), borra el contenido por defecto y pega.
 
 ### `sections/garelon-hero.liquid`
 
@@ -2547,326 +2210,6 @@ document.addEventListener('click', (event) => {
 {% endschema %}
 ```
 
-### `sections/garelon-trust-bar.liquid`
-
-```liquid
-<div
-  {% if section.settings.anchor != blank %}
-    id="{{ section.settings.anchor | handleize }}"
-  {% endif %}
-  class="g-section g-trust color-{{ section.settings.color_scheme }} gradient"
-  style="--g-pt: {{ section.settings.padding_top }}px; --g-pb: {{ section.settings.padding_bottom }}px;"
->
-  <div class="page-width">
-    {%- if section.settings.heading != blank -%}
-      <h2 class="visually-hidden">{{ section.settings.heading | escape }}</h2>
-    {%- endif -%}
-    <ul class="g-trust__list{% if section.settings.show_borders %} g-trust__list--bordered{% endif %}" role="list">
-      {%- for block in section.blocks -%}
-        <li class="g-trust__item" {{ block.shopify_attributes }}>
-          {%- render 'garelon-icon', icon: block.settings.icon -%}
-          <span class="g-trust__text">
-            {%- if block.settings.link != blank -%}
-              <a href="{%- render 'garelon-url', url: block.settings.link -%}" class="g-trust__title link">{{ block.settings.title | escape }}</a>
-            {%- else -%}
-              <span class="g-trust__title">{{ block.settings.title | escape }}</span>
-            {%- endif -%}
-            {%- if block.settings.text != blank -%}
-              <span class="g-trust__desc">{{ block.settings.text | escape }}</span>
-            {%- endif -%}
-          </span>
-        </li>
-      {%- endfor -%}
-    </ul>
-  </div>
-</div>
-
-{% schema %}
-{
-  "name": "GARELON Confianza",
-  "tag": "section",
-  "class": "section",
-  "max_blocks": 4,
-  "settings": [
-    {
-      "type": "paragraph",
-      "content": "Usa solo afirmaciones verdaderas. No añadas certificados, premios ni garantías que no puedas demostrar."
-    },
-    {
-      "type": "text",
-      "id": "heading",
-      "label": "Título (solo para lectores de pantalla)",
-      "default": "Características"
-    },
-    {
-      "type": "checkbox",
-      "id": "show_borders",
-      "label": "Mostrar líneas separadoras",
-      "default": true
-    },
-    {
-      "type": "color_scheme",
-      "id": "color_scheme",
-      "label": "Esquema de color",
-      "default": "scheme-1"
-    },
-    {
-      "type": "text",
-      "id": "anchor",
-      "label": "ID de ancla"
-    },
-    {
-      "type": "range",
-      "id": "padding_top",
-      "min": 0,
-      "max": 100,
-      "step": 4,
-      "unit": "px",
-      "label": "Margen superior",
-      "default": 0
-    },
-    {
-      "type": "range",
-      "id": "padding_bottom",
-      "min": 0,
-      "max": 100,
-      "step": 4,
-      "unit": "px",
-      "label": "Margen inferior",
-      "default": 0
-    }
-  ],
-  "blocks": [
-    {
-      "type": "item",
-      "name": "Elemento",
-      "settings": [
-        {
-          "type": "select",
-          "id": "icon",
-          "label": "Icono",
-          "options": [
-            { "value": "none", "label": "Ninguno" },
-            { "value": "eye", "label": "Ojo" },
-            { "value": "roller", "label": "Roller" },
-            { "value": "steps", "label": "Reloj / rutina" },
-            { "value": "leaf", "label": "Hoja" },
-            { "value": "drop", "label": "Gota" },
-            { "value": "lock", "label": "Candado (pago seguro)" },
-            { "value": "chat", "label": "Mensaje (atención al cliente)" },
-            { "value": "truck", "label": "Camión (envío)" },
-            { "value": "return", "label": "Flecha (devoluciones)" },
-            { "value": "check", "label": "Check" }
-          ],
-          "default": "check"
-        },
-        {
-          "type": "text",
-          "id": "title",
-          "label": "Título",
-          "default": "Rutina en 3 pasos"
-        },
-        {
-          "type": "text",
-          "id": "text",
-          "label": "Texto secundario (opcional)"
-        },
-        {
-          "type": "url",
-          "id": "link",
-          "label": "Enlace (opcional)"
-        }
-      ]
-    }
-  ],
-  "presets": [
-    {
-      "name": "GARELON Confianza",
-      "blocks": [
-        { "type": "item", "settings": { "icon": "eye", "title": "Aplicación precisa" } },
-        { "type": "item", "settings": { "icon": "roller", "title": "Roller metálico" } },
-        { "type": "item", "settings": { "icon": "steps", "title": "Rutina en 3 pasos" } },
-        { "type": "item", "settings": { "icon": "leaf", "title": "Fórmula con aceite de ricino" } }
-      ]
-    }
-  ]
-}
-{% endschema %}
-```
-
-### `sections/garelon-benefits.liquid`
-
-```liquid
-<div
-  {% if section.settings.anchor != blank %}
-    id="{{ section.settings.anchor | handleize }}"
-  {% endif %}
-  class="g-section g-benefits color-{{ section.settings.color_scheme }} gradient"
-  style="--g-pt: {{ section.settings.padding_top }}px; --g-pb: {{ section.settings.padding_bottom }}px;"
->
-  <div class="page-width">
-    <div class="g-heading-group g-heading-group--{{ section.settings.alignment }}">
-      {%- if section.settings.eyebrow != blank -%}
-        <p class="g-eyebrow">{{ section.settings.eyebrow | escape }}</p>
-      {%- endif -%}
-      {%- if section.settings.heading != blank -%}
-        <h2 class="g-h2">{{ section.settings.heading | escape }}</h2>
-      {%- endif -%}
-      {%- if section.settings.text != blank -%}
-        <div class="g-lead">{{ section.settings.text }}</div>
-      {%- endif -%}
-    </div>
-
-    {%- if section.blocks.size > 0 -%}
-      <ul class="g-benefits__grid" role="list">
-        {%- for block in section.blocks -%}
-          <li class="g-card g-benefits__item" {{ block.shopify_attributes }}>
-            <span class="g-benefits__icon">{%- render 'garelon-icon', icon: block.settings.icon -%}</span>
-            <div>
-              <h3 class="g-h3">{{ block.settings.title | escape }}</h3>
-              {%- if block.settings.text != blank -%}
-                <p class="g-benefits__text">{{ block.settings.text | escape }}</p>
-              {%- endif -%}
-            </div>
-          </li>
-        {%- endfor -%}
-      </ul>
-    {%- endif -%}
-
-    {%- if section.settings.note != blank -%}
-      <p class="g-note">{{ section.settings.note | escape }}</p>
-    {%- endif -%}
-  </div>
-</div>
-
-{% schema %}
-{
-  "name": "GARELON Beneficios",
-  "tag": "section",
-  "class": "section",
-  "max_blocks": 6,
-  "settings": [
-    {
-      "type": "paragraph",
-      "content": "Usa formulaciones prudentes (\"ayuda a...\", \"apariencia de...\"). Evita promesas médicas o resultados garantizados."
-    },
-    {
-      "type": "text",
-      "id": "eyebrow",
-      "label": "Antetítulo"
-    },
-    {
-      "type": "text",
-      "id": "heading",
-      "label": "Título",
-      "default": "Cuida una de las zonas más delicadas de tu rostro"
-    },
-    {
-      "type": "richtext",
-      "id": "text",
-      "label": "Texto"
-    },
-    {
-      "type": "text",
-      "id": "note",
-      "label": "Nota al pie (opcional)"
-    },
-    {
-      "type": "select",
-      "id": "alignment",
-      "label": "Alineación del encabezado",
-      "options": [
-        { "value": "center", "label": "Centrado" },
-        { "value": "left", "label": "Izquierda" }
-      ],
-      "default": "center"
-    },
-    {
-      "type": "color_scheme",
-      "id": "color_scheme",
-      "label": "Esquema de color",
-      "default": "scheme-1"
-    },
-    {
-      "type": "text",
-      "id": "anchor",
-      "label": "ID de ancla"
-    },
-    {
-      "type": "range",
-      "id": "padding_top",
-      "min": 0,
-      "max": 100,
-      "step": 4,
-      "unit": "px",
-      "label": "Margen superior",
-      "default": 56
-    },
-    {
-      "type": "range",
-      "id": "padding_bottom",
-      "min": 0,
-      "max": 100,
-      "step": 4,
-      "unit": "px",
-      "label": "Margen inferior",
-      "default": 56
-    }
-  ],
-  "blocks": [
-    {
-      "type": "benefit",
-      "name": "Beneficio",
-      "settings": [
-        {
-          "type": "select",
-          "id": "icon",
-          "label": "Icono",
-          "options": [
-            { "value": "none", "label": "Ninguno" },
-            { "value": "eye", "label": "Ojo" },
-            { "value": "eye-under", "label": "Ojo con contorno" },
-            { "value": "lines", "label": "Líneas" },
-            { "value": "drop", "label": "Gota" },
-            { "value": "roller", "label": "Roller" },
-            { "value": "sparkle", "label": "Destello" },
-            { "value": "leaf", "label": "Hoja" }
-          ],
-          "default": "drop"
-        },
-        {
-          "type": "text",
-          "id": "title",
-          "label": "Título",
-          "default": "Hidratación"
-        },
-        {
-          "type": "textarea",
-          "id": "text",
-          "label": "Texto",
-          "default": "Aporta cuidado e hidratación a la zona del contorno."
-        }
-      ]
-    }
-  ],
-  "presets": [
-    {
-      "name": "GARELON Beneficios",
-      "settings": {
-        "text": "<p>El contorno de ojos es una piel fina que puede mostrar signos de cansancio, sequedad, bolsas y líneas finas. Dedicarle un momento cada día es un gesto sencillo dentro de tu rutina.</p>"
-      },
-      "blocks": [
-        { "type": "benefit", "settings": { "icon": "eye-under", "title": "Ojeras", "text": "Contribuye a mejorar la apariencia de la zona oscura del contorno." } },
-        { "type": "benefit", "settings": { "icon": "eye", "title": "Bolsas", "text": "El masaje con roller complementa una rutina orientada a una mirada más descansada." } },
-        { "type": "benefit", "settings": { "icon": "lines", "title": "Líneas finas", "text": "La hidratación ayuda a mantener una apariencia más suave." } },
-        { "type": "benefit", "settings": { "icon": "drop", "title": "Hidratación", "text": "Aporta cuidado e hidratación a la zona del contorno." } }
-      ]
-    }
-  ]
-}
-{% endschema %}
-```
-
 ### `sections/garelon-image-text.liquid`
 
 ```liquid
@@ -3076,206 +2419,6 @@ document.addEventListener('click', (event) => {
   "presets": [
     {
       "name": "GARELON Imagen y texto"
-    }
-  ]
-}
-{% endschema %}
-```
-
-### `sections/garelon-ingredients.liquid`
-
-```liquid
-{%- liquid
-  assign has_media = true
-  if section.settings.image == blank and section.settings.fallback_image == 'none'
-    assign has_media = false
-  endif
--%}
-
-<div
-  {% if section.settings.anchor != blank %}
-    id="{{ section.settings.anchor | handleize }}"
-  {% endif %}
-  class="g-section g-ingredients color-{{ section.settings.color_scheme }} gradient"
-  style="--g-pt: {{ section.settings.padding_top }}px; --g-pb: {{ section.settings.padding_bottom }}px;"
->
-  <div class="page-width">
-    <div class="g-heading-group g-heading-group--center">
-      {%- if section.settings.eyebrow != blank -%}
-        <p class="g-eyebrow">{{ section.settings.eyebrow | escape }}</p>
-      {%- endif -%}
-      {%- if section.settings.heading != blank -%}
-        <h2 class="g-h2">{{ section.settings.heading | escape }}</h2>
-      {%- endif -%}
-      {%- if section.settings.text != blank -%}
-        <div class="g-lead">{{ section.settings.text }}</div>
-      {%- endif -%}
-    </div>
-
-    <div class="g-ingredients__layout{% if has_media %} g-ingredients__layout--media{% endif %}">
-      {%- if has_media -%}
-        <div class="g-ingredients__visual g-media g-media--rounded">
-          <div class="g-media__frame">
-            {%- render 'garelon-fallback-image',
-              image: section.settings.image,
-              fallback: section.settings.fallback_image,
-              alt: section.settings.heading,
-              sizes: '(min-width: 990px) 540px, (min-width: 750px) 45vw, calc(100vw - 3rem)',
-              class: 'g-media__img'
-            -%}
-          </div>
-        </div>
-      {%- endif -%}
-
-      <div class="g-ingredients__content">
-        {%- if section.blocks.size > 0 -%}
-          <ul class="g-ingredients__grid" role="list">
-            {%- for block in section.blocks -%}
-              <li class="g-card g-ingredients__item" {{ block.shopify_attributes }}>
-                <h3 class="g-ingredients__name">{{ block.settings.name | escape }}</h3>
-                {%- if block.settings.inci != blank -%}
-                  <p class="g-ingredients__inci">{{ block.settings.inci | escape }}</p>
-                {%- endif -%}
-                {%- if block.settings.text != blank -%}
-                  <p class="g-ingredients__text">{{ block.settings.text | escape }}</p>
-                {%- endif -%}
-              </li>
-            {%- endfor -%}
-          </ul>
-        {%- endif -%}
-
-        {%- if section.settings.show_note and section.settings.note != blank -%}
-          <p class="g-note g-note--center">{{ section.settings.note | escape }}</p>
-        {%- endif -%}
-      </div>
-    </div>
-  </div>
-</div>
-
-{% schema %}
-{
-  "name": "GARELON Ingredientes",
-  "tag": "section",
-  "class": "section",
-  "max_blocks": 12,
-  "settings": [
-    {
-      "type": "paragraph",
-      "content": "Incluye solo ingredientes confirmados por el proveedor o por el envase. No añadas ingredientes por suposición."
-    },
-    {
-      "type": "text",
-      "id": "eyebrow",
-      "label": "Antetítulo",
-      "default": "Ingredientes"
-    },
-    {
-      "type": "text",
-      "id": "heading",
-      "label": "Título",
-      "default": "Una fórmula sencilla para tu rutina"
-    },
-    {
-      "type": "richtext",
-      "id": "text",
-      "label": "Texto"
-    },
-    {
-      "type": "image_picker",
-      "id": "image",
-      "label": "Imagen de la sección",
-      "info": "Vacía = la imagen del tema elegida abajo. La lista de ingredientes se mantiene siempre como texto."
-    },
-    {
-      "type": "select",
-      "id": "fallback_image",
-      "label": "Imagen del tema si no eliges ninguna",
-      "options": [
-        { "value": "img05-ingredientes", "label": "IMAGEN 5 · Ingredientes principales" },
-        { "value": "none", "label": "Ninguna (solo la lista)" }
-      ],
-      "default": "img05-ingredientes"
-    },
-    {
-      "type": "checkbox",
-      "id": "show_note",
-      "label": "Mostrar nota",
-      "default": true
-    },
-    {
-      "type": "text",
-      "id": "note",
-      "label": "Nota",
-      "default": "Ingredientes según la información facilitada por el proveedor. Consulta siempre el envase del producto."
-    },
-    {
-      "type": "color_scheme",
-      "id": "color_scheme",
-      "label": "Esquema de color",
-      "default": "scheme-2"
-    },
-    {
-      "type": "text",
-      "id": "anchor",
-      "label": "ID de ancla",
-      "default": "ingredientes"
-    },
-    {
-      "type": "range",
-      "id": "padding_top",
-      "min": 0,
-      "max": 100,
-      "step": 4,
-      "unit": "px",
-      "label": "Margen superior",
-      "default": 56
-    },
-    {
-      "type": "range",
-      "id": "padding_bottom",
-      "min": 0,
-      "max": 100,
-      "step": 4,
-      "unit": "px",
-      "label": "Margen inferior",
-      "default": 56
-    }
-  ],
-  "blocks": [
-    {
-      "type": "ingredient",
-      "name": "Ingrediente",
-      "settings": [
-        {
-          "type": "text",
-          "id": "name",
-          "label": "Nombre",
-          "default": "Ingrediente"
-        },
-        {
-          "type": "text",
-          "id": "inci",
-          "label": "Denominación INCI (opcional)"
-        },
-        {
-          "type": "textarea",
-          "id": "text",
-          "label": "Descripción breve (opcional)",
-          "info": "Descripción neutra. Evita atribuir efectos que no puedas justificar."
-        }
-      ]
-    }
-  ],
-  "presets": [
-    {
-      "name": "GARELON Ingredientes",
-      "blocks": [
-        { "type": "ingredient", "settings": { "name": "Aceite de ricino", "inci": "Ricinus Communis (Castor) Seed Oil", "text": "Aceite vegetal obtenido de las semillas de ricino." } },
-        { "type": "ingredient", "settings": { "name": "Acetyl Tripeptide-1", "inci": "Acetyl Tripeptide-1", "text": "Péptido de uso cosmético." } },
-        { "type": "ingredient", "settings": { "name": "Colágeno", "inci": "Collagen", "text": "Proteína de uso habitual en el cuidado de la piel." } },
-        { "type": "ingredient", "settings": { "name": "Extracto de Boswellia Serrata", "inci": "Boswellia Serrata Extract", "text": "Extracto vegetal procedente de la resina del árbol Boswellia serrata." } },
-        { "type": "ingredient", "settings": { "name": "Agua", "inci": "Aqua", "text": "" } }
-      ]
     }
   ]
 }
@@ -3492,99 +2635,143 @@ document.addEventListener('click', (event) => {
 {% endschema %}
 ```
 
-### `sections/garelon-faq.liquid`
+### `sections/garelon-ingredients.liquid`
 
 ```liquid
+{%- liquid
+  assign has_media = true
+  if section.settings.image == blank and section.settings.fallback_image == 'none'
+    assign has_media = false
+  endif
+-%}
+
 <div
   {% if section.settings.anchor != blank %}
     id="{{ section.settings.anchor | handleize }}"
   {% endif %}
-  class="g-section g-faq color-{{ section.settings.color_scheme }} gradient"
+  class="g-section g-ingredients color-{{ section.settings.color_scheme }} gradient"
   style="--g-pt: {{ section.settings.padding_top }}px; --g-pb: {{ section.settings.padding_bottom }}px;"
 >
-  <div class="page-width g-faq__wrap">
-    {%- if section.settings.heading != blank or section.settings.eyebrow != blank -%}
-      <div class="g-heading-group g-heading-group--center">
-        {%- if section.settings.eyebrow != blank -%}
-          <p class="g-eyebrow">{{ section.settings.eyebrow | escape }}</p>
-        {%- endif -%}
-        {%- if section.settings.heading != blank -%}
-          <h2 class="g-h2">{{ section.settings.heading | escape }}</h2>
-        {%- endif -%}
-      </div>
-    {%- endif -%}
-
-    <div class="g-faq__list">
-      {%- for block in section.blocks -%}
-        <details
-          class="g-faq__item"
-          id="Faq-{{ section.id }}-{{ forloop.index }}"
-          {% if section.settings.open_first and forloop.first %}
-            open
-          {% endif %}
-          {{ block.shopify_attributes }}
-        >
-          <summary class="g-faq__question">
-            <h3 class="g-faq__question-text">{{ block.settings.question | escape }}</h3>
-            <span class="g-faq__toggle" aria-hidden="true"></span>
-          </summary>
-          <div class="g-faq__answer g-rte">
-            {%- render 'garelon-url', html: block.settings.answer -%}
-          </div>
-        </details>
-      {%- endfor -%}
+  <div class="page-width">
+    <div class="g-heading-group g-heading-group--center">
+      {%- if section.settings.eyebrow != blank -%}
+        <p class="g-eyebrow">{{ section.settings.eyebrow | escape }}</p>
+      {%- endif -%}
+      {%- if section.settings.heading != blank -%}
+        <h2 class="g-h2">{{ section.settings.heading | escape }}</h2>
+      {%- endif -%}
+      {%- if section.settings.text != blank -%}
+        <div class="g-lead">{{ section.settings.text }}</div>
+      {%- endif -%}
     </div>
 
-    {%- if section.settings.contact_text != blank -%}
-      <div class="g-faq__contact g-rte">{%- render 'garelon-url', html: section.settings.contact_text -%}</div>
-    {%- endif -%}
+    <div class="g-ingredients__layout{% if has_media %} g-ingredients__layout--media{% endif %}">
+      {%- if has_media -%}
+        <div class="g-ingredients__visual g-media g-media--rounded">
+          <div class="g-media__frame">
+            {%- render 'garelon-fallback-image',
+              image: section.settings.image,
+              fallback: section.settings.fallback_image,
+              alt: section.settings.heading,
+              sizes: '(min-width: 990px) 540px, (min-width: 750px) 45vw, calc(100vw - 3rem)',
+              class: 'g-media__img'
+            -%}
+          </div>
+        </div>
+      {%- endif -%}
+
+      <div class="g-ingredients__content">
+        {%- if section.blocks.size > 0 -%}
+          <ul class="g-ingredients__grid" role="list">
+            {%- for block in section.blocks -%}
+              <li class="g-card g-ingredients__item" {{ block.shopify_attributes }}>
+                <h3 class="g-ingredients__name">{{ block.settings.name | escape }}</h3>
+                {%- if block.settings.inci != blank -%}
+                  <p class="g-ingredients__inci">{{ block.settings.inci | escape }}</p>
+                {%- endif -%}
+                {%- if block.settings.text != blank -%}
+                  <p class="g-ingredients__text">{{ block.settings.text | escape }}</p>
+                {%- endif -%}
+              </li>
+            {%- endfor -%}
+          </ul>
+        {%- endif -%}
+
+        {%- if section.settings.show_note and section.settings.note != blank -%}
+          <p class="g-note g-note--center">{{ section.settings.note | escape }}</p>
+        {%- endif -%}
+      </div>
+    </div>
   </div>
 </div>
 
 {% schema %}
 {
-  "name": "GARELON FAQ",
+  "name": "GARELON Ingredientes",
   "tag": "section",
   "class": "section",
-  "max_blocks": 20,
+  "max_blocks": 12,
   "settings": [
     {
       "type": "paragraph",
-      "content": "No incluyas plazos de envío ni condiciones de devolución que no coincidan con tus políticas reales de Shopify."
+      "content": "Incluye solo ingredientes confirmados por el proveedor o por el envase. No añadas ingredientes por suposición."
     },
     {
       "type": "text",
       "id": "eyebrow",
-      "label": "Antetítulo"
+      "label": "Antetítulo",
+      "default": "Ingredientes"
     },
     {
       "type": "text",
       "id": "heading",
       "label": "Título",
-      "default": "Preguntas frecuentes"
-    },
-    {
-      "type": "checkbox",
-      "id": "open_first",
-      "label": "Abrir la primera pregunta",
-      "default": false
+      "default": "Una fórmula sencilla para tu rutina"
     },
     {
       "type": "richtext",
-      "id": "contact_text",
-      "label": "Texto final (opcional)"
+      "id": "text",
+      "label": "Texto"
+    },
+    {
+      "type": "image_picker",
+      "id": "image",
+      "label": "Imagen de la sección",
+      "info": "Vacía = la imagen del tema elegida abajo. La lista de ingredientes se mantiene siempre como texto."
+    },
+    {
+      "type": "select",
+      "id": "fallback_image",
+      "label": "Imagen del tema si no eliges ninguna",
+      "options": [
+        { "value": "img05-ingredientes", "label": "IMAGEN 5 · Ingredientes principales" },
+        { "value": "none", "label": "Ninguna (solo la lista)" }
+      ],
+      "default": "img05-ingredientes"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_note",
+      "label": "Mostrar nota",
+      "default": true
+    },
+    {
+      "type": "text",
+      "id": "note",
+      "label": "Nota",
+      "default": "Ingredientes según la información facilitada por el proveedor. Consulta siempre el envase del producto."
     },
     {
       "type": "color_scheme",
       "id": "color_scheme",
       "label": "Esquema de color",
-      "default": "scheme-1"
+      "default": "scheme-2"
     },
     {
       "type": "text",
       "id": "anchor",
       "label": "ID de ancla",
-      "default": "preguntas-frecuentes"
+      "default": "ingredientes"
     },
     {
       "type": "range",
@@ -3609,30 +2796,38 @@ document.addEventListener('click', (event) => {
   ],
   "blocks": [
     {
-      "type": "question",
-      "name": "Pregunta",
+      "type": "ingredient",
+      "name": "Ingrediente",
       "settings": [
         {
           "type": "text",
-          "id": "question",
-          "label": "Pregunta",
-          "default": "Pregunta"
+          "id": "name",
+          "label": "Nombre",
+          "default": "Ingrediente"
         },
         {
-          "type": "richtext",
-          "id": "answer",
-          "label": "Respuesta",
-          "default": "<p>Respuesta.</p>"
+          "type": "text",
+          "id": "inci",
+          "label": "Denominación INCI (opcional)"
+        },
+        {
+          "type": "textarea",
+          "id": "text",
+          "label": "Descripción breve (opcional)",
+          "info": "Descripción neutra. Evita atribuir efectos que no puedas justificar."
         }
       ]
     }
   ],
   "presets": [
     {
-      "name": "GARELON FAQ",
+      "name": "GARELON Ingredientes",
       "blocks": [
-        { "type": "question", "settings": { "question": "¿Cómo se utiliza?", "answer": "<p>Limpia y seca el rostro, desliza suavemente el roller por el contorno de ojos y masajea con la bola metálica hasta distribuir el sérum.</p>" } },
-        { "type": "question", "settings": { "question": "¿Cuándo recibiré mi pedido?", "answer": "<p>Consulta los plazos y costes actualizados en nuestra <a href=\"/policies/shipping-policy\" title=\"Política de envío\">política de envío</a>. También se muestran durante el proceso de compra.</p>" } }
+        { "type": "ingredient", "settings": { "name": "Aceite de ricino", "inci": "Ricinus Communis (Castor) Seed Oil", "text": "Aceite vegetal obtenido de las semillas de ricino." } },
+        { "type": "ingredient", "settings": { "name": "Acetyl Tripeptide-1", "inci": "Acetyl Tripeptide-1", "text": "Péptido de uso cosmético." } },
+        { "type": "ingredient", "settings": { "name": "Colágeno", "inci": "Collagen", "text": "Proteína de uso habitual en el cuidado de la piel." } },
+        { "type": "ingredient", "settings": { "name": "Extracto de Boswellia Serrata", "inci": "Boswellia Serrata Extract", "text": "Extracto vegetal procedente de la resina del árbol Boswellia serrata." } },
+        { "type": "ingredient", "settings": { "name": "Agua", "inci": "Aqua", "text": "" } }
       ]
     }
   ]
@@ -3808,636 +3003,11 @@ document.addEventListener('click', (event) => {
 {% endschema %}
 ```
 
-### `sections/garelon-sticky-atc.liquid`
+### Paso 4 · Cambios en archivos de Dawn (buscar y sustituir, 31 cambios en 12 archivos)
 
-```liquid
-{%- if product != blank -%}
-  <script src="{{ 'garelon.js' | asset_url }}" defer="defer"></script>
-  {%- liquid
-    assign variant = product.selected_or_first_available_variant
-    assign thumb = variant.featured_media | default: product.featured_media
-  -%}
-  <garelon-sticky-atc
-    class="g-sticky color-{{ section.settings.color_scheme }}{% if section.settings.show_on_desktop %} g-sticky--desktop{% endif %}"
-    inert
-  >
-    <div class="g-sticky__inner page-width">
-      {%- if thumb != blank -%}
-        <img
-          class="g-sticky__thumb"
-          src="{{ thumb.preview_image | image_url: width: 120 }}"
-          width="48"
-          height="48"
-          alt=""
-          loading="lazy"
-          data-sticky-thumb
-        >
-      {%- endif -%}
-      <div class="g-sticky__info">
-        <p class="g-sticky__title" id="StickyTitle-{{ section.id }}">{{ product.title | escape }}</p>
-        <div class="g-sticky__price" data-sticky-price aria-hidden="true">
-          {%- render 'price', product: product, use_variant: true -%}
-        </div>
-      </div>
-      <button
-        type="button"
-        class="button button--primary g-sticky__button"
-        data-sticky-button
-        aria-describedby="StickyTitle-{{ section.id }}"
-        {% unless variant.available %}
-          disabled
-        {% endunless %}
-      >
-        <span data-sticky-label>{{ section.settings.button_label | default: 'Añadir' | escape }}</span>
-      </button>
-    </div>
-  </garelon-sticky-atc>
-{%- endif -%}
+En cada archivo pulsa **Ctrl+F / Cmd+F**, busca el primer renglón del bloque «Busca», selecciona el bloque completo y pega el bloque «Sustitúyelo por». Cada bloque aparece **una sola vez** en su archivo.
 
-{% schema %}
-{
-  "name": "GARELON Compra fija",
-  "tag": "section",
-  "class": "section g-sticky-section",
-  "enabled_on": {
-    "templates": ["product"]
-  },
-  "settings": [
-    {
-      "type": "paragraph",
-      "content": "Barra discreta con miniatura, precio y botón. Aparece al pasar el botón principal y usa el mismo formulario del producto (precio, variante y stock reales). Para desactivarla, oculta esta sección."
-    },
-    {
-      "type": "text",
-      "id": "button_label",
-      "label": "Texto del botón",
-      "default": "Añadir"
-    },
-    {
-      "type": "checkbox",
-      "id": "show_on_desktop",
-      "label": "Mostrar también en escritorio",
-      "default": false
-    },
-    {
-      "type": "color_scheme",
-      "id": "color_scheme",
-      "label": "Esquema de color",
-      "default": "scheme-4"
-    }
-  ],
-  "presets": [
-    {
-      "name": "GARELON Compra fija"
-    }
-  ]
-}
-{% endschema %}
-```
-
----
-
-## Paso 5 · Cambios pequeños en archivos de Dawn
-
-Abre cada archivo, usa **Ctrl+F / Cmd+F** para localizar el texto de "Busca" y sustitúyelo por el de "Sustituye por".
-
-### 5.1 `layout/theme.liquid`
-
-**Busca:**
-```liquid
-    <meta name="theme-color" content="">
-```
-**Sustituye por:**
-```liquid
-    <meta name="theme-color" content="{{ settings.color_schemes['scheme-1'].settings.background }}">
-```
-
-**Busca:**
-```liquid
-    {%- if settings.favicon != blank -%}
-      <link rel="icon" type="image/png" href="{{ settings.favicon | image_url: width: 32, height: 32 }}">
-    {%- endif -%}
-```
-**Sustituye por:**
-```liquid
-    {%- if settings.favicon != blank -%}
-      <link rel="icon" type="image/png" href="{{ settings.favicon | image_url: width: 32, height: 32 }}">
-      <link rel="apple-touch-icon" href="{{ settings.favicon | image_url: width: 180, height: 180 }}">
-    {%- else -%}
-      {%- comment -%} GARELON: isotipo de marca por defecto hasta que se suba un favicon en Configuración del tema {%- endcomment -%}
-      <link rel="icon" type="image/png" href="{{ 'garelon-favicon-32.png' | asset_url }}">
-      <link rel="apple-touch-icon" href="{{ 'garelon-apple-touch-180.png' | asset_url }}">
-    {%- endif -%}
-```
-
-**Busca** (una sola vez en el archivo):
-```liquid
-    {{ 'base.css' | asset_url | stylesheet_tag }}
-```
-**Sustituye por:**
-```liquid
-    {{ 'base.css' | asset_url | stylesheet_tag }}
-    {{ 'garelon.css' | asset_url | stylesheet_tag }}
-```
-
-### 5.2 `sections/header.liquid`
-
-Hazlo **las dos veces** que aparece cada texto.
-
-**Busca** (2 veces):
-```liquid
-      {%- if request.page_type == 'index' -%}
-        <h1 class="header__heading">
-      {%- endif -%}
-```
-**Bórralo** (así el logo deja de ser un segundo H1 en la home).
-
-**Busca** (2 veces):
-```liquid
-      {%- if request.page_type == 'index' -%}
-        </h1>
-      {%- endif -%}
-```
-**Bórralo.**
-
-**Busca** (2 veces):
-```liquid
-          <span class="h2">{{ shop.name }}</span>
-```
-**Sustituye por:**
-```liquid
-          {%- render 'garelon-logo-fallback' -%}
-```
-
-### 5.3 `sections/footer.liquid`
-
-**Busca:**
-```liquid
-                        </div>
-                      {%- endif -%}
-                      {%- if settings.brand_headline != blank -%}
-```
-**Sustituye por:**
-```liquid
-                        </div>
-                      {%- else -%}
-                        {%- render 'garelon-logo-fallback', variant: 'stacked' -%}
-                      {%- endif -%}
-                      {%- if settings.brand_headline != blank -%}
-```
-
-### 5.4 `sections/featured-product.liquid`
-
-**Busca** (al principio del archivo):
-```liquid
-  assign product = section.settings.product
-```
-**Sustituye por:**
-```liquid
-  # GARELON: si no se elige producto, se usa el primero de la tienda (tienda de producto único).
-  assign product = section.settings.product | default: collections.all.products.first
-```
-
-**Busca:**
-```liquid
-  {% unless section.settings.product.has_only_default_variant %}
-```
-**Sustituye por:**
-```liquid
-  {% unless product.has_only_default_variant %}
-```
-
-**Busca:**
-```liquid
-{% if product.media.size > 0 or section.settings.product == blank %}
-```
-**Sustituye por:**
-```liquid
-{% if product.media.size > 0 or product == blank %}
-```
-
-### 5.5 `sections/main-product.liquid` (bloque opcional de packs)
-
-**Busca** (una sola vez, en la zona de bloques):
-```liquid
-                {%- when 'quantity_selector' -%}
-```
-**Sustituye por:**
-```liquid
-                {%- when 'garelon_packs' -%}
-                  {%- assign quantity_blocks = section.blocks | where: 'type', 'quantity_selector' -%}
-                  {%- assign has_quantity_input = false -%}
-                  {%- if quantity_blocks.size > 0 -%}
-                    {%- assign has_quantity_input = true -%}
-                  {%- endif -%}
-                  {%- render 'garelon-packs',
-                    block: block,
-                    section_id: section.id,
-                    product_form_id: product_form_id,
-                    has_quantity_input: has_quantity_input
-                  -%}
-                {%- when 'quantity_selector' -%}
-```
-
-**Busca** (una sola vez, dentro de `{% schema %}`, al final del archivo):
-```json
-    {
-      "type": "quantity_selector",
-```
-**Sustituye por:**
-```json
-    {
-      "type": "garelon_packs",
-      "name": "GARELON Packs",
-      "limit": 1,
-      "settings": [
-        {
-          "type": "paragraph",
-          "content": "Permite elegir 1, 2 o 3 unidades. Solo cambia la cantidad: no aplica ni anuncia descuentos. Para desactivarlo, oculta o elimina este bloque."
-        },
-        {
-          "type": "text",
-          "id": "heading",
-          "label": "Título",
-          "default": "Unidades"
-        },
-        {
-          "type": "select",
-          "id": "max_units",
-          "label": "Opciones",
-          "options": [
-            { "value": "2", "label": "1 y 2 unidades" },
-            { "value": "3", "label": "1, 2 y 3 unidades" }
-          ],
-          "default": "3"
-        },
-        {
-          "type": "text",
-          "id": "note",
-          "label": "Nota (opcional)",
-          "info": "Menciona descuentos solo si existen de verdad en Shopify."
-        }
-      ]
-    },
-    {
-      "type": "quantity_selector",
-```
-
----
-
-#### Isotipo en la cabecera, enlaces reales de contacto/políticas y bloque Ayuda
-
-Haz estos cambios **después** de los anteriores (5.1–5.5).
-
-### 5.6 `sections/header.liquid`
-
-**Enlace del logo (isotipo + GARELON)**
-
-**Busca** (aparece 2 veces: cámbialo en las dos):
-```liquid
-      <a href="{{ routes.root_url }}" class="header__heading-link link link--text focus-inset">
-        {%- if settings.logo != blank -%}
-```
-**Sustituye por:**
-```liquid
-      <a
-        href="{{ routes.root_url }}"
-        class="header__heading-link link link--text focus-inset{% if section.settings.show_isotype %} garelon-brand-link{% endif %}"
-      >
-        {%- if section.settings.show_isotype -%}
-          {%- render 'garelon-logo-fallback', variant: 'isotype' -%}
-        {%- endif -%}
-        {%- if settings.logo != blank -%}
-```
-
-**Ajuste para activar o desactivar el isotipo**
-
-**Busca**:
-```liquid
-      "label": "t:sections.header.settings.logo_position.label",
-      "info": "t:sections.header.settings.logo_help.content"
-    },
-```
-**Sustituye por:**
-```liquid
-      "label": "t:sections.header.settings.logo_position.label",
-      "info": "t:sections.header.settings.logo_help.content"
-    },
-    {
-      "type": "checkbox",
-      "id": "show_isotype",
-      "label": "Mostrar el isotipo GARELON junto al logo",
-      "info": "Desactívalo si el logo que subas en Configuración del tema ya incluye el isotipo.",
-      "default": true
-    },
-```
-
-### 5.7 `sections/footer.liquid`
-
-**Enlaces del menú del pie (resuelve rutas de contacto y políticas)**
-
-**Busca**:
-```liquid
-                            <a
-                              href="{{ link.url }}"
-```
-**Sustituye por:**
-```liquid
-                            <a
-                              href="{%- render 'garelon-url', url: link.url -%}"
-```
-
-**Nuevo bloque «GARELON Ayuda» (cómo se muestra)**
-
-**Busca**:
-```liquid
-                  {%- when 'brand_information' -%}
-```
-**Sustituye por:**
-```liquid
-                  {%- when 'garelon_help' -%}
-                    {%- comment -%} GARELON: bloque de ayuda con enlace a la página de contacto real. {%- endcomment -%}
-                    <div class="footer-block__details-content garelon-help">
-                      {%- if block.settings.text != blank -%}
-                        <div class="rte garelon-help__text">{{ block.settings.text }}</div>
-                      {%- endif -%}
-                      {%- if block.settings.link_label != blank -%}
-                        <a
-                          href="{%- if block.settings.link != blank -%}{%- render 'garelon-url', url: block.settings.link -%}{%- else -%}{%- render 'garelon-url', type: 'contact' -%}{%- endif -%}"
-                          class="link garelon-help__link"
-                        >
-                          <span class="garelon-help__label">{{- block.settings.link_label | escape -}}</span>
-                          <span class="garelon-help__arrow" aria-hidden="true">→</span>
-                        </a>
-                      {%- endif -%}
-                      {%- if block.settings.menu != blank -%}
-                        <ul class="list-unstyled garelon-help__menu">
-                          {%- for link in block.settings.menu.links -%}
-                            <li>
-                              <a
-                                href="{%- render 'garelon-url', url: link.url -%}"
-                                class="link link--text list-menu__item list-menu__item--link{% if link.active %} list-menu__item--active{% endif %}"
-                              >
-                                {{ link.title | escape }}
-                              </a>
-                            </li>
-                          {%- endfor -%}
-                        </ul>
-                      {%- endif -%}
-                    </div>
-                  {%- when 'brand_information' -%}
-```
-
-**Nombre de la política de reembolsos en el pie**
-
-**Busca**:
-```liquid
-                  <small class="copyright__content"
-                    ><a href="{{ policy.url }}">{{ policy.title | escape }}</a></small
-                  >
-```
-**Sustituye por:**
-```liquid
-                  {%- comment -%} GARELON: nombre completo de la política de reembolsos en el pie. {%- endcomment -%}
-                  {%- liquid
-                    assign policy_title = policy.title
-                    if policy.url contains 'refund-policy'
-                      assign policy_title = 'Política de devoluciones y reembolsos'
-                    endif
-                  -%}
-                  <small class="copyright__content"
-                    ><a href="{{ policy.url }}">{{ policy_title | escape }}</a></small
-                  >
-```
-
-**Nuevo bloque «GARELON Ayuda» (ajustes del editor)**
-
-**Busca**:
-```liquid
-    {
-      "type": "brand_information",
-      "name": "t:sections.footer.blocks.brand_information.name",
-```
-**Sustituye por:**
-```liquid
-    {
-      "type": "garelon_help",
-      "name": "GARELON Ayuda",
-      "limit": 1,
-      "settings": [
-        {
-          "type": "inline_richtext",
-          "id": "heading",
-          "label": "Título",
-          "default": "Ayuda"
-        },
-        {
-          "type": "richtext",
-          "id": "text",
-          "label": "Texto",
-          "default": "<p>¿Tienes alguna duda sobre tu pedido o nuestros productos? Nuestro equipo está aquí para ayudarte.</p>"
-        },
-        {
-          "type": "text",
-          "id": "link_label",
-          "label": "Texto del enlace",
-          "default": "Contacta con nuestro equipo"
-        },
-        {
-          "type": "url",
-          "id": "link",
-          "label": "Enlace",
-          "info": "Vacío = la página de contacto (Configuración del tema → GARELON · Enlaces)."
-        },
-        {
-          "type": "link_list",
-          "id": "menu",
-          "label": "Menú opcional debajo del enlace",
-          "info": "Vacío = sin menú. Revisa que todos sus enlaces lleven a páginas publicadas."
-        }
-      ]
-    },
-    {
-      "type": "brand_information",
-      "name": "t:sections.footer.blocks.brand_information.name",
-```
-
-### 5.8 `sections/main-product.liquid`
-
-**Pestañas desplegables: enlaces de contacto y políticas**
-
-**Busca**:
-```liquid
-                        {{ block.settings.content }}
-                        {{ block.settings.page.content }}
-```
-**Sustituye por:**
-```liquid
-                        {%- comment -%} GARELON: enlaces de contacto y políticas resueltos a su URL real. {%- endcomment -%}
-                        {% render 'garelon-url', html: block.settings.content %}
-                        {{ block.settings.page.content }}
-```
-
-### 5.9 `snippets/header-dropdown-menu.liquid`
-
-**Enlace `link` del menú**
-
-**Busca**:
-```liquid
-href="{{ link.url }}"
-```
-**Sustituye por:**
-```liquid
-href="{%- render 'garelon-url', url: link.url -%}"
-```
-
-**Enlace `childlink` del menú**
-
-**Busca**:
-```liquid
-href="{{ childlink.url }}"
-```
-**Sustituye por:**
-```liquid
-href="{%- render 'garelon-url', url: childlink.url -%}"
-```
-
-**Enlace `grandchildlink` del menú**
-
-**Busca**:
-```liquid
-href="{{ grandchildlink.url }}"
-```
-**Sustituye por:**
-```liquid
-href="{%- render 'garelon-url', url: grandchildlink.url -%}"
-```
-
-### 5.10 `snippets/header-drawer.liquid`
-
-**Enlace `link` del menú**
-
-**Busca**:
-```liquid
-href="{{ link.url }}"
-```
-**Sustituye por:**
-```liquid
-href="{%- render 'garelon-url', url: link.url -%}"
-```
-
-**Enlace `childlink` del menú**
-
-**Busca**:
-```liquid
-href="{{ childlink.url }}"
-```
-**Sustituye por:**
-```liquid
-href="{%- render 'garelon-url', url: childlink.url -%}"
-```
-
-**Enlace `grandchildlink` del menú**
-
-**Busca**:
-```liquid
-href="{{ grandchildlink.url }}"
-```
-**Sustituye por:**
-```liquid
-href="{%- render 'garelon-url', url: grandchildlink.url -%}"
-```
-
-### 5.11 `snippets/header-mega-menu.liquid`
-
-**Enlace `link` del menú**
-
-**Busca**:
-```liquid
-href="{{ link.url }}"
-```
-**Sustituye por:**
-```liquid
-href="{%- render 'garelon-url', url: link.url -%}"
-```
-
-**Enlace `childlink` del menú**
-
-**Busca**:
-```liquid
-href="{{ childlink.url }}"
-```
-**Sustituye por:**
-```liquid
-href="{%- render 'garelon-url', url: childlink.url -%}"
-```
-
-**Enlace `grandchildlink` del menú**
-
-**Busca**:
-```liquid
-href="{{ grandchildlink.url }}"
-```
-**Sustituye por:**
-```liquid
-href="{%- render 'garelon-url', url: grandchildlink.url -%}"
-```
-
-### 5.12 `config/settings_schema.json`
-
-**Nuevo grupo «GARELON · Enlaces» al final**
-
-**Busca**:
-```json
-        "label": "t:settings_schema.customer_accounts.settings.customer_account_menu.label"
-      }
-    ]
-  }
-]
-```
-**Sustituye por:**
-```json
-        "label": "t:settings_schema.customer_accounts.settings.customer_account_menu.label"
-      }
-    ]
-  },
-  {
-    "name": "GARELON · Enlaces",
-    "settings": [
-      {
-        "type": "paragraph",
-        "content": "Las páginas y políticas se crean en el Admin de Shopify. Si no eliges nada, el tema busca la página de contacto por su identificador habitual (contacto, contact…) y usa las políticas de Configuración → Políticas."
-      },
-      {
-        "type": "page",
-        "id": "garelon_contact_page",
-        "label": "Página de contacto",
-        "info": "Destino de todos los enlaces de contacto del tema (pie de página, preguntas frecuentes, barra de servicio)."
-      },
-      {
-        "type": "page",
-        "id": "garelon_refund_page",
-        "label": "Página de devoluciones (opcional)",
-        "info": "Solo se usa si la política de reembolsos de Configuración → Políticas está vacía."
-      },
-      {
-        "type": "page",
-        "id": "garelon_shipping_page",
-        "label": "Página de envíos (opcional)",
-        "info": "Solo se usa si la política de envío de Configuración → Políticas está vacía."
-      }
-    ]
-  }
-]
-```
-
----
-
-#### Imágenes nuevas, navegación sin catálogo, cabecera móvil, barra superior y pie
-
-Haz estos cambios **después** de los anteriores (5.1–5.12). Cada bloque «Busca» aparece una sola vez en su archivo.
-
-### 5.13 `layout/theme.liquid` · no indexar catálogo, colecciones ni búsqueda
+### 4.1 `layout/theme.liquid` · no indexar catálogo, colecciones ni búsqueda
 
 **Busca:**
 
@@ -4464,7 +3034,7 @@ Haz estos cambios **después** de los anteriores (5.1–5.12). Cada bloque «Bus
     {%- if settings.favicon != blank -%}
 ```
 
-### 5.14 `sections/header.liquid` · navegación GARELON, ajustes del menú y script que cierra el menú móvil
+### 4.2 `sections/header.liquid` · navegación GARELON, ajustes del menú y script que cierra el menú móvil
 
 **Busca (1 de 4):**
 
@@ -4610,7 +3180,7 @@ Haz estos cambios **después** de los anteriores (5.1–5.12). Cada bloque «Bus
       "options": [
 ```
 
-### 5.15 `sections/announcement-bar.liquid` · bandera de España al final del anuncio
+### 4.3 `sections/announcement-bar.liquid` · bandera de España al final del anuncio
 
 **Busca (1 de 3):**
 
@@ -4682,7 +3252,7 @@ Haz estos cambios **después** de los anteriores (5.1–5.12). Cada bloque «Bus
       ]
 ```
 
-### 5.16 `sections/featured-product.liquid` · galería GARELON, ancla #comprar y bloque de stock
+### 4.4 `sections/featured-product.liquid` · galería GARELON, ancla #comprar y bloque de stock
 
 **Busca (1 de 6):**
 
@@ -4845,7 +3415,7 @@ Haz estos cambios **después** de los anteriores (5.1–5.12). Cada bloque «Bus
       "id": "color_scheme",
 ```
 
-### 5.17 `sections/footer.liquid` · enlaces legales en orden fijo y texto de Ayuda
+### 4.5 `sections/footer.liquid` · enlaces legales en orden fijo y texto de Ayuda
 
 **Busca (1 de 2):**
 
@@ -4960,7 +3530,7 @@ Haz estos cambios **después** de los anteriores (5.1–5.12). Cada bloque «Bus
         {
 ```
 
-### 5.18 `sections/main-404.liquid` · «Seguir comprando» lleva al inicio
+### 4.6 `sections/main-404.liquid` · «Seguir comprando» lleva al inicio
 
 **Busca:**
 
@@ -4982,7 +3552,7 @@ Haz estos cambios **después** de los anteriores (5.1–5.12). Cada bloque «Bus
   </a>
 ```
 
-### 5.19 `sections/main-cart-items.liquid` · «Seguir comprando» lleva al inicio (2 enlaces)
+### 4.7 `sections/main-cart-items.liquid` · «Seguir comprando» lleva al inicio (2 enlaces)
 
 **Busca (1 de 2):**
 
@@ -5024,7 +3594,7 @@ Haz estos cambios **después** de los anteriores (5.1–5.12). Cada bloque «Bus
       </a>
 ```
 
-### 5.20 `snippets/header-drawer.liquid` · navegación GARELON, sin catálogo, y búsqueda/cuenta dentro del menú móvil
+### 4.8 `snippets/header-drawer.liquid` · navegación GARELON, sin catálogo, y búsqueda/cuenta dentro del menú móvil
 
 **Busca (1 de 4):**
 
@@ -5152,7 +3722,7 @@ Haz estos cambios **después** de los anteriores (5.1–5.12). Cada bloque «Bus
               <div class="menu-drawer__localization header-localization">
 ```
 
-### 5.21 `snippets/header-dropdown-menu.liquid` · sin enlaces al catálogo ni a colecciones
+### 4.9 `snippets/header-dropdown-menu.liquid` · sin enlaces al catálogo ni a colecciones
 
 **Busca (1 de 3):**
 
@@ -5226,7 +3796,7 @@ Haz estos cambios **después** de los anteriores (5.1–5.12). Cada bloque «Bus
                               <a
 ```
 
-### 5.22 `snippets/header-mega-menu.liquid` · sin enlaces al catálogo ni a colecciones
+### 4.10 `snippets/header-mega-menu.liquid` · sin enlaces al catálogo ni a colecciones
 
 **Busca (1 de 3):**
 
@@ -5300,7 +3870,7 @@ Haz estos cambios **después** de los anteriores (5.1–5.12). Cada bloque «Bus
                               <a
 ```
 
-### 5.23 `snippets/cart-drawer.liquid` · «Seguir comprando» lleva al inicio
+### 4.11 `snippets/cart-drawer.liquid` · «Seguir comprando» lleva al inicio
 
 **Busca:**
 
@@ -5322,7 +3892,7 @@ Haz estos cambios **después** de los anteriores (5.1–5.12). Cada bloque «Bus
               </a>
 ```
 
-### 5.24 `config/settings_schema.json` · selector de la página de política de cookies
+### 4.12 `config/settings_schema.json` · selector de la página de política de cookies
 
 **Busca:**
 
@@ -5348,12 +3918,126 @@ Haz estos cambios **después** de los anteriores (5.1–5.12). Cada bloque «Bus
     ]
 ```
 
----
+### Paso 5 · Plantillas y grupos de secciones (5)
 
-## Paso 6 · Plantillas (templates)
+Sustituye el contenido completo de cada uno (selecciona todo, borra y pega).
 
-Para las que ya existen, abre el archivo, **selecciona todo, bórralo y pega**.
-Para `page.faq.json`: **Templates → Añadir una nueva plantilla → tipo "page" → JSON → nombre `faq`**, y pega.
+### `sections/header-group.json`
+
+```json
+{
+  "name": "t:sections.header.name",
+  "type": "header",
+  "sections": {
+    "announcement-bar": {
+      "type": "announcement-bar",
+      "settings": {
+        "color_scheme": "scheme-3",
+        "show_line_separator": false,
+        "show_social": false,
+        "auto_rotate": false,
+        "change_slides_speed": 5,
+        "enable_country_selector": false,
+        "enable_language_selector": false
+      },
+      "blocks": {
+        "announcement-bar-0": {
+          "type": "announcement",
+          "settings": {
+            "text": "Envío disponible a toda España",
+            "link": "",
+            "show_flag_es": true
+          }
+        }
+      },
+      "block_order": [
+        "announcement-bar-0"
+      ]
+    },
+    "header": {
+      "type": "header",
+      "settings": {
+        "color_scheme": "scheme-1",
+        "menu_color_scheme": "scheme-1",
+        "logo_position": "middle-left",
+        "menu": "main-menu",
+        "nav_source": "garelon",
+        "nav_show_how": false,
+        "nav_show_ingredients": true,
+        "nav_show_faq": true,
+        "hide_catalog_links": true,
+        "menu_type_desktop": "dropdown",
+        "sticky_header_type": "on-scroll-up",
+        "show_line_separator": true,
+        "enable_country_selector": false,
+        "enable_language_selector": false,
+        "mobile_logo_position": "center",
+        "margin_bottom": 0,
+        "padding_top": 12,
+        "padding_bottom": 12,
+        "show_isotype": true
+      }
+    }
+  },
+  "order": [
+    "announcement-bar",
+    "header"
+  ]
+}
+```
+
+### `sections/footer-group.json`
+
+```json
+{
+  "name": "t:sections.footer.name",
+  "type": "footer",
+  "sections": {
+    "footer": {
+      "type": "footer",
+      "blocks": {
+        "brand": {
+          "type": "brand_information",
+          "settings": {
+            "show_social": true
+          }
+        },
+        "ayuda": {
+          "type": "garelon_help",
+          "settings": {
+            "heading": "Ayuda",
+            "text": "<p>¿Necesitas ayuda? Estamos aquí para resolver cualquier duda sobre tu pedido, nuestros productos o el proceso de compra.</p>",
+            "link_label": "Contacta con nuestro equipo",
+            "link": "",
+            "menu": ""
+          }
+        }
+      },
+      "block_order": [
+        "brand",
+        "ayuda"
+      ],
+      "settings": {
+        "color_scheme": "scheme-2",
+        "newsletter_enable": false,
+        "newsletter_heading": "Recibe novedades de GARELON",
+        "enable_follow_on_shop": false,
+        "show_social": true,
+        "enable_country_selector": false,
+        "enable_language_selector": false,
+        "payment_enable": true,
+        "show_policy": true,
+        "margin_top": 0,
+        "padding_top": 48,
+        "padding_bottom": 32
+      }
+    }
+  },
+  "order": [
+    "footer"
+  ]
+}
+```
 
 ### `templates/index.json`
 
@@ -6230,137 +4914,6 @@ Para `page.faq.json`: **Templates → Añadir una nueva plantilla → tipo "page
 }
 ```
 
-### `templates/page.faq.json`
-
-```json
-{
-  "sections": {
-    "main": {
-      "type": "main-page",
-      "settings": {
-        "padding_top": 36,
-        "padding_bottom": 0
-      }
-    },
-    "faq": {
-      "type": "garelon-faq",
-      "blocks": {
-        "q-que-es": {
-          "type": "question",
-          "settings": {
-            "question": "¿Qué es el sérum de contorno de ojos de GARELON?",
-            "answer": "<p>Es un sérum para el contorno de ojos con aceite de ricino y aplicador roller metálico, en un frasco de vidrio ámbar de 10 ml. GARELON es la tienda desde la que lo comercializamos: el producto procede de un fabricante externo, por lo que en el frasco y en la caja verás la marca original del fabricante.</p>"
-          }
-        },
-        "q-como": {
-          "type": "question",
-          "settings": {
-            "question": "¿Cómo se utiliza?",
-            "answer": "<p>1. Limpia y seca bien el rostro y el contorno de ojos.<br>2. Desliza suavemente el roller por la zona del contorno para que salga el producto.<br>3. Masajea con movimientos suaves usando la bola metálica hasta distribuir el sérum.</p>"
-          }
-        },
-        "q-frecuencia": {
-          "type": "question",
-          "settings": {
-            "question": "¿Con qué frecuencia puedo incorporarlo a mi rutina?",
-            "answer": "<p>Está pensado para formar parte de tu rutina diaria de cuidado. Aplícalo siempre sobre la piel limpia y seca y sigue las indicaciones del envase. Si notas cualquier molestia, interrumpe su uso.</p>"
-          }
-        },
-        "q-cantidad": {
-          "type": "question",
-          "settings": {
-            "question": "¿Cuánto producto contiene?",
-            "answer": "<p>Cada frasco contiene 10 ml (0.34 fl oz).</p>"
-          }
-        },
-        "q-donde": {
-          "type": "question",
-          "settings": {
-            "question": "¿Dónde debo aplicarlo?",
-            "answer": "<p>En la zona del contorno de ojos, deslizando el roller con suavidad. Evita el contacto directo con los ojos. Solo para uso externo.</p>"
-          }
-        },
-        "q-ingredientes": {
-          "type": "question",
-          "settings": {
-            "question": "¿Qué ingredientes contiene?",
-            "answer": "<p>Según la información facilitada por el proveedor: aceite de ricino (Ricinus Communis Seed Oil), Acetyl Tripeptide-1, colágeno (Collagen), extracto de Boswellia Serrata y agua (Aqua). Consulta siempre el envase del producto.</p>"
-          }
-        },
-        "q-envio": {
-          "type": "question",
-          "settings": {
-            "question": "¿Cuándo recibiré mi pedido?",
-            "answer": "<p>Los plazos y costes de envío actualizados se indican en nuestra <a href=\"/policies/shipping-policy\" title=\"Política de envío\">política de envío</a> y durante el proceso de compra.</p>"
-          }
-        },
-        "q-dudas": {
-          "type": "question",
-          "settings": {
-            "question": "¿Qué ocurre si tengo una duda con mi pedido?",
-            "answer": "<p>Escríbenos desde nuestra <a href=\"/pages/contacto\" title=\"Contacto\">página de contacto</a> indicando tu número de pedido y te responderemos lo antes posible. Puedes consultar también nuestra <a href=\"/policies/refund-policy\" title=\"Política de devoluciones\">política de devoluciones</a>.</p>"
-          }
-        }
-      },
-      "block_order": [
-        "q-que-es",
-        "q-como",
-        "q-frecuencia",
-        "q-cantidad",
-        "q-donde",
-        "q-ingredientes",
-        "q-envio",
-        "q-dudas"
-      ],
-      "settings": {
-        "eyebrow": "",
-        "heading": "",
-        "open_first": false,
-        "contact_text": "",
-        "color_scheme": "scheme-1",
-        "anchor": "preguntas-frecuentes",
-        "padding_top": 16,
-        "padding_bottom": 56
-      }
-    }
-  },
-  "order": [
-    "main",
-    "faq"
-  ]
-}
-```
-
-### `templates/page.contact.json`
-
-```json
-{
-  "sections": {
-    "main": {
-      "type": "main-page",
-      "settings": {
-        "padding_top": 36,
-        "padding_bottom": 36
-      }
-    },
-    "form": {
-      "type": "contact-form",
-      "settings": {
-        "heading": "",
-        "heading_size": "h1",
-        "color_scheme": "scheme-1",
-        "padding_top": 16,
-        "padding_bottom": 36
-      }
-    }
-  },
-  "order": [
-    "main",
-    "form"
-  ]
-}
-```
-
 ### `templates/404.json`
 
 ```json
@@ -6392,379 +4945,43 @@ Para `page.faq.json`: **Templates → Añadir una nueva plantilla → tipo "page
 }
 ```
 
----
+### Paso 6 · Borrar las imágenes antiguas (11)
 
-## Paso 7 · Cabecera y pie (grupos de secciones)
+Solo cuando los pasos anteriores estén guardados: en **Assets**, abre cada archivo y pulsa **Eliminar archivo**. Ya no los usa ninguna parte del tema.
 
-En **Sections**, abre cada archivo, selecciona todo y pega.
+- `garelon-cta-480.webp`
+- `garelon-cta-650.webp`
+- `garelon-editorial-400.webp`
+- `garelon-editorial-500.webp`
+- `garelon-hero-400.webp`
+- `garelon-hero-640.webp`
+- `garelon-paso-1-330.webp`
+- `garelon-paso-2-320.webp`
+- `garelon-paso-3-330.webp`
+- `garelon-producto-480.webp`
+- `garelon-producto-780.webp`
 
-### `sections/header-group.json`
-
-```json
-{
-  "name": "t:sections.header.name",
-  "type": "header",
-  "sections": {
-    "announcement-bar": {
-      "type": "announcement-bar",
-      "settings": {
-        "color_scheme": "scheme-3",
-        "show_line_separator": false,
-        "show_social": false,
-        "auto_rotate": false,
-        "change_slides_speed": 5,
-        "enable_country_selector": false,
-        "enable_language_selector": false
-      },
-      "blocks": {
-        "announcement-bar-0": {
-          "type": "announcement",
-          "settings": {
-            "text": "Envío disponible a toda España",
-            "link": "",
-            "show_flag_es": true
-          }
-        }
-      },
-      "block_order": [
-        "announcement-bar-0"
-      ]
-    },
-    "header": {
-      "type": "header",
-      "settings": {
-        "color_scheme": "scheme-1",
-        "menu_color_scheme": "scheme-1",
-        "logo_position": "middle-left",
-        "menu": "main-menu",
-        "nav_source": "garelon",
-        "nav_show_how": false,
-        "nav_show_ingredients": true,
-        "nav_show_faq": true,
-        "hide_catalog_links": true,
-        "menu_type_desktop": "dropdown",
-        "sticky_header_type": "on-scroll-up",
-        "show_line_separator": true,
-        "enable_country_selector": false,
-        "enable_language_selector": false,
-        "mobile_logo_position": "center",
-        "margin_bottom": 0,
-        "padding_top": 12,
-        "padding_bottom": 12,
-        "show_isotype": true
-      }
-    }
-  },
-  "order": [
-    "announcement-bar",
-    "header"
-  ]
-}
-```
-
-### `sections/footer-group.json`
-
-```json
-{
-  "name": "t:sections.footer.name",
-  "type": "footer",
-  "sections": {
-    "footer": {
-      "type": "footer",
-      "blocks": {
-        "brand": {
-          "type": "brand_information",
-          "settings": {
-            "show_social": true
-          }
-        },
-        "ayuda": {
-          "type": "garelon_help",
-          "settings": {
-            "heading": "Ayuda",
-            "text": "<p>¿Necesitas ayuda? Estamos aquí para resolver cualquier duda sobre tu pedido, nuestros productos o el proceso de compra.</p>",
-            "link_label": "Contacta con nuestro equipo",
-            "link": "",
-            "menu": ""
-          }
-        }
-      },
-      "block_order": [
-        "brand",
-        "ayuda"
-      ],
-      "settings": {
-        "color_scheme": "scheme-2",
-        "newsletter_enable": false,
-        "newsletter_heading": "Recibe novedades de GARELON",
-        "enable_follow_on_shop": false,
-        "show_social": true,
-        "enable_country_selector": false,
-        "enable_language_selector": false,
-        "payment_enable": true,
-        "show_policy": true,
-        "margin_top": 0,
-        "padding_top": 48,
-        "padding_bottom": 32
-      }
-    }
-  },
-  "order": [
-    "footer"
-  ]
-}
-```
+**No borres** los archivos de marca: `garelon-isotipo-96.webp`, `garelon-logo-240.webp`, `garelon-logo-480.webp`, `garelon-wordmark-480.webp`, `garelon-favicon-32.png` y `garelon-apple-touch-180.png`.
 
 ---
 
-## Paso 8 · Colores, tipografía y carrito
+## Paso final · Comprobar en la Vista previa
 
-**Opción A (sin código):** *Personalizar → Configuración del tema*:
+**Móvil (o el ordenador con la ventana estrecha):**
+- Barra superior: «Envío disponible a toda España» con la bandera, en una sola línea.
+- Cabecera: menú a la izquierda, isotipo + GARELON en el centro, carrito a la derecha. Nada montado sobre el logo.
+- Menú: Inicio, Ingredientes, Preguntas frecuentes, Contacto. Abajo, Búsqueda y la cuenta. Al pulsar Ingredientes, el menú se cierra y baja a la sección.
+- Portada: se ven producto, título, precio y el botón «Comprar el sérum», que baja a la zona de compra.
+- Zona de compra: galería de 6 imágenes (flechas y deslizando), precio real, cantidad, «Añadir al carrito», botones de pago exprés y «En stock» o «Agotado».
+- Añade al carrito, cambia la cantidad, elimina el producto y pulsa «Finalizar compra».
 
-| Ajuste | Valor |
-|---|---|
-| Esquema 1 | Fondo `#F8F4EC` · Texto `#1B1714` · Botón `#1B1714` · Texto del botón `#FFFFFF` · Botón secundario `#1B1714` |
-| Esquema 2 | Fondo `#EFE6D7` · Texto `#1B1714` · Botón `#1B1714` · Texto del botón `#FFFFFF` · Botón secundario `#1B1714` |
-| Esquema 3 | Fondo `#1B1714` · Texto `#F8F4EC` · Botón `#D2B06A` · Texto del botón `#1B1714` · Botón secundario `#F8F4EC` |
-| Esquema 4 | Fondo `#FFFFFF` · Texto `#1B1714` · Botón `#1B1714` · Texto del botón `#FFFFFF` · Botón secundario `#1B1714` |
-| Esquema 5 | Fondo `#B88A3B` · Texto `#1B1714` · Botón `#1B1714` · Texto del botón `#FFFFFF` · Botón secundario `#1B1714` |
-| Tipografía | Títulos **Playfair Display** · Texto **Inter** |
-| Botones | Radio de esquina **4 px** |
-| Entradas / píldoras de variantes | Radio **4 px** |
-| Contenedor multimedia / tarjetas | Radio **6 px** |
-| Animaciones | "Mostrar secciones al desplazarse" **desactivado** |
-| Carrito | Tipo de carrito **Cajón** |
-| Información de marca (pie) | Descripción: *Cuidado diario para tu mirada.* |
-
-**Opción B (código):** abre `config/settings_data.json`, selecciona todo y pega esto. Úsalo solo si tu Dawn
-es 15 o 16; en otras versiones usa la opción A.
-
-### `config/settings_data.json`
-
-```json
-{
-  "current": "Dawn",
-  "presets": {
-    "Dawn": {
-      "logo_width": 150,
-      "customer_account_menu": "customer-account-main-menu",
-      "color_schemes": {
-        "scheme-1": {
-          "settings": {
-            "background": "#F8F4EC",
-            "background_gradient": "",
-            "text": "#1B1714",
-            "button": "#1B1714",
-            "button_label": "#FFFFFF",
-            "secondary_button_label": "#1B1714",
-            "shadow": "#1B1714"
-          }
-        },
-        "scheme-2": {
-          "settings": {
-            "background": "#EFE6D7",
-            "background_gradient": "",
-            "text": "#1B1714",
-            "button": "#1B1714",
-            "button_label": "#FFFFFF",
-            "secondary_button_label": "#1B1714",
-            "shadow": "#1B1714"
-          }
-        },
-        "scheme-3": {
-          "settings": {
-            "background": "#1B1714",
-            "background_gradient": "",
-            "text": "#F8F4EC",
-            "button": "#D2B06A",
-            "button_label": "#1B1714",
-            "secondary_button_label": "#F8F4EC",
-            "shadow": "#1B1714"
-          }
-        },
-        "scheme-4": {
-          "settings": {
-            "background": "#FFFFFF",
-            "background_gradient": "",
-            "text": "#1B1714",
-            "button": "#1B1714",
-            "button_label": "#FFFFFF",
-            "secondary_button_label": "#1B1714",
-            "shadow": "#1B1714"
-          }
-        },
-        "scheme-5": {
-          "settings": {
-            "background": "#B88A3B",
-            "background_gradient": "",
-            "text": "#1B1714",
-            "button": "#1B1714",
-            "button_label": "#FFFFFF",
-            "secondary_button_label": "#1B1714",
-            "shadow": "#1B1714"
-          }
-        }
-      },
-      "type_header_font": "playfair_display_n4",
-      "heading_scale": 100,
-      "type_body_font": "inter_n4",
-      "body_scale": 100,
-      "page_width": 1200,
-      "spacing_sections": 0,
-      "spacing_grid_horizontal": 8,
-      "spacing_grid_vertical": 8,
-      "animations_reveal_on_scroll": false,
-      "animations_hover_elements": "default",
-      "buttons_border_thickness": 1,
-      "buttons_border_opacity": 100,
-      "buttons_radius": 4,
-      "buttons_shadow_opacity": 0,
-      "buttons_shadow_horizontal_offset": 0,
-      "buttons_shadow_vertical_offset": 4,
-      "buttons_shadow_blur": 5,
-      "variant_pills_border_thickness": 1,
-      "variant_pills_border_opacity": 40,
-      "variant_pills_radius": 4,
-      "variant_pills_shadow_opacity": 0,
-      "variant_pills_shadow_horizontal_offset": 0,
-      "variant_pills_shadow_vertical_offset": 4,
-      "variant_pills_shadow_blur": 5,
-      "inputs_border_thickness": 1,
-      "inputs_border_opacity": 35,
-      "inputs_radius": 4,
-      "inputs_shadow_opacity": 0,
-      "inputs_shadow_horizontal_offset": 0,
-      "inputs_shadow_vertical_offset": 4,
-      "inputs_shadow_blur": 5,
-      "card_style": "standard",
-      "card_image_padding": 0,
-      "card_text_alignment": "left",
-      "card_color_scheme": "scheme-4",
-      "card_border_thickness": 0,
-      "card_border_opacity": 10,
-      "card_corner_radius": 6,
-      "card_shadow_opacity": 0,
-      "card_shadow_horizontal_offset": 0,
-      "card_shadow_vertical_offset": 4,
-      "card_shadow_blur": 5,
-      "collection_card_style": "standard",
-      "collection_card_image_padding": 0,
-      "collection_card_text_alignment": "left",
-      "collection_card_color_scheme": "scheme-4",
-      "collection_card_border_thickness": 0,
-      "collection_card_border_opacity": 10,
-      "collection_card_corner_radius": 0,
-      "collection_card_shadow_opacity": 0,
-      "collection_card_shadow_horizontal_offset": 0,
-      "collection_card_shadow_vertical_offset": 4,
-      "collection_card_shadow_blur": 5,
-      "blog_card_style": "standard",
-      "blog_card_image_padding": 0,
-      "blog_card_text_alignment": "left",
-      "blog_card_color_scheme": "scheme-4",
-      "blog_card_border_thickness": 0,
-      "blog_card_border_opacity": 10,
-      "blog_card_corner_radius": 0,
-      "blog_card_shadow_opacity": 0,
-      "blog_card_shadow_horizontal_offset": 0,
-      "blog_card_shadow_vertical_offset": 4,
-      "blog_card_shadow_blur": 5,
-      "text_boxes_border_thickness": 0,
-      "text_boxes_border_opacity": 10,
-      "text_boxes_radius": 6,
-      "text_boxes_shadow_opacity": 0,
-      "text_boxes_shadow_horizontal_offset": 0,
-      "text_boxes_shadow_vertical_offset": 4,
-      "text_boxes_shadow_blur": 5,
-      "media_border_thickness": 0,
-      "media_border_opacity": 5,
-      "media_radius": 6,
-      "media_shadow_opacity": 0,
-      "media_shadow_horizontal_offset": 0,
-      "media_shadow_vertical_offset": 4,
-      "media_shadow_blur": 5,
-      "popup_border_thickness": 1,
-      "popup_border_opacity": 10,
-      "popup_corner_radius": 6,
-      "popup_shadow_opacity": 5,
-      "popup_shadow_horizontal_offset": 0,
-      "popup_shadow_vertical_offset": 4,
-      "popup_shadow_blur": 5,
-      "drawer_border_thickness": 1,
-      "drawer_border_opacity": 10,
-      "drawer_shadow_opacity": 0,
-      "drawer_shadow_horizontal_offset": 0,
-      "drawer_shadow_vertical_offset": 4,
-      "drawer_shadow_blur": 5,
-      "badge_position": "bottom left",
-      "badge_corner_radius": 4,
-      "sale_badge_color_scheme": "scheme-3",
-      "sold_out_badge_color_scheme": "scheme-2",
-      "brand_headline": "",
-      "brand_description": "<p>Cuidado diario para tu mirada.</p>",
-      "brand_image_width": 120,
-      "social_twitter_link": "",
-      "social_facebook_link": "",
-      "social_pinterest_link": "",
-      "social_instagram_link": "",
-      "social_tiktok_link": "",
-      "social_tumblr_link": "",
-      "social_snapchat_link": "",
-      "social_youtube_link": "",
-      "social_vimeo_link": "",
-      "predictive_search_enabled": true,
-      "predictive_search_show_vendor": false,
-      "predictive_search_show_price": false,
-      "currency_code_enabled": true,
-      "cart_type": "drawer",
-      "show_vendor": false,
-      "show_cart_note": false,
-      "cart_drawer_collection": "",
-      "cart_color_scheme": "scheme-1",
-      "sections": {
-        "main-password-header": {
-          "type": "main-password-header",
-          "settings": {
-            "color_scheme": "scheme-1"
-          }
-        },
-        "main-password-footer": {
-          "type": "main-password-footer",
-          "settings": {
-            "color_scheme": "scheme-1"
-          }
-        }
-      }
-    }
-  }
-}
-```
+**Ordenador:** cabecera en una línea (Inicio · Ingredientes · Preguntas frecuentes · Contacto) y el pie con Contacto, Política de envíos, Política de devoluciones y reembolsos, Política de privacidad, Política de cookies (si existe la página), Términos y condiciones y Aviso legal.
 
 ---
 
-## Paso 9 · Textos en español de España (`locales/es.json`)
+## Tareas en el Admin (el theme no puede hacerlas)
 
-Dawn trae español latinoamericano. Abre `locales/es.json` y usa buscar/sustituir (incluye las comillas):
-
-| Busca | Sustituye por |
-|---|---|
-| `"Agregar al carrito"` | `"Añadir al carrito"` |
-| `"Artículo agregado a tu carrito"` | `"Artículo añadido a tu carrito"` |
-| `"En existencias"` (2 veces) | `"En stock"` |
-| `"{{ quantity }} en existencias"` | `"{{ quantity }} en stock"` |
-| `"Bajas existencias"` | `"Pocas unidades"` |
-| `"Bajas existencias: quedan {{ quantity }}"` | `"Pocas unidades: quedan {{ quantity }}"` |
-| `Solo puedes agregar` (2 veces) | `Solo puedes añadir` |
-| `artículo agregado"` | `artículo añadido"` |
-| `artículos agregados"` (2 veces) | `artículos añadidos"` |
-| `"Pagar pedido"` | `"Finalizar compra"` |
-
----
-
-## Paso 10 · Comprobar
-
-1. Pulsa **Vista previa** en la copia del tema y revisa la home y la ficha de producto en móvil y escritorio
-   (lista de comprobación de `GARELON-CAMBIOS-RONDA-3.md`).
-2. Sigue la lista de tareas del Admin de `GARELON-GUIA.md` (título del producto, página de contacto, políticas,
-   página de cookies, zona de envío España). Los menús ya no hace falta configurarlos.
-3. Publica cuando todo esté bien.
+1. **Política de cookies.** Shopify no tiene una política de cookies propia. Crea una página (*Tienda online → Páginas*) con identificador `politica-de-cookies` o elígela en *Personalizar → Configuración del tema → GARELON · Enlaces*. Hasta entonces el pie no muestra ese enlace; así no hay enlaces rotos.
+2. **Aviso legal, Envíos, Privacidad y Términos:** rellénalos en *Configuración → Políticas*. El pie solo muestra las que tienen contenido.
+3. **Menús:** ya no hace falta tocarlos. La cabecera usa la navegación GARELON. Si algún día prefieres tu menú de Shopify, cámbialo en *Personalizar → Cabecera → Navegación*; los enlaces al catálogo se siguen ocultando.
+4. **Imágenes del producto (opcional).** La ficha de producto, el carrito y el checkout usan las imágenes del producto de Shopify, no las del tema. Si quieres la misma campaña en todas partes, sube a *Productos → el sérum → Multimedia* estas imágenes, en este orden: IMAGEN 1, 10, 7, 5, 4 y 9. Antes, comprueba en AutoDS que la sincronización **no sobrescriba las imágenes**.

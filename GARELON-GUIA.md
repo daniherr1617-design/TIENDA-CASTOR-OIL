@@ -30,13 +30,13 @@ La carpeta `referencias/` y los `.md` están en `.shopifyignore` y no se suben.
 | 2 | Productos → el sérum | **Cambia el título.** El de AutoDS («…Anti-wrinkle Remove Dark Circles…») promete *eliminar* ojeras. Propuesta: `Sérum contorno de ojos con aceite de ricino · Roller 10 ml`. |
 | 3 | Productos → el sérum | **Revisa la descripción.** Las descripciones importadas suelen traer ingredientes o promesas que no son ciertos (ácido hialurónico, «resultados en X días»…). Deja solo lo que coincida con la información real. |
 | 4 | AutoDS | Comprueba que la sincronización **no sobrescriba título ni descripción** (solo precio/stock). |
-| 5 | Productos → el sérum → Multimedia | Sube las fotos del producto en el orden del apartado 3. |
+| 5 | Productos → el sérum → Multimedia | Opcional: sube IMAGEN 1, 10, 7, 5, 4 y 9 en ese orden (apartado 3.1) para que la ficha de producto, el carrito y el checkout usen la misma campaña. Antes, comprueba que AutoDS no sobrescriba las imágenes. |
 | 6 | Tienda online → Páginas | **Contacto:** usa la página que ya existe (no crees otra) y asígnale la plantilla `contact` para que muestre el formulario. El theme la encuentra sola si su identificador es `contact`, `contacto`, `contactanos`, `contacta-con-nosotros` o `contact-us`. Si tiene otro, elígela en *Personalizar → Configuración del tema → GARELON · Enlaces*. **Preguntas frecuentes:** identificador `preguntas-frecuentes`, plantilla `faq` (el contenido puede quedar vacío). |
 | 7 | Configuración → Políticas | En **Política de reembolso** pega el texto de `GARELON-POLITICA-DEVOLUCIONES.md`. Completa también: Privacidad, Términos del servicio, Envío, Información de contacto y Aviso legal. El theme **no inventa** texto legal ni datos de empresa (dirección, NIF, email, teléfono). Aparecen solas en el pie de página. |
-| 8 | Tienda online → Navegación → `main-menu` | Inicio `/` · Producto (el producto) · Cómo usarlo `/#como-usarlo` · Ingredientes `/#ingredientes` · Preguntas frecuentes (página). |
+| 8 | Tienda online → Navegación | **Nada que hacer.** La cabecera usa la navegación GARELON (Inicio · Ingredientes · Preguntas frecuentes · Contacto) y nunca enlaza al catálogo. Se cambia en *Personalizar → Cabecera*. Si eliges «El menú de Shopify», los enlaces al catálogo y a colecciones se ocultan igualmente. |
 | 9 | Tienda online → Navegación | El bloque **Ayuda** del pie ya no depende de un menú: trae su texto y el enlace a contacto. Si enlazas páginas o políticas en tus menús, elígelas desde el selector (no escribas la URL a mano) y comprueba que existan y estén publicadas. |
-| 10 | Configuración → Envío y entrega | Crea la zona **España**. La barra superior dice «Envío disponible en España»; no promete envío gratis. |
-| 11 | Configuración → Privacidad del cliente | Activa el **banner de cookies de Shopify** si lo necesitas. El theme no añade un banner propio. |
+| 10 | Configuración → Envío y entrega | Crea la zona **España**. La barra superior dice «Envío disponible a toda España» (con bandera); no promete envío gratis ni plazos. |
+| 11 | Configuración → Privacidad del cliente · Tienda online → Páginas | Activa el **banner de cookies de Shopify** si lo necesitas (el theme no añade uno propio). Crea la página **Política de cookies** con identificador `politica-de-cookies` (o elígela en *Configuración del tema → GARELON · Enlaces*): el pie la enlaza en cuanto existe. |
 | 12 | Apps | Para reseñas, instala una app (p. ej. Judge.me o Product Reviews) y añade su bloque en *Personalizar → Producto → Añadir bloque → Apps*. Sin app no se muestra ninguna estrella. |
 | 13 | Personalizar → Configuración del tema → Redes sociales | Añade solo las redes que tengas. Vacías = no se muestran. |
 
@@ -51,47 +51,63 @@ El checkout lo controla Shopify: el theme no tiene acceso a su contenido. Shopif
 
 ## 3. Imágenes: dónde va cada una
 
-### 3.1 Galería del producto (Admin → Productos)
-La ficha de producto usa **solo** la multimedia del producto de Shopify. Orden recomendado con tus imágenes (están en `referencias/`):
+Las 7 imágenes de producto anteriores y sus recortes se han eliminado del tema. Se conservan los 2 archivos de marca (`referencias/logo-garelon-completo.png` = GARELON.png y `referencias/isotipo-garelon.png` = LOGOTIPO.png). De las 10 imágenes nuevas (`referencias/IMAGEN 1.png` … `IMAGEN 10.png`) se usan 6. Están en `assets/` solo redimensionadas a WebP (480, 720 y 1080 px): sin recortes, sin filtros y sin cambios de texto.
 
-1. `imagen-1.png` – producto + beneficios generales
-2. `imagen-7.png` – cómo usarlo (3 pasos)
-3. `imagen-6.png` – «Mirada más descansada»
-4. `imagen-4.png` – técnica de masaje con roller
-5. `imagen-2.png` – zona del contorno
-6. `imagen-3.png` y `imagen-5.png` – **antes/después (ver aviso)**
+### 3.1 Imágenes usadas
 
-> **Revisa el texto que llevan incrustado estas creatividades:**
-> - `imagen-7.png` dice «Rápido, sencillo y **eficaz**». *Eficaz* es una promesa de resultado que no podemos demostrar: mejor cambiarlo por «Rápido y sencillo».
-> - `imagen-3.png` y `imagen-5.png` son **antes/después**. Si no son fotos reales de clientes con este producto, pueden inducir a error. `imagen-5.png` no lleva ningún aviso; `imagen-3.png` sí («Imágenes de apoyo visual»). Te recomiendo no usar `imagen-5.png`, o añadirle ese mismo aviso y ponerla al final de la galería.
-> - El resto del texto de las creatividades usa formulaciones prudentes («ayuda a…», «apariencia de…»).
+| Imagen | Asset del tema | Dónde | Por qué |
+|---|---|---|---|
+| IMAGEN 1 | `garelon-img01-producto-*.webp` | Portada (imagen principal, carga prioritaria) · 1.ª de la galería de compra · página 404 | Foto limpia de frasco, caja y tapón, sin texto de marketing: se ve exactamente lo que se compra. |
+| IMAGEN 10 | `garelon-img10-presentacion-*.webp` | 2.ª de la galería de compra | Resume qué es (sérum con roller metálico, 10 ml) y los beneficios con formulación prudente. |
+| IMAGEN 7 | `garelon-img07-roller-*.webp` | Sección «El ritual comienza con el roller» · 3.ª de la galería | Única que explica el roller y la zona (bolsas, ojeras) sin antes/después. |
+| IMAGEN 5 | `garelon-img05-ingredientes-*.webp` | Sección Ingredientes (junto a la lista en texto) · 4.ª de la galería | Los 5 ingredientes declarados, ni uno más. |
+| IMAGEN 4 | `garelon-img04-modo-de-uso-*.webp` | Sección Cómo usarlo (home y ficha de producto, junto a los pasos en texto) · 5.ª de la galería | Los 3 pasos de uso en una sola imagen. |
+| IMAGEN 9 | `garelon-img09-tamano-*.webp` | 6.ª de la galería | Medidas reales de caja y frasco; información secundaria, justo antes de comprar. |
 
-### 3.2 Secciones del theme (Personalizar)
-Cada sección tiene un selector de imagen. Mientras esté vacío, se muestra un **recorte sin retocar** de tus fotografías reales, incluido en `assets/` (no se ha modificado el producto, solo se ha recortado y optimizado a WebP):
+### 3.2 Imágenes descartadas
 
-| Sección | Imagen por defecto (recorte de…) | Qué subir para mejorar |
-|---|---|---|
-| Portada – escritorio | `imagen-6.png` (frasco + caja, vertical) | Foto real vertical, ≥ 1200 px |
-| Portada – móvil | `imagen-7.png` (frasco + caja, horizontal) | Foto real horizontal ~5:4, ≥ 1000 px |
-| Imagen y texto «Cuidado diario…» | `imagen-1.png` (frasco, caja y tapón) | Foto real del packaging completo |
-| Imagen y texto «El ritual comienza con el roller» | `imagen-7.png`, paso 2 (detalle del roller) | **Primer plano real del roller ≥ 1000 px** (el recorte actual solo mide 320 px) |
-| Cómo usarlo – pasos 1, 2 y 3 | `imagen-7.png`, pasos 1-3 | Fotos reales de cada gesto ≥ 800 px |
-| Imagen y texto «Un pequeño gesto…» (editorial) | `imagen-4.png` (rostro de la modelo) | Foto de rutina/skincare |
-| Llamada final | `imagen-7.png` (frasco + caja) | Foto real del producto |
-| Logo | `referencias/logo-garelon-completo.png` | Opcional: *Configuración del tema → Logotipo* (la cabecera usa el nombre «GARELON» del logo y el pie, el logo completo) |
-| Favicon | `referencias/isotipo-garelon.png` | Opcional: *Configuración del tema → Logotipo → Favicon* |
+| Imagen | Motivo |
+|---|---|
+| IMAGEN 2 («Mirada más descansada») | Dice casi lo mismo que IMAGEN 10 y el titular tiene una errata visible: «descan**ș**ada» (una «ș» rumana en lugar de «s»). |
+| IMAGEN 3 («Ideal para el contorno de ojos») | La etiqueta del frasco pone «Baufven» en vez de «Baafven», así que no representa fielmente el envase. Además promete más de lo permitido («Ayuda a reducir bolsas» sin «apariencia», «Mejora el aspecto de firmeza»), repite los beneficios de IMAGEN 10 y es la más cargada de texto. |
+| IMAGEN 6 («Nutre y suaviza») | Incluye un **antes/después** sin respaldo de resultados reales con este producto. |
+| IMAGEN 8 («Aplicación con roller metálico») | Incluye un **antes/después** sin respaldo. Su papel (explicar el roller) ya lo cubre IMAGEN 7. |
+
+### 3.3 Textos dentro de las imágenes que conviene revisar
+No se han editado las imágenes. Si algún día las regeneras, estas frases son las menos prudentes:
+- IMAGEN 4: «Rápido, sencillo y **eficaz**» (promesa de resultado) y el paso 3 «para favorecer la **absorción**». El texto de la web dice «distribución».
+- IMAGEN 5: Colágeno «**mejora la elasticidad**» y Acetyl Tripeptide-1 «aspecto más firme, liso y **rejuvenecido**».
+
+### 3.4 Ficha de producto, carrito y checkout
+Usan la **multimedia del producto de Shopify** (la de AutoDS), no las imágenes del tema. Ver tarea 5 del apartado 2.
+
+### 3.5 Logo y favicon
+| Uso | Archivo |
+|---|---|
+| Cabecera: isotipo + «GARELON» | `garelon-isotipo-96.webp` + `garelon-wordmark-480.webp` (del logotipo completo) |
+| Pie y llamada final | `garelon-logo-240/480.webp`, `garelon-isotipo-96.webp` |
+| Favicon | `garelon-favicon-32.png`, `garelon-apple-touch-180.png` (del isotipo) |
 
 ---
 
 ## 4. Qué se ha construido
 
 ### Home (`templates/index.json`), por orden
-Portada · Barra de confianza · Beneficios · Producto (imagen y texto) · Roller (imagen y texto) · Ingredientes · Cómo usarlo · Editorial · **Producto destacado de Dawn** (precio, variantes, cantidad, stock y botones reales) · Preguntas frecuentes · Llamada final.
-Todo se puede editar, reordenar u ocultar desde *Personalizar*.
+1. **Portada** (IMAGEN 1): qué es, beneficio principal, precio real y «Comprar el sérum» → baja a la zona de compra (`/#comprar`).
+2. **Características**: aplicación precisa, roller metálico, rutina en 3 pasos, aceite de ricino.
+3. **Beneficios** (texto): ojeras, bolsas, líneas finas, hidratación.
+4. **Roller** (IMAGEN 7).
+5. **Ingredientes** (IMAGEN 5 + lista en texto con INCI) · `#ingredientes`.
+6. **Cómo usarlo** (IMAGEN 4 + 3 pasos en texto y nota de precaución) · `#como-usarlo`.
+7. **Compra** · `#comprar`: sección *Producto destacado* de Dawn con la **galería GARELON** (IMAGEN 1, 10, 7, 5, 4 y 9), precio, variantes, cantidad, Añadir al carrito, pago exprés y «En stock»/«Agotado» (solo si Shopify controla el inventario; nunca muestra unidades).
+8. **Preguntas frecuentes** (incluye las medidas del producto en texto) · `#preguntas-frecuentes`.
+9. **Llamada final** sin imagen: precio y «Comprar el sérum».
+
+Se han quitado de la home «Cuidado diario. Aplicación sencilla.» y «Un pequeño gesto para tu rutina diaria». Sus imágenes eran de la tanda antigua y no había una nueva sin texto que aportara algo distinto. Las secciones siguen disponibles en el editor.
 
 ### Ficha de producto (`templates/product.json`)
 Galería real · antetítulo · título · valoración (**solo** si hay reseñas reales) · precio/precio comparado · beneficio corto · variantes · packs (desactivado) · cantidad · Añadir al carrito + Comprar ahora · stock («En stock» / «Agotado», sin contadores de unidades) · 3 destacados · descripción de Shopify · pestañas Ingredientes / Modo de uso / Envíos y devoluciones · compartir.
-Debajo: barra de servicio (pago seguro, atención, envío, devoluciones) · Beneficios · Cómo usarlo · Preguntas frecuentes · **Compra fija en móvil**.
+Debajo: barra de servicio (pago seguro, atención, envío, devoluciones) · Beneficios · Cómo usarlo (IMAGEN 4 + pasos) · Preguntas frecuentes · **Compra fija en móvil**.
 Los datos estructurados (JSON-LD) de producto los genera Dawn con datos reales. No se han duplicado ni se han añadido valoraciones.
 
 ### Otras plantillas
@@ -103,26 +119,30 @@ Los datos estructurados (JSON-LD) de producto los genera Dawn con datos reales. 
 | `sections/garelon-hero.liquid` | GARELON Portada |
 | `sections/garelon-trust-bar.liquid` | GARELON Confianza |
 | `sections/garelon-benefits.liquid` | GARELON Beneficios |
-| `sections/garelon-image-text.liquid` | GARELON Imagen y texto (producto, roller, editorial) |
-| `sections/garelon-ingredients.liquid` | GARELON Ingredientes |
-| `sections/garelon-how-to-use.liquid` | GARELON Cómo usarlo |
+| `sections/garelon-image-text.liquid` | GARELON Imagen y texto (en la home: roller) |
+| `sections/garelon-ingredients.liquid` | GARELON Ingredientes (imagen de la sección + lista en texto) |
+| `sections/garelon-how-to-use.liquid` | GARELON Cómo usarlo (imagen de la sección + pasos en texto) |
 | `sections/garelon-faq.liquid` | GARELON FAQ |
 | `sections/garelon-final-cta.liquid` | GARELON Llamada final |
 | `sections/garelon-sticky-atc.liquid` | GARELON Compra fija (solo en la plantilla de producto) |
 
-Snippets: `garelon-image`, `garelon-fallback-image`, `garelon-srcset`, `garelon-icon`, `garelon-logo-fallback`, `garelon-price-inline`, `garelon-packs`, `garelon-url` (resuelve la URL real de contacto, devoluciones y envíos).
-Assets: `garelon.css` (capa de marca), `garelon.js` (solo se carga en la ficha de producto), imágenes `garelon-*.webp/png`.
+Snippets: `garelon-image`, `garelon-fallback-image`, `garelon-srcset`, `garelon-icon`, `garelon-logo-fallback`, `garelon-price-inline`, `garelon-packs`, `garelon-url` (URL real de contacto, devoluciones, envíos y cookies), `garelon-nav` (navegación GARELON), `garelon-gallery` (galería de compra), `garelon-stock` (En stock / Agotado), `garelon-flag-es` (bandera de la barra superior).
+Assets: `garelon.css` (capa de marca), `garelon.js` (solo en la ficha de producto), `garelon-nav.js` (cierra el menú móvil al pulsar un ancla), imágenes `garelon-*.webp/png`.
 
 ### Archivos de Dawn modificados (cambios mínimos)
-- `layout/theme.liquid`: favicon por defecto, `theme-color`, carga de `garelon.css`.
-- `sections/header.liquid`: el logo ya no es `<h1>` en la home (el H1 lo aporta la Portada); logo GARELON por defecto; isotipo a la izquierda del nombre (ajuste «Mostrar el isotipo GARELON junto al logo»).
-- `sections/footer.liquid`: logo GARELON por defecto en el bloque de marca; bloque «GARELON Ayuda»; enlaces de menú resueltos; la política de reembolsos se muestra como «Política de devoluciones y reembolsos».
-- `snippets/header-dropdown-menu.liquid`, `header-drawer.liquid`, `header-mega-menu.liquid`: los enlaces del menú a contacto y políticas se resuelven a su URL real.
-- `config/settings_schema.json`: grupo «GARELON · Enlaces» (página de contacto y, opcionalmente, de devoluciones y envíos).
-- `sections/featured-product.liquid`: si no eliges producto, usa el primero de la tienda.
-- `sections/main-product.liquid`: nuevo bloque opcional «GARELON Packs»; los enlaces de las pestañas desplegables se resuelven a su URL real.
-- `config/settings_data.json`: paleta, tipografías, botones, cart drawer, etc.
-- `sections/header-group.json`, `sections/footer-group.json`, `locales/es.json`.
+- `layout/theme.liquid`: favicon por defecto, `theme-color`, carga de `garelon.css`, `noindex` en catálogo, colecciones y búsqueda (siguen funcionando).
+- `sections/header.liquid`: el logo no es `<h1>` en la home; logo GARELON por defecto; isotipo a la izquierda del nombre; **navegación GARELON** (ajuste «Navegación» + casillas de Cómo usarlo, Ingredientes y Preguntas frecuentes) y opción de ocultar el catálogo si se usa el menú de Shopify.
+- `snippets/header-drawer.liquid`, `header-dropdown-menu.liquid`, `header-mega-menu.liquid`: navegación GARELON, sin enlaces a catálogo/colecciones, enlaces de contacto y políticas resueltos; en móvil, Búsqueda y Cuenta dentro del menú.
+- `sections/announcement-bar.liquid`: casilla «Mostrar la bandera de España al final del texto».
+- `sections/featured-product.liquid`: producto por defecto (el primero de la tienda), **galería GARELON**, ancla `comprar`, bloque «GARELON Stock».
+- `sections/footer.liquid`: logo GARELON por defecto; bloque «GARELON Ayuda»; enlaces legales en orden fijo (Contacto, Envíos, Devoluciones y reembolsos, Privacidad, Cookies, Términos y condiciones, Aviso legal) y solo si tienen contenido.
+- `sections/main-404.liquid`, `sections/main-cart-items.liquid`, `snippets/cart-drawer.liquid`: «Seguir comprando» lleva al inicio, no al catálogo.
+- `sections/main-product.liquid`: bloque opcional «GARELON Packs»; enlaces de las pestañas resueltos.
+- `config/settings_schema.json`: grupo «GARELON · Enlaces» (contacto, devoluciones, envíos y cookies).
+- `config/settings_data.json`, `sections/header-group.json`, `sections/footer-group.json`, `locales/es.json`.
+
+### Cabecera en móvil
+Menú · [isotipo GARELON] · carrito, con el logo centrado entre dos columnas iguales. La búsqueda y la cuenta están dentro del menú (Dawn ponía 4 iconos y en 320–430 px se montaban sobre el logo). De 750 a 989 px y en escritorio se mantienen en la barra.
 
 ### Ajustes globales (Configuración del tema)
 - **Colores**: esquema 1 crema `#F8F4EC`, esquema 2 beige `#EFE6D7`, esquema 3 oscuro `#1B1714` con dorado claro, esquema 4 blanco, esquema 5 dorado `#B88A3B`. El dorado es solo acento; para texto pequeño se usa un dorado oscurecido (`#7A5A24`) que cumple el contraste WCAG AA.
@@ -138,8 +158,10 @@ Bloque «GARELON Packs» en la ficha de producto, **desactivado** por defecto (o
 
 ## 5. Pruebas realizadas
 - **Theme Check** (`@shopify/theme-check-node`): 0 errores. Quedan los mismos 9 avisos que trae Dawn 16.0.0 original.
-- Validación propia: todos los ajustes y bloques de los JSON existen en el schema de su sección y tienen valores válidos.
-- Render local de las secciones GARELON con datos simulados en **360, 390, 430, 768, 1024 y 1440 px**: sin scroll horizontal y con el botón principal de la Portada dentro de la primera pantalla en móvil.
-- Prueba del JavaScript de la compra fija y de los packs sobre una maqueta con los mismos IDs y eventos de Dawn: aparece tras pasar el botón principal, envía el formulario real, se actualiza con la variante, muestra «Agotado» y se oculta al volver arriba.
+- Validación propia: todos los ajustes y bloques de los JSON existen en el schema de su sección y tienen valores válidos; todos los assets referenciados existen; ninguna referencia a las imágenes antiguas.
+- Render local de la home completa (barra, cabecera real con cuentas de cliente activadas, secciones, producto destacado de Dawn con la galería, FAQ, pie) con datos simulados en **320, 360, 375, 390, 430, 768, 1024 y 1440 px**: sin scroll horizontal, cabecera sin solapes (56 px en móvil), menú de escritorio en una línea, barra superior de una línea. Precio y botón de compra en la primera pantalla en 360 × 740, 375 × 667, 390 × 844 y 430 × 932 (en 320 × 640 el botón queda 28 px por debajo).
+- Interacción (Chromium): menú móvil (enlaces, Búsqueda/Cuenta, cierre al pulsar un ancla), botón de portada → `#comprar`, flechas y contador de la galería, orden de tabulación. Sin errores de JavaScript.
+- Enlaces de la home renderizada: todas las anclas existen; contacto y políticas llevan a su destino real; sin `href="#"` ni enlaces vacíos (salvo los selectores de país/idioma de Dawn, desactivados).
+- La guía de copiar y pegar se ha verificado aplicando sus «busca y sustituye» sobre Dawn original: da el mismo código que el repositorio.
 
-**No se ha podido probar** sin acceso a tu tienda: el renderizado real en Shopify, el formulario de producto, el carrito, el checkout, el menú móvil de Dawn ni el comportamiento con tus variantes y stock reales de AutoDS. Revísalo en la *Vista previa* antes de publicar: producto disponible, agotado, con una y con varias variantes, precio comparado, cantidad, cart drawer, menú móvil, FAQ y compra fija.
+**No se ha podido probar** sin acceso a tu tienda: el renderizado real en Shopify, el formulario de producto con tus variantes y stock reales de AutoDS, el carrito, el checkout y sus métodos de pago, la cuenta de cliente de Shopify, las apps y el editor visual. Revísalo en la *Vista previa* antes de publicar (lista de `GARELON-CAMBIOS-RONDA-3.md`).
