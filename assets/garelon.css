@@ -81,12 +81,68 @@
   .garelon-header-isotype {
     height: 2.3rem;
   }
+}
 
-  /* Logo centrado en móvil: el nombre conserva su posición y el isotipo ocupa
-     el hueco libre de la izquierda, sin acercarse a los iconos de la derecha. */
-  .header--mobile-center .garelon-brand-link {
-    margin-left: -2.7rem;
+/* Cabecera móvil (< 750 px): menú · [isotipo GARELON] · carrito.
+   Con la cuenta de cliente activada Dawn pone 4 iconos (menú, lupa, cuenta y carrito)
+   y en 320–430 px se montaban sobre el logo. La búsqueda y la cuenta pasan al menú
+   (.garelon-drawer-utility) y el logo queda centrado entre dos columnas iguales. */
+@media screen and (max-width: 749px) {
+  .section-header .header-wrapper .header.header--has-menu:not(.header--mobile-left) {
+    grid-template-areas: 'left-icons heading icons';
+    grid-template-columns: 1fr auto 1fr;
   }
+
+  .section-header .header-wrapper .header.header--has-menu > .header__search,
+  .section-header .header-wrapper .header.header--has-menu .header__icons > .header__search,
+  .section-header .header-wrapper .header.header--has-menu .header__icons > .header__icon--account {
+    display: none;
+  }
+}
+
+/* Búsqueda y cuenta dentro del menú móvil (solo cuando salen de la barra). */
+.garelon-drawer-utility {
+  display: none;
+  margin: 0;
+  padding: 1.2rem 0;
+}
+
+.garelon-drawer-utility__link {
+  display: flex;
+  align-items: center;
+  gap: 1.2rem;
+  padding: 1.1rem 3rem;
+  font-size: 1.5rem;
+  color: rgb(var(--color-foreground));
+  text-decoration: none;
+}
+
+.garelon-drawer-utility__link .svg-wrapper {
+  display: inline-flex;
+  width: 2rem;
+  height: 2rem;
+}
+
+.garelon-drawer-utility__link .icon {
+  width: 2rem;
+  height: 2rem;
+}
+
+@media screen and (max-width: 749px) {
+  .garelon-drawer-utility {
+    display: block;
+  }
+}
+
+/* Barra superior: bandera de España al final del texto, sin cambiar la altura. */
+.garelon-flag {
+  display: inline-block;
+  width: 1.5em;
+  height: 1em;
+  margin-left: 0.15em;
+  vertical-align: -0.12em;
+  border-radius: 0.15rem;
+  box-shadow: 0 0 0 0.05rem rgba(0, 0, 0, 0.12);
 }
 
 .footer .garelon-logo--stacked img {
@@ -160,6 +216,11 @@
     padding-top: var(--g-pt, 48px);
     padding-bottom: var(--g-pb, 48px);
   }
+}
+
+/* Destino de los botones «Comprar» (/#comprar): deja sitio a la cabecera fija. */
+.g-anchor[id] {
+  scroll-margin-top: 7.2rem;
 }
 
 /* ---------- Tipografía ---------- */
@@ -388,6 +449,14 @@
   gap: 0.6rem;
 }
 
+/* Móviles bajos (p. ej. 375 × 667): imagen algo menor para que precio y botón
+   entren en la primera pantalla. */
+@media screen and (max-width: 749px) and (max-height: 700px) {
+  .g-hero__media img {
+    max-height: 26vh;
+  }
+}
+
 @media screen and (min-width: 750px) {
   .g-hero__grid {
     grid-template-columns: 1fr 1fr;
@@ -564,6 +633,11 @@ a.g-trust__title {
   .g-split__grid--image-right .g-split__media {
     order: 2;
   }
+
+  .g-split__grid--no-media {
+    grid-template-columns: minmax(0, 1fr);
+    justify-items: center;
+  }
 }
 
 .g-media {
@@ -692,6 +766,38 @@ a.g-trust__title {
   }
 }
 
+/* Ingredientes con imagen (IMAGEN 5): imagen completa y, al lado, la lista en HTML. */
+.g-ingredients__layout--media {
+  display: grid;
+  gap: 2.8rem;
+  align-items: center;
+}
+
+.g-ingredients__visual {
+  width: 100%;
+  max-width: 52rem;
+  justify-self: center;
+}
+
+@media screen and (min-width: 990px) {
+  .g-ingredients__layout--media {
+    grid-template-columns: 1fr 1fr;
+    gap: 5rem;
+  }
+
+  .g-ingredients__layout--media .g-ingredients__grid {
+    grid-template-columns: 1fr 1fr;
+  }
+
+  .g-ingredients__layout--media .g-ingredients__item {
+    padding: 2rem 1.6rem;
+  }
+
+  .g-ingredients__layout--media .g-ingredients__item:last-child:nth-child(odd) {
+    grid-column: 1 / -1;
+  }
+}
+
 /* ---------- Cómo usarlo ---------- */
 .g-steps__list {
   display: grid;
@@ -766,6 +872,67 @@ a.g-trust__title {
   .g-steps__media {
     aspect-ratio: 4 / 3;
     border-radius: 999px 999px var(--g-radius) var(--g-radius);
+  }
+}
+
+/* Cómo usarlo con imagen (IMAGEN 4): la imagen ya muestra los pasos, así que al lado
+   van en una lista compacta de texto, legible en móvil y accesible. */
+.g-steps__layout--media {
+  display: grid;
+  gap: 2.8rem;
+  align-items: center;
+}
+
+.g-steps__visual {
+  width: 100%;
+  max-width: 52rem;
+  justify-self: center;
+}
+
+.g-steps__layout--media .g-note {
+  margin-top: 2rem;
+}
+
+.g-steps__list--stacked .g-steps__body {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  column-gap: 1.2rem;
+  align-items: baseline;
+}
+
+.g-steps__list--stacked .g-steps__number {
+  margin: 0;
+}
+
+.g-steps__list--stacked .g-h3 {
+  margin-bottom: 0.4rem;
+}
+
+.g-steps__list--stacked .g-steps__text {
+  grid-column: 2;
+}
+
+@media screen and (min-width: 750px) {
+  .g-steps__layout--media {
+    grid-template-columns: 1fr 1fr;
+    gap: 6rem;
+  }
+
+  .g-steps__list--stacked {
+    grid-auto-flow: row;
+    grid-auto-columns: auto;
+    gap: 1.6rem;
+  }
+
+  .g-steps__list--stacked .g-steps__item {
+    text-align: left;
+    padding-bottom: 1.6rem;
+    border-bottom: 1px solid var(--g-line);
+  }
+
+  .g-steps__list--stacked .g-steps__item:last-child {
+    padding-bottom: 0;
+    border-bottom: 0;
   }
 }
 
@@ -889,6 +1056,49 @@ a.g-trust__title {
   .g-final__grid {
     grid-template-columns: 1fr 1fr;
     gap: 6rem;
+  }
+
+  .g-final__grid--no-media {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}
+
+/* ---------- Galería de la zona de compra (home) ---------- */
+.g-gallery__track {
+  display: flex;
+  gap: 0;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  border-radius: var(--g-radius);
+  scrollbar-width: none;
+}
+
+.g-gallery__track::-webkit-scrollbar {
+  display: none;
+}
+
+.g-gallery__slide {
+  flex: 0 0 100%;
+  width: 100%;
+}
+
+.g-gallery__img {
+  display: block;
+  width: 100%;
+  height: auto;
+  border-radius: var(--g-radius);
+}
+
+.g-gallery__buttons {
+  margin-top: 0.4rem;
+}
+
+/* En móvil Dawn lleva la galería de producto de borde a borde: sin esquinas redondeadas. */
+@media screen and (max-width: 749px) {
+  .g-gallery__track,
+  .g-gallery__img {
+    border-radius: 0;
   }
 }
 

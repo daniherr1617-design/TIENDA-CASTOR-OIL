@@ -1,3 +1,10 @@
+{%- liquid
+  assign has_media = true
+  if section.settings.image == blank and section.settings.fallback_image == 'none'
+    assign has_media = false
+  endif
+-%}
+
 <div
   {% if section.settings.anchor != blank %}
     id="{{ section.settings.anchor | handleize }}"
@@ -18,25 +25,43 @@
       {%- endif -%}
     </div>
 
-    {%- if section.blocks.size > 0 -%}
-      <ul class="g-ingredients__grid" role="list">
-        {%- for block in section.blocks -%}
-          <li class="g-card g-ingredients__item" {{ block.shopify_attributes }}>
-            <h3 class="g-ingredients__name">{{ block.settings.name | escape }}</h3>
-            {%- if block.settings.inci != blank -%}
-              <p class="g-ingredients__inci">{{ block.settings.inci | escape }}</p>
-            {%- endif -%}
-            {%- if block.settings.text != blank -%}
-              <p class="g-ingredients__text">{{ block.settings.text | escape }}</p>
-            {%- endif -%}
-          </li>
-        {%- endfor -%}
-      </ul>
-    {%- endif -%}
+    <div class="g-ingredients__layout{% if has_media %} g-ingredients__layout--media{% endif %}">
+      {%- if has_media -%}
+        <div class="g-ingredients__visual g-media g-media--rounded">
+          <div class="g-media__frame">
+            {%- render 'garelon-fallback-image',
+              image: section.settings.image,
+              fallback: section.settings.fallback_image,
+              alt: section.settings.heading,
+              sizes: '(min-width: 990px) 540px, (min-width: 750px) 45vw, calc(100vw - 3rem)',
+              class: 'g-media__img'
+            -%}
+          </div>
+        </div>
+      {%- endif -%}
 
-    {%- if section.settings.show_note and section.settings.note != blank -%}
-      <p class="g-note g-note--center">{{ section.settings.note | escape }}</p>
-    {%- endif -%}
+      <div class="g-ingredients__content">
+        {%- if section.blocks.size > 0 -%}
+          <ul class="g-ingredients__grid" role="list">
+            {%- for block in section.blocks -%}
+              <li class="g-card g-ingredients__item" {{ block.shopify_attributes }}>
+                <h3 class="g-ingredients__name">{{ block.settings.name | escape }}</h3>
+                {%- if block.settings.inci != blank -%}
+                  <p class="g-ingredients__inci">{{ block.settings.inci | escape }}</p>
+                {%- endif -%}
+                {%- if block.settings.text != blank -%}
+                  <p class="g-ingredients__text">{{ block.settings.text | escape }}</p>
+                {%- endif -%}
+              </li>
+            {%- endfor -%}
+          </ul>
+        {%- endif -%}
+
+        {%- if section.settings.show_note and section.settings.note != blank -%}
+          <p class="g-note g-note--center">{{ section.settings.note | escape }}</p>
+        {%- endif -%}
+      </div>
+    </div>
   </div>
 </div>
 
@@ -67,6 +92,22 @@
       "type": "richtext",
       "id": "text",
       "label": "Texto"
+    },
+    {
+      "type": "image_picker",
+      "id": "image",
+      "label": "Imagen de la sección",
+      "info": "Vacía = la imagen del tema elegida abajo. La lista de ingredientes se mantiene siempre como texto."
+    },
+    {
+      "type": "select",
+      "id": "fallback_image",
+      "label": "Imagen del tema si no eliges ninguna",
+      "options": [
+        { "value": "img05-ingredientes", "label": "IMAGEN 5 · Ingredientes principales" },
+        { "value": "none", "label": "Ninguna (solo la lista)" }
+      ],
+      "default": "img05-ingredientes"
     },
     {
       "type": "checkbox",

@@ -1491,6 +1491,12 @@
         "id": "garelon_shipping_page",
         "label": "Página de envíos (opcional)",
         "info": "Solo se usa si la política de envío de Configuración → Políticas está vacía."
+      },
+      {
+        "type": "page",
+        "id": "garelon_cookies_page",
+        "label": "Página de política de cookies",
+        "info": "Shopify no tiene una política de cookies propia: créala como página. Si no eliges ninguna, el tema busca una página con identificador politica-de-cookies, cookies o politica-cookies; si no existe, el pie no muestra el enlace."
       }
     ]
   }

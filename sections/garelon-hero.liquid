@@ -1,12 +1,16 @@
 {%- liquid
   assign product = section.settings.product | default: collections.all.products.first
-  assign primary_url = section.settings.button_link | default: product.url | default: routes.all_products_collection_url
+  assign buy_url = routes.root_url | append: '#comprar'
+  assign primary_url = section.settings.button_link | default: buy_url
   assign heading_tag = 'h2'
   if section.settings.use_h1
     assign heading_tag = 'h1'
   endif
   assign desktop_image = section.settings.image
-  assign mobile_image = section.settings.image_mobile | default: section.settings.image
+  assign mobile_image = section.settings.image_mobile
+  assign single_image = desktop_image | default: mobile_image
+  assign hero_sizes = '(min-width: 1200px) 560px, (min-width: 750px) 48vw, calc(100vw - 3rem)'
+  assign hero_alt = 'Sérum para el contorno de ojos: frasco roller de vidrio ámbar de 10 ml con bola metálica, tapón negro y su caja'
 -%}
 
 <div
@@ -18,28 +22,33 @@
 >
   <div class="page-width g-hero__grid{% if section.settings.image_position == 'left' %} g-hero__grid--image-left{% endif %}{% unless section.settings.mobile_image_first %} g-hero__grid--text-first{% endunless %}">
     <div class="g-hero__media">
-      <picture>
-        <source
-          media="(min-width: 750px)"
-          srcset="{% render 'garelon-srcset', image: desktop_image, fallback: 'garelon-hero', fallback_widths: '400,640' %}"
-          sizes="(min-width: 1200px) 560px, 48vw"
-          {% if desktop_image != blank %}
-            width="{{ desktop_image.width }}" height="{{ desktop_image.height }}"
-          {% else %}
-            width="640" height="827"
-          {% endif %}
-        >
-        {%- render 'garelon-image',
-          image: mobile_image,
-          fallback: 'garelon-cta',
-          fallback_widths: '480,650',
-          fallback_height: 518,
-          alt: 'Sérum para el contorno de ojos con aplicador roller, frasco de vidrio ámbar y su caja',
-          sizes: '(min-width: 750px) 48vw, calc(100vw - 3rem)',
+      {%- if desktop_image != blank and mobile_image != blank -%}
+        <picture>
+          <source
+            media="(min-width: 750px)"
+            srcset="{% render 'garelon-srcset', image: desktop_image %}"
+            sizes="{{ hero_sizes }}"
+            width="{{ desktop_image.width }}"
+            height="{{ desktop_image.height }}"
+          >
+          {%- render 'garelon-image',
+            image: mobile_image,
+            alt: hero_alt,
+            sizes: hero_sizes,
+            class: 'g-hero__image',
+            eager: true
+          -%}
+        </picture>
+      {%- else -%}
+        {%- render 'garelon-fallback-image',
+          image: single_image,
+          fallback: 'img01-producto',
+          alt: hero_alt,
+          sizes: hero_sizes,
           class: 'g-hero__image',
           eager: true
         -%}
-      </picture>
+      {%- endif -%}
     </div>
 
     <div class="g-hero__content">
@@ -102,14 +111,14 @@
     {
       "type": "image_picker",
       "id": "image",
-      "label": "Imagen (escritorio)",
-      "info": "Fotografía REAL del producto (frasco + caja). Recomendado vertical, mínimo 1000 px de ancho. Si no eliges ninguna se usa la foto incluida en el tema."
+      "label": "Imagen",
+      "info": "Vacía = IMAGEN 1 (foto limpia del frasco, la caja y el tapón), incluida en el tema. Si eliges otra, que muestre el producto real y con poco texto."
     },
     {
       "type": "image_picker",
       "id": "image_mobile",
-      "label": "Imagen (móvil)",
-      "info": "Opcional. Recomendado horizontal (aprox. 5:4) para que el botón quede visible sin hacer scroll."
+      "label": "Imagen solo para móvil (opcional)",
+      "info": "Solo si quieres una imagen distinta en móvil. Las imágenes bajas (horizontales o cuadradas) dejan el botón visible sin hacer scroll."
     },
     {
       "type": "select",
@@ -171,13 +180,13 @@
       "type": "text",
       "id": "button_label",
       "label": "Texto del botón principal",
-      "default": "Descubrir el sérum"
+      "default": "Comprar el sérum"
     },
     {
       "type": "url",
       "id": "button_link",
       "label": "Enlace del botón principal",
-      "info": "Vacío = página del producto seleccionado."
+      "info": "Vacío = zona de compra de la home (/#comprar)."
     },
     {
       "type": "text",

@@ -1,6 +1,11 @@
 {%- liquid
   assign product = section.settings.product | default: collections.all.products.first
-  assign button_url = section.settings.button_link | default: product.url | default: routes.all_products_collection_url
+  assign buy_url = routes.root_url | append: '#comprar'
+  assign button_url = section.settings.button_link | default: buy_url
+  assign has_media = true
+  if section.settings.image == blank and section.settings.fallback_image == 'none'
+    assign has_media = false
+  endif
 -%}
 
 <div
@@ -10,7 +15,7 @@
   class="g-section g-final color-{{ section.settings.color_scheme }} gradient"
   style="--g-pt: {{ section.settings.padding_top }}px; --g-pb: {{ section.settings.padding_bottom }}px;"
 >
-  <div class="page-width g-final__grid">
+  <div class="page-width g-final__grid{% unless has_media %} g-final__grid--no-media{% endunless %}">
     <div class="g-final__content">
       {%- if section.settings.show_isotype -%}
         <img
@@ -37,17 +42,19 @@
         </div>
       {%- endif -%}
     </div>
-    <div class="g-final__media g-media g-media--rounded">
-      <div class="g-media__frame">
-        {%- render 'garelon-fallback-image',
-          image: section.settings.image,
-          fallback: section.settings.fallback_image,
-          alt: 'Sérum para el contorno de ojos con aplicador roller y su caja',
-          sizes: '(min-width: 990px) 560px, (min-width: 750px) 48vw, calc(100vw - 3rem)',
-          class: 'g-media__img'
-        -%}
+    {%- if has_media -%}
+      <div class="g-final__media g-media g-media--rounded">
+        <div class="g-media__frame">
+          {%- render 'garelon-fallback-image',
+            image: section.settings.image,
+            fallback: section.settings.fallback_image,
+            alt: 'Sérum para el contorno de ojos con aplicador roller y su caja',
+            sizes: '(min-width: 990px) 560px, (min-width: 750px) 48vw, calc(100vw - 3rem)',
+            class: 'g-media__img'
+          -%}
+        </div>
       </div>
-    </div>
+    {%- endif -%}
   </div>
 </div>
 
@@ -61,19 +68,18 @@
       "type": "image_picker",
       "id": "image",
       "label": "Imagen",
-      "info": "Fotografía REAL del producto."
+      "info": "Imagen del producto REAL."
     },
     {
       "type": "select",
       "id": "fallback_image",
-      "label": "Foto por defecto si no eliges imagen",
+      "label": "Imagen del tema si no eliges ninguna",
       "options": [
-        { "value": "cta", "label": "Producto: horizontal" },
-        { "value": "producto", "label": "Producto: frasco, caja y tapón" },
-        { "value": "hero", "label": "Producto: vertical" },
-        { "value": "none", "label": "Ninguna (marcador)" }
+        { "value": "none", "label": "Ninguna (solo texto, centrado)" },
+        { "value": "img01-producto", "label": "IMAGEN 1 · Producto (frasco, caja y tapón)" },
+        { "value": "img10-presentacion", "label": "IMAGEN 10 · Presentación y beneficios" }
       ],
-      "default": "cta"
+      "default": "none"
     },
     {
       "type": "checkbox",
@@ -102,13 +108,13 @@
       "type": "text",
       "id": "button_label",
       "label": "Texto del botón",
-      "default": "Descubrir GARELON"
+      "default": "Comprar el sérum"
     },
     {
       "type": "url",
       "id": "button_link",
       "label": "Enlace del botón",
-      "info": "Vacío = página del producto seleccionado."
+      "info": "Vacío = zona de compra de la home (/#comprar)."
     },
     {
       "type": "product",

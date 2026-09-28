@@ -6,6 +6,13 @@
     <meta name="viewport" content="width=device-width,initial-scale=1">
     <meta name="theme-color" content="{{ settings.color_schemes['scheme-1'].settings.background }}">
     <link rel="canonical" href="{{ canonical_url }}">
+    {%- comment -%}
+      GARELON: tienda de un solo producto. El catálogo, las colecciones y los resultados de
+      búsqueda no se enlazan desde la navegación y no se indexan (siguen funcionando).
+    {%- endcomment -%}
+    {%- if request.page_type == 'collection' or request.page_type == 'list-collections' or request.page_type == 'search' -%}
+      <meta name="robots" content="noindex, follow">
+    {%- endif -%}
 
     {%- if settings.favicon != blank -%}
       <link rel="icon" type="image/png" href="{{ settings.favicon | image_url: width: 32, height: 32 }}">

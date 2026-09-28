@@ -336,20 +336,67 @@
         </small>
         <small class="copyright__content">{{ powered_by_link }}</small>
         {%- if section.settings.show_policy -%}
+          {%- comment -%}
+            GARELON: enlaces legales en un orden fijo y con nombres completos. Solo aparecen
+            las políticas que tienen contenido en el Admin (ningún enlace vacío). Contacto y
+            cookies son páginas; el resto, políticas de Shopify.
+          {%- endcomment -%}
+          {%- liquid
+            capture contact_url
+              render 'garelon-url', type: 'contact'
+            endcapture
+            capture cookies_url
+              render 'garelon-url', type: 'cookies'
+            endcapture
+            assign contact_url = contact_url | strip
+            assign cookies_url = cookies_url | strip
+            assign policy_order = 'shipping-policy,refund-policy,privacy-policy,cookies,terms-of-service,legal-notice' | split: ','
+          -%}
           <ul class="policies list-unstyled">
+            <li>
+              <small class="copyright__content"><a href="{{ contact_url }}">Contacto</a></small>
+            </li>
+            {%- for key in policy_order -%}
+              {%- if key == 'cookies' -%}
+                {%- if cookies_url != blank -%}
+                  <li>
+                    <small class="copyright__content"><a href="{{ cookies_url }}">Política de cookies</a></small>
+                  </li>
+                {%- endif -%}
+              {%- else -%}
+                {%- for policy in shop.policies -%}
+                  {%- if policy != blank and policy.url contains key -%}
+                    {%- liquid
+                      case key
+                        when 'shipping-policy'
+                          assign policy_title = 'Política de envíos'
+                        when 'refund-policy'
+                          assign policy_title = 'Política de devoluciones y reembolsos'
+                        when 'terms-of-service'
+                          assign policy_title = 'Términos y condiciones'
+                        else
+                          assign policy_title = policy.title
+                      endcase
+                    -%}
+                    <li>
+                      <small class="copyright__content"><a href="{{ policy.url }}">{{ policy_title | escape }}</a></small>
+                    </li>
+                  {%- endif -%}
+                {%- endfor -%}
+              {%- endif -%}
+            {%- endfor -%}
             {%- for policy in shop.policies -%}
-              {%- if policy != blank -%}
+              {%- liquid
+                assign listed = false
+                for key in policy_order
+                  if policy.url contains key
+                    assign listed = true
+                  endif
+                endfor
+              -%}
+              {%- if policy != blank and listed == false -%}
                 <li>
-                  {%- comment -%} GARELON: nombre completo de la política de reembolsos en el pie. {%- endcomment -%}
-                  {%- liquid
-                    assign policy_title = policy.title
-                    if policy.url contains 'refund-policy'
-                      assign policy_title = 'Política de devoluciones y reembolsos'
-                    endif
-                  -%}
-                  <small class="copyright__content"
-                    ><a href="{{ policy.url }}">{{ policy_title | escape }}</a></small
-                  >
+                  <small class="copyright__content"><a href="{{ policy.url }}">{{ policy.title | escape }}</a></small>
                 </li>
               {%- endif -%}
             {%- endfor -%}
@@ -400,7 +447,7 @@
           "type": "richtext",
           "id": "text",
           "label": "Texto",
-          "default": "<p>¿Tienes alguna duda sobre tu pedido o nuestros productos? Nuestro equipo está aquí para ayudarte.</p>"
+          "default": "<p>¿Necesitas ayuda? Estamos aquí para resolver cualquier duda sobre tu pedido, nuestros productos o el proceso de compra.</p>"
         },
         {
           "type": "text",

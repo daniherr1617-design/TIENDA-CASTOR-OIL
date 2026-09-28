@@ -38,7 +38,7 @@
         "use_h1": true,
         "text": "<p>Sérum para el contorno de ojos con aceite de ricino y aplicador roller, diseñado para aportar hidratación y complementar tu rutina diaria de cuidado.</p>",
         "show_price": true,
-        "button_label": "Descubrir el sérum",
+        "button_label": "Comprar el sérum",
         "button2_label": "Cómo se usa",
         "button2_link": "/#como-usarlo",
         "color_scheme": "scheme-1",
@@ -152,34 +152,16 @@
         "padding_bottom": 56
       }
     },
-    "showcase": {
-      "type": "garelon-image-text",
-      "settings": {
-        "fallback_image": "producto",
-        "image_shape": "rounded",
-        "image_position": "left",
-        "show_massage_lines": false,
-        "eyebrow": "El producto",
-        "heading": "Cuidado diario. Aplicación sencilla.",
-        "text": "<p>Su formato roller permite distribuir el sérum directamente sobre el contorno de ojos mientras realizas un masaje suave.</p><p>Frasco de vidrio ámbar de 10 ml con aplicador de bola metálica y tapón.</p>",
-        "button_label": "Ver producto",
-        "button_secondary": false,
-        "color_scheme": "scheme-1",
-        "anchor": "producto",
-        "padding_top": 56,
-        "padding_bottom": 56
-      }
-    },
     "roller": {
       "type": "garelon-image-text",
       "settings": {
-        "fallback_image": "roller",
-        "image_shape": "circle",
+        "fallback_image": "img07-roller",
+        "image_shape": "rounded",
         "image_position": "right",
-        "show_massage_lines": true,
+        "show_massage_lines": false,
         "eyebrow": "Aplicador roller",
         "heading": "El ritual comienza con el roller",
-        "text": "<p>Deslízalo suavemente por el contorno de ojos para distribuir el sérum mientras realizas un masaje ligero.</p><p>Roller metálico para una aplicación suave y cómoda.</p>",
+        "text": "<p>Deslízalo suavemente por el contorno de ojos, la zona donde suelen notarse las bolsas y las ojeras, para distribuir el sérum mientras realizas un masaje ligero.</p><p>Bola metálica para una aplicación precisa y cómoda.</p>",
         "button_label": "",
         "button_secondary": false,
         "color_scheme": "scheme-2",
@@ -248,7 +230,8 @@
         "color_scheme": "scheme-1",
         "anchor": "ingredientes",
         "padding_top": 56,
-        "padding_bottom": 56
+        "padding_bottom": 56,
+        "fallback_image": "img05-ingredientes"
       }
     },
     "how_to": {
@@ -257,7 +240,6 @@
         "paso-1": {
           "type": "step",
           "settings": {
-            "fallback_image": "paso-1",
             "label": "01",
             "title": "Limpia",
             "text": "Limpia y seca bien el rostro y el contorno de ojos."
@@ -266,19 +248,17 @@
         "paso-2": {
           "type": "step",
           "settings": {
-            "fallback_image": "paso-2",
             "label": "02",
             "title": "Aplica",
-            "text": "Desliza suavemente el roller alrededor del contorno."
+            "text": "Presiona y desliza suavemente el roller para que salga el sérum y distribúyelo por el contorno."
           }
         },
         "paso-3": {
           "type": "step",
           "settings": {
-            "fallback_image": "paso-3",
             "label": "03",
             "title": "Masajea",
-            "text": "Realiza movimientos suaves con la bola metálica para distribuir el sérum."
+            "text": "Masajea con suavidad con la bola metálica para favorecer la distribución del sérum."
           }
         }
       },
@@ -290,30 +270,13 @@
       "settings": {
         "eyebrow": "Cómo usarlo",
         "heading": "3 pasos. Menos de un minuto.",
-        "show_images": true,
+        "show_images": false,
         "note": "Solo para uso externo. Evita el contacto directo con los ojos. Si notas cualquier molestia, interrumpe su uso.",
         "color_scheme": "scheme-2",
         "anchor": "como-usarlo",
         "padding_top": 56,
-        "padding_bottom": 56
-      }
-    },
-    "editorial": {
-      "type": "garelon-image-text",
-      "settings": {
-        "fallback_image": "editorial",
-        "image_shape": "arch",
-        "image_position": "left",
-        "show_massage_lines": false,
-        "eyebrow": "Tu ritual",
-        "heading": "Un pequeño gesto para tu rutina diaria",
-        "text": "<p>Convierte el cuidado del contorno de ojos en uno de esos pequeños momentos que apetece repetir cada día.</p>",
-        "button_label": "",
-        "button_secondary": false,
-        "color_scheme": "scheme-3",
-        "anchor": "",
-        "padding_top": 56,
-        "padding_bottom": 56
+        "padding_bottom": 56,
+        "fallback_image": "img04-uso"
       }
     },
     "product_cta": {
@@ -360,6 +323,10 @@
             "show_dynamic_checkout": true,
             "show_gift_card_recipient": false
           }
+        },
+        "stock": {
+          "type": "garelon_stock",
+          "settings": {}
         }
       },
       "block_order": [
@@ -369,7 +336,8 @@
         "subtitle",
         "variant_picker",
         "quantity_selector",
-        "buy_buttons"
+        "buy_buttons",
+        "stock"
       ],
       "settings": {
         "color_scheme": "scheme-1",
@@ -382,7 +350,9 @@
         "hide_variants": true,
         "enable_video_looping": false,
         "padding_top": 56,
-        "padding_bottom": 56
+        "padding_bottom": 56,
+        "garelon_gallery": true,
+        "garelon_anchor": "comprar"
       }
     },
     "faq": {
@@ -412,8 +382,8 @@
         "q-cantidad": {
           "type": "question",
           "settings": {
-            "question": "¿Cuánto producto contiene?",
-            "answer": "<p>Cada frasco contiene 10 ml (0.34 fl oz).</p>"
+            "question": "¿Cuánto producto contiene y qué tamaño tiene?",
+            "answer": "<p>Cada frasco contiene 10 ml (0.34 fl oz). La caja mide 8,7 cm de alto, 2,2 cm de ancho y 2,2 cm de fondo, y el frasco, aproximadamente 8,4 cm de alto y 1,9 cm de ancho.</p>"
           }
         },
         "q-donde": {
@@ -469,12 +439,12 @@
     "final_cta": {
       "type": "garelon-final-cta",
       "settings": {
-        "fallback_image": "cta",
+        "fallback_image": "none",
         "show_isotype": true,
         "heading": "Tu rutina empieza con un pequeño gesto",
         "text": "<p>Cuidado diario para tu mirada.</p>",
-        "show_price": false,
-        "button_label": "Descubrir GARELON",
+        "show_price": true,
+        "button_label": "Comprar el sérum",
         "color_scheme": "scheme-1",
         "anchor": "",
         "padding_top": 56,
@@ -486,11 +456,9 @@
     "hero",
     "trust",
     "benefits",
-    "showcase",
     "roller",
     "ingredients",
     "how_to",
-    "editorial",
     "product_cta",
     "faq",
     "final_cta"

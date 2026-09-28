@@ -1,0 +1,43 @@
+{%- comment -%}
+  GARELON · Estado de stock para la zona de compra de la home (sección Producto destacado).
+
+  Misma lógica que el bloque «Inventario» de la ficha de producto de Dawn, sin avisos de
+  «pocas unidades» ni número de unidades: solo «En stock» o «Agotado», y solo cuando Shopify
+  controla el inventario de la variante (los datos que sincroniza AutoDS). Si no lo controla,
+  no se afirma nada. El id Inventory-<sección> permite que product-info.js de Dawn lo
+  actualice al cambiar de variante.
+
+  Accepts:
+  - variant: {Object} variante seleccionada o primera disponible
+  - section_id: {String}
+  - block: {Object} bloque, para el editor de temas
+
+  Usage:
+  {% render 'garelon-stock', variant: product.selected_or_first_available_variant, section_id: section.id, block: block %}
+{%- endcomment -%}
+{%- liquid
+  assign tracked = false
+  if variant.inventory_management == 'shopify'
+    assign tracked = true
+  endif
+-%}
+<p
+  id="Inventory-{{ section_id }}"
+  class="product__inventory{% unless tracked %} visibility-hidden{% endunless %}"
+  role="status"
+  {{ block.shopify_attributes }}
+>
+  {%- if tracked -%}
+    {%- if variant.inventory_quantity > 0 or variant.inventory_policy == 'continue' -%}
+      <span class="svg-wrapper" style="color: rgb(62, 214, 96)">
+        {{- 'icon-inventory-status.svg' | inline_asset_content -}}
+      </span>
+      {{- 'products.product.inventory_in_stock' | t -}}
+    {%- else -%}
+      <span class="svg-wrapper" style="color: rgb(200, 200, 200)">
+        {{- 'icon-inventory-status.svg' | inline_asset_content -}}
+      </span>
+      {{- 'products.product.inventory_out_of_stock' | t -}}
+    {%- endif -%}
+  {%- endif -%}
+</p>

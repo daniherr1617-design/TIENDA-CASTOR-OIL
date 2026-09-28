@@ -125,6 +125,7 @@
 {%- endstyle -%}
 
 <script src="{{ 'cart-notification.js' | asset_url }}" defer="defer"></script>
+<script src="{{ 'garelon-nav.js' | asset_url }}" defer="defer"></script>
 
 {%- liquid
   for block in section.blocks
@@ -163,15 +164,21 @@
     if section.settings.enable_language_selector and localization.available_languages.size > 1
       assign language_selector = true
     endif
+
+    # GARELON: la navegación GARELON (Inicio, secciones de la home y Contacto) no depende de un menú del Admin.
+    assign has_nav = false
+    if section.settings.menu != blank or section.settings.nav_source == 'garelon'
+      assign has_nav = true
+    endif
   -%}
-  <header class="header header--{{ section.settings.logo_position }} header--mobile-{{ section.settings.mobile_logo_position }} page-width{% if section.settings.menu_type_desktop == 'drawer' %} drawer-menu{% endif %}{% if section.settings.menu != blank %} header--has-menu{% endif %}{% if has_app_block %} header--has-app{% endif %}{% if social_links %} header--has-social{% endif %}{% if shop.customer_accounts_enabled %} header--has-account{% endif %}{% if country_selector or language_selector %} header--has-localizations{% endif %}">
+  <header class="header header--{{ section.settings.logo_position }} header--mobile-{{ section.settings.mobile_logo_position }} page-width{% if section.settings.menu_type_desktop == 'drawer' %} drawer-menu{% endif %}{% if has_nav %} header--has-menu{% endif %}{% if has_app_block %} header--has-app{% endif %}{% if social_links %} header--has-social{% endif %}{% if shop.customer_accounts_enabled %} header--has-account{% endif %}{% if country_selector or language_selector %} header--has-localizations{% endif %}">
     {%- liquid
       assign render_search_left = false
-      if section.settings.logo_position == 'top-center' or section.settings.menu == blank or shop.customer_accounts_enabled
+      if section.settings.logo_position == 'top-center' or has_nav == false or shop.customer_accounts_enabled
         assign render_search_left = true
       endif
 
-      if section.settings.menu != blank
+      if has_nav
         render 'header-drawer', show_country_selector: country_selector, show_language_selector: language_selector, show_social_links: social_links
       endif
 
@@ -215,10 +222,12 @@
     {%- endif -%}
 
     {%- liquid
-      if section.settings.menu != blank
-        if section.settings.menu_type_desktop == 'dropdown'
+      if has_nav and section.settings.menu_type_desktop != 'drawer'
+        if section.settings.nav_source == 'garelon'
+          render 'garelon-nav', variant: 'inline'
+        elsif section.settings.menu_type_desktop == 'dropdown'
           render 'header-dropdown-menu'
-        elsif section.settings.menu_type_desktop != 'drawer'
+        else
           render 'header-mega-menu'
         endif
       endif
@@ -559,6 +568,43 @@
       "id": "menu",
       "default": "main-menu",
       "label": "t:sections.header.settings.menu.label"
+    },
+    {
+      "type": "select",
+      "id": "nav_source",
+      "label": "Navegación (GARELON)",
+      "options": [
+        { "value": "garelon", "label": "GARELON: Inicio, secciones de la home y Contacto" },
+        { "value": "shopify", "label": "El menú de Shopify elegido arriba" }
+      ],
+      "default": "garelon",
+      "info": "GARELON no necesita configurar menús en el Admin y nunca enlaza al catálogo. Contacto usa tu página de contacto real."
+    },
+    {
+      "type": "checkbox",
+      "id": "nav_show_how",
+      "label": "Navegación GARELON: «Cómo usarlo» (/#como-usarlo)",
+      "info": "Desactivado por defecto: la portada ya tiene el botón «Cómo se usa» y con 5 enlaces el menú de escritorio no cabe en una línea entre 990 y 1199 px.",
+      "default": false
+    },
+    {
+      "type": "checkbox",
+      "id": "nav_show_ingredients",
+      "label": "Navegación GARELON: «Ingredientes» (/#ingredientes)",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "nav_show_faq",
+      "label": "Navegación GARELON: «Preguntas frecuentes» (/#preguntas-frecuentes)",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "hide_catalog_links",
+      "label": "Menú de Shopify: ocultar enlaces al catálogo y a colecciones",
+      "info": "Solo afecta a la cabecera y al menú móvil. Las colecciones siguen existiendo en Shopify.",
+      "default": true
     },
     {
       "type": "select",

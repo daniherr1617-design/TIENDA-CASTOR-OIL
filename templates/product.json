@@ -259,7 +259,6 @@
         "paso-1": {
           "type": "step",
           "settings": {
-            "fallback_image": "paso-1",
             "label": "01",
             "title": "Limpia",
             "text": "Limpia y seca bien el rostro y el contorno de ojos."
@@ -268,19 +267,17 @@
         "paso-2": {
           "type": "step",
           "settings": {
-            "fallback_image": "paso-2",
             "label": "02",
             "title": "Aplica",
-            "text": "Desliza suavemente el roller alrededor del contorno."
+            "text": "Presiona y desliza suavemente el roller para que salga el sérum y distribúyelo por el contorno."
           }
         },
         "paso-3": {
           "type": "step",
           "settings": {
-            "fallback_image": "paso-3",
             "label": "03",
             "title": "Masajea",
-            "text": "Realiza movimientos suaves con la bola metálica para distribuir el sérum."
+            "text": "Masajea con suavidad con la bola metálica para favorecer la distribución del sérum."
           }
         }
       },
@@ -292,12 +289,13 @@
       "settings": {
         "eyebrow": "Cómo usarlo",
         "heading": "3 pasos. Menos de un minuto.",
-        "show_images": true,
+        "show_images": false,
         "note": "Solo para uso externo. Evita el contacto directo con los ojos. Si notas cualquier molestia, interrumpe su uso.",
         "color_scheme": "scheme-1",
         "anchor": "como-usarlo",
         "padding_top": 56,
-        "padding_bottom": 56
+        "padding_bottom": 56,
+        "fallback_image": "img04-uso"
       }
     },
     "faq": {

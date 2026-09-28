@@ -1,6 +1,10 @@
 {%- liquid
   assign product = section.settings.product | default: collections.all.products.first
-  assign button_url = section.settings.button_link | default: product.url | default: routes.all_products_collection_url
+  assign button_url = section.settings.button_link | default: product.url | default: routes.root_url
+  assign has_media = true
+  if section.settings.image == blank and section.settings.fallback_image == 'none'
+    assign has_media = false
+  endif
 -%}
 
 <div
@@ -10,26 +14,28 @@
   class="g-section g-split color-{{ section.settings.color_scheme }} gradient"
   style="--g-pt: {{ section.settings.padding_top }}px; --g-pb: {{ section.settings.padding_bottom }}px;"
 >
-  <div class="page-width g-split__grid{% if section.settings.image_position == 'right' %} g-split__grid--image-right{% endif %}">
-    <div class="g-split__media g-media g-media--{{ section.settings.image_shape }}">
-      <div class="g-media__frame">
-        {%- render 'garelon-fallback-image',
-          image: section.settings.image,
-          fallback: section.settings.fallback_image,
-          alt: section.settings.heading,
-          sizes: '(min-width: 990px) 540px, (min-width: 750px) 45vw, calc(100vw - 3rem)',
-          class: 'g-media__img'
-        -%}
+  <div class="page-width g-split__grid{% if section.settings.image_position == 'right' %} g-split__grid--image-right{% endif %}{% unless has_media %} g-split__grid--no-media{% endunless %}">
+    {%- if has_media -%}
+      <div class="g-split__media g-media g-media--{{ section.settings.image_shape }}">
+        <div class="g-media__frame">
+          {%- render 'garelon-fallback-image',
+            image: section.settings.image,
+            fallback: section.settings.fallback_image,
+            alt: section.settings.heading,
+            sizes: '(min-width: 990px) 540px, (min-width: 750px) 45vw, calc(100vw - 3rem)',
+            class: 'g-media__img'
+          -%}
+        </div>
+        {%- if section.settings.show_massage_lines -%}
+          <svg class="g-massage-lines" viewBox="0 0 120 70" aria-hidden="true" focusable="false">
+            <path d="M8 22 C 35 4, 85 4, 112 22" />
+            <path d="M104 14 L112 22 L101 25" />
+            <path d="M112 48 C 85 66, 35 66, 8 48" />
+            <path d="M16 56 L8 48 L19 45" />
+          </svg>
+        {%- endif -%}
       </div>
-      {%- if section.settings.show_massage_lines -%}
-        <svg class="g-massage-lines" viewBox="0 0 120 70" aria-hidden="true" focusable="false">
-          <path d="M8 22 C 35 4, 85 4, 112 22" />
-          <path d="M104 14 L112 22 L101 25" />
-          <path d="M112 48 C 85 66, 35 66, 8 48" />
-          <path d="M16 56 L8 48 L19 45" />
-        </svg>
-      {%- endif -%}
-    </div>
+    {%- endif -%}
 
     <div class="g-split__content">
       {%- if section.settings.eyebrow != blank -%}
@@ -65,29 +71,30 @@
       "type": "image_picker",
       "id": "image",
       "label": "Imagen",
-      "info": "Si el producto aparece en la foto, usa siempre fotografías REALES del producto."
+      "info": "Si el producto aparece en la foto, usa siempre imágenes del producto REAL."
     },
     {
       "type": "select",
       "id": "fallback_image",
-      "label": "Foto por defecto si no eliges imagen",
+      "label": "Imagen del tema si no eliges ninguna",
       "options": [
-        { "value": "producto", "label": "Producto: frasco, caja y tapón" },
-        { "value": "hero", "label": "Producto: vertical" },
-        { "value": "cta", "label": "Producto: horizontal" },
-        { "value": "roller", "label": "Detalle del roller" },
-        { "value": "paso-3", "label": "Roller sobre el contorno" },
-        { "value": "editorial", "label": "Rutina / rostro" },
-        { "value": "none", "label": "Ninguna (marcador)" }
+        { "value": "img01-producto", "label": "IMAGEN 1 · Producto (frasco, caja y tapón)" },
+        { "value": "img10-presentacion", "label": "IMAGEN 10 · Presentación y beneficios" },
+        { "value": "img07-roller", "label": "IMAGEN 7 · Técnica de masaje con roller" },
+        { "value": "img05-ingredientes", "label": "IMAGEN 5 · Ingredientes" },
+        { "value": "img04-uso", "label": "IMAGEN 4 · Cómo usarlo" },
+        { "value": "img09-tamano", "label": "IMAGEN 9 · Tamaño del producto" },
+        { "value": "none", "label": "Ninguna (solo texto)" }
       ],
-      "default": "producto"
+      "default": "img01-producto"
     },
     {
       "type": "select",
       "id": "image_shape",
       "label": "Forma de la imagen",
+      "info": "Arco y círculo recortan la imagen: úsalos solo con fotografías sin texto.",
       "options": [
-        { "value": "rounded", "label": "Rectángulo suave" },
+        { "value": "rounded", "label": "Rectángulo suave (imagen completa)" },
         { "value": "arch", "label": "Arco" },
         { "value": "circle", "label": "Círculo" }
       ],

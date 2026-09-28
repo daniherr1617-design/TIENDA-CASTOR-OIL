@@ -15,6 +15,8 @@
 
   Accepts (uno de los tres):
   - type: 'contact' | 'refund' | 'shipping' → imprime esa URL.
+    type: 'cookies' → la página de política de cookies, o nada si no existe
+    (Shopify no tiene una ruta nativa para cookies).
   - url: una URL (p. ej. de un ajuste de tipo url) → la imprime resuelta si es una
     de las rutas anteriores; cualquier otra URL se imprime sin cambios.
   - html: texto enriquecido → lo imprime con esos enlaces resueltos.
@@ -76,6 +78,21 @@
     assign shipping_url = '/policies/shipping-policy'
   endif
 
+  assign cookies_url = ''
+  if type == 'cookies'
+    if settings.garelon_cookies_page != blank
+      assign cookies_url = settings.garelon_cookies_page.url
+    else
+      assign handles = 'politica-de-cookies,cookies,politica-cookies' | split: ','
+      for handle in handles
+        if pages[handle] != blank
+          assign cookies_url = pages[handle].url
+          break
+        endif
+      endfor
+    endif
+  endif
+
   case type
     when 'contact'
       echo contact_url
@@ -83,6 +100,8 @@
       echo refund_url
     when 'shipping'
       echo shipping_url
+    when 'cookies'
+      echo cookies_url
     else
       if html != blank
         assign contact_href = 'href="' | append: contact_url | append: '"'

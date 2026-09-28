@@ -8,6 +8,12 @@
 <nav class="header__inline-menu">
   <ul class="list-menu list-menu--inline" role="list">
     {%- for link in section.settings.menu.links -%}
+      {%- comment -%} GARELON: sin enlaces al catálogo ni a colecciones en la navegación pública {%- endcomment -%}
+      {%- if section.settings.hide_catalog_links -%}
+        {%- if link.type == 'catalog_link' or link.type == 'collections_link' or link.type == 'collection_link' or link.url contains '/collections' -%}
+          {%- continue -%}
+        {%- endif -%}
+      {%- endif -%}
       <li>
         {%- if link.links != blank -%}
           <header-menu>
@@ -35,6 +41,12 @@
                   role="list"
                 >
                   {%- for childlink in link.links -%}
+                    {%- comment -%} GARELON: sin enlaces al catálogo ni a colecciones en la navegación pública {%- endcomment -%}
+                    {%- if section.settings.hide_catalog_links -%}
+                      {%- if childlink.type == 'catalog_link' or childlink.type == 'collections_link' or childlink.type == 'collection_link' or childlink.url contains '/collections' -%}
+                        {%- continue -%}
+                      {%- endif -%}
+                    {%- endif -%}
                     <li>
                       <a
                         id="HeaderMenu-{{ link.handle }}-{{ childlink.handle }}"
@@ -49,6 +61,12 @@
                       {%- if childlink.links != blank -%}
                         <ul class="list-unstyled" role="list">
                           {%- for grandchildlink in childlink.links -%}
+                            {%- comment -%} GARELON: sin enlaces al catálogo ni a colecciones en la navegación pública {%- endcomment -%}
+                            {%- if section.settings.hide_catalog_links -%}
+                              {%- if grandchildlink.type == 'catalog_link' or grandchildlink.type == 'collections_link' or grandchildlink.type == 'collection_link' or grandchildlink.url contains '/collections' -%}
+                                {%- continue -%}
+                              {%- endif -%}
+                            {%- endif -%}
                             <li>
                               <a
                                 id="HeaderMenu-{{ link.handle }}-{{ childlink.handle }}-{{ grandchildlink.handle }}"

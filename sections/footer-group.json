@@ -15,7 +15,7 @@
           "type": "garelon_help",
           "settings": {
             "heading": "Ayuda",
-            "text": "<p>¿Tienes alguna duda sobre tu pedido o nuestros productos? Nuestro equipo está aquí para ayudarte.</p>",
+            "text": "<p>¿Necesitas ayuda? Estamos aquí para resolver cualquier duda sobre tu pedido, nuestros productos o el proceso de compra.</p>",
             "link_label": "Contacta con nuestro equipo",
             "link": "",
             "menu": ""

@@ -17,8 +17,9 @@
         "announcement-bar-0": {
           "type": "announcement",
           "settings": {
-            "text": "Envío disponible en España",
-            "link": ""
+            "text": "Envío disponible a toda España",
+            "link": "",
+            "show_flag_es": true
           }
         }
       },
@@ -33,6 +34,11 @@
         "menu_color_scheme": "scheme-1",
         "logo_position": "middle-left",
         "menu": "main-menu",
+        "nav_source": "garelon",
+        "nav_show_how": false,
+        "nav_show_ingredients": true,
+        "nav_show_faq": true,
+        "hide_catalog_links": true,
         "menu_type_desktop": "dropdown",
         "sticky_header_type": "on-scroll-up",
         "show_line_separator": true,

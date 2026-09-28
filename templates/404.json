@@ -6,12 +6,12 @@
     "final_cta": {
       "type": "garelon-final-cta",
       "settings": {
-        "fallback_image": "cta",
+        "fallback_image": "img01-producto",
         "show_isotype": true,
         "heading": "Volvamos a tu rutina",
         "text": "<p>La página que buscas no existe o ha cambiado de dirección.</p>",
         "show_price": false,
-        "button_label": "Descubrir el sérum",
+        "button_label": "Ver el sérum",
         "color_scheme": "scheme-2",
         "anchor": "",
         "padding_top": 48,

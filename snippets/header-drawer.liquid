@@ -25,7 +25,16 @@
         <div class="menu-drawer__navigation-container">
           <nav class="menu-drawer__navigation">
             <ul class="menu-drawer__menu has-submenu list-menu" role="list">
+              {%- if section.settings.nav_source == 'garelon' -%}
+                {%- render 'garelon-nav', variant: 'drawer' -%}
+              {%- else -%}
               {%- for link in section.settings.menu.links -%}
+                {%- comment -%} GARELON: sin enlaces al catálogo ni a colecciones en la navegación pública {%- endcomment -%}
+                {%- if section.settings.hide_catalog_links -%}
+                  {%- if link.type == 'catalog_link' or link.type == 'collections_link' or link.type == 'collection_link' or link.url contains '/collections' -%}
+                    {%- continue -%}
+                  {%- endif -%}
+                {%- endif -%}
                 <li>
                   {%- if link.links != blank -%}
                     <details id="Details-menu-drawer-menu-item-{{ forloop.index }}">
@@ -55,6 +64,12 @@
                           </button>
                           <ul class="menu-drawer__menu list-menu" role="list" tabindex="-1">
                             {%- for childlink in link.links -%}
+                              {%- comment -%} GARELON: sin enlaces al catálogo ni a colecciones en la navegación pública {%- endcomment -%}
+                              {%- if section.settings.hide_catalog_links -%}
+                                {%- if childlink.type == 'catalog_link' or childlink.type == 'collections_link' or childlink.type == 'collection_link' or childlink.url contains '/collections' -%}
+                                  {%- continue -%}
+                                {%- endif -%}
+                              {%- endif -%}
                               <li>
                                 {%- if childlink.links == blank -%}
                                   <a
@@ -100,6 +115,12 @@
                                         tabindex="-1"
                                       >
                                         {%- for grandchildlink in childlink.links -%}
+                                          {%- comment -%} GARELON: sin enlaces al catálogo ni a colecciones en la navegación pública {%- endcomment -%}
+                                          {%- if section.settings.hide_catalog_links -%}
+                                            {%- if grandchildlink.type == 'catalog_link' or grandchildlink.type == 'collections_link' or grandchildlink.type == 'collection_link' or grandchildlink.url contains '/collections' -%}
+                                              {%- continue -%}
+                                            {%- endif -%}
+                                          {%- endif -%}
                                           <li>
                                             <a
                                               id="HeaderDrawer-{{ link.handle }}-{{ childlink.handle }}-{{ grandchildlink.handle }}"
@@ -137,9 +158,34 @@
                   {%- endif -%}
                 </li>
               {%- endfor -%}
+              {%- endif -%}
             </ul>
           </nav>
           <div class="menu-drawer__utility-links">
+            {%- comment -%}
+              GARELON: en móvil la búsqueda y la cuenta salen de la barra de la cabecera
+              para que no se monten sobre el logo; aquí siguen disponibles.
+            {%- endcomment -%}
+            <ul class="garelon-drawer-utility list-unstyled" role="list">
+              <li>
+                <a href="{{ routes.search_url }}" class="garelon-drawer-utility__link link link--text focus-inset">
+                  <span class="svg-wrapper" aria-hidden="true">{{- 'icon-search.svg' | inline_asset_content -}}</span>
+                  {{- 'general.search.search' | t -}}
+                </a>
+              </li>
+              {%- if shop.customer_accounts_enabled -%}
+                <li>
+                  <a href="{{ routes.account_url }}" class="garelon-drawer-utility__link link link--text focus-inset">
+                    <span class="svg-wrapper" aria-hidden="true">{{- 'icon-account.svg' | inline_asset_content -}}</span>
+                    {%- if customer -%}
+                      {{- 'customer.account.title' | t -}}
+                    {%- else -%}
+                      {{- 'customer.log_in' | t -}}
+                    {%- endif -%}
+                  </a>
+                </li>
+              {%- endif -%}
+            </ul>
             {%- if show_country_selector or show_language_selector -%}
               <div class="menu-drawer__localization header-localization">
                 {%- if show_country_selector -%}

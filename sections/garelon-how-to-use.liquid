@@ -1,3 +1,10 @@
+{%- liquid
+  assign has_media = true
+  if section.settings.image == blank and section.settings.fallback_image == 'none'
+    assign has_media = false
+  endif
+-%}
+
 <div
   {% if section.settings.anchor != blank %}
     id="{{ section.settings.anchor | handleize }}"
@@ -15,41 +22,58 @@
       {%- endif -%}
     </div>
 
-    {%- if section.blocks.size > 0 -%}
-      <ol class="g-steps__list">
-        {%- for block in section.blocks -%}
-          <li class="g-steps__item" {{ block.shopify_attributes }}>
-            {%- if section.settings.show_images -%}
-              <div class="g-steps__media">
-                {%- render 'garelon-fallback-image',
-                  image: block.settings.image,
-                  fallback: block.settings.fallback_image,
-                  alt: block.settings.title,
-                  sizes: '(min-width: 750px) 30vw, 112px',
-                  class: 'g-steps__img'
-                -%}
-              </div>
-            {%- endif -%}
-            <div class="g-steps__body">
-              <p class="g-steps__number" aria-hidden="true">
-                {{- block.settings.label | default: forloop.index | escape -}}
-              </p>
-              <h3 class="g-h3">
-                <span class="visually-hidden">Paso {{ forloop.index }}:</span>
-                {{ block.settings.title | escape }}
-              </h3>
-              {%- if block.settings.text != blank -%}
-                <p class="g-steps__text">{{ block.settings.text | escape }}</p>
-              {%- endif -%}
-            </div>
-          </li>
-        {%- endfor -%}
-      </ol>
-    {%- endif -%}
+    <div class="g-steps__layout{% if has_media %} g-steps__layout--media{% endif %}">
+      {%- if has_media -%}
+        <div class="g-steps__visual g-media g-media--rounded">
+          <div class="g-media__frame">
+            {%- render 'garelon-fallback-image',
+              image: section.settings.image,
+              fallback: section.settings.fallback_image,
+              alt: section.settings.heading,
+              sizes: '(min-width: 990px) 540px, (min-width: 750px) 45vw, calc(100vw - 3rem)',
+              class: 'g-media__img'
+            -%}
+          </div>
+        </div>
+      {%- endif -%}
 
-    {%- if section.settings.note != blank -%}
-      <p class="g-note g-note--center">{{ section.settings.note | escape }}</p>
-    {%- endif -%}
+      <div class="g-steps__content">
+        {%- if section.blocks.size > 0 -%}
+          <ol class="g-steps__list{% if has_media %} g-steps__list--stacked{% endif %}">
+            {%- for block in section.blocks -%}
+              <li class="g-steps__item" {{ block.shopify_attributes }}>
+                {%- if section.settings.show_images and block.settings.image != blank -%}
+                  <div class="g-steps__media">
+                    {%- render 'garelon-image',
+                      image: block.settings.image,
+                      alt: block.settings.title,
+                      sizes: '(min-width: 750px) 30vw, 112px',
+                      class: 'g-steps__img'
+                    -%}
+                  </div>
+                {%- endif -%}
+                <div class="g-steps__body">
+                  <p class="g-steps__number" aria-hidden="true">
+                    {{- block.settings.label | default: forloop.index | escape -}}
+                  </p>
+                  <h3 class="g-h3">
+                    <span class="visually-hidden">Paso {{ forloop.index }}:</span>
+                    {{ block.settings.title | escape }}
+                  </h3>
+                  {%- if block.settings.text != blank -%}
+                    <p class="g-steps__text">{{ block.settings.text | escape }}</p>
+                  {%- endif -%}
+                </div>
+              </li>
+            {%- endfor -%}
+          </ol>
+        {%- endif -%}
+
+        {%- if section.settings.note != blank -%}
+          <p class="g-note{% unless has_media %} g-note--center{% endunless %}">{{ section.settings.note | escape }}</p>
+        {%- endif -%}
+      </div>
+    </div>
   </div>
 </div>
 
@@ -73,10 +97,28 @@
       "default": "3 pasos. Menos de un minuto."
     },
     {
+      "type": "image_picker",
+      "id": "image",
+      "label": "Imagen de la sección",
+      "info": "Vacía = la imagen del tema elegida abajo."
+    },
+    {
+      "type": "select",
+      "id": "fallback_image",
+      "label": "Imagen del tema si no eliges ninguna",
+      "options": [
+        { "value": "img04-uso", "label": "IMAGEN 4 · Cómo usarlo (3 pasos)" },
+        { "value": "img07-roller", "label": "IMAGEN 7 · Técnica de masaje con roller" },
+        { "value": "none", "label": "Ninguna (solo los pasos)" }
+      ],
+      "default": "img04-uso"
+    },
+    {
       "type": "checkbox",
       "id": "show_images",
-      "label": "Mostrar imágenes",
-      "default": true
+      "label": "Mostrar la imagen de cada paso",
+      "info": "Solo en los pasos a los que les hayas elegido una imagen.",
+      "default": false
     },
     {
       "type": "text",
@@ -125,20 +167,8 @@
         {
           "type": "image_picker",
           "id": "image",
-          "label": "Imagen",
-          "info": "Fotografía real del gesto o del producto."
-        },
-        {
-          "type": "select",
-          "id": "fallback_image",
-          "label": "Foto por defecto si no eliges imagen",
-          "options": [
-            { "value": "paso-1", "label": "Limpiar el rostro" },
-            { "value": "paso-2", "label": "Roller en la mano" },
-            { "value": "paso-3", "label": "Roller sobre el contorno" },
-            { "value": "none", "label": "Ninguna (marcador)" }
-          ],
-          "default": "paso-1"
+          "label": "Imagen del paso (opcional)",
+          "info": "Fotografía real del gesto. Se muestra si activas «Mostrar la imagen de cada paso»."
         },
         {
           "type": "text",
@@ -165,9 +195,9 @@
     {
       "name": "GARELON Cómo usarlo",
       "blocks": [
-        { "type": "step", "settings": { "fallback_image": "paso-1", "label": "01", "title": "Limpia", "text": "Limpia y seca bien el rostro y el contorno de ojos." } },
-        { "type": "step", "settings": { "fallback_image": "paso-2", "label": "02", "title": "Aplica", "text": "Desliza suavemente el roller alrededor del contorno." } },
-        { "type": "step", "settings": { "fallback_image": "paso-3", "label": "03", "title": "Masajea", "text": "Realiza movimientos suaves con la bola metálica para distribuir el sérum." } }
+        { "type": "step", "settings": { "label": "01", "title": "Limpia", "text": "Limpia y seca bien el rostro y el contorno de ojos." } },
+        { "type": "step", "settings": { "label": "02", "title": "Aplica", "text": "Presiona y desliza suavemente el roller para que salga el sérum y distribúyelo por el contorno." } },
+        { "type": "step", "settings": { "label": "03", "title": "Masajea", "text": "Masajea con suavidad con la bola metálica para favorecer la distribución del sérum." } }
       ]
     }
   ]
