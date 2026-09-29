@@ -52,11 +52,16 @@ if (!customElements.get('garelon-sticky-atc')) {
 
       observe() {
         const target = this.getMainButton().closest('.product-form__buttons') || this.getMainButton();
-        this.observer = new IntersectionObserver(([entry]) => {
-          // Visible solo cuando el botón principal ha quedado por encima de la pantalla.
-          const passed = !entry.isIntersecting && entry.boundingClientRect.top < 0;
-          this.toggle(passed);
-        });
+        // Visible solo cuando el botón principal ha quedado por encima de la pantalla. La raíz se
+        // alarga hacia abajo para que el único cruce sea el borde superior: así también se detecta
+        // un salto de scroll desde «botón aún por debajo» a «botón ya por encima».
+        this.observer = new IntersectionObserver(
+          ([entry]) => {
+            const passed = !entry.isIntersecting && entry.boundingClientRect.top < 0;
+            this.toggle(passed);
+          },
+          { rootMargin: '0px 0px 100000px 0px' }
+        );
         this.observer.observe(target);
       }
 

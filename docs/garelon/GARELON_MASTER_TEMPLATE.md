@@ -1,6 +1,6 @@
 # GARELON · MASTER STORE TEMPLATE
 
-> **Versión 1.1 · septiembre 2026.** Extraído del repositorio `TIENDA-CASTOR-OIL` (rama `claude/great-lamport-8mb0rc`), la tienda GARELON del sérum de contorno de ojos. Versión 1.0 sacada del commit `755240b`; la 1.1 recoge el cambio de proveedor (**AutoDS → CJ Dropshipping**) y los **packs como variantes reales** (detalle en `GARELON-CAMBIOS-CJ-PACKS.md`, en la raíz). Todos los archivos, ajustes y valores que aparecen aquí salen del código real.
+> **Versión 1.2 · septiembre 2026.** Extraído del repositorio `TIENDA-CASTOR-OIL` (rama `claude/great-lamport-8mb0rc`), la tienda GARELON del sérum de contorno de ojos. Versión 1.0 sacada del commit `755240b`. La 1.1 recoge el cambio de proveedor (**AutoDS → CJ Dropshipping**) y los **packs como variantes reales**. La 1.2 añade la **oferta visible antes del carrito** («Oferta limitada · Elige tu pack»), la **cantidad 1 blindada**, el **aviso de configuración** en el editor y el flujo **Shopify + GitHub**. Detalle en `GARELON-CAMBIOS-CJ-PACKS.md`, en la raíz. Todos los archivos, ajustes y valores que aparecen aquí salen del código real.
 >
 > **Cómo se usa:**
 > - **ChatGPT:** lee primero la sección 29, rellena la sección 1 con el brief (`GARELON_PRODUCT_BRIEF_TEMPLATE.md`) y genera el prompt final para Claude Code.
@@ -153,7 +153,7 @@ Ninguna instrucción posterior las anula, tampoco el prompt adaptado. Si una pet
 - **R4 · Antes/después.** No se crean resultados falsos ni se alteran imágenes para exagerar. Los antes/después del proveedor se evalúan y se descartan por defecto: sin resultados documentados restan confianza. Así se hizo con IMAGEN 6 y 8 del sérum.
 - **R5 · Reseñas.** Nunca se inventan: ni ⭐⭐⭐⭐⭐, ni «4,9/5», ni «más de X clientes», ni testimonios. Las estrellas solo aparecen si las aporta una app real de reseñas mediante un app block. El bloque `rating` de Dawn solo se muestra si existe el metafield `reviews.rating`.
 - **R6 · Urgencia.** Sin «quedan 3», «20 personas viendo», cuentas atrás ni «oferta acaba en…» si no son datos reales. El stock se muestra solo como «En stock» o «Agotado», nunca con cifras (`garelon-stock`; bloque `inventory` con `inventory_threshold: 0` y `show_inventory_quantity: false`).
-- **R7 · Descuentos y packs.** `compare_at_price` solo se muestra si existe en Shopify y es un precio anterior real: nunca se usa para fingir una rebaja (nada de «~~39,98 €~~ 35,00 €»). Los packs son **variantes reales con su propio precio** (p. ej. «2 unidades» a 35,00 €): es un precio real de variante, no un descuento ficticio. El ahorro que se muestra se calcula de forma transparente frente al precio real de la variante de 1 unidad × unidades del pack («Ahorra 4,98 €», «Ahorro calculado frente a comprar las unidades por separado»). Sin «Compra X y obtén Y», «segunda unidad» ni descuentos automáticos que se acumulen con el precio de los packs. Insignias solo objetivas («Mejor precio/unidad»), nunca «Más vendido» sin datos.
+- **R7 · Descuentos y packs.** `compare_at_price` solo se muestra si existe en Shopify y es un precio anterior real: nunca se usa para fingir una rebaja (nada de «~~39,98 €~~ 35,00 €»). Los packs son **variantes reales con su propio precio** (p. ej. «2 unidades» a 35,00 €): es un precio real de variante, no un descuento ficticio. El ahorro que se muestra se calcula de forma transparente frente al precio real de la variante de 1 unidad × unidades del pack («Ahorra 4,98 € · -12 %», «Comprando por separado: 39,98 €»), y se ve **antes** de añadir al carrito, nunca solo en el carrito o el checkout. «Oferta limitada» solo como etiqueta, sin cuenta atrás, fecha, stock ni «últimas unidades» que no sean reales. Sin «Compra X y obtén Y», «segunda unidad» ni descuentos automáticos que se acumulen con el precio de los packs. Insignias solo objetivas («Mejor precio/unidad»), nunca «Más vendido» sin datos.
 
 **Shopify, proveedor y compra**
 - **R8 · Shopify y proveedor.** Nunca se hardcodea precio, precio comparado, inventario, disponibilidad, SKU, variantes ni IDs de variante: todo se lee del objeto `product` de Shopify. El proveedor/fulfillment actual (hoy CJ Dropshipping) se conecta a Shopify con su app; el tema no depende de él y no se toca su fulfillment, sincronización ni configuración. **Un pack es siempre UNA variante con cantidad 1**: nunca «1 unidad» × N ni «N unidades» × N (el proveedor enviaría otra cantidad).
@@ -707,12 +707,25 @@ Para cada componente: **archivo · función · entradas y ajustes · qué puede 
   - precio por unidad = precio del pack ÷ unidades, redondeado al céntimo;
   - insignia = el pack con el precio por unidad más bajo, si es uno solo, tiene más de 1 unidad y está disponible.
   - Con los precios actuales (19,99 / 35,00 / 48,00 €): 19,99 €/unidad · 17,50 €/unidad y «Ahorra 4,98 €» (-12 %) · 16,00 €/unidad, «Ahorra 11,97 €» (-20 %) e insignia «Mejor precio/unidad».
-- **Selección:** la de Shopify: `?variant=` si viene en la URL; si no, la primera variante disponible (por eso «1 unidad» debe ser la primera variante). Nunca se preselecciona un pack mayor.
+- **Qué ve el cliente (antes del botón):** etiqueta «Oferta limitada» (solo si algún pack tiene ahorro) → título «Elige tu pack» → introducción → 3 tarjetas. Jerarquía de cada tarjeta: **unidades y precio del pack** (misma línea) → precio por unidad → «AHORRA X € · -N %» → «Comprando por separado: Y €». El pack de 1 dice «Sin descuento».
+- **Selección:** la de Shopify: `?variant=` si viene en la URL; si no, la primera variante disponible (por eso «1 unidad» debe ser la primera variante; si no lo es, el editor lo avisa). Nunca se preselecciona un pack mayor.
 - **Agotados:** radio `disabled`, borde discontinuo y «Agotado»; sin cifras de stock. Si llega por `?variant=` una variante agotada, el botón de Dawn dice «Agotado» y no deja comprar.
-- **Respaldo:** si el producto tiene más de una opción, un valor sin número, números repetidos o el nombre de opción no coincide con `option_name`, se pinta el selector estándar de Dawn (`picker_type`, `swatch_shape` del propio bloque). Un producto sin variantes no muestra selector.
+- **Condiciones de `pack_mode`:**
+  - más de una variante;
+  - una sola opción con varios valores (otras opciones de **un** valor, p. ej. «Color: Único» de CJ, se aceptan como campos ocultos marcados);
+  - si `option_name` está relleno, esa opción existe;
+  - cada valor contiene su número de unidades («2 unidades», «Pack 2», «2PCS», «x2») o se usa `pack_units`;
+  - sin números repetidos;
+  - existe el pack de 1 unidad (referencia del ahorro).
+- **Respaldo y aviso:** si falla una condición, se pinta el selector estándar de Dawn (`picker_type`, `swatch_shape` del bloque). **Solo en el editor** (`request.design_mode`) aparece el aviso rojo «Configuración de Shopify pendiente o incorrecta para packs» con el motivo. Para un producto que **debe** tener packs, ese aviso es un error de configuración de Shopify, no un respaldo válido. También avisa si la sección de la home no tiene producto elegido.
 - **Nombre mostrado:** «N unidad/unidades» (ajustes `unit_singular`/`unit_plural`), aunque el valor de Shopify sea otro (p. ej. «3 piezas» de CJ). Aun así **el valor de Shopify debe renombrarse a «3 unidades»**, porque el carrito, el checkout y los emails muestran el valor real.
-- **Ajustes:** `heading` («Elige tu pack»), `option_name` (vacío = la única opción), `pack_units`, `unit_singular`, `unit_plural`, `show_unit_price`, `show_savings`, `show_percent` (desactivado), `badge_text` («Mejor precio/unidad»; vacío = sin insignia), `savings_note` («Ahorro calculado frente a comprar las unidades por separado.»), `picker_type` y `swatch_shape` (respaldo).
-- **Cantidad:** con packs no hay bloque `quantity_selector`; el bloque añade `quantity=1` oculto. El cliente puede cambiar la cantidad en el carrito (R10).
+- **Ajustes:**
+  - `offer_label` («Oferta limitada»; vacío = sin etiqueta), `heading` («Elige tu pack»), `intro` («Cuantas más unidades incluye tu pack, menos pagas por cada una.»);
+  - `option_name` (vacío = la opción con varios valores), `pack_units`, `unit_singular`, `unit_plural`;
+  - `show_unit_price`, `show_savings`, `show_percent` (activado), `show_reference` y `reference_label` («Comprando por separado:»), `single_note` («Sin descuento»);
+  - `badge_text` («Mejor precio/unidad»; vacío = sin insignia), `savings_note` (vacío en las plantillas);
+  - `picker_type` y `swatch_shape` (respaldo).
+- **Cantidad = 1 blindada:** si la sección tiene bloque de packs, el bloque `quantity_selector` **no se pinta aunque esté en la plantilla** (el control está en `main-product` y `featured-product`). El bloque de packs añade **un único** `quantity=1` oculto, en modo packs y en el respaldo. El cliente puede cambiar la cantidad en el carrito (R10).
 - **Un solo `<variant-selects>` por sección:** si existe el bloque de packs, el bloque `variant_picker` de Dawn no se pinta aunque esté en la plantilla.
 - **Estado actual:** activo en la home (`product_cta`) y en la ficha (`main`).
 - **Opción recomendada en Shopify:** nombre «Pack» (el carrito muestra «Pack: 2 unidades» junto a la cantidad 1). «Cantidad» también funciona, pero en el carrito se lee «Cantidad: 2 unidades» al lado del selector de cantidad.
@@ -917,6 +930,23 @@ Ver las secciones 10.10, 10.11 y 10.12.
 - **Plazos al cliente:** conservadores, a partir de los datos de CJ: «Preparación estimada: 1–3 días» y «Entrega estimada en España: aproximadamente 8–16 días». El «5–11 días para el 54 %» de CJ no se convierte en promesa.
 - **AutoDS:** proveedor histórico. Se desconecta **para este producto** solo cuando CJ esté probado con pedidos reales, para que no vuelva a sobrescribir stock, precio, imágenes, variantes o fulfillment. No se desinstala nada crítico antes.
 - **Futuro:** donde antes ponía «Producto → AutoDS», la regla es «Producto → proveedor/fulfillment actual (hoy CJ Dropshipping)». Cambiar de proveedor no cambia el tema.
+- **Si el proveedor importa el producto con varias opciones** («Color», «Cantidad»…): en Shopify se deja **una sola opción «Pack»** y después se mapea cada variante. El esquema interno del proveedor no se copia tal cual.
+
+### 15.6 Shopify + GitHub
+- **El tema vive en GitHub** (`daniherr1617-design/tienda-castor-oil`). Shopify se conecta a una **rama** con la integración de GitHub (Tienda online → Temas → Añadir tema → Conectar desde GitHub). Eso crea un tema **sin publicar** en la biblioteca, que se sincroniza con la rama en los dos sentidos: los push cambian el tema, y lo que se guarda en el editor vuelve como commit a la rama.
+- **Estado a septiembre de 2026:**
+  - `main` **no tiene tema**, solo las imágenes originales;
+  - el tema está en `claude/great-lamport-8mb0rc`;
+  - no hay ninguna PR.
+  Qué rama está conectada y qué tema está publicado solo se ve en el Admin.
+- **Flujo:** rama de trabajo → tema conectado sin publicar → vista previa y editor sin avisos → pedidos de prueba → PR a `main` → conectar o sincronizar `main` → publicar.
+- **Cuidado:** si el tema conectado a una rama está **publicado**, cada push a esa rama cambia la tienda en vivo. Antes de hacer push a una rama conectada, trae los commits del editor (`git pull`).
+- **Diagnóstico «no veo los cambios»:**
+  1. ¿el tema que miro sale de la rama con los cambios?
+  2. ¿el producto tiene las variantes que el tema espera?
+  3. ¿la sección tiene el producto elegido?
+  4. ¿hay descuentos automáticos antiguos?
+  5. ¿hay avisos en el editor?
 
 ---
 
@@ -1362,6 +1392,9 @@ Ejecuta las pruebas de la sección 26 y corrige lo que falle. No se da por bueno
   - precio por unidad, ahorro e insignia correctos; nada tachado;
   - `?variant=` marca su tarjeta; variante agotada desactivada;
   - «Añadir al carrito» envía el id del pack con `quantity=1`; el carrito muestra «Pack: N unidades» × 1.
+  - en la home, «Oferta limitada · Elige tu pack» y las 3 tarjetas con su ahorro quedan **antes** de «Añadir al carrito»;
+  - **regresión:** con `quantity_selector` en la plantilla a la vez que los packs, el selector no se pinta y el POST lleva un solo `quantity=1`;
+  - en el editor **no** aparece el aviso «Configuración de Shopify pendiente o incorrecta para packs».
 - **Compra (solo verificable en Shopify real):**
   - variante → precio y stock;
   - añadir → cart drawer;

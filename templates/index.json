@@ -313,18 +313,23 @@
         "packs": {
           "type": "garelon_packs",
           "settings": {
+            "offer_label": "Oferta limitada",
             "heading": "Elige tu pack",
+            "intro": "Cuantas más unidades incluye tu pack, menos pagas por cada una.",
             "option_name": "",
             "pack_units": "",
             "unit_singular": "unidad",
             "unit_plural": "unidades",
             "show_unit_price": true,
             "show_savings": true,
-            "show_percent": false,
+            "show_percent": true,
             "badge_text": "Mejor precio/unidad",
-            "savings_note": "Ahorro calculado frente a comprar las unidades por separado.",
+            "savings_note": "",
             "picker_type": "button",
-            "swatch_shape": "none"
+            "swatch_shape": "none",
+            "show_reference": true,
+            "reference_label": "Comprando por separado:",
+            "single_note": "Sin descuento"
           }
         },
         "shipping": {

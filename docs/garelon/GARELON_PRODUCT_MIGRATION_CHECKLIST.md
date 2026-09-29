@@ -93,6 +93,9 @@
 - [ ] 🅲 Las pestañas `tab_ingredientes` y `tab_uso` están adaptadas: título, icono y contenido. `tab_envios` sin cambios.
 - [ ] 🅲 El bloque `inventory` sigue con `inventory_threshold: 0` y `show_inventory_quantity: false`.
 - [ ] 🅲 Packs (§10.11): si el producto se vende en packs, el bloque `packs` está activo, sin `variant_picker` ni `quantity_selector` en la plantilla; si no, se quita (o muestra el selector estándar).
+- [ ] 🅲 Home: «Oferta limitada · Elige tu pack» y las 3 tarjetas con su ahorro visibles **antes** de «Añadir al carrito», justo tras la portada. El ahorro nunca aparece solo en el carrito.
+- [ ] 🅲 Regresión de cantidad: con `quantity_selector` añadido a la vez que los packs, el selector no se pinta y el formulario envía un solo `quantity=1`.
+- [ ] 🅲 La sección de compra de la home tiene el **producto elegido** explícitamente (no «el primero del catálogo»).
 - [ ] 🅲 El bloque `shipping` (plazos) tiene textos de estimación prudentes y los mismos plazos que la pestaña «Envíos y devoluciones» y la FAQ.
 - [ ] 🅲 La barra de servicio (`service`: Pago seguro · Atención · Envío · Devoluciones) no ha cambiado.
 - [ ] 🅲 `benefits`, `how_to` y `faq` están actualizados; `sticky` presente.
@@ -120,6 +123,9 @@
 - [ ] 🆂 El stock dice «En stock» o «Agotado» según el inventario real, sin cifras.
 - [ ] 🆂 Proveedor: producto importado o conectado; cada variante emparejada con la suya (packs: «1 unidad» → CJ «1 unidad», «2 unidades» → CJ «2 unidades», «3 unidades» → CJ «3 piezas»); SKU correcto; no sobrescribe título, descripción, imágenes, nombres de variante ni precios editados.
 - [ ] 🆂 Packs en Shopify: opción «Pack» con «1 unidad» como primera variante; precio real en cada variante; **precio comparado vacío**; sin descuentos automáticos («Compra X y obtén Y», segunda unidad, packs) que se acumulen.
+- [ ] 🆂 Descuentos antiguos **desactivados**: con el pack de 2 en el carrito, total 35,00 € sin línea de descuento; con el de 3, 48,00 €. Si al subir la cantidad aparece un descuento, sigue activo uno antiguo.
+- [ ] 🆂 Editor de temas **sin** el aviso rojo «Configuración de Shopify pendiente o incorrecta para packs» en la home ni en la ficha.
+- [ ] 🆂 Shopify + GitHub: el tema que se revisa y se publica sale de la rama con los cambios (Temas → «Conectado a GitHub» → rama). `main` solo sirve si contiene el tema (PR fusionada).
 - [ ] 🆂 El proveedor anterior (AutoDS) está desconectado **para este producto** una vez probado el nuevo, y ya no sobrescribe stock, precio, imágenes ni variantes.
 
 ## 7. Compra, carrito y checkout
