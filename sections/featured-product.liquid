@@ -79,7 +79,7 @@
     class="g-anchor color-{{ section.settings.color_scheme }} {% if section.settings.secondary_background %}background-secondary{% else %}gradient{% endif %}"
   >
     <div class="page-width section-{{ section.id }}-padding{% if section.settings.secondary_background %} isolate{% endif %}">
-      <div class="featured-product product product--{{ section.settings.media_size }} grid grid--1-col gradient color-{{ section.settings.color_scheme }} product--{{ section.settings.media_position }}{% if section.settings.secondary_background == false %} isolate{% endif %} {% if product.media.size > 0 or product == blank or section.settings.garelon_gallery %}grid--2-col-tablet{% else %}product--no-media{% endif %}">
+      <div class="featured-product product product--{{ section.settings.media_size }} grid grid--1-col gradient color-{{ section.settings.color_scheme }} product--{{ section.settings.media_position }}{% if section.settings.secondary_background == false %} isolate{% endif %} {% if product.media.size > 0 or product == blank or section.settings.garelon_gallery %}grid--2-col-tablet{% else %}product--no-media{% endif %}{% if section.settings.garelon_mobile_info_first %} g-mobile-info-first{% endif %}">
         <div class="grid__item product__media-wrapper">
           {%- if section.settings.garelon_gallery -%}
             {%- render 'garelon-gallery', section_id: section.id -%}
@@ -122,6 +122,21 @@
                     section_id: section.id,
                     block: block
                   -%}
+                {%- when 'garelon_packs' -%}
+                  {%- comment -%} GARELON: packs = variantes reales (sustituye al selector de variantes). {%- endcomment -%}
+                  {%- assign quantity_blocks = section.blocks | where: 'type', 'quantity_selector' -%}
+                  {%- assign has_quantity_input = false -%}
+                  {%- if quantity_blocks.size > 0 -%}
+                    {%- assign has_quantity_input = true -%}
+                  {%- endif -%}
+                  {%- render 'garelon-packs',
+                    product: product,
+                    block: block,
+                    product_form_id: product_form_id,
+                    has_quantity_input: has_quantity_input
+                  -%}
+                {%- when 'garelon_shipping' -%}
+                  {%- render 'garelon-shipping', block: block -%}
                 {%- when 'title' -%}
                   <h2 class="product__title {{ block.settings.heading_size }}" {{ block.shopify_attributes }}>
                     {%- unless placeholder -%}
@@ -420,11 +435,18 @@
                     surface: 'product_page'
                   -%}
                 {%- when 'variant_picker' -%}
-                  {% render 'product-variant-picker',
-                    product: product,
-                    block: block,
-                    product_form_id: product_form_id
-                  %}
+                  {%- comment -%}
+                    GARELON: si hay bloque de packs, él pinta el selector de variantes
+                    (un solo <variant-selects> por sección).
+                  {%- endcomment -%}
+                  {%- assign garelon_pack_blocks = section.blocks | where: 'type', 'garelon_packs' -%}
+                  {%- if garelon_pack_blocks.size == 0 -%}
+                    {% render 'product-variant-picker',
+                      product: product,
+                      block: block,
+                      product_form_id: product_form_id
+                    %}
+                  {%- endif -%}
                 {%- when 'buy_buttons' -%}
                   {%- render 'buy-buttons',
                     block: block,
@@ -715,6 +737,168 @@
           "id": "share_label",
           "label": "t:sections.featured-product.blocks.share.settings.text.label",
           "default": "t:sections.featured-product.blocks.share.settings.text.default"
+        }
+      ]
+    },
+    {
+      "type": "garelon_packs",
+      "name": "GARELON Packs (variantes)",
+      "limit": 1,
+      "settings": [
+        {
+          "type": "paragraph",
+          "content": "Tarjetas de pack sobre las VARIANTES REALES del producto («1 unidad», «2 unidades», «3 unidades»). Cada tarjeta selecciona su variante con cantidad 1. Precio, ahorro y precio por unidad salen de los precios de Shopify. Si el producto no tiene packs reconocibles, se muestra el selector de variantes estándar."
+        },
+        {
+          "type": "text",
+          "id": "heading",
+          "label": "Título",
+          "default": "Elige tu pack"
+        },
+        {
+          "type": "header",
+          "content": "Packs"
+        },
+        {
+          "type": "text",
+          "id": "option_name",
+          "label": "Nombre de la opción de Shopify (opcional)",
+          "info": "Vacío = la única opción del producto (recomendado: «Pack»). Sus valores deben empezar por el número de unidades: «1 unidad», «2 unidades», «3 unidades»."
+        },
+        {
+          "type": "text",
+          "id": "pack_units",
+          "label": "Unidades de cada pack (opcional)",
+          "info": "Solo si los valores de la opción no empiezan por el número. Lista en el mismo orden que la opción, p. ej. 1,2,3."
+        },
+        {
+          "type": "text",
+          "id": "unit_singular",
+          "label": "Unidad (singular)",
+          "default": "unidad"
+        },
+        {
+          "type": "text",
+          "id": "unit_plural",
+          "label": "Unidad (plural)",
+          "default": "unidades"
+        },
+        {
+          "type": "header",
+          "content": "Precio y ahorro"
+        },
+        {
+          "type": "checkbox",
+          "id": "show_unit_price",
+          "label": "Mostrar precio por unidad",
+          "default": true
+        },
+        {
+          "type": "checkbox",
+          "id": "show_savings",
+          "label": "Mostrar ahorro («Ahorra 4,98 €»)",
+          "info": "Se calcula frente al precio real de la variante de 1 unidad × unidades del pack. No usa el precio comparado.",
+          "default": true
+        },
+        {
+          "type": "checkbox",
+          "id": "show_percent",
+          "label": "Mostrar porcentaje de ahorro («-12 %»)",
+          "default": false
+        },
+        {
+          "type": "text",
+          "id": "badge_text",
+          "label": "Insignia del mejor precio por unidad",
+          "info": "Solo aparece en el pack con el precio por unidad más bajo. Vacío = sin insignia. No uses «Más vendido» sin datos reales.",
+          "default": "Mejor precio/unidad"
+        },
+        {
+          "type": "text",
+          "id": "savings_note",
+          "label": "Nota sobre el ahorro",
+          "info": "Se muestra si algún pack tiene ahorro. Vacío = sin nota.",
+          "default": "Ahorro calculado frente a comprar las unidades por separado."
+        },
+        {
+          "type": "header",
+          "content": "Selector de respaldo"
+        },
+        {
+          "type": "paragraph",
+          "content": "Se usa si el producto no tiene packs reconocibles (varias opciones o valores sin número)."
+        },
+        {
+          "type": "select",
+          "id": "picker_type",
+          "label": "Tipo",
+          "options": [
+            {
+              "value": "button",
+              "label": "Botones"
+            },
+            {
+              "value": "dropdown",
+              "label": "Desplegable"
+            }
+          ],
+          "default": "button"
+        },
+        {
+          "type": "select",
+          "id": "swatch_shape",
+          "label": "Muestras de color",
+          "options": [
+            {
+              "value": "circle",
+              "label": "Círculo"
+            },
+            {
+              "value": "square",
+              "label": "Cuadrado"
+            },
+            {
+              "value": "none",
+              "label": "Ninguna"
+            }
+          ],
+          "default": "none"
+        }
+      ]
+    },
+    {
+      "type": "garelon_shipping",
+      "name": "GARELON Plazos de envío",
+      "limit": 1,
+      "settings": [
+        {
+          "type": "paragraph",
+          "content": "Plazos orientativos junto a la compra. Escribe estimaciones («estimada», «aproximadamente»), nunca «entrega garantizada», y no muestres costes internos del proveedor."
+        },
+        {
+          "type": "text",
+          "id": "preparation",
+          "label": "Preparación",
+          "default": "Preparación estimada: 1–3 días."
+        },
+        {
+          "type": "text",
+          "id": "delivery",
+          "label": "Entrega",
+          "default": "Entrega estimada en España: aproximadamente 8–16 días."
+        },
+        {
+          "type": "text",
+          "id": "note",
+          "label": "Nota",
+          "default": "Los plazos pueden variar según destino y transporte."
+        },
+        {
+          "type": "text",
+          "id": "link_label",
+          "label": "Enlace a la política de envío",
+          "info": "Vacío = sin enlace.",
+          "default": "Política de envío"
         }
       ]
     },
@@ -1429,7 +1613,7 @@
       "type": "checkbox",
       "id": "garelon_gallery",
       "label": "Galería GARELON (imágenes del tema)",
-      "info": "Muestra IMAGEN 1, 10, 7, 5, 4 y 9 en carrusel. Desactívalo para mostrar la multimedia del producto de Shopify (también si tu producto tiene variantes con imagen propia).",
+      "info": "Muestra IMAGEN 1, 10, 7, 5, 4 y 9 en carrusel. Desactívalo para mostrar la multimedia del producto de Shopify (también si tus variantes tienen imagen propia). Los packs de unidades no necesitan imagen propia.",
       "default": false
     },
     {
@@ -1437,6 +1621,13 @@
       "id": "garelon_anchor",
       "label": "ID de ancla (GARELON)",
       "info": "Permite enlazar a esta sección. Con «comprar», los botones de la portada llevan aquí (/#comprar)."
+    },
+    {
+      "type": "checkbox",
+      "id": "garelon_mobile_info_first",
+      "label": "Móvil: compra antes que la galería (GARELON)",
+      "info": "En móvil muestra primero el título, el precio, los packs y el botón, y después la galería. Útil cuando esta sección va justo después de la portada, que ya enseña el producto.",
+      "default": false
     },
     {
       "type": "color_scheme",

@@ -1,7 +1,9 @@
 # GARELON · Guía del theme
 
 Theme basado en **Dawn 16.0.0** (theme oficial de Shopify, Online Store 2.0), con una capa de marca GARELON encima.
-No hay ningún dato comercial fijo en el código: precio, precio comparado, variantes, stock, imágenes de la galería y SKU salen siempre del producto de Shopify que sincroniza AutoDS.
+No hay ningún dato comercial fijo en el código: precio, precio comparado, variantes, stock, imágenes de la galería y SKU salen siempre del producto de Shopify que conecta el proveedor (hoy CJ Dropshipping).
+
+> **Actualización (septiembre 2026): proveedor CJ Dropshipping y packs como variantes reales.** El proveedor/fulfillment actual es **CJ Dropshipping** (antes AutoDS) y los packs de 1, 2 y 3 unidades son variantes reales con su propio precio. Qué cambió y las tareas de Shopify y CJ: `GARELON-CAMBIOS-CJ-PACKS.md`. Las menciones a AutoDS de esta guía son de la ronda 3 y se aplican ahora al proveedor actual.
 
 ---
 
@@ -152,7 +154,7 @@ Menú · [isotipo GARELON] · carrito, con el logo centrado entre dos columnas i
 - **Cabecera**: fija discreta (aparece al subir), barra superior editable.
 
 ### Packs 1/2/3 unidades
-Bloque «GARELON Packs» en la ficha de producto, **desactivado** por defecto (ojo tachado en el editor). Solo cambia la cantidad; no crea ni anuncia descuentos. Si algún día configuras descuentos reales (p. ej. un descuento automático por cantidad), se verán en el carrito y en el checkout.
+~~Bloque «GARELON Packs» en la ficha de producto, desactivado por defecto. Solo cambia la cantidad.~~ **Sustituido en septiembre de 2026:** ahora los packs son variantes reales («1 unidad», «2 unidades», «3 unidades») y el bloque «GARELON Packs (variantes)» está activo en la home y en la ficha. Ver `GARELON-CAMBIOS-CJ-PACKS.md`.
 
 ---
 

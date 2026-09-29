@@ -29,25 +29,22 @@
             "text_style": "subtitle"
           }
         },
-        "variant_picker": {
-          "type": "variant_picker",
-          "settings": {
-            "picker_type": "button",
-            "swatch_shape": "circle"
-          }
-        },
         "packs": {
           "type": "garelon_packs",
-          "disabled": true,
           "settings": {
-            "heading": "Unidades",
-            "max_units": "3",
-            "note": ""
+            "heading": "Elige tu pack",
+            "option_name": "",
+            "pack_units": "",
+            "unit_singular": "unidad",
+            "unit_plural": "unidades",
+            "show_unit_price": true,
+            "show_savings": true,
+            "show_percent": false,
+            "badge_text": "Mejor precio/unidad",
+            "savings_note": "Ahorro calculado frente a comprar las unidades por separado.",
+            "picker_type": "button",
+            "swatch_shape": "none"
           }
-        },
-        "quantity_selector": {
-          "type": "quantity_selector",
-          "settings": {}
         },
         "buy_buttons": {
           "type": "buy_buttons",
@@ -101,13 +98,22 @@
           "settings": {
             "heading": "Envíos y devoluciones",
             "icon": "truck",
-            "content": "<p>Consulta plazos y costes en nuestra <a href=\"/policies/shipping-policy\" title=\"Política de envío\">política de envío</a> y las condiciones en nuestra <a href=\"/policies/refund-policy\" title=\"Política de devoluciones\">política de devoluciones</a>. El pago se realiza en el checkout seguro de Shopify.</p>"
+            "content": "<p>Preparación estimada: 1–3 días. Entrega estimada en España: aproximadamente 8–16 días. Son plazos orientativos y pueden variar según destino y transporte.</p><p>Consulta los detalles en nuestra <a href=\"/policies/shipping-policy\" title=\"Política de envío\">política de envío</a> y las condiciones en nuestra <a href=\"/policies/refund-policy\" title=\"Política de devoluciones\">política de devoluciones</a>. El pago se realiza en el checkout seguro de Shopify.</p>"
           }
         },
         "share": {
           "type": "share",
           "settings": {
             "share_label": "Compartir"
+          }
+        },
+        "shipping": {
+          "type": "garelon_shipping",
+          "settings": {
+            "preparation": "Preparación estimada: 1–3 días.",
+            "delivery": "Entrega estimada en España: aproximadamente 8–16 días.",
+            "note": "Los plazos pueden variar según destino y transporte.",
+            "link_label": "Política de envío"
           }
         }
       },
@@ -117,11 +123,10 @@
         "rating",
         "price",
         "subtitle",
-        "variant_picker",
         "packs",
-        "quantity_selector",
         "buy_buttons",
         "inventory",
+        "shipping",
         "highlights",
         "description",
         "tab_ingredientes",
@@ -347,7 +352,7 @@
           "type": "question",
           "settings": {
             "question": "¿Cuándo recibiré mi pedido?",
-            "answer": "<p>Los plazos y costes de envío actualizados se indican en nuestra <a href=\"/policies/shipping-policy\" title=\"Política de envío\">política de envío</a> y durante el proceso de compra.</p>"
+            "answer": "<p>Preparamos tu pedido en un plazo estimado de 1–3 días y la entrega estimada en España es de aproximadamente 8–16 días. Son plazos orientativos: pueden variar según el destino y el transporte. Encontrarás los detalles en nuestra <a href=\"/policies/shipping-policy\" title=\"Política de envío\">política de envío</a> y durante el proceso de compra.</p>"
           }
         },
         "q-dudas": {
@@ -356,6 +361,13 @@
             "question": "¿Qué ocurre si tengo una duda con mi pedido?",
             "answer": "<p>Escríbenos desde nuestra <a href=\"/pages/contacto\" title=\"Contacto\">página de contacto</a> indicando tu número de pedido y te responderemos lo antes posible. Puedes consultar también nuestra <a href=\"/policies/refund-policy\" title=\"Política de devoluciones\">política de devoluciones</a>.</p>"
           }
+        },
+        "q-packs": {
+          "type": "question",
+          "settings": {
+            "question": "¿Qué incluye cada pack?",
+            "answer": "<p>Cada pack incluye el número de unidades indicado: 1, 2 o 3 sérums iguales de 10 ml. El precio de cada pack es el que ves al elegirlo. Si un pack tiene un precio por unidad más bajo, verás cuánto ahorras frente a comprar las mismas unidades por separado.</p>"
+          }
         }
       },
       "block_order": [
@@ -363,6 +375,7 @@
         "q-como",
         "q-frecuencia",
         "q-cantidad",
+        "q-packs",
         "q-donde",
         "q-ingredientes",
         "q-envio",

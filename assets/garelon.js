@@ -3,8 +3,9 @@
   - <garelon-sticky-atc>: barra fija de compra en móvil. No crea su propio
     formulario: pulsa el botón real del formulario de Dawn, así el carrito
     (drawer/AJAX), las apps y los eventos de Shopify siguen funcionando igual.
-  - <garelon-packs>: selector 1/2/3 unidades que solo cambia la cantidad.
-    No aplica descuentos.
+    Muestra la variante elegida (p. ej. «2 unidades») y su precio real.
+  - Los packs (snippets/garelon-packs.liquid) no necesitan JS propio: son
+    variantes reales dentro del <variant-selects> de Dawn.
 */
 
 if (!customElements.get('garelon-sticky-atc')) {
@@ -16,6 +17,7 @@ if (!customElements.get('garelon-sticky-atc')) {
         this.button = this.querySelector('[data-sticky-button]');
         this.buttonLabel = this.querySelector('[data-sticky-label]');
         this.priceTarget = this.querySelector('[data-sticky-price]');
+        this.variantTarget = this.querySelector('[data-sticky-variant]');
         this.thumb = this.querySelector('[data-sticky-thumb]');
         this.defaultLabel = this.buttonLabel ? this.buttonLabel.textContent.trim() : '';
 
@@ -78,6 +80,13 @@ if (!customElements.get('garelon-sticky-atc')) {
           }
         }
 
+        if (this.variantTarget) {
+          // Etiqueta del pack elegido (garelon-packs) o, si no hay packs, el nombre de la variante.
+          const checked = document.querySelector(`#variant-selects-${this.sectionId} input:checked`);
+          const label = (checked && checked.dataset.packLabel) || (variant && variant.title);
+          if (label) this.variantTarget.textContent = label;
+        }
+
         const src = variant && variant.featured_media && variant.featured_media.preview_image
           ? variant.featured_media.preview_image.src
           : null;
@@ -91,42 +100,6 @@ if (!customElements.get('garelon-sticky-atc')) {
         const mainButton = this.getMainButton();
         if (!mainButton || mainButton.hasAttribute('disabled')) return;
         mainButton.click();
-      }
-    }
-  );
-}
-
-if (!customElements.get('garelon-packs')) {
-  customElements.define(
-    'garelon-packs',
-    class GarelonPacks extends HTMLElement {
-      connectedCallback() {
-        this.radios = Array.from(this.querySelectorAll('input[type="radio"]'));
-        this.radios.forEach((radio) => radio.addEventListener('change', this.onChange.bind(this)));
-
-        const input = this.getQuantityInput();
-        if (input) input.addEventListener('change', this.syncFromInput.bind(this));
-      }
-
-      getQuantityInput() {
-        return (
-          document.getElementById(`Quantity-${this.dataset.section}`) ||
-          this.querySelector('input[data-pack-quantity]')
-        );
-      }
-
-      onChange(event) {
-        const input = this.getQuantityInput();
-        if (!input) return;
-        input.value = event.target.value;
-        input.dispatchEvent(new Event('change', { bubbles: true }));
-      }
-
-      syncFromInput() {
-        const value = this.getQuantityInput().value;
-        this.radios.forEach((radio) => {
-          radio.checked = radio.value === String(value);
-        });
       }
     }
   );

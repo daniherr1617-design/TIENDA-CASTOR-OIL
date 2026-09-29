@@ -8,7 +8,9 @@
   {%- assign variant = product.selected_or_first_available_variant -%}
   <p class="g-price">
     {%- if product.price_varies -%}
-      <span class="g-price__current">{{ 'products.product.price.from_price_html' | t: price: product.price_min | money }}</span>
+      {%- comment -%} Se formatea el importe antes de traducir («Desde 19,99 €»), como hace price.liquid de Dawn. {%- endcomment -%}
+      {%- assign from_price = product.price_min | money -%}
+      <span class="g-price__current">{{ 'products.product.price.from_price_html' | t: price: from_price }}</span>
     {%- else -%}
       {%- if variant.compare_at_price > variant.price -%}
         <span class="visually-hidden">{{ 'products.product.price.sale_price' | t }}</span>

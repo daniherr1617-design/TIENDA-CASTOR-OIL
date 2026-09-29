@@ -1,5 +1,7 @@
 # GARELON · Código para copiar y pegar en Shopify
 
+> ⚠️ **Esta guía es de la ronda 3 y no incluye la actualización CJ + packs (septiembre 2026).** Para instalar la versión actual usa el ZIP del tema o la integración de GitHub. Si trabajas en el editor de código, sustituye **completos** los archivos que lista `GARELON-CAMBIOS-CJ-PACKS.md` (apartado «Archivos modificados/creados») copiándolos del repositorio.
+
 > **Recomendación:** la forma más rápida y segura es subir el archivo **`garelon-theme.zip`** en
 > *Tienda online → Temas → Añadir tema → Subir archivo zip*. Así se instalan de una vez todos los archivos
 > (incluidas las imágenes) sin riesgo de errores al pegar.

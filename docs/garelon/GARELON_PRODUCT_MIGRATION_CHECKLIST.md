@@ -2,7 +2,7 @@
 
 > Se ejecuta **después de cada cambio de producto**, primero en el repositorio (Claude Code) y después en la Vista previa del tema en Shopify (el dueño).
 > - Cada punto dice **cómo comprobarlo**.
-> - Marca 🅲 = lo comprueba Claude Code en el repositorio o en un render local; 🆂 = solo se puede comprobar en Shopify real (Vista previa, Admin, AutoDS).
+> - Marca 🅲 = lo comprueba Claude Code en el repositorio o en un render local; 🆂 = solo se puede comprobar en Shopify real (Vista previa, Admin, app del proveedor —hoy CJ Dropshipping—).
 > - Las referencias «§» apuntan a secciones de `GARELON_MASTER_TEMPLATE.md`.
 > - Producto nuevo: ______________________ · Producto anterior: ______________________ · Rama: __________ · Fecha: ______
 
@@ -11,7 +11,7 @@
 ## 0. Antes de empezar
 
 - [ ] 🅲 La base es Dawn 16.0.0 con la capa GARELON → `config/settings_schema.json`: `theme_version` 16.0.0 y `theme_name` «GARELON (Dawn)».
-- [ ] 🅲 Existen las 9 secciones `sections/garelon-*.liquid` y los 12 snippets `snippets/garelon-*.liquid` (§6).
+- [ ] 🅲 Existen las 9 secciones `sections/garelon-*.liquid` y los 13 snippets `snippets/garelon-*.liquid` (§6).
 - [ ] 🅲 Línea base de Theme Check: 0 errores y 9 avisos de Dawn (§ anexo B.4).
 - [ ] 🅲 El validador de plantillas da `OK` antes de tocar nada (§ anexo B.2).
 - [ ] 🅲/🆂 Se sabe si el tema publicado tiene cambios del editor que no están en el repositorio. Si los tiene, se han incorporado.
@@ -53,7 +53,7 @@
   - los valores `fallback_image` de las plantillas.
 - [ ] 🅲 Si alguna imagen no es cuadrada, su altura real está en `garelon-fallback-image` (no el `1080` fijo).
 - [ ] 🅲 Los textos incrustados dudosos de imágenes usadas están anotados en el informe.
-- [ ] 🆂 Opcional: imágenes subidas a la multimedia del producto en el mismo orden; AutoDS no las sobrescribe.
+- [ ] 🆂 Opcional: imágenes subidas a la multimedia del producto en el mismo orden; el proveedor (hoy CJ Dropshipping) no las sobrescribe.
 
 ## 3. Contenido de la home (`templates/index.json`)
 
@@ -77,7 +77,9 @@
   - `garelon_gallery` según §18.7;
   - antetítulo y subtítulo nuevos;
   - bloques de Dawn intactos;
-  - `garelon_stock` presente.
+  - `garelon_stock` presente;
+  - `garelon_packs` y `garelon_shipping` presentes si el producto tiene packs (sin `variant_picker` ni `quantity_selector`);
+  - la sección va justo después de la portada, con `garelon_mobile_info_first: true`.
 - [ ] 🅲 **FAQ** (`garelon-faq`): 6-10 preguntas. Se mantienen «¿Qué es…?» (con la aclaración de fabricante externo), la de envío (→ política) y la de dudas (→ contacto + devoluciones).
 - [ ] 🅲 **Cierre** (`garelon-final-cta`): isotipo, frase breve, precio y CTA → `/#comprar`.
 - [ ] 🅲 Alternancia de esquemas crema/arena mantenida, como mucho 2 seguidas iguales (§8).
@@ -90,7 +92,8 @@
 - [ ] 🅲 Los destacados (`highlights`, `icon-with-text`) son nuevos, con iconos de Dawn adecuados.
 - [ ] 🅲 Las pestañas `tab_ingredientes` y `tab_uso` están adaptadas: título, icono y contenido. `tab_envios` sin cambios.
 - [ ] 🅲 El bloque `inventory` sigue con `inventory_threshold: 0` y `show_inventory_quantity: false`.
-- [ ] 🅲 El bloque `packs` sigue desactivado, salvo que el dueño lo pida.
+- [ ] 🅲 Packs (§10.11): si el producto se vende en packs, el bloque `packs` está activo, sin `variant_picker` ni `quantity_selector` en la plantilla; si no, se quita (o muestra el selector estándar).
+- [ ] 🅲 El bloque `shipping` (plazos) tiene textos de estimación prudentes y los mismos plazos que la pestaña «Envíos y devoluciones» y la FAQ.
 - [ ] 🅲 La barra de servicio (`service`: Pago seguro · Atención · Envío · Devoluciones) no ha cambiado.
 - [ ] 🅲 `benefits`, `how_to` y `faq` están actualizados; `sticky` presente.
 - [ ] 🆂 El título y la descripción del producto en el Admin están limpios: en español, sin claims prohibidos y sin ingredientes o datos falsos importados.
@@ -103,9 +106,11 @@
 - [ ] 🅲 Sin reseñas, estrellas, «4,9/5» ni «más de X clientes» inventados.
 - [ ] 🅲 Sin urgencia falsa: cuentas atrás, «quedan X», «personas viendo».
 - [ ] 🅲 Sin descuentos ficticios; «envío gratis» solo si está configurado en Shopify.
+- [ ] 🅲 Packs: ahorro calculado frente al precio real de 1 unidad × unidades; sin precios tachados inventados; insignia solo objetiva («Mejor precio/unidad»), nunca «Más vendido».
+- [ ] 🅲 Plazos de envío como estimación: sin «entrega garantizada», «24/48 h» ni costes internos del proveedor.
 - [ ] 🅲 Los datos técnicos (medidas, capacidad, materiales o ingredientes) coinciden en todos los sitios: home, ficha, FAQ, alt e imágenes.
 
-## 6. Shopify y AutoDS
+## 6. Shopify y proveedor (hoy CJ Dropshipping)
 
 - [ ] 🅲 Ningún precio, precio comparado, SKU, variante, ID de variante, stock ni disponibilidad está escrito en el código ni en los JSON.
 - [ ] 🅲 Las secciones con ajuste `product` apuntan al producto nuevo (handle conocido) o el informe avisa de que hay que elegirlo o retirar el anterior (§25 F5).
@@ -113,7 +118,9 @@
 - [ ] 🆂 Precio comparado tachado solo si existe en Shopify.
 - [ ] 🆂 Las variantes aparecen con sus nombres reales. Al cambiar de variante se actualizan precio, stock, botón y multimedia (en la ficha).
 - [ ] 🆂 El stock dice «En stock» o «Agotado» según el inventario real, sin cifras.
-- [ ] 🆂 AutoDS: producto importado y vinculado; la sincronización de precio y stock funciona; no sobrescribe título, descripción ni imágenes editados; el fulfillment no se ha tocado.
+- [ ] 🆂 Proveedor: producto importado o conectado; cada variante emparejada con la suya (packs: «1 unidad» → CJ «1 unidad», «2 unidades» → CJ «2 unidades», «3 unidades» → CJ «3 piezas»); SKU correcto; no sobrescribe título, descripción, imágenes, nombres de variante ni precios editados.
+- [ ] 🆂 Packs en Shopify: opción «Pack» con «1 unidad» como primera variante; precio real en cada variante; **precio comparado vacío**; sin descuentos automáticos («Compra X y obtén Y», segunda unidad, packs) que se acumulen.
+- [ ] 🆂 El proveedor anterior (AutoDS) está desconectado **para este producto** una vez probado el nuevo, y ya no sobrescribe stock, precio, imágenes ni variantes.
 
 ## 7. Compra, carrito y checkout
 
@@ -123,7 +130,9 @@
 - [ ] 🆂 El carrito no añade nada automáticamente (sin seguros, regalos ni upsells).
 - [ ] 🆂 «Finalizar compra» lleva al checkout de Shopify. Los botones de pago dinámico (Shop Pay, PayPal, Apple Pay, Google Pay…) aparecen según la configuración de Pagos.
 - [ ] 🅲 Sin CSS, JS ni manipulación del DOM del checkout.
-- [ ] 🆂 Estado agotado: el botón se desactiva y la compra fija lo refleja.
+- [ ] 🆂 Estado agotado: el botón se desactiva y la compra fija lo refleja. La tarjeta del pack agotado dice «Agotado» y no se puede elegir.
+- [ ] 🆂 Cada pack llega al carrito como **una línea «Pack: N unidades» × 1** (nunca «N unidades» × N) y la compra fija muestra el pack elegido.
+- [ ] 🆂 Pedido de prueba de cada pack (o, como mínimo, mapping revisado): el proveedor recibe la variante correcta, cantidad 1, la dirección y el método de envío (hoy CJPacket Euro Cosmetic Line). Tracking confirmado antes de lanzar campañas.
 - [ ] 🆂 Carrito vacío → «Seguir comprando» lleva a la home.
 
 ## 8. Cabecera y navegación
@@ -154,6 +163,7 @@
 - [ ] 🅲 Enlaces legales en orden: Contacto · Envíos · Devoluciones y reembolsos · Privacidad · Cookies (si existe la página) · Términos y condiciones · Aviso legal.
 - [ ] 🆂 La página de **contacto** es la misma de siempre (no se ha creado otra), usa la plantilla `contact` y el formulario envía.
 - [ ] 🆂 Cada política enlazada existe y tiene contenido. Si falta la de cookies, no se enlaza.
+- [ ] 🆂 La política de envío del Admin dice los mismos plazos estimados que la tienda y no nombra al proveedor.
 - [ ] 🅲/🆂 Preguntas de §19 respondidas (devoluciones, envíos, higiene, seguridad, garantía, edad). Las políticas afectadas están revisadas por el dueño; las demás, intactas.
 - [ ] 🅲 Ningún NIF/CIF, domicilio, teléfono, email ni razón social inventado en el tema.
 

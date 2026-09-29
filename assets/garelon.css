@@ -1102,48 +1102,261 @@ a.g-trust__title {
   }
 }
 
-/* ---------- Packs de unidades (ficha de producto) ---------- */
-.g-packs__fieldset {
+/* ---------- Packs: variantes reales (ficha y compra de la home) ----------
+   Tarjetas dentro del <variant-selects> de Dawn (snippets/garelon-packs.liquid).
+   Cada tarjeta es una variante; la seleccionada lleva borde tinta, fondo claro y radio lleno. */
+.g-packs {
+  display: block;
+  max-width: 44rem;
+  margin-bottom: 1.6rem;
+}
+
+.g-packs .g-packs__fieldset {
+  min-width: 0;
+  max-width: none;
   margin: 0;
   padding: 0;
   border: 0;
 }
 
-.g-packs__options {
+.g-packs .g-packs__legend {
+  margin-bottom: 1rem;
+  font-size: 1.5rem;
+  font-weight: 500;
+  letter-spacing: 0.04em;
+  color: rgb(var(--color-foreground));
+}
+
+.g-packs__list {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(9rem, 1fr));
-  gap: 0.8rem;
-  margin-top: 0.6rem;
+  gap: 1.4rem;
 }
 
-.g-packs__option {
-  display: flex;
+.g-packs__item {
+  position: relative;
+}
+
+.g-packs .g-packs__input {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  margin: 0;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  opacity: 0;
+}
+
+.g-pack {
+  position: relative;
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr) auto;
   align-items: center;
-  justify-content: center;
-  min-height: 4.6rem;
-  padding: 0 1rem;
-  border: 1px solid rgba(var(--color-foreground), 0.35);
-  border-radius: 4px;
-  font-size: 1.4rem;
+  column-gap: 1.2rem;
+  min-height: 6.4rem;
+  padding: 1.4rem 1.6rem;
+  border: 1px solid rgba(var(--color-foreground), 0.2);
+  border-radius: var(--g-radius);
+  background: rgba(255, 255, 255, 0.45);
+  color: rgb(var(--color-foreground));
   cursor: pointer;
-  transition: border-color 0.2s ease, background-color 0.2s ease;
+  transition: border-color 0.2s ease, background-color 0.2s ease, box-shadow 0.2s ease;
 }
 
-input:checked + .g-packs__option {
+.g-pack:hover {
+  border-color: rgba(var(--color-foreground), 0.5);
+}
+
+.g-packs__input:checked + .g-pack {
   border-color: rgb(var(--color-foreground));
   box-shadow: inset 0 0 0 1px rgb(var(--color-foreground));
-  background: rgba(var(--color-foreground), 0.04);
+  background: rgba(255, 255, 255, 0.92);
 }
 
-input:focus-visible + .g-packs__option {
-  outline: 0.2rem solid rgba(var(--color-foreground), 0.5);
-  outline-offset: 0.2rem;
+.g-packs__input:focus-visible + .g-pack {
+  outline: 0.2rem solid rgba(var(--color-foreground), 0.6);
+  outline-offset: 0.3rem;
+}
+
+.g-pack__radio {
+  display: grid;
+  place-items: center;
+  width: 2rem;
+  height: 2rem;
+  border: 1.5px solid rgba(var(--color-foreground), 0.5);
+  border-radius: 50%;
+}
+
+.g-pack__radio::after {
+  content: '';
+  width: 1rem;
+  height: 1rem;
+  border-radius: 50%;
+  background: rgb(var(--color-foreground));
+  transform: scale(0);
+  transition: transform 0.2s ease;
+}
+
+.g-packs__input:checked + .g-pack .g-pack__radio {
+  border-color: rgb(var(--color-foreground));
+}
+
+.g-packs__input:checked + .g-pack .g-pack__radio::after {
+  transform: scale(1);
+}
+
+.g-pack__main {
+  display: flex;
+  flex-direction: column;
+  gap: 0.3rem;
+  min-width: 0;
+}
+
+.g-pack__name {
+  font-size: 1.6rem;
+  font-weight: 500;
+  line-height: 1.3;
+  letter-spacing: 0.02em;
+}
+
+.g-pack__meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.2rem 1rem;
+  font-size: 1.3rem;
+  line-height: 1.4;
+  color: rgba(var(--color-foreground), 0.74);
+}
+
+.g-pack__meta:empty {
+  display: none;
+}
+
+.g-pack__save {
+  font-weight: 500;
+  color: var(--g-gold-text);
+}
+
+.g-pack__percent {
+  margin-left: 0.4rem;
+  white-space: nowrap;
+}
+
+.g-pack__price {
+  font-size: 1.7rem;
+  font-weight: 500;
+  line-height: 1.3;
+  white-space: nowrap;
+  text-align: right;
+}
+
+/* Insignia objetiva (mejor precio por unidad) sobre el borde superior de la tarjeta. */
+.g-pack__badge {
+  position: absolute;
+  top: 0;
+  right: 1.2rem;
+  padding: 0.3rem 0.8rem;
+  border-radius: 4px;
+  background: var(--g-ink);
+  color: var(--g-gold-light);
+  font-size: 1rem;
+  font-weight: 500;
+  line-height: 1.4;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  white-space: nowrap;
+  transform: translateY(-50%);
+}
+
+.g-pack--badge {
+  padding-top: 1.8rem;
+}
+
+/* Variante agotada: visible pero no seleccionable. */
+.g-packs__input:disabled + .g-pack {
+  border-style: dashed;
+  background: transparent;
+  cursor: not-allowed;
+}
+
+.g-packs__input:disabled + .g-pack .g-pack__name,
+.g-packs__input:disabled + .g-pack .g-pack__price,
+.g-packs__input:disabled + .g-pack .g-pack__unit {
+  color: rgba(var(--color-foreground), 0.5);
+}
+
+.g-pack__status {
+  font-size: 1.15rem;
+  font-weight: 500;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: rgb(var(--color-foreground));
 }
 
 .g-packs__note {
-  margin: 0.8rem 0 0;
-  font-size: 1.25rem;
+  margin: 1rem 0 0;
+  font-size: 1.2rem;
+  line-height: 1.5;
   color: rgba(var(--color-foreground), 0.7);
+}
+
+/* ---------- Plazos de envío junto a la compra ---------- */
+.g-ship {
+  display: flex;
+  align-items: flex-start;
+  gap: 1.2rem;
+  max-width: 44rem;
+  margin: 1.6rem 0;
+  padding: 1.2rem 1.4rem;
+  border: 1px solid var(--g-line);
+  border-radius: var(--g-radius);
+  background: rgba(var(--color-foreground), 0.02);
+}
+
+.g-ship__icon {
+  flex: none;
+  line-height: 0;
+}
+
+.g-ship__icon .g-icon {
+  width: 2.2rem;
+  height: 2.2rem;
+}
+
+.g-ship__body {
+  min-width: 0;
+}
+
+.g-ship__line {
+  margin: 0;
+  font-size: 1.4rem;
+  line-height: 1.5;
+}
+
+.g-ship__line + .g-ship__line {
+  margin-top: 0.2rem;
+}
+
+.g-ship__note {
+  margin: 0.6rem 0 0;
+  font-size: 1.25rem;
+  line-height: 1.5;
+  color: rgba(var(--color-foreground), 0.72);
+}
+
+.g-ship__link {
+  color: inherit;
+  text-underline-offset: 0.3rem;
+}
+
+/* Compra de la home justo después de la portada: en móvil, formulario antes que la galería. */
+@media screen and (max-width: 749px) {
+  .g-mobile-info-first > .product__info-wrapper {
+    order: -1;
+  }
+
+  .g-mobile-info-first > .product__media-wrapper {
+    margin-top: 2.4rem;
+  }
 }
 
 /* ---------- Compra fija (móvil) ---------- */
@@ -1194,6 +1407,22 @@ input:focus-visible + .g-packs__option {
   line-height: 1.3;
   white-space: nowrap;
   text-overflow: ellipsis;
+}
+
+.g-sticky__row {
+  display: flex;
+  align-items: baseline;
+  gap: 0.8rem;
+  min-width: 0;
+}
+
+.g-sticky__variant {
+  overflow: hidden;
+  font-size: 1.25rem;
+  line-height: 1.3;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  color: rgba(var(--color-foreground), 0.74);
 }
 
 .g-sticky__price .price {
@@ -1276,7 +1505,8 @@ input:focus-visible + .g-packs__option {
   .button,
   .g-sticky,
   .g-sticky.is-visible,
-  .g-packs__option,
+  .g-pack,
+  .g-pack__radio::after,
   .g-faq__toggle::before,
   .g-faq__toggle::after,
   .garelon-help__arrow {

@@ -17,9 +17,9 @@ Fecha:
    ¿Qué recibe exactamente el cliente? (unidades, accesorios, caja):
    Marca impresa en el producto o en la caja (o «sin marca»):
 
-2. TÍTULO AUTODS (copiar tal cual):
+2. TÍTULO DEL PROVEEDOR (CJ Dropshipping u otro; copiar tal cual):
 
-3. DESCRIPCIÓN ORIGINAL (copiar tal cual, de AutoDS o del proveedor):
+3. DESCRIPCIÓN ORIGINAL (copiar tal cual, del proveedor):
 
 4. CATEGORÍA
    [ ] cosmética  [ ] electrónica/gadget  [ ] hogar  [ ] mascotas
@@ -32,6 +32,10 @@ Fecha:
    Precio comparado (solo si es real):
 
 6. VARIANTES (nombre de la opción y valores; ¿tienen imagen propia?):
+   ¿Se vende en packs de unidades? [sí/no]
+     Si sí: valores del proveedor (p. ej. «1 unidad», «2 unidades», «3 piezas»),
+     cómo se llamarán en Shopify («1 unidad», «2 unidades», «3 unidades»)
+     y precio previsto de cada pack (se configura en Shopify, no en el tema):
 
 7. CARACTERÍSTICAS (hechos objetivos):
 
@@ -53,7 +57,9 @@ Fecha:
 14. INFORMACIÓN DE ENVÍO
     Mercado (actualmente España):
     Zonas y condiciones configuradas en Shopify:
-    Plazo real del proveedor (si lo sabes):
+    Proveedor / fulfillment y método de envío (interno, no se publica):
+    Plazos que muestra el proveedor (preparación y entrega, con su % si lo da):
+    Plazos prudentes que quieres mostrar al cliente:
     ¿Cambia el texto de la barra superior? (hoy «Envío disponible a toda España»):
 
 15. POLÍTICAS: ¿el producto afecta a…? (sí/no + detalle)
@@ -78,7 +84,7 @@ Fecha:
     Público objetivo:
     Qué lo diferencia de productos parecidos:
     Preguntas que te hacen o que esperas de los clientes:
-    Enlaces a la ficha del proveedor / AutoDS:
+    Enlaces a la ficha del proveedor (CJ Dropshipping u otro):
 
 19. DATOS TÉCNICOS PARA LA MIGRACIÓN
     Producto anterior que se retira:
@@ -87,7 +93,7 @@ Fecha:
     ¿Has cambiado algo en el editor de temas desde la última entrega? [sí/no]
       Si sí: adjunta el ZIP del tema publicado (Temas → … → Descargar archivo del tema).
     Rama de git donde debe trabajar Claude Code:
-    ¿Activar el selector de packs 1/2/3 unidades? [no por defecto]
+    ¿Packs como variantes reales (bloque GARELON Packs)? [sí/no] · ¿Están ya creadas y mapeadas en Shopify? [sí/no]
 ```
 
 ## Checklist antes de enviarlo a ChatGPT
@@ -116,3 +122,5 @@ Fecha:
 - **Advertencias:** solo uso externo; evitar el contacto con los ojos.
 - **Claims a evitar:** «elimina ojeras/arrugas», «anti-aging».
 - **Imágenes:** 10 entregadas; 6 usadas y 4 descartadas (errata, etiqueta distinta, dos antes/después).
+- **Packs:** opción «Pack»: 1 unidad · 2 unidades · 3 unidades (en CJ, «3 piezas»), a 19,99 / 35,00 / 48,00 € en Shopify.
+- **Proveedor y envío:** CJ Dropshipping · CJPacket Euro Cosmetic Line (interno). Al cliente: «Preparación estimada: 1–3 días» · «Entrega estimada en España: aproximadamente 8–16 días».
