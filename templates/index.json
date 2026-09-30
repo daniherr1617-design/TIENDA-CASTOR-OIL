@@ -306,6 +306,18 @@
             "show_gift_card_recipient": false
           }
         },
+        "payment_trust": {
+          "type": "garelon_payment_trust",
+          "settings": {
+            "show_free_shipping": true,
+            "free_shipping_label": "Envío gratis",
+            "free_shipping_note": "",
+            "show_payment": true,
+            "payment_label": "Pago seguro",
+            "show_icons": true,
+            "payment_list_label": "Métodos de pago aceptados"
+          }
+        },
         "stock": {
           "type": "garelon_stock",
           "settings": {}
@@ -348,6 +360,7 @@
         "price",
         "packs",
         "buy_buttons",
+        "payment_trust",
         "stock",
         "shipping"
       ],
@@ -366,6 +379,19 @@
         "garelon_gallery": true,
         "garelon_anchor": "comprar",
         "garelon_mobile_info_first": true
+      }
+    },
+    "reviews": {
+      "type": "garelon-reviews",
+      "settings": {
+        "eyebrow": "Opiniones",
+        "heading": "Lo que opinan nuestros clientes",
+        "subheading": "",
+        "show_summary": true,
+        "color_scheme": "scheme-1",
+        "anchor": "opiniones",
+        "padding_top": 56,
+        "padding_bottom": 56
       }
     },
     "faq": {
@@ -481,6 +507,7 @@
     "roller",
     "ingredients",
     "how_to",
+    "reviews",
     "faq",
     "final_cta"
   ]

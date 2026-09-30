@@ -1,6 +1,6 @@
 # GARELON · MASTER STORE TEMPLATE
 
-> **Versión 1.2 · septiembre 2026.** Extraído del repositorio `TIENDA-CASTOR-OIL` (rama `claude/great-lamport-8mb0rc`), la tienda GARELON del sérum de contorno de ojos. Versión 1.0 sacada del commit `755240b`. La 1.1 recoge el cambio de proveedor (**AutoDS → CJ Dropshipping**) y los **packs como variantes reales**. La 1.2 añade la **oferta visible antes del carrito** («Oferta limitada · Elige tu pack»), la **cantidad 1 blindada**, el **aviso de configuración** en el editor y el flujo **Shopify + GitHub**. Detalle en `GARELON-CAMBIOS-CJ-PACKS.md`, en la raíz. Todos los archivos, ajustes y valores que aparecen aquí salen del código real.
+> **Versión 1.3 · septiembre 2026.** Extraído del repositorio `TIENDA-CASTOR-OIL` (rama `claude/great-lamport-8mb0rc`), la tienda GARELON del sérum de contorno de ojos. Versión 1.0 sacada del commit `755240b`. La 1.1 recoge el cambio de proveedor (**AutoDS → CJ Dropshipping**) y los **packs como variantes reales**. La 1.2 añade la **oferta visible antes del carrito** («Oferta limitada · Elige tu pack»), la **cantidad 1 blindada**, el **aviso de configuración** en el editor y el flujo **Shopify + GitHub**. La 1.3 añade la **confianza junto a la compra** (envío gratis + pago seguro con los métodos de pago habilitados en Shopify) y la sección de **opiniones reales** (`garelon-reviews`). Detalle en `GARELON-CAMBIOS-CJ-PACKS.md`, en la raíz. Todos los archivos, ajustes y valores que aparecen aquí salen del código real.
 >
 > **Cómo se usa:**
 > - **ChatGPT:** lee primero la sección 29, rellena la sección 1 con el brief (`GARELON_PRODUCT_BRIEF_TEMPLATE.md`) y genera el prompt final para Claude Code.
@@ -151,7 +151,7 @@ Ninguna instrucción posterior las anula, tampoco el prompt adaptado. Si una pet
 - **R2 · GARELON no es el fabricante** salvo prueba. Prohibido: «Fabricado por GARELON», «Creado/Desarrollado por GARELON», «Nuestro laboratorio», «Fórmula GARELON». Fórmula por defecto: *«GARELON es la tienda desde la que lo comercializamos: el producto procede de un fabricante externo»* (texto real de la FAQ actual).
 - **R3 · Claims prudentes.** Los textos exagerados del proveedor (CJ Dropshipping, AliExpress, AutoDS…) nunca se copian como claims de GARELON: se reformulan (sección 17) o se eliminan. No se inventan estudios, porcentajes, resultados, certificaciones, premios, recomendaciones profesionales ni pruebas clínicas. Tampoco se hacen claims médicos o terapéuticos.
 - **R4 · Antes/después.** No se crean resultados falsos ni se alteran imágenes para exagerar. Los antes/después del proveedor se evalúan y se descartan por defecto: sin resultados documentados restan confianza. Así se hizo con IMAGEN 6 y 8 del sérum.
-- **R5 · Reseñas.** Nunca se inventan: ni ⭐⭐⭐⭐⭐, ni «4,9/5», ni «más de X clientes», ni testimonios. Las estrellas solo aparecen si las aporta una app real de reseñas mediante un app block. El bloque `rating` de Dawn solo se muestra si existe el metafield `reviews.rating`.
+- **R5 · Reseñas.** Nunca se inventan: ni ⭐⭐⭐⭐⭐, ni «4,9/5», ni «más de X clientes», ni testimonios, nombres, fotos, fechas ni «Compra verificada». Solo se muestran opiniones **reales** de una app de reseñas: su **bloque de app** dentro de `sections/garelon-reviews.liquid` y/o la valoración estándar de Shopify que rellena la app (`product.metafields.reviews.rating` y `reviews.rating_count`). Sin ninguna de las dos, la sección no se pinta para el cliente (solo un aviso en el editor). El bloque `rating` de Dawn solo se muestra si existe el metafield `reviews.rating`. Nunca se dejan reseñas de prueba en el tema.
 - **R6 · Urgencia.** Sin «quedan 3», «20 personas viendo», cuentas atrás ni «oferta acaba en…» si no son datos reales. El stock se muestra solo como «En stock» o «Agotado», nunca con cifras (`garelon-stock`; bloque `inventory` con `inventory_threshold: 0` y `show_inventory_quantity: false`).
 - **R7 · Descuentos y packs.** `compare_at_price` solo se muestra si existe en Shopify y es un precio anterior real: nunca se usa para fingir una rebaja (nada de «~~39,98 €~~ 35,00 €»). Los packs son **variantes reales con su propio precio** (p. ej. «2 unidades» a 35,00 €): es un precio real de variante, no un descuento ficticio. El ahorro que se muestra se calcula de forma transparente frente al precio real de la variante de 1 unidad × unidades del pack («Ahorra 4,98 € · -12 %», «Comprando por separado: 39,98 €»), y se ve **antes** de añadir al carrito, nunca solo en el carrito o el checkout. «Oferta limitada» solo como etiqueta, sin cuenta atrás, fecha, stock ni «últimas unidades» que no sean reales. Sin «Compra X y obtén Y», «segunda unidad» ni descuentos automáticos que se acumulen con el precio de los packs. Insignias solo objetivas («Mejor precio/unidad»), nunca «Más vendido» sin datos.
 
@@ -173,6 +173,11 @@ Ninguna instrucción posterior las anula, tampoco el prompt adaptado. Si una pet
 - **R18 · Cabecera móvil.** El logo nunca queda tapado. Prioridad: 1) marca, 2) menú, 3) carrito, 4) búsqueda, 5) cuenta. La búsqueda y la cuenta viven dentro del menú en móvil (sección 11).
 - **R19 · Un H1 por página, sin structured data duplicado** (sección 20).
 - **R20 · No inventar pruebas.** No se afirma que algo funciona si no se ha podido comprobar (checkout real, proveedor/CJ, Admin, apps). Se dice qué se probó y qué no.
+
+**Confianza junto a la compra**
+- **R21 · Métodos de pago.** Los iconos de pago salen **siempre** de `shop.enabled_payment_types` con `payment_type_svg_tag` (SVG oficiales de Shopify), como el pie de Dawn. Nunca se escribe ni se sube un logo (Visa, Mastercard, PayPal, Apple Pay, Google Pay, Bizum…) ni se muestra un método que Shopify no tenga habilitado. Texto: «Pago seguro», nunca «Pago 100 % seguro». La fila de iconos es informativa: no toca `{{ form | payment_button }}` ni el checkout (R11).
+- **R22 · Envío gratis.** GARELON ofrece envío gratis **según las zonas configuradas en Shopify**. El tema solo lo comunica («Envío gratis» bajo los botones de compra); la tarifa real de 0 € se configura en Shopify Admin → Configuración → Envío y entrega. No se afirma qué zonas (Península, Baleares, Canarias, Ceuta, Melilla…) están incluidas sin verlo en el Admin. Los costes internos del proveedor (CJ) nunca se publican. «Envío gratis» no sustituye a los plazos estimados (10.12).
+- **R23 · Garantías.** No se añaden garantías, periodos («Garantía de 30 días», «satisfecho o te devolvemos el dinero»…) ni condiciones que no estén respaldadas exactamente por una política real de GARELON en Shopify.
 
 ---
 
@@ -211,10 +216,12 @@ La decoración va siempre la última.
 | Página de contacto única | Admin (página) + `templates/page.contact.json` + `snippets/garelon-url.liquid` |
 | Políticas legales | Admin → Configuración → Políticas; página de cookies |
 | Formulario de producto, carrito, cart drawer, checkout de Shopify | Archivos de Dawn (sección 23) |
+| Envío gratis + pago seguro + métodos de pago habilitados bajo la compra | Bloque `garelon_payment_trust`, `snippets/garelon-payment-trust.liquid` (sección 10.15) |
+| Sección de opiniones reales (oculta sin datos reales) | `sections/garelon-reviews.liquid` (sección 10.16) |
 | Sistema de imágenes responsive | `snippets/garelon-image.liquid`, `garelon-srcset.liquid`, `garelon-fallback-image.liquid` |
 | Estructura de la home como landing (orden y ritmo) | `templates/index.json` (sección 9) |
 | Textos de interfaz en español de España | `locales/es.json` |
-| Reglas R1-R20 | Este documento |
+| Reglas R1-R23 | Este documento |
 
 ### 5.B · Elementos variables (cambian con cada producto)
 
@@ -299,6 +306,7 @@ Están en `GARELON_PRODUCT_MIGRATION_CHECKLIST.md`, y el resumen en la sección 
 | `sections/garelon-faq.liquid` | GARELON FAQ | Acordeón accesible (`details`/`summary`) de hasta 20 preguntas; resuelve los enlaces de contacto y de políticas |
 | `sections/garelon-final-cta.liquid` | GARELON Llamada final | Cierre centrado: isotipo, H2, texto, precio real y botón a `/#comprar`; imagen opcional |
 | `sections/garelon-sticky-atc.liquid` | GARELON Compra fija | Barra fija de compra en móvil, solo en la plantilla de producto. Pulsa el botón real del formulario de Dawn. |
+| `sections/garelon-reviews.liquid` | GARELON Opiniones | Opiniones **solo reales**: bloques de app (`@app`) de una app de reseñas + valoración media opcional desde `reviews.rating` / `reviews.rating_count`. Sin datos reales no se pinta nada al cliente; en el editor, aviso «Añade aquí el bloque de tu app de reseñas para mostrar opiniones reales.» (sección 10.16) |
 
 ### 6.4 Snippets GARELON (`snippets/garelon-*.liquid`)
 
@@ -317,6 +325,7 @@ Están en `GARELON_PRODUCT_MIGRATION_CHECKLIST.md`, y el resumen en la sección 
 | `snippets/garelon-flag-es.liquid` | Bandera de España en SVG 3:2 para la barra superior (decorativa, `aria-hidden`) |
 | `snippets/garelon-packs.liquid` | **Selector de packs sobre variantes reales**: pinta el `<variant-selects>` de Dawn con una tarjeta por variante (unidades, precio, precio por unidad, ahorro e insignia calculados con `variant.price`). Si el producto no tiene packs reconocibles, pinta el selector estándar de Dawn. Sin JS propio. |
 | `snippets/garelon-shipping.liquid` | Plazos de envío junto a la compra (bloque `garelon_shipping`): texto editable y prudente + enlace a la política de envío real. |
+| `snippets/garelon-payment-trust.liquid` | «Envío gratis» + «Pago seguro» + iconos de los métodos de pago **habilitados en Shopify** (`shop.enabled_payment_types` + `payment_type_svg_tag`), bajo los botones de compra (bloque `garelon_payment_trust`, sección 10.15). |
 
 ### 6.5 Assets GARELON (`assets/`)
 
@@ -347,12 +356,12 @@ Todos los `garelon-img*` son cuadrados (1080×1080, 720×720 y 480×480) y pesan
 | `snippets/header-dropdown-menu.liquid`, `snippets/header-mega-menu.liquid` | Omiten los enlaces al catálogo y a colecciones en todos los niveles cuando `hide_catalog_links` está activo. Resuelven las URL con `garelon-url`. |
 | `sections/announcement-bar.liquid` | Ajuste de bloque `show_flag_es`: añade la bandera SVG al final del texto |
 | `sections/footer.liquid` | Bloque `garelon_help` (Ayuda). Logo apilado de respaldo. Enlaces legales en orden fijo y solo si tienen contenido. Menús del pie resueltos con `garelon-url`. |
-| `sections/featured-product.liquid` | Sin producto elegido usa `collections.all.products.first`. Ajustes `garelon_gallery`, `garelon_anchor` y `garelon_mobile_info_first` (en móvil, formulario antes que la galería). Bloques `garelon_stock`, `garelon_packs` y `garelon_shipping`. El bloque `variant_picker` no se pinta si hay bloque de packs (un solo `<variant-selects>`). Clase `g-anchor` en la sección. Sin modal de multimedia cuando se usa la galería GARELON. |
-| `sections/main-product.liquid` | Bloques `garelon_packs` (packs = variantes reales) y `garelon_shipping`. El bloque `variant_picker` no se pinta si hay bloque de packs. Las pestañas (`collapsible_tab`) resuelven enlaces con `garelon-url`. |
+| `sections/featured-product.liquid` | Sin producto elegido usa `collections.all.products.first`. Ajustes `garelon_gallery`, `garelon_anchor` y `garelon_mobile_info_first` (en móvil, formulario antes que la galería). Bloques `garelon_stock`, `garelon_packs`, `garelon_payment_trust` y `garelon_shipping`. El bloque `variant_picker` no se pinta si hay bloque de packs (un solo `<variant-selects>`). Clase `g-anchor` en la sección. Sin modal de multimedia cuando se usa la galería GARELON. |
+| `sections/main-product.liquid` | Bloques `garelon_packs` (packs = variantes reales), `garelon_payment_trust` y `garelon_shipping`. El bloque `variant_picker` no se pinta si hay bloque de packs. Las pestañas (`collapsible_tab`) resuelven enlaces con `garelon-url`. |
 | `sections/main-404.liquid`, `sections/main-cart-items.liquid` (2 enlaces), `snippets/cart-drawer.liquid` | «Seguir comprando» → `routes.root_url` en vez del catálogo |
 | `config/settings_schema.json` | Nombre del tema y grupo **GARELON · Enlaces** (`garelon_contact_page`, `garelon_refund_page`, `garelon_shipping_page`, `garelon_cookies_page`) |
 | `config/settings_data.json` | Colores, fuentes, botones, radios, carrito en cajón, descripción de marca |
-| `locales/es.json` | Español de España: «Añadir al carrito», «Artículo añadido…», «En stock», «Pocas unidades», «Finalizar compra» |
+| `locales/es.json` | Español de España: «Añadir al carrito», «Artículo añadido…», «En stock», «Pocas unidades», «Finalizar compra». `products.product.shipping_policy_html` (línea bajo el precio) = « Consulta nuestra política de envío.» en vez de «Los gastos de envío se calculan en la pantalla de pago», que contradecía «Envío gratis». |
 | `templates/page.contact.json` | Margen superior del formulario (16 px) |
 
 ### 6.7 Plantillas (`templates/`)
@@ -543,16 +552,17 @@ Antes de la home están los grupos: **barra superior** (esquema 3) y **cabecera*
 | # | Id en `index.json` | Tipo de sección | Esquema | Ancla | Contenido actual (sérum) | Imagen | Márgenes |
 |---|---|---|---|---|---|---|---|
 | 1 | `hero` | `garelon-hero` | 1 | `inicio` | Antetítulo «GARELON»; **H1** «Una mirada con aspecto más descansado»; 1 frase qué es; precio («A partir de 19,99 €» si varía entre packs); «Comprar el sérum» → `/#comprar`; «Cómo se usa» → `/#como-usarlo`; puntos: Aplicador roller · 10 ml · Rutina sencilla | IMAGEN 1 (producto limpio), carga inmediata | 24 / 32 |
-| 2 | `product_cta` | `featured-product` (Dawn) | **2** | `comprar` | **Compra justo después de la portada**: antetítulo «El sérum», título del producto (H2), precio, **packs** (`garelon_packs`: «Elige tu pack»), botones de compra con pago dinámico, stock y **plazos de envío** (`garelon_shipping`). En móvil, formulario antes que la galería (`garelon_mobile_info_first`). Sin selector de cantidad ni subtítulo. | Galería del tema: IMAGEN 1 → 10 → 7 → 5 → 4 → 9 | 40 / 56 |
+| 2 | `product_cta` | `featured-product` (Dawn) | **2** | `comprar` | **Compra justo después de la portada**: antetítulo «El sérum», título del producto (H2), precio, **packs** (`garelon_packs`: «Elige tu pack»), botones de compra con pago dinámico, **envío gratis + pago seguro + iconos de pago** (`garelon_payment_trust`), stock y **plazos de envío** (`garelon_shipping`). En móvil, formulario antes que la galería (`garelon_mobile_info_first`). Sin selector de cantidad ni subtítulo. | Galería del tema: IMAGEN 1 → 10 → 7 → 5 → 4 → 9 | 40 / 56 |
 | 3 | `trust` | `garelon-trust-bar` | 1 | — | 4 características: Aplicación precisa · Roller metálico · Rutina en 3 pasos · Fórmula con aceite de ricino (H2 oculto «Características») | — | 32 / 32 |
 | 4 | `benefits` | `garelon-benefits` | 2 | `beneficios` | Antetítulo «Beneficios»; H2; entradilla con el **problema**; 4 tarjetas: Ojeras · Bolsas · Líneas finas · Hidratación | — | 56 / 56 |
 | 5 | `roller` | `garelon-image-text` | 2 | `roller` | **Característica diferencial**: el roller (2 párrafos, sin botón) | IMAGEN 7, `rounded`, a la derecha | 56 / 56 |
 | 6 | `ingredients` | `garelon-ingredients` | 1 | `ingredientes` | 5 ingredientes (nombre + INCI + frase neutra) + nota «según el proveedor» | IMAGEN 5 | 56 / 56 |
 | 7 | `how_to` | `garelon-how-to-use` | 2 | `como-usarlo` | «3 pasos. Menos de un minuto.»: Limpia · Aplica · Masajea + nota de precaución | IMAGEN 4 | 56 / 56 |
-| 8 | `faq` | `garelon-faq` | 2 | `preguntas-frecuentes` | 9 preguntas: qué es (con la aclaración de fabricante externo) · cómo se usa · frecuencia · cantidad y medidas · **qué incluye cada pack** · dónde aplicarlo · ingredientes · envío (plazos estimados + enlace a la política) · dudas con el pedido (enlaces a contacto y devoluciones) | — | 56 / 56 |
-| 9 | `final_cta` | `garelon-final-cta` | 1 | — | Isotipo; H2 «Tu rutina empieza con un pequeño gesto»; «Cuidado diario para tu mirada.»; precio; «Comprar el sérum» → `/#comprar` | Ninguna (`none`, centrado) | 56 / 64 |
+| 8 | `reviews` | `garelon-reviews` | 1 | `opiniones` | «Opiniones · Lo que opinan nuestros clientes». **Solo reseñas reales** (bloque de app + valoración de Shopify). Hoy no hay app: **oculta para el cliente** | — | 56 / 56 |
+| 9 | `faq` | `garelon-faq` | 2 | `preguntas-frecuentes` | 9 preguntas: qué es (con la aclaración de fabricante externo) · cómo se usa · frecuencia · cantidad y medidas · **qué incluye cada pack** · dónde aplicarlo · ingredientes · envío (plazos estimados + enlace a la política) · dudas con el pedido (enlaces a contacto y devoluciones) | — | 56 / 56 |
+| 10 | `final_cta` | `garelon-final-cta` | 1 | — | Isotipo; H2 «Tu rutina empieza con un pequeño gesto»; «Cuidado diario para tu mirada.»; precio; «Comprar el sérum» → `/#comprar` | Ninguna (`none`, centrado) | 56 / 64 |
 
-**Por qué la compra va arriba (actualización de packs, septiembre 2026):** la home recibe tráfico móvil de anuncios y el dueño quiere que los packs se vean casi desde el primer momento. Se **movió** el formulario real (no se duplicó): medido en local a 390 × 844, la portada termina a ~730 px con precio y CTA visibles, y las tarjetas de packs empiezan a ~1090 px (un deslizamiento); el CTA de la portada lleva directo a ellas. El resto de la historia (características → beneficios → diferencial → composición → uso → FAQ → cierre) sigue igual.
+**Por qué la compra va arriba (actualización de packs, septiembre 2026):** la home recibe tráfico móvil de anuncios y el dueño quiere que los packs se vean casi desde el primer momento. Se **movió** el formulario real (no se duplicó): medido en local a 390 × 844, la portada termina a ~730 px con precio y CTA visibles, y las tarjetas de packs empiezan a ~1090 px (un deslizamiento); el CTA de la portada lleva directo a ellas. El resto de la historia (características → beneficios → diferencial → composición → uso → **opiniones reales** → FAQ → cierre) sigue igual. Las opiniones van después de explicar el producto y antes de resolver dudas (FAQ) y del cierre.
 
 En la ronda 3 se eliminaron las secciones «showcase» y «editorial» porque solo tenían imágenes antiguas. Pueden volver con `garelon-image-text` si el nuevo producto tiene imágenes buenas para ello.
 
@@ -736,6 +746,22 @@ Para cada componente: **archivo · función · entradas y ajustes · qué puede 
 - **Reglas:** nunca «entrega garantizada», «recíbelo en X días», «24/48 h» ni «envío express» sin soporte; nunca costes internos del proveedor, aduanas ni márgenes; no se nombra al proveedor.
 - **Estado actual:** activo en la home (tras el stock) y en la ficha (tras el inventario).
 
+### 10.15 Envío gratis y pago seguro · bloque `garelon_payment_trust` (en `main-product` y `featured-product`) + `snippets/garelon-payment-trust.liquid`
+- **Función:** justo debajo de «Añadir al carrito» y del botón de pago dinámico: «✓ ENVÍO GRATIS» y «🔒 PAGO SEGURO» (iconos lineales de `garelon-icon`) y una fila de cápsulas blancas con borde arena muy suave con los **SVG oficiales de Shopify** de cada método habilitado.
+- **Fuente de los métodos:** `for type in shop.enabled_payment_types` → `type | payment_type_svg_tag` (misma lógica que `sections/footer.liquid`). Si el dueño activa o desactiva un método en Configuración → Pagos, la fila cambia sola. Si Shopify no devuelve ninguno, no se pinta la fila (en el editor aparece un aviso).
+- **Ajustes:** `show_free_shipping` (sí), `free_shipping_label` («Envío gratis»), `free_shipping_note` (vacío; opcional, p. ej. las zonas si no son todas), `show_payment` (sí), `payment_label` («Pago seguro»), `show_icons` (sí), `payment_list_label` («Métodos de pago aceptados», texto para lectores de pantalla).
+- **Accesibilidad:** lista con `aria-label` «Métodos de pago aceptados»; cada SVG de Shopify lleva `role="img"` y su `<title>`; los iconos de marca GARELON son decorativos (`aria-hidden`). Sin animaciones.
+- **Orden en la zona de compra:** packs → «Añadir al carrito» → pago dinámico → **envío gratis + pago seguro + métodos** → stock → plazos de envío.
+- **Reglas:** R21, R22 y R23. Nada de «100 % seguro», garantías ni logos escritos a mano.
+
+### 10.16 Opiniones · `sections/garelon-reviews.liquid`
+- **Por qué una sección propia y no la sección «Apps» de Dawn:** la de Dawn no tiene título ni diseño GARELON y se pinta aunque esté vacía. Esta añade el encabezado GARELON, la valoración media real y **se oculta sola** si no hay contenido real.
+- **Fuentes reales, por prioridad:** 1) bloques de app (`@app`) de la app de reseñas (Judge.me, Loox, Shopify Product Reviews sucesoras…), que pintan sus propias opiniones, autor, fotos y «compra verificada» si la app lo proporciona; 2) valoración estándar de Shopify que rellena la app: `reviews.rating` (estrellas + «4,X/5») y `reviews.rating_count` («N opiniones»).
+- **Ajustes:** `eyebrow` («Opiniones»), `heading` («Lo que opinan nuestros clientes»), `subheading` (opcional), `show_summary` (sí), `product` (en la home hay que elegir el sérum para que salga la media; en la ficha se usa el producto de la página), esquema, ancla `opiniones`, márgenes 56/56.
+- **Sin datos reales:** no se pinta nada para el cliente. En el editor: «Añade aquí el bloque de tu app de reseñas para mostrar opiniones reales.»
+- **Conectar una app:** instalar la app → en el editor, sección «GARELON Opiniones» → «Añadir bloque» → **Apps** → el bloque de la app (en la home, el de carrusel o «todas las reseñas»; en la ficha, el widget de reseñas del producto). No añadir el mismo widget también en `main-product` (se duplicaría). Configurar en la app los colores GARELON: texto `#1b1714`, estrellas/acento `#9a7433`, borde `rgba(184,138,59,.32)`, fondo blanco/crema, sin carruseles automáticos.
+- **Sin JS propio ni librerías.** El diseño de las tarjetas lo pone la app; el tema da el contenedor (máx. 1100 px), el encabezado y la valoración.
+
 ### 10.13 Ayuda del pie · bloque `garelon_help` de `sections/footer.liquid`
 - **Ajustes:**
   - `heading`: «Ayuda».
@@ -875,16 +901,18 @@ Su API está documentada en el comentario de cabecera de cada archivo.
   5. `subtitle` (`text`, subtitle) → **cambia**
   6. `packs` (`garelon_packs`): **activo**, «Elige tu pack» (sección 10.11). Sustituye a `variant_picker` y `quantity_selector`, que ya no están en la plantilla.
   7. `buy_buttons`: con pago dinámico (Shop Pay, PayPal, Apple Pay…, lo decide Shopify)
-  8. `inventory`: `inventory_threshold: 0`, `show_inventory_quantity: false`, así que nunca muestra «Pocas unidades» ni cifras
-  9. `shipping` (`garelon_shipping`): plazos estimados (sección 10.12)
-  10. `highlights` (`icon-with-text` de Dawn: ojo / frasco / cronómetro, «Aplicación precisa · 10 ml · Rutina en 3 pasos») → **cambia**
-  11. `description`: `product.description` del Admin, que **hay que limpiar en el Admin**
-  12. `tab_ingredientes`, `tab_uso` (`collapsible_tab`) → **cambian** (título, icono de Dawn, contenido)
-  13. `tab_envios` («Envíos y devoluciones»: plazos estimados + enlaces a las políticas): **permanente**
-  14. `share`
+  8. `payment_trust` (`garelon_payment_trust`): envío gratis + pago seguro + métodos habilitados (sección 10.15)
+  9. `inventory`: `inventory_threshold: 0`, `show_inventory_quantity: false`, así que nunca muestra «Pocas unidades» ni cifras
+  10. `shipping` (`garelon_shipping`): plazos estimados (sección 10.12)
+  11. `highlights` (`icon-with-text` de Dawn: ojo / frasco / cronómetro, «Aplicación precisa · 10 ml · Rutina en 3 pasos») → **cambia**
+  12. `description`: `product.description` del Admin, que **hay que limpiar en el Admin**
+  13. `tab_ingredientes`, `tab_uso` (`collapsible_tab`) → **cambian** (título, icono de Dawn, contenido)
+  14. `tab_envios` («Envíos y devoluciones»: plazos estimados + enlaces a las políticas): **permanente**
+  15. `share`
 - **Después:**
   - `service` (`garelon-trust-bar`: Pago seguro · Atención al cliente → contacto · Información de envío → política · Devoluciones → política): **permanente**;
   - `benefits`, `how_to` y `faq`: **cambian**, normalmente con el mismo contenido que en la home;
+  - `reviews` (`garelon-reviews`, entre `how_to` y `faq`): opiniones reales del producto de la página (widget de la app + media); oculta sin datos reales;
   - `sticky` (`garelon-sticky-atc`).
 - Esta plantilla sirve para **todos** los productos. Si en el futuro hubiera varios, haría falta una plantilla alternativa por producto (sección 28).
 
@@ -900,7 +928,7 @@ Su API está documentada en el comentario de cabecera de cada archivo.
   - los eventos pasan por `pubsub.js` (`PUB_SUB_EVENTS.cartUpdate`, `variantChange`).
 - **Selector de variantes:** el bloque `garelon_packs` pinta el `<variant-selects>` de Dawn: tarjetas de packs o, de respaldo, el selector estándar (`snippets/product-variant-picker.liquid` + `product-variant-options.liquid`). El bloque `variant_picker` de Dawn solo se pinta si no hay bloque de packs. Si el producto solo tiene la variante por defecto, no aparece selector.
 - **Cantidad:** con packs, sin bloque `quantity_selector`: el formulario envía `quantity=1` (campo oculto del bloque de packs). Si se vuelve a añadir el bloque de cantidad, Dawn lo reinicia a 1 en cada cambio de variante.
-- **Pago dinámico:** `show_dynamic_checkout: true` → `{{ form | payment_button }}`. Shopify decide qué botones aparecen. El tema no los toca.
+- **Pago dinámico:** `show_dynamic_checkout: true` → `{{ form | payment_button }}`. Shopify decide qué botones aparecen. El tema no los toca. Debajo, el bloque `garelon_payment_trust` (10.15) solo **informa** de los métodos habilitados.
   - Con el pago dinámico activo, Dawn muestra «Añadir al carrito» con estilo secundario (contorno) y el botón de pago de Shopify debajo. Es el comportamiento nativo y se deja así.
 - **Stock en la home:** `snippets/garelon-stock.liquid` (sección 6.4). En la ficha, el bloque `inventory` de Dawn con los ajustes sin urgencia.
 - **Precio:** `snippets/price.liquid` de Dawn (formulario) y `snippets/garelon-price-inline.liquid` (portada y cierre: «A partir de 19,99 €» cuando el precio varía entre variantes, como con los packs). El precio comparado solo aparece si `compare_at_price > price`.
@@ -920,8 +948,8 @@ Su API está documentada en el comentario de cabecera de cada archivo.
 - Shopify muestra arriba el bloque de pago exprés y debajo la tarjeta; el orden no se cambia con hacks.
 - **Vías oficiales:** Configuración → Pagos; apps de personalización de pagos (Shopify Functions en Plus).
 
-### 15.4 Compra fija, packs y plazos
-Ver las secciones 10.10, 10.11 y 10.12.
+### 15.4 Compra fija, packs, plazos, envío gratis y pagos
+Ver las secciones 10.10, 10.11, 10.12 y 10.15. **Envío gratis (R22):** el tema lo anuncia; en Shopify Admin → Configuración → Envío y entrega, las zonas donde se ofrece deben tener una tarifa de **0 €** (tarea manual del dueño, comprobar en un checkout de prueba).
 
 ### 15.5 Proveedor y fulfillment (Shopify + CJ Dropshipping)
 - **Sistema vigente:** Shopify es la fuente de verdad (producto, variantes, precios, disponibilidad, inventario, IDs, carrito). **CJ Dropshipping** se conecta desde su app y hace el fulfillment. El tema no tiene ninguna línea de código de CJ.
@@ -1275,6 +1303,8 @@ Antes de tocar cualquier política, responde:
 6. **Confianza sin inventos:**
    - hechos verificables;
    - barra de servicio en la ficha (pago seguro, atención, envío, devoluciones) enlazada a páginas reales;
+   - bajo los botones de compra: «Envío gratis» (tarifa real 0 € en Shopify), «Pago seguro» y los iconos de los métodos **habilitados** en Shopify;
+   - opiniones solo reales (app de reseñas), antes de la FAQ;
    - FAQ que remite a las políticas.
 7. **Carrito simple:** cajón sin upsells, notas ni sorpresas.
 8. **Menú mínimo:** 4 enlaces. Sin catálogo, búsqueda ni cuenta en la barra móvil.
@@ -1395,6 +1425,12 @@ Ejecuta las pruebas de la sección 26 y corrige lo que falle. No se da por bueno
   - en la home, «Oferta limitada · Elige tu pack» y las 3 tarjetas con su ahorro quedan **antes** de «Añadir al carrito»;
   - **regresión:** con `quantity_selector` en la plantilla a la vez que los packs, el selector no se pinta y el POST lleva un solo `quantity=1`;
   - en el editor **no** aparece el aviso «Configuración de Shopify pendiente o incorrecta para packs».
+- **Confianza (local y después en Shopify):**
+  - bajo los botones de compra de home y ficha: «Envío gratis», «Pago seguro» e iconos = exactamente los métodos de `shop.enabled_payment_types` (probar con 6, con 2 y con 0 métodos);
+  - ningún logo en el código ni en `assets/`; el botón de pago dinámico sigue igual;
+  - los plazos de envío siguen visibles; sin garantías ni «100 %»;
+  - opiniones: sin app ni valoración → la sección no se pinta (aviso solo en el editor); con bloque de app/valoración → layout correcto antes de la FAQ; **ninguna reseña de prueba en el tema**;
+  - en Shopify: la tarifa de envío de las zonas anunciadas es 0 € en el checkout.
 - **Compra (solo verificable en Shopify real):**
   - variante → precio y stock;
   - añadir → cart drawer;

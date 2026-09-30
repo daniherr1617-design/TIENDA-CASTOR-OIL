@@ -158,7 +158,7 @@
       },
       "nested_label": "{{ title }} para {{ parent_title }}",
       "view_full_details": "Ver todos los detalles",
-      "shipping_policy_html": "Los <a href=\"{{ link }}\">gastos de envío</a> se calculan en la pantalla de pago.",
+      "shipping_policy_html": " Consulta nuestra <a href=\"{{ link }}\">política de envío</a>.",
       "choose_options": "Seleccionar opciones",
       "choose_product_options": "Elegir opciones para {{ product_name }}",
       "value_unavailable": "{{ option_value }}: no disponible",

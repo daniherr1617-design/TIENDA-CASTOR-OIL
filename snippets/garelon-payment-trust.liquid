@@ -1,0 +1,74 @@
+{%- comment -%}
+  GARELON · Envío gratis + pago seguro debajo de los botones de compra.
+
+  - «Envío gratis»: solo comunica la oferta. La tarifa real (0 €) se configura en
+    Shopify Admin › Configuración › Envío y entrega; el tema no la controla.
+  - Métodos de pago: SOLO los que Shopify tiene habilitados (shop.enabled_payment_types),
+    con los SVG oficiales de Shopify (payment_type_svg_tag), igual que el pie de página de Dawn.
+    Ningún logo está escrito a mano ni subido como imagen: si un método se desactiva en
+    Shopify, desaparece aquí automáticamente.
+  - No toca {{ form | payment_button }} ni el checkout: es información visual.
+  - Sin garantías ni plazos inventados.
+
+  Accepts:
+  - block: {Object} bloque garelon_payment_trust
+
+  Usage:
+  {% render 'garelon-payment-trust', block: block %}
+{%- endcomment -%}
+{%- liquid
+  assign show_shipping = false
+  if block.settings.show_free_shipping and block.settings.free_shipping_label != blank
+    assign show_shipping = true
+  endif
+  assign show_payment = false
+  if block.settings.show_payment and block.settings.payment_label != blank
+    assign show_payment = true
+  endif
+  assign show_icons = false
+  if block.settings.show_icons and shop.enabled_payment_types.size > 0
+    assign show_icons = true
+  endif
+-%}
+{%- if show_shipping or show_payment or show_icons -%}
+  <div class="g-buytrust" {{ block.shopify_attributes }}>
+    {%- if show_shipping or show_payment -%}
+      <ul class="g-buytrust__list" role="list">
+        {%- if show_shipping -%}
+          <li class="g-buytrust__item">
+            <span class="g-buytrust__icon">{% render 'garelon-icon', icon: 'check' %}</span>
+            <span class="g-buytrust__text">
+              <span class="g-buytrust__label">{{ block.settings.free_shipping_label | escape }}</span>
+              {%- if block.settings.free_shipping_note != blank -%}
+                <span class="g-buytrust__note">{{ block.settings.free_shipping_note | escape }}</span>
+              {%- endif -%}
+            </span>
+          </li>
+        {%- endif -%}
+        {%- if show_payment -%}
+          <li class="g-buytrust__item">
+            <span class="g-buytrust__icon">{% render 'garelon-icon', icon: 'lock' %}</span>
+            <span class="g-buytrust__text">
+              <span class="g-buytrust__label">{{ block.settings.payment_label | escape }}</span>
+            </span>
+          </li>
+        {%- endif -%}
+      </ul>
+    {%- endif -%}
+
+    {%- if show_icons -%}
+      <ul class="g-pay" role="list" aria-label="{{ block.settings.payment_list_label | default: 'Métodos de pago aceptados' | escape }}">
+        {%- for type in shop.enabled_payment_types -%}
+          <li class="g-pay__item">
+            {{ type | payment_type_svg_tag: class: 'icon icon--full-color g-pay__icon' }}
+          </li>
+        {%- endfor -%}
+      </ul>
+    {%- elsif block.settings.show_icons and request.design_mode -%}
+      <p class="g-editor-note" role="note">
+        Shopify no devuelve ningún método de pago habilitado, así que no se muestran iconos. Actívalos en
+        Configuración › Pagos. Aviso visible solo en el editor de temas.
+      </p>
+    {%- endif -%}
+  </div>
+{%- endif -%}

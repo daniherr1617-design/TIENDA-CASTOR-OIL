@@ -235,6 +235,8 @@
                     cantidad (quantity=1 fijo).
                   {%- endcomment -%}
                   {%- render 'garelon-packs', product: product, block: block, product_form_id: product_form_id -%}
+                {%- when 'garelon_payment_trust' -%}
+                  {%- render 'garelon-payment-trust', block: block -%}
                 {%- when 'garelon_shipping' -%}
                   {%- render 'garelon-shipping', block: block -%}
                 {%- when 'quantity_selector' -%}
@@ -1053,6 +1055,60 @@
             }
           ],
           "default": "none"
+        }
+      ]
+    },
+    {
+      "type": "garelon_payment_trust",
+      "name": "GARELON Envío gratis y pago seguro",
+      "limit": 1,
+      "settings": [
+        {
+          "type": "paragraph",
+          "content": "Colócalo justo debajo de los botones de compra. Los iconos salen de los métodos de pago habilitados en Shopify (Configuración › Pagos): no se puede añadir ni quitar ningún logo a mano."
+        },
+        {
+          "type": "checkbox",
+          "id": "show_free_shipping",
+          "label": "Mostrar envío gratis",
+          "info": "Actívalo solo si la tarifa de envío es realmente 0 € en Configuración › Envío y entrega para las zonas en las que vendes.",
+          "default": true
+        },
+        {
+          "type": "text",
+          "id": "free_shipping_label",
+          "label": "Texto de envío gratis",
+          "default": "Envío gratis"
+        },
+        {
+          "type": "text",
+          "id": "free_shipping_note",
+          "label": "Aclaración del envío gratis",
+          "info": "Opcional. Por ejemplo, las zonas en las que aplica si no son todas."
+        },
+        {
+          "type": "checkbox",
+          "id": "show_payment",
+          "label": "Mostrar pago seguro",
+          "default": true
+        },
+        {
+          "type": "text",
+          "id": "payment_label",
+          "label": "Texto de pago",
+          "default": "Pago seguro"
+        },
+        {
+          "type": "checkbox",
+          "id": "show_icons",
+          "label": "Mostrar iconos de los métodos de pago habilitados",
+          "default": true
+        },
+        {
+          "type": "text",
+          "id": "payment_list_label",
+          "label": "Descripción de los iconos para lectores de pantalla",
+          "default": "Métodos de pago aceptados"
         }
       ]
     },

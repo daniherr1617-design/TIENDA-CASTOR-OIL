@@ -1,9 +1,150 @@
-# GARELON · Cambios: packs visibles en la home, variantes reales y proveedor CJ Dropshipping
+# GARELON · Cambios: confianza en la compra, packs visibles en la home, variantes reales y proveedor CJ Dropshipping
 
 > **Septiembre 2026 · rama `claude/great-lamport-8mb0rc`.** El producto no cambia: sigue siendo el mismo sérum de contorno de ojos (marca física Baafven).
-> - **Parte A (esta ronda):** por qué no veías los packs en Shopify, y la corrección para que la home muestre «OFERTA LIMITADA · Elige tu pack» con las 3 ofertas antes del botón de compra.
+> - **Parte C (esta ronda, la última antes de fusionar la PR #1):** confianza y conversión: «Envío gratis» + «Pago seguro» con los métodos de pago **habilitados en Shopify** bajo los botones de compra, y una sección de **opiniones solo reales**.
+> - **Parte A (ronda anterior):** por qué no veías los packs en Shopify, y la corrección para que la home muestre «OFERTA LIMITADA · Elige tu pack» con las 3 ofertas antes del botón de compra.
 > - **Parte B (ronda anterior):** migración a CJ Dropshipping y packs como variantes reales. Sigue vigente; se ha corregido lo que esta ronda cambia.
 > - Todo lo probado es **local**, con el JavaScript real de Dawn y datos simulados. **Tema preparado; requiere prueba real en Shopify/CJ.**
+
+---
+
+# PARTE C · Ronda de confianza: envío gratis, pago seguro y opiniones reales
+
+## C1. Archivos
+
+| Archivo | Cambio |
+|---|---|
+| `snippets/garelon-payment-trust.liquid` | **Nuevo.** «Envío gratis» + «Pago seguro» + iconos de los métodos de pago habilitados en Shopify |
+| `sections/garelon-reviews.liquid` | **Nueva.** Sección «GARELON Opiniones»: bloques de app de reseñas + valoración media real; oculta sin datos reales |
+| `sections/featured-product.liquid`, `sections/main-product.liquid` | Bloque nuevo `garelon_payment_trust` (render + schema). Nada más |
+| `templates/index.json` | Bloque `payment_trust` tras `buy_buttons`; sección `reviews` entre `how_to` y `faq` |
+| `templates/product.json` | Igual: `payment_trust` tras `buy_buttons`; `reviews` entre `how_to` y `faq` |
+| `assets/garelon.css` | Estilos `.g-buytrust`, `.g-pay`, `.g-reviews`, `.g-editor-note` |
+| `locales/es.json` | Una línea: bajo el precio, «Los gastos de envío se calculan en la pantalla de pago» → «Consulta nuestra política de envío.» (contradecía «Envío gratis») |
+| `docs/garelon/GARELON_MASTER_TEMPLATE.md` (v1.3), `docs/garelon/GARELON_PRODUCT_MIGRATION_CHECKLIST.md`, este documento | Reglas R21-R23, R5 ampliada, secciones 10.15 y 10.16, checklist |
+| `docs/garelon/capturas/confianza/` | 6 capturas |
+
+Sin cambios en: packs, precios, `quantity=1`, formulario de Dawn, cart drawer, checkout, botón de pago dinámico, cabecera, navegación, pie, logo, paleta, tipografías, imágenes, claims, ingredientes, políticas ni mapping de CJ. Ningún archivo JS nuevo ni librería.
+
+## C2. Opiniones: cómo están hechas
+
+- **Sección propia** `garelon-reviews` (en vez de la sección «Apps» de Dawn): tiene el encabezado GARELON («Opiniones · Lo que opinan nuestros clientes»), admite **bloques de app** (`@app`) y **se oculta sola** si no hay nada real. La sección «Apps» de Dawn no tiene título ni diseño GARELON y se pinta vacía.
+- **Fuentes, por prioridad:**
+  1. Bloque de app de la app de reseñas: la app pinta sus opiniones (autor, fotos y «Compra verificada» solo si la app lo da).
+  2. Valoración estándar de Shopify que rellena la app: `reviews.rating` → estrellas + «4,X/5»; `reviews.rating_count` → «N opiniones». Se muestra en una cápsula bajo el título. Solo si **los dos** existen y el recuento es > 0.
+- **Posición:** home y ficha, después de «Cómo usarlo» y antes de la FAQ.
+- **Diseño:** fondo crema (esquema 1), título centrado, cápsula de valoración con borde arena, contenedor de 1100 px para el widget. Sin carrusel ni JS: el widget de la app decide su formato (en móvil, una columna limpia).
+
+## C3. Si no existe ninguna reseña real
+
+- **Cliente:** la sección no pinta nada. No hay nombres, estrellas, «4,9/5», recuentos, fechas ni textos de ejemplo en el tema.
+- **Editor de temas:** un recuadro discontinuo, solo para el propietario: «Añade aquí el bloque de tu app de reseñas para mostrar opiniones reales.» (captura 06).
+- **Hoy** no hay app de reseñas: la sección está en la plantilla pero **oculta** para los clientes.
+
+## C4. Cómo conectar una app de reseñas
+
+1. Instalar una app de reseñas desde la Shopify App Store y activar su «app embed» si lo pide.
+2. Personalizar → Página de inicio → sección **GARELON Opiniones** → «Añadir bloque» → **Apps** → el bloque de la app (en la home, el de carrusel o «todas las reseñas»).
+3. En la misma sección, ajuste **«Producto de la valoración media»** → elegir el sérum (en la home es necesario; en la ficha se usa el producto de la página).
+4. Plantilla de producto → sección **GARELON Opiniones** → «Añadir bloque» → Apps → el widget de reseñas del producto. **No** añadirlo también dentro de la ficha (`main-product`): se vería dos veces.
+5. En la app, colores GARELON: texto `#1b1714`, estrellas `#9a7433`, borde `rgba(184,138,59,.32)`, fondo blanco; sin carruseles automáticos.
+6. La valoración media aparece sola cuando la app rellena `reviews.rating` y `reviews.rating_count`. El bloque «Valoración» de la ficha de Dawn usa los mismos datos.
+
+## C5. Métodos de pago: de dónde salen
+
+```liquid
+{%- for type in shop.enabled_payment_types -%}
+  <li class="g-pay__item">{{ type | payment_type_svg_tag: class: 'icon icon--full-color g-pay__icon' }}</li>
+{%- endfor -%}
+```
+
+- La misma lógica que el pie de Dawn (`sections/footer.liquid`): Shopify devuelve los métodos **habilitados** en Configuración → Pagos y su SVG oficial.
+- Si el dueño activa o desactiva un método, la fila cambia sola. Con 0 métodos no se pinta la fila; en el editor sale un aviso.
+- Cápsulas blancas con borde arena muy suave, 38 × 24 px sin deformar, con salto de línea en móvil. El marco gris del propio SVG se oculta para no duplicar el borde.
+- Accesibilidad: lista con `aria-label` «Métodos de pago aceptados»; cada SVG de Shopify lleva `role="img"` y su `<title>` («Visa», «Mastercard»…).
+
+## C6. Métodos que aparecen en TEST
+
+- En el render local simulé 6 métodos: `visa`, `master`, `paypal`, `apple_pay`, `google_pay`, `bizum` (los de la referencia).
+- **Los iconos de las capturas son simulados** (una cápsula con el nombre en texto), porque `payment_type_svg_tag` solo existe en Shopify. En la tienda real saldrán los SVG oficiales de Shopify y solo de los métodos activos.
+- También probé con 2 métodos (`visa`, `master`) → solo 2 iconos, y con 0 → sin fila.
+
+## C7. Sin logos escritos a mano
+
+- Ningún archivo del tema contiene un logo ni un nombre de método de pago: búsqueda de `visa|mastercard|paypal|apple pay|google pay|bizum|amex` en los archivos nuevos y modificados → **0 resultados**.
+- No se ha subido ninguna imagen de pago a `assets/`.
+
+## C8. «Envío gratis»
+
+- Bloque `garelon_payment_trust`, justo debajo de «Añadir al carrito» y del botón de pago dinámico, en la home y en la ficha: «✓ ENVÍO GRATIS · 🔒 PAGO SEGURO» y debajo los métodos. Después, stock y plazos de envío (sin cambios: «Preparación estimada: 1–3 días», «Entrega estimada en España: aproximadamente 8–16 días», «Los plazos pueden variar según destino y transporte»).
+- Ajustes editables: activar/desactivar cada parte, textos, y una **aclaración opcional** (`free_shipping_note`) por si el envío gratis no aplica a todas las zonas.
+- Coherencia: la línea bajo el precio decía «Los gastos de envío se calculan en la pantalla de pago». Ahora dice «Impuestos incluidos. Consulta nuestra política de envío.» (`locales/es.json`). La propuesta de política de envío de la parte B también se ha actualizado.
+- Sin «Pago 100 % seguro», sin «Garantía de 30 días» ni ninguna otra garantía.
+
+## C9. Configuración manual obligatoria en Shopify
+
+1. **Configuración → Envío y entrega:** en cada zona donde anuncies envío gratis, tarifa **0 €** («Gratis»). No he podido ver tus zonas: decide tú si incluyen Península, Baleares, Canarias, Ceuta, Melilla u otros países. Si no son todas, escribe la aclaración en el bloque «GARELON Envío gratis y pago seguro».
+2. Comprueba en un checkout de prueba que el envío sale a 0 € para cada pack.
+3. **Configuración → Pagos:** activa los métodos que quieras ofrecer (Bizum solo si tu proveedor de pagos lo ofrece). Los iconos se adaptan solos.
+4. **Opiniones:** instala una app de reseñas y sigue C4. Hasta entonces la sección está oculta.
+5. Revisa la política de envío (propuesta en la parte B) para que diga lo mismo que la tienda.
+
+## C10. Theme Check
+
+- Antes de esta ronda: 0 errores y 9 avisos (los de Dawn 16.0.0).
+- Después: **0 errores y los mismos 9 avisos** (solo cambian 2 números de línea en `main-product.liquid` por los 2 renglones nuevos del bloque).
+- JSON de plantillas y locales válido; validador de plantillas y schemas OK; todos los assets referenciados existen.
+
+## C11. Responsive
+
+Probado en local a 320, 360, 375, 390, 430, 768, 1024 y 1440 px, en home y ficha, con 6 métodos y opiniones de TEST: **sin scroll horizontal ni ningún elemento fuera de la pantalla**.
+
+| Ancho | Bloque envío/pago (home) | Filas de iconos |
+|---|---|---|
+| 320 | 126 px | 2 |
+| 360 – 430 | 62 px | 1 |
+| 768 – 1024 (columna de compra estrecha) | 126 px | 2 |
+| 1440 | 62 px | 1 |
+
+## C12. Capturas (`docs/garelon/capturas/confianza/`)
+
+| Archivo | Qué muestra |
+|---|---|
+| `01-home-390-packs-cta-envio-gratis-pagos.jpg` | Home móvil: oferta, packs, CTA, envío gratis, pago seguro, métodos, plazos |
+| `02-home-390-opiniones-DATOS-DE-PRUEBA.jpg` | Home móvil: opiniones con **datos de prueba** (solo render) |
+| `03-producto-390-cta-pagos-envio-gratis.jpg` | Ficha móvil: CTA + pagos + envío gratis |
+| `04-home-1440-pagos.jpg` | Home escritorio: zona de compra con pagos |
+| `05-home-1440-opiniones-DATOS-DE-PRUEBA.jpg` | Home escritorio: opiniones con **datos de prueba** |
+| `06-editor-390-opiniones-sin-app-aviso.jpg` | Editor: aviso cuando no hay app ni valoración |
+
+> Las opiniones de las capturas 02 y 05 («Texto de reseña de prueba», «Cliente de prueba», 4,6/5 · 12) y los iconos de pago son **datos simulados del render local**, marcados como tales. Viven solo en el entorno de pruebas (fuera del repositorio); el tema no contiene ninguno.
+
+### Pruebas funcionales (local, JavaScript real de Dawn): 47/47 nuevas + 56/56 de packs
+
+- Home y ficha: «ENVÍO GRATIS» y «PAGO SEGURO» presentes; orden botones → envío/pagos → plazos; iconos = métodos habilitados (6, mismo orden); lista accesible; botón de pago dinámico intacto; plazos visibles; logos 38 × 24 sin deformar; sin «30 días» ni «100 %».
+- 2 métodos → 2 iconos; 0 métodos → sin fila y sin aviso para el cliente; 0 métodos en el editor → aviso.
+- Línea de impuestos sin «gastos de envío se calculan».
+- Opiniones sin datos → ocultas (home y ficha); en el editor → aviso; con bloque de app → dentro de la sección y antes de la FAQ; ficha con valoración → «4,6/5 · 12 opiniones» con `aria-label` «4,6 de 5 estrellas»; home sin producto elegido → sin media (no se adivina el producto).
+- Responsive de 320 a 1440 px sin desbordes; sin errores JS ni HTTP.
+- **Regresión de packs: 56/56** (1/2/3 unidades, precios, ahorro, `quantity=1`, `quantity_selector` bloqueado, carrito «Pack: N unidades» × 1, cart drawer, compra fija, agotado, `?variant=`).
+
+## C13. Pruebas que no he podido hacer
+
+- Tienda real: iconos reales de `payment_type_svg_tag`, métodos realmente activos, tarifa de envío 0 € en el checkout, zonas.
+- Ninguna app de reseñas real: aspecto del widget, `reviews.rating` real, app embeds.
+- Editor de temas real (el aviso se probó simulando `request.design_mode`).
+- Checkout, pagos, CJ, fulfillment y tracking (sin cambios en esta ronda, siguen pendientes de la prueba real).
+
+## C14. Cambios que ChatGPT debe trasladar a los documentos externos
+
+1. **Reseñas (R5 ampliada):** solo reales, mediante bloque de app en `garelon-reviews` y/o `reviews.rating` + `reviews.rating_count`. Nunca nombres, fotos, estrellas, recuentos, fechas ni «Compra verificada» inventados. Sin datos reales, la sección se oculta al cliente.
+2. **Pagos (R21):** iconos solo desde `shop.enabled_payment_types` + `payment_type_svg_tag`. Nunca un logo escrito o subido; nunca un método no habilitado. «Pago seguro», no «100 % seguro».
+3. **Envío (R22):** GARELON ofrece envío gratis según las zonas configuradas en Shopify. El tema lo comunica; la tarifa real (0 €) se configura en Shopify Admin → Envío y entrega. No afirmar zonas sin verlas. Costes internos de CJ nunca se publican. Los plazos estimados se mantienen.
+4. **Garantías (R23):** ninguna garantía ni periodo sin política real que lo respalde (no «Garantía de 30 días»).
+5. **Estructura de la home:** Portada → Compra/packs → **Envío gratis + Pago seguro + métodos** → características → beneficios → diferencial → composición → uso → **Opiniones reales** → FAQ → cierre.
+6. **Ficha:** `payment_trust` tras los botones; `reviews` entre «Cómo usarlo» y la FAQ; el widget de la app de reseñas solo una vez por página.
+7. **Checklist del dueño:** tarifa 0 € en las zonas anunciadas, métodos de pago activos, app de reseñas (opcional) y producto elegido en «GARELON Opiniones» de la home.
+8. **Texto bajo el precio:** «Consulta nuestra política de envío.» en vez de «Los gastos de envío se calculan en la pantalla de pago».
 
 ---
 
@@ -711,7 +852,7 @@ En **Admin → Descuentos**, desactiva (o limita para que no afecten al sérum) 
 <p>[Solo si has comprobado que el seguimiento llega a Shopify:] Cuando tu pedido salga, recibirás un email con el número de seguimiento.</p>
 
 <h2>Gastos de envío</h2>
-<p>Los gastos de envío, si los hay, se muestran en la pantalla de pago antes de confirmar el pedido.</p>
+<p>El envío es gratuito [en las zonas en las que tengas una tarifa de 0 € en Configuración → Envío y entrega; indica aquí cuáles si no son todas]. El importe final del pedido se muestra en la pantalla de pago antes de confirmarlo.</p>
 
 <h2>Incidencias</h2>
 <p>Si tu pedido no ha llegado dentro del plazo estimado o el seguimiento muestra una incidencia, escríbenos desde nuestra <a href="[URL REAL DE CONTACTO]" title="Contacto">página de contacto</a> indicando tu número de pedido y lo revisaremos contigo.</p>
