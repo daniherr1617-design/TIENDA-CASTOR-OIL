@@ -179,6 +179,9 @@ Ninguna instrucción posterior las anula, tampoco el prompt adaptado. Si una pet
 - **R22 · Envío gratis.** GARELON ofrece envío gratis **según las zonas configuradas en Shopify**. El tema solo lo comunica («Envío gratis» bajo los botones de compra); la tarifa real de 0 € se configura en Shopify Admin → Configuración → Envío y entrega. No se afirma qué zonas (Península, Baleares, Canarias, Ceuta, Melilla…) están incluidas sin verlo en el Admin. Los costes internos del proveedor (CJ) nunca se publican. «Envío gratis» no sustituye a los plazos estimados (10.12).
 - **R23 · Garantías.** No se añaden garantías, periodos («Garantía de 30 días», «satisfecho o te devolvemos el dinero»…) ni condiciones que no estén respaldadas exactamente por una política real de GARELON en Shopify.
 
+**Instalación**
+- **R24 · Límites de schema de Shopify.** Cada `name` de un `{% schema %}` (sección, bloque o preset) tiene como máximo 25 caracteres. Theme Check solo revisa el de la sección. Si un bloque lo supera, Shopify rechaza la sección al subir el tema, y con ella las plantillas que la usan; si es `featured-product`, la home queda en 404. Antes de entregar un ZIP, revisa también los nombres de los bloques.
+
 ---
 
 ## 4. Prioridades
@@ -221,7 +224,7 @@ La decoración va siempre la última.
 | Sistema de imágenes responsive | `snippets/garelon-image.liquid`, `garelon-srcset.liquid`, `garelon-fallback-image.liquid` |
 | Estructura de la home como landing (orden y ritmo) | `templates/index.json` (sección 9) |
 | Textos de interfaz en español de España | `locales/es.json` |
-| Reglas R1-R23 | Este documento |
+| Reglas R1-R24 | Este documento |
 
 ### 5.B · Elementos variables (cambian con cada producto)
 

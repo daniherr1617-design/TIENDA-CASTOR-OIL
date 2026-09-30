@@ -20,6 +20,7 @@
 | `templates/index.json` | Bloque `payment_trust` tras `buy_buttons`; sección `reviews` entre `how_to` y `faq` |
 | `templates/product.json` | Igual: `payment_trust` tras `buy_buttons`; `reviews` entre `how_to` y `faq` |
 | `assets/garelon.css` | Estilos `.g-buytrust`, `.g-pay`, `.g-reviews`, `.g-editor-note` |
+| `sections/featured-product.liquid`, `sections/main-product.liquid` (C16) | Nombre del bloque `garelon_payment_trust` en el editor: «GARELON Envío gratis y pago seguro» → «GARELON Envío y pago» (límite de Shopify: 25 caracteres). Corrige el 404 de la home al instalar el tema |
 | `locales/es.json` | Solo textos. Bajo el precio: «Los gastos de envío se calculan en la pantalla de pago» → «Consulta nuestra política de envío.». En el carrito (cart drawer y `/cart`): las 8 variantes de «Descuentos y envío calculados en la pantalla de pago» → «Envío gratis según…» (ver C15). Ambas contradecían «Envío gratis» |
 | `docs/garelon/GARELON_MASTER_TEMPLATE.md` (v1.3), `docs/garelon/GARELON_PRODUCT_MIGRATION_CHECKLIST.md`, este documento | Reglas R21-R23, R5 ampliada, secciones 10.15 y 10.16, checklist |
 | `docs/garelon/capturas/confianza/` | 6 capturas |
@@ -162,6 +163,31 @@ El cart drawer (`snippets/cart-drawer.liquid`) y la página `/cart` (`sections/m
 - Compatible con R22: no se nombran territorios; la zona del cliente se determina en el checkout, y las zonas con envío gratis son las que tengan tarifa 0 € en Shopify Admin → Configuración → Envío y entrega.
 - La política de envío debe indicar esas zonas (propuesta de la parte B, «Gastos de envío»). Si no existe política, el texto no remite a ella.
 - Los otros idiomas de Dawn (`en.default.json`, etc.) no se han tocado: la tienda está en español.
+
+## C16. Corrección: 404 en la home al instalar el tema (nombre de bloque demasiado largo)
+
+**Síntoma:** tras instalar el tema, por GitHub o por ZIP, la vista previa y el editor mostraban «404 · Página no encontrada» en lugar de la home.
+
+**Causa (verificada en el código):**
+
+1. El bloque `garelon_payment_trust` (C12) se llamaba «GARELON Envío gratis y pago seguro» en `sections/featured-product.liquid` y `sections/main-product.liquid`. Son 34 caracteres.
+2. Shopify limita a 25 caracteres el `name` de secciones y bloques en el `{% schema %}`. Si se supera, el archivo da error al subirlo, al sincronizarlo o al guardarlo, y no se instala.
+3. Theme Check solo comprueba el nombre de la sección, no el de sus bloques. Por eso daba 0 errores.
+4. Sin `featured-product`, `templates/index.json` apunta a una sección inexistente y también se rechaza. Lo mismo pasa con `templates/product.json` sin `main-product`.
+5. Sin plantilla `index`, Shopify responde a `/` con la plantilla 404. `templates/404.json` solo usa `main-404` y `garelon-final-cta`, así que se instalaba bien. Por eso se veía la página 404 completa de GARELON.
+
+**Corrección:** el nombre pasa a «GARELON Envío y pago» (20 caracteres) en las dos secciones.
+
+- Es solo la etiqueta del bloque en el editor.
+- No cambian el `type`, los ajustes, el render ni las plantillas.
+- Los bloques ya colocados se conservan.
+
+**Prevención:** regla R24 de la plantilla maestra. Todos los `name` de schema (secciones, bloques y presets) deben tener como máximo 25 caracteres.
+
+**Después de actualizar:**
+
+- **Por ZIP:** sube el ZIP nuevo como tema nuevo.
+- **Por GitHub:** si la home sigue en 404 tras la sincronización, desconecta el tema y vuelve a conectar la rama. La conexión inicial sube todos los archivos; una sincronización normal quizá solo suba los archivos del commit, y `index.json` no ha cambiado.
 
 ---
 
