@@ -79,9 +79,9 @@
   - bloques de Dawn intactos;
   - `garelon_stock` presente;
   - `garelon_packs` y `garelon_shipping` presentes si el producto tiene packs (sin `variant_picker` ni `quantity_selector`);
-  - `garelon_payment_trust` justo después de `buy_buttons` (envío gratis + pago seguro + métodos habilitados, §10.15);
+  - `garelon_free_shipping` justo después de `buy_buttons` (solo «Envío gratis», §10.15);
   - la sección va justo después de la portada, con `garelon_mobile_info_first: true`.
-- [ ] 🅲 **Opiniones** (`garelon-reviews`, §10.16) entre «Cómo usarlo» y la FAQ: sin contenido de ejemplo; título «Opiniones · Lo que opinan nuestros clientes» (o equivalente). En la home, el ajuste «Producto de la valoración media» apunta al producto nuevo.
+- [ ] 🅲 **Opiniones** (`garelon-reviews`, §10.16) **justo después de la compra**: home `product_cta` → `reviews` → `trust`; ficha `main` → `reviews` → `service`. Sin contenido de ejemplo; título «Opiniones · Lo que opinan nuestros clientes» (o equivalente). En la home, el ajuste «Producto de la valoración media» apunta al producto nuevo. Sin datos reales no deja hueco.
 - [ ] 🅲 **FAQ** (`garelon-faq`): 6-10 preguntas. Se mantienen «¿Qué es…?» (con la aclaración de fabricante externo), la de envío (→ política) y la de dudas (→ contacto + devoluciones).
 - [ ] 🅲 **Cierre** (`garelon-final-cta`): isotipo, frase breve, precio y CTA → `/#comprar`.
 - [ ] 🅲 Alternancia de esquemas crema/arena mantenida, como mucho 2 seguidas iguales (§8).
@@ -99,7 +99,7 @@
 - [ ] 🅲 Regresión de cantidad: con `quantity_selector` añadido a la vez que los packs, el selector no se pinta y el formulario envía un solo `quantity=1`.
 - [ ] 🅲 La sección de compra de la home tiene el **producto elegido** explícitamente (no «el primero del catálogo»).
 - [ ] 🅲 El bloque `shipping` (plazos) tiene textos de estimación prudentes y los mismos plazos que la pestaña «Envíos y devoluciones» y la FAQ.
-- [ ] 🅲 La barra de servicio (`service`: Pago seguro · Atención · Envío · Devoluciones) no ha cambiado.
+- [ ] 🅲 La barra de servicio (`service`: Atención · Envío · Devoluciones) no ha cambiado (sin «Pago seguro» desde la 1.5).
 - [ ] 🅲 `benefits`, `how_to` y `faq` están actualizados; `sticky` presente.
 - [ ] 🆂 El título y la descripción del producto en el Admin están limpios: en español, sin claims prohibidos y sin ingredientes o datos falsos importados.
 
@@ -110,7 +110,7 @@
 - [ ] 🅲 GARELON no aparece como fabricante, laboratorio ni creador de la fórmula.
 - [ ] 🅲 Sin reseñas, estrellas, «4,9/5», «más de X clientes», nombres, fotos, fechas ni «Compra verificada» inventados. Búsqueda en el tema: `grep -rniE "cliente de prueba|datos de prueba|compra verificada|4,[0-9]/5" sections snippets templates` → vacío.
 - [ ] 🅲 Opiniones solo desde una app real (bloque `@app` en `garelon-reviews`) o desde `reviews.rating` / `reviews.rating_count`. Sin app ni valoración: la sección **no se ve** en la tienda (nunca «0 opiniones») y en el editor sale «Instala o añade el bloque de una app de reseñas para mostrar opiniones reales.» con el estado de cada fuente. Con bloque de app, la media propia queda oculta (`summary_with_app` desactivado) para no duplicar el resumen de la app.
-- [ ] 🅲 Métodos de pago: «Origen de los iconos» en **Automático** (solo `shop.enabled_payment_types` con `payment_type_svg_tag`) salvo decisión expresa del dueño; ningún logo de pago en `assets/` ni escrito en el código. Texto «Pago seguro», nunca «100 % seguro».
+- [ ] 🅲 Métodos de pago visibles (R21): **opcionales**. Producto actual: **no se muestran** (ni bajo la compra ni en el pie, `payment_enable: false`). Si un producto futuro los quiere, solo métodos reales de `shop.enabled_payment_types` con `payment_type_svg_tag`, por decisión expresa del dueño; ningún logo de pago en `assets/` ni escrito en el código; nunca «100 % seguro».
 - [ ] 🅲 Sin garantías ni periodos («Garantía de 30 días», «satisfecho o te devolvemos el dinero») que no estén en una política real.
 - [ ] 🅲 Sin urgencia falsa: cuentas atrás, «quedan X», «personas viendo».
 - [ ] 🅲 Sin descuentos ficticios. «Envío gratis» visible bajo los botones de compra (home y ficha) y sin textos que lo contradigan (p. ej. «los gastos de envío se calculan…» junto al precio, o «descuentos y envío calculados en la pantalla de pago» en el cart drawer y en `/cart`).
@@ -131,8 +131,7 @@
 - [ ] 🆂 Descuentos antiguos **desactivados**: con el pack de 2 en el carrito, total 35,00 € sin línea de descuento; con el de 3, 48,00 €. Si al subir la cantidad aparece un descuento, sigue activo uno antiguo.
 - [ ] 🆂 Editor de temas **sin** el aviso rojo «Configuración de Shopify pendiente o incorrecta para packs» en la home ni en la ficha.
 - [ ] 🆂 **Envío gratis real (obligatorio):** Shopify Admin → Configuración → **Envío y entrega** → en cada zona donde GARELON ofrece envío gratis, la tarifa es **0 €** (o «Gratis»). Qué zonas están incluidas (Península, Baleares, Canarias, Ceuta, Melilla, otros países…) lo decide el dueño y depende de las zonas configuradas; si no son todas, escribir la aclaración en el bloque (`free_shipping_note`). Comprobar en un checkout de prueba que el envío sale a 0 €.
-- [ ] 🆂 **Métodos de pago:** Configuración → Pagos → los métodos que se quieren mostrar están activos (tarjetas, PayPal, Apple Pay, Google Pay, Bizum si el proveedor de pagos lo ofrece). En el editor, el bloque «GARELON Envío y pago» muestra «Métodos que Shopify devuelve: …»: los iconos coinciden con esa lista y con el pie.
-  - Si solo sale PayPal aunque el checkout acepte tarjeta: revisar el proveedor de tarjetas (Shopify Payments → Administrar: tarjetas y métodos acelerados activos). Si las marcas siguen sin salir, el dueño puede elegir «Manual verificado» y marcar **solo** los métodos comprobados; nunca los que no estén activos.
+- [ ] 🆂 **Métodos de pago:** se configuran en Configuración → Pagos y el cliente los ve en el checkout oficial de Shopify. El tema no los muestra (R21); no hay nada que ajustar en el editor para ello.
 - [ ] 🆂 **Opiniones:** si hay app de reseñas (Shopify App Store, compatible con bloques de app), su bloque está añadido **una sola vez** por página (Personalizar → «GARELON Opiniones» → Añadir bloque → Apps; en la home, elegir también el producto en «Producto de la valoración media») (dentro de «GARELON Opiniones», no también en la ficha) y muestra opiniones reales; configurada con colores GARELON. Si no hay app, la sección no se ve en la Vista previa.
 - [ ] 🆂 Shopify + GitHub: el tema que se revisa y se publica sale de la rama con los cambios (Temas → «Conectado a GitHub» → rama). `main` solo sirve si contiene el tema (PR fusionada).
 - [ ] 🆂 El proveedor anterior (AutoDS) está desconectado **para este producto** una vez probado el nuevo, y ya no sobrescribe stock, precio, imágenes ni variantes.
@@ -144,7 +143,7 @@
 - [ ] 🆂 Carrito: imagen, título, variante, cantidad (+/−), eliminar, precio, subtotal y «Finalizar compra».
 - [ ] 🆂 El carrito no añade nada automáticamente (sin seguros, regalos ni upsells).
 - [ ] 🆂 «Finalizar compra» lleva al checkout de Shopify. Los botones de pago dinámico (Shop Pay, PayPal, Apple Pay, Google Pay…) aparecen según la configuración de Pagos.
-- [ ] 🅲 Bajo los botones de compra: «Envío gratis», «Pago seguro» y los iconos de los métodos habilitados (probar con 6, con 2 y con 0 métodos en local). El botón de pago dinámico sigue igual y los plazos de envío siguen debajo.
+- [ ] 🅲 Bajo los botones de compra: solo «Envío gratis»; ningún «Pago seguro», icono de pago ni diagnóstico de métodos (probar con Shopify devolviendo varios métodos). El botón de pago dinámico sigue igual y los plazos de envío siguen debajo.
 - [ ] 🅲 Sin CSS, JS ni manipulación del DOM del checkout.
 - [ ] 🆂 Estado agotado: el botón se desactiva y la compra fija lo refleja. La tarjeta del pack agotado dice «Agotado» y no se puede elegir.
 - [ ] 🆂 Cada pack llega al carrito como **una línea «Pack: N unidades» × 1** (nunca «N unidades» × N) y la compra fija muestra el pack elegido.
@@ -209,7 +208,7 @@
 - [ ] 🅲 «Saltar al contenido» funciona. Todo se puede usar con el teclado (menú, FAQ, galería, variantes, cantidad, carrito) con foco visible.
 - [ ] 🅲 FAQ con `details`/`summary`; pasos con «Paso N:» oculto; galería con botones etiquetados; stock con `role="status"`.
 - [ ] 🅲 Iconos, bandera e isotipos decorativos con `aria-hidden` o `alt=""`.
-- [ ] 🅲 Iconos de pago: lista con `aria-label` «Métodos de pago aceptados» y cada SVG de Shopify con su título; valoración de opiniones con `aria-label` («4,6 de 5 estrellas»), nunca solo estrellas.
+- [ ] 🅲 Valoración de opiniones con `aria-label` («4,6 de 5 estrellas»), nunca solo estrellas. (Si en el futuro se vuelven a mostrar iconos de pago: lista con `aria-label` y cada SVG de Shopify con su título.)
 - [ ] 🅲 Contraste: texto pequeño dorado con `--g-gold-text` (#7A5A24), nunca `#B88A3B` sobre crema.
 - [ ] 🅲 Objetivos táctiles ≥ 44 px (botones de 50 px).
 - [ ] 🅲 Con `prefers-reduced-motion` no hay transiciones GARELON.

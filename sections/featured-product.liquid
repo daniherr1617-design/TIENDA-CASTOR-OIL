@@ -139,8 +139,8 @@
                     product_form_id: product_form_id,
                     product_unassigned: product_unassigned
                   -%}
-                {%- when 'garelon_payment_trust' -%}
-                  {%- render 'garelon-payment-trust', block: block -%}
+                {%- when 'garelon_free_shipping' -%}
+                  {%- render 'garelon-free-shipping', block: block -%}
                 {%- when 'garelon_shipping' -%}
                   {%- render 'garelon-shipping', block: block -%}
                 {%- when 'title' -%}
@@ -914,13 +914,13 @@
       ]
     },
     {
-      "type": "garelon_payment_trust",
-      "name": "GARELON Envío y pago",
+      "type": "garelon_free_shipping",
+      "name": "GARELON Envío gratis",
       "limit": 1,
       "settings": [
         {
           "type": "paragraph",
-          "content": "Colócalo justo debajo de los botones de compra. En automático, los iconos son exactamente los métodos de pago que Shopify devuelve como habilitados (Configuración › Pagos). En el editor verás la lista que devuelve Shopify."
+          "content": "Colócalo justo debajo de los botones de compra. Solo comunica la oferta: la tarifa real de 0 € se configura en Configuración › Envío y entrega."
         },
         {
           "type": "checkbox",
@@ -940,115 +940,6 @@
           "id": "free_shipping_note",
           "label": "Aclaración del envío gratis",
           "info": "Opcional. Por ejemplo, las zonas en las que aplica si no son todas."
-        },
-        {
-          "type": "checkbox",
-          "id": "show_payment",
-          "label": "Mostrar pago seguro",
-          "default": true
-        },
-        {
-          "type": "text",
-          "id": "payment_label",
-          "label": "Texto de pago",
-          "default": "Pago seguro"
-        },
-        {
-          "type": "checkbox",
-          "id": "show_icons",
-          "label": "Mostrar iconos de los métodos de pago habilitados",
-          "default": true
-        },
-        {
-          "type": "text",
-          "id": "payment_list_label",
-          "label": "Descripción de los iconos para lectores de pantalla",
-          "default": "Métodos de pago aceptados"
-        },
-        {
-          "type": "select",
-          "id": "icons_mode",
-          "label": "Origen de los iconos",
-          "options": [
-            {
-              "value": "auto",
-              "label": "Automático (Shopify)"
-            },
-            {
-              "value": "manual",
-              "label": "Manual verificado"
-            }
-          ],
-          "default": "auto",
-          "info": "Automático: solo lo que devuelve Shopify. Manual verificado: lo que devuelve Shopify más los métodos que marques abajo."
-        },
-        {
-          "type": "header",
-          "content": "Manual verificado"
-        },
-        {
-          "type": "paragraph",
-          "content": "Selecciona únicamente métodos que estén realmente habilitados en Shopify (Configuración › Pagos). Mostrar un método no disponible puede inducir a error al cliente. Estas casillas solo se usan con «Manual verificado»."
-        },
-        {
-          "type": "checkbox",
-          "id": "pay_visa",
-          "label": "Visa",
-          "default": false
-        },
-        {
-          "type": "checkbox",
-          "id": "pay_master",
-          "label": "Mastercard",
-          "default": false
-        },
-        {
-          "type": "checkbox",
-          "id": "pay_american_express",
-          "label": "American Express",
-          "default": false
-        },
-        {
-          "type": "checkbox",
-          "id": "pay_maestro",
-          "label": "Maestro",
-          "default": false
-        },
-        {
-          "type": "checkbox",
-          "id": "pay_unionpay",
-          "label": "UnionPay",
-          "default": false
-        },
-        {
-          "type": "checkbox",
-          "id": "pay_paypal",
-          "label": "PayPal",
-          "default": false
-        },
-        {
-          "type": "checkbox",
-          "id": "pay_shopify_pay",
-          "label": "Shop Pay",
-          "default": false
-        },
-        {
-          "type": "checkbox",
-          "id": "pay_apple_pay",
-          "label": "Apple Pay",
-          "default": false
-        },
-        {
-          "type": "checkbox",
-          "id": "pay_google_pay",
-          "label": "Google Pay",
-          "default": false
-        },
-        {
-          "type": "checkbox",
-          "id": "pay_bizum",
-          "label": "Bizum",
-          "default": false
         }
       ]
     },

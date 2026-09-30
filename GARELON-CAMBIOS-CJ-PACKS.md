@@ -1,7 +1,8 @@
 # GARELON · Cambios: confianza en la compra, packs visibles en la home, variantes reales y proveedor CJ Dropshipping
 
 > **Septiembre 2026 · rama `claude/great-lamport-8mb0rc`.** El producto no cambia: sigue siendo el mismo sérum de contorno de ojos (marca física Baafven).
-> - **Parte C (esta ronda, la última antes de fusionar la PR #1):** confianza y conversión: «Envío gratis» + «Pago seguro» con los métodos de pago **habilitados en Shopify** bajo los botones de compra, y una sección de **opiniones solo reales**.
+> - **Simplificación (C18, la más reciente):** opiniones **justo después de la compra** y **ningún icono de pago ni «Pago seguro»** en la tienda. Donde las partes anteriores hablen de iconos de pago, «Pago seguro» o del bloque `garelon_payment_trust`, manda C18.
+> - **Parte C:** confianza y conversión: «Envío gratis» + «Pago seguro» con los métodos de pago **habilitados en Shopify** bajo los botones de compra, y una sección de **opiniones solo reales**.
 > - **Parte A (ronda anterior):** por qué no veías los packs en Shopify, y la corrección para que la home muestre «OFERTA LIMITADA · Elige tu pack» con las 3 ofertas antes del botón de compra.
 > - **Parte B (ronda anterior):** migración a CJ Dropshipping y packs como variantes reales. Sigue vigente; se ha corregido lo que esta ronda cambia.
 > - Todo lo probado es **local**, con el JavaScript real de Dawn y datos simulados. **Tema preparado; requiere prueba real en Shopify/CJ.**
@@ -26,6 +27,11 @@
 | `assets/garelon.css` (C17) | `.g-editor-note__list` (solo el aviso del editor) |
 | `sections/featured-product.liquid`, `sections/main-product.liquid` (C16) | Nombre del bloque `garelon_payment_trust` en el editor: «GARELON Envío gratis y pago seguro» → «GARELON Envío y pago» (límite de Shopify: 25 caracteres). Corrige el 404 de la home al instalar el tema |
 | `locales/es.json` | Solo textos. Bajo el precio: «Los gastos de envío se calculan en la pantalla de pago» → «Consulta nuestra política de envío.». En el carrito (cart drawer y `/cart`): las 8 variantes de «Descuentos y envío calculados en la pantalla de pago» → «Envío gratis según…» (ver C15). Ambas contradecían «Envío gratis» |
+| `snippets/garelon-free-shipping.liquid` (C18) | Sustituye a `garelon-payment-trust.liquid` (renombrado): solo «Envío gratis» + aclaración opcional |
+| `sections/featured-product.liquid`, `sections/main-product.liquid` (C18) | Bloque `garelon_payment_trust` → `garelon_free_shipping` («GARELON Envío gratis»): solo 3 ajustes de envío; fuera pago seguro, iconos, modo y casillas |
+| `templates/index.json`, `templates/product.json` (C18) | `reviews` justo después de la compra; bloque `free_shipping`; ficha sin «Pago seguro» en `service` |
+| `sections/footer-group.json` (C18) | `payment_enable: false` |
+| `assets/garelon.css` (C18) | Fuera `.g-pay*` |
 | `docs/garelon/GARELON_MASTER_TEMPLATE.md` (v1.3), `docs/garelon/GARELON_PRODUCT_MIGRATION_CHECKLIST.md`, este documento | Reglas R21-R23, R5 ampliada, secciones 10.15 y 10.16, checklist |
 | `docs/garelon/capturas/confianza/` | 6 capturas |
 
@@ -144,12 +150,12 @@ Probado en local a 320, 360, 375, 390, 430, 768, 1024 y 1440 px, en home y ficha
 ## C14. Cambios que ChatGPT debe trasladar a los documentos externos
 
 1. **Reseñas (R5 ampliada):** solo reales, mediante bloque de app en `garelon-reviews` y/o `reviews.rating` + `reviews.rating_count`. Nunca nombres, fotos, estrellas, recuentos, fechas ni «Compra verificada» inventados. Sin datos reales, la sección se oculta al cliente.
-2. **Pagos (R21):** iconos solo desde `shop.enabled_payment_types` + `payment_type_svg_tag`. Nunca un logo escrito o subido; nunca un método no habilitado. «Pago seguro», no «100 % seguro».
+2. **Pagos (R21, actualizada en C18):** los métodos de pago visibles son **opcionales**; si se muestran, solo métodos reales habilitados en Shopify (`shop.enabled_payment_types` + `payment_type_svg_tag`), nunca inventados. **Producto actual: no se muestran** (ni bajo la compra ni en el pie). El checkout es el oficial de Shopify.
 3. **Envío (R22):** GARELON ofrece envío gratis según las zonas configuradas en Shopify. El tema lo comunica; la tarifa real (0 €) se configura en Shopify Admin → Envío y entrega. No afirmar zonas sin verlas. Costes internos de CJ nunca se publican. Los plazos estimados se mantienen.
 4. **Garantías (R23):** ninguna garantía ni periodo sin política real que lo respalde (no «Garantía de 30 días»).
-5. **Estructura de la home:** Portada → Compra/packs → **Envío gratis + Pago seguro + métodos** → características → beneficios → diferencial → composición → uso → **Opiniones reales** → FAQ → cierre.
-6. **Ficha:** `payment_trust` tras los botones; `reviews` entre «Cómo usarlo» y la FAQ; el widget de la app de reseñas solo una vez por página.
-7. **Checklist del dueño:** tarifa 0 € en las zonas anunciadas, métodos de pago activos, app de reseñas (opcional) y producto elegido en «GARELON Opiniones» de la home.
+5. **Estructura de la home (C18):** Portada → Compra/packs (con «Envío gratis») → **Opiniones reales** → características → beneficios → diferencial → composición → uso → FAQ → cierre.
+6. **Ficha (C18):** `free_shipping` tras los botones; `reviews` justo después de la compra (antes de `service`); el widget de la app de reseñas solo una vez por página.
+7. **Checklist del dueño:** tarifa 0 € en las zonas anunciadas, métodos de pago activos en el checkout, app de reseñas (opcional) y producto elegido en «GARELON Opiniones» de la home.
 8. **Texto bajo el precio:** «Consulta nuestra política de envío.» en vez de «Los gastos de envío se calculan en la pantalla de pago».
 9. **Texto del carrito (cart drawer y `/cart`):** «Impuestos incluidos. Envío gratis según las zonas indicadas en nuestra política de envío. Descuentos calculados en la pantalla de pago.» en vez de «Impuestos incluidos. Descuentos y envío calculados en la pantalla de pago.». Ningún texto público dice que el envío tenga un coste calculado en el checkout, ni nombra territorios concretos.
 
@@ -192,6 +198,42 @@ El cart drawer (`snippets/cart-drawer.liquid`) y la página `/cart` (`sections/m
 
 - **Por ZIP:** sube el ZIP nuevo como tema nuevo.
 - **Por GitHub:** si la home sigue en 404 tras la sincronización, desconecta el tema y vuelve a conectar la rama. La conexión inicial sube todos los archivos; una sincronización normal quizá solo suba los archivos del commit, y `index.json` no ha cambiado.
+
+## C18. Simplificación: opiniones justo después de la compra y sin pagos visuales
+
+La tienda está en fase de aprendizaje y validación, y el sérum aún no es el producto definitivo para anuncios. Por eso se simplifica el tema en dos puntos. El resto no cambia: packs, variantes, precios, carrito, sticky, CJ, imágenes, cabecera, FAQ y checkout.
+
+**Opiniones más arriba** (solo la posición; la lógica de opiniones reales es la misma):
+
+| | Antes | Ahora |
+|---|---|---|
+| Home | hero → product_cta → trust → benefits → roller → ingredients → how_to → **reviews** → faq → final_cta | hero → product_cta → **reviews** → trust → benefits → roller → ingredients → how_to → faq → final_cta |
+| Ficha | main → service → benefits → how_to → **reviews** → faq → sticky | main → **reviews** → service → benefits → how_to → faq → sticky |
+
+Motivo: tráfico móvil frío de anuncios. Tras producto, precio, packs y «Añadir al carrito», la prueba social llega enseguida. Sin app de reseñas, la sección no pinta nada (0 px, sin hueco) y la compra enlaza con lo siguiente como antes.
+
+**Sin pagos visuales en la tienda:**
+
+- Bajo los botones de compra solo queda **«✓ ENVÍO GRATIS»** (con la aclaración opcional). El bloque pasa a llamarse `garelon_free_shipping` («GARELON Envío gratis»), con el snippet `garelon-free-shipping.liquid`.
+- Retirado de GARELON:
+  - «Pago seguro» y los iconos de métodos;
+  - el diagnóstico «Métodos que Shopify devuelve» y el modo «Automático / Manual verificado»;
+  - los ajustes `show_payment`, `payment_label`, `show_icons`, `payment_list_label`, `icons_mode` y las 10 casillas `pay_*`;
+  - `shop.enabled_payment_types` y `payment_type_svg_tag` en el bloque;
+  - el CSS `.g-pay*`.
+- Ficha: la barra «Compra con confianza» pierde «Pago seguro · Checkout de Shopify» y queda en Atención al cliente · Información de envío · Devoluciones.
+- Pie: `payment_enable: false`. La función de Dawn sigue en `sections/footer.liquid`, solo desactivada.
+- **No se ha tocado:** checkout, `payment_button` (botones de pago dinámico de Shopify), Shopify Payments, PayPal ni ningún proveedor. El cliente paga con los métodos que Shopify permita en el checkout.
+- **Futuro:** R21 queda como regla opcional. Se pueden volver a mostrar métodos de pago cuando el dueño lo decida, pero solo métodos reales habilitados en Shopify, nunca inventados (plantilla maestra 10.15).
+
+**Envío gratis:** sin cambios. Siguen los plazos estimados, la política de envío y los textos del carrito; no vuelve «envío calculado en el checkout». La tarifa de 0 € sigue siendo un ajuste manual en Shopify.
+
+**Pruebas (local):**
+- ronda 6: 57/57 (orden, sin hueco, aviso del editor, ningún icono ni «Pago seguro» aunque Shopify devuelva 11 métodos, pie sin logos, 320/390/1440 px, lógica de opiniones);
+- packs 56/56;
+- confianza 47/47, adaptada a «sin iconos de pago»;
+- carrito 62/62;
+- navegación 14/14, con el nuevo orden.
 
 ## C17. Tras publicar en Shopify: solo PayPal en los pagos y no se ven opiniones
 

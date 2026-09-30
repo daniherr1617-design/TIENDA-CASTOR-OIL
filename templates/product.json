@@ -58,16 +58,12 @@
             "show_gift_card_recipient": false
           }
         },
-        "payment_trust": {
-          "type": "garelon_payment_trust",
+        "free_shipping": {
+          "type": "garelon_free_shipping",
           "settings": {
             "show_free_shipping": true,
             "free_shipping_label": "Envío gratis",
-            "free_shipping_note": "",
-            "show_payment": true,
-            "payment_label": "Pago seguro",
-            "show_icons": true,
-            "payment_list_label": "Métodos de pago aceptados"
+            "free_shipping_note": ""
           }
         },
         "inventory": {
@@ -142,7 +138,7 @@
         "subtitle",
         "packs",
         "buy_buttons",
-        "payment_trust",
+        "free_shipping",
         "inventory",
         "shipping",
         "highlights",
@@ -171,14 +167,6 @@
     "service": {
       "type": "garelon-trust-bar",
       "blocks": {
-        "s-pago": {
-          "type": "item",
-          "settings": {
-            "icon": "lock",
-            "title": "Pago seguro",
-            "text": "Checkout de Shopify"
-          }
-        },
         "s-atencion": {
           "type": "item",
           "settings": {
@@ -208,7 +196,6 @@
         }
       },
       "block_order": [
-        "s-pago",
         "s-atencion",
         "s-envio",
         "s-devoluciones"
@@ -434,10 +421,10 @@
   },
   "order": [
     "main",
+    "reviews",
     "service",
     "benefits",
     "how_to",
-    "reviews",
     "faq",
     "sticky"
   ]

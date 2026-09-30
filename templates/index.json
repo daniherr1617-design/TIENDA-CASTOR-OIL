@@ -306,16 +306,12 @@
             "show_gift_card_recipient": false
           }
         },
-        "payment_trust": {
-          "type": "garelon_payment_trust",
+        "free_shipping": {
+          "type": "garelon_free_shipping",
           "settings": {
             "show_free_shipping": true,
             "free_shipping_label": "Envío gratis",
-            "free_shipping_note": "",
-            "show_payment": true,
-            "payment_label": "Pago seguro",
-            "show_icons": true,
-            "payment_list_label": "Métodos de pago aceptados"
+            "free_shipping_note": ""
           }
         },
         "stock": {
@@ -360,7 +356,7 @@
         "price",
         "packs",
         "buy_buttons",
-        "payment_trust",
+        "free_shipping",
         "stock",
         "shipping"
       ],
@@ -502,12 +498,12 @@
   "order": [
     "hero",
     "product_cta",
+    "reviews",
     "trust",
     "benefits",
     "roller",
     "ingredients",
     "how_to",
-    "reviews",
     "faq",
     "final_cta"
   ]
