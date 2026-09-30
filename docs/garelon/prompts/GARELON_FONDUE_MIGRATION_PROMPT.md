@@ -278,62 +278,78 @@ El rojo del producto puede aportar contraste visual en fotografías, pero NO con
 No hagas un rediseño total del theme.
 
 ============================================================
-7. IMÁGENES
+7. IMÁGENES YA SUBIDAS AL REPOSITORIO
 ============================================================
 
-El usuario añadirá/ha añadido todas las imágenes candidatas en:
+El usuario YA ha subido las imágenes y NO quiere volver a subirlas ni renombrarlas.
 
-`referencias/fondue-mug/`
+Debes localizar y analizar exactamente estos assets por su nombre:
 
-Analízalas TODAS antes de decidir.
+- `logo`
+- `imagen 1`
+- `imagen 2`
+- `imagen 3`
+- `imagen 4`
+- `imagen 5`
+- `imagen 6`
+- `imagen 7`
+- `imagen 8`
 
-La selección final es responsabilidad tuya dentro de las reglas GARELON.
+El nombre puede llevar extensión `.png`, `.jpg`, `.jpeg` o `.webp`, y puede estar en `referencias/`, en una subcarpeta de referencias o en otra ruta del repositorio creada por el usuario.
 
-Roles esperados:
-- logo/isotipo fondue;
-- foto de las tres variantes;
-- foto individual roja;
-- foto individual blanca;
-- foto individual marrón;
-- lifestyle con fresas;
-- lifestyle con chocolate;
-- demostración de fresa usando el tenedor;
-- infografía de características/usos;
-- infografía “Cómo funciona”.
+NO pidas al usuario que:
+- las vuelva a subir;
+- las renombre;
+- las clasifique;
+- diga cuál corresponde a qué función.
 
-No es obligatorio publicar todas.
+Tu trabajo es inspeccionar visualmente las 9 imágenes y decidir tú:
 
-Prioridad:
-1. fidelidad al producto;
-2. claridad móvil;
-3. capacidad de explicar el producto;
-4. estética;
-5. variedad sin repetición.
+- cuál sirve como logo/isotipo;
+- cuál es mejor imagen principal;
+- cuáles entran en galería;
+- cuáles sirven para mostrar colores;
+- cuáles sirven como lifestyle;
+- cuál explica el funcionamiento;
+- cuál explica características;
+- cuáles son redundantes;
+- cuáles deben descartarse.
+
+La selección final de imágenes es responsabilidad de Claude Code, tal como establece el flujo GARELON.
+
+NO estás obligado a usar todas.
+
+Antes de implementar, crea internamente una tabla de análisis:
+
+`archivo | qué muestra | fidelidad | posible rol | usar/no usar | motivo`
+
+y usa esa evaluación para construir la tienda.
 
 REGLA CRÍTICA:
-Las imágenes generadas NO son fuente de verdad si contradicen CJ/brief.
+El producto real + CJ + Product Brief tienen prioridad sobre cualquier detalle erróneo de una imagen generada.
 
-Rechaza para storefront o usa solo como referencia cualquier imagen que:
-- cambie el texto físico `Chocolat...`;
-- añada corazones/dibujos que no están en la taza real;
-- llame “Negro” a la variante marrón;
-- altere el asa, hueco de vela, forma o tenedor;
-- diga una capacidad distinta de 130 ml;
-- sugiera que la vela viene incluida;
-- añada GARELON al objeto físico;
-- incluya claims no verificados.
+Si una imagen:
+- altera el texto físico `Chocolat...`;
+- añade corazones u otros adornos físicos inexistentes;
+- llama `Negro` a la variante marrón;
+- menciona 200 ml o cualquier capacidad distinta de 130 ml;
+- da a entender que la vela viene incluida;
+- cambia forma, asa, hueco inferior o tenedor;
+- añade GARELON físicamente a la taza;
+- contiene claims no verificados;
 
-En particular, si la infografía “Características y usos” muestra corazones físicos, “Negro” o “cerámica resistente” sin evidencia, NO la publiques tal cual. Puedes omitirla.
+NO la uses como evidencia del producto. Puedes descartarla aunque sea visualmente atractiva.
 
-La infografía “Cómo funciona” puede usarse como apoyo si el producto mostrado es suficientemente fiel y no contiene datos contradictorios.
+Puedes usar una composición como inspiración si es útil, pero no publiques una imagen engañosa.
 
-Optimiza imágenes para web:
-- responsive;
-- width/height;
-- lazy loading donde corresponda;
-- tamaños razonables;
-- no sacrificar nitidez principal;
-- alt text descriptivo y no spam.
+Prioridad de selección:
+1. fidelidad al producto;
+2. claridad en móvil;
+3. capacidad de vender/explicar;
+4. estética;
+5. evitar repetición.
+
+No cambies los nombres originales `logo`, `imagen 1` … `imagen 8` solo para poder trabajar. Si necesitas generar derivados optimizados para el theme, crea nuevos assets en `assets/` con nombres semánticos, conservando intactas las referencias originales.
 
 ============================================================
 8. ESTRUCTURA DE HOME
@@ -703,20 +719,41 @@ En móvil:
 19. ARCHIVOS / ASSETS
 ============================================================
 
-No dependas de nombres antiguos `IMAGEN 1`, etc. si ahora existen nuevas referencias de fondue.
+Las referencias originales que debes inspeccionar son las ya subidas por el usuario:
 
-Crea nombres semánticos para assets finales, por ejemplo:
-- `garelon-fondue-hero-...`
-- `garelon-fondue-red-...`
-- `garelon-fondue-white-...`
-- `garelon-fondue-brown-...`
-- `garelon-fondue-lifestyle-...`
-- `garelon-fondue-how-to-...`
-- `garelon-fondue-logo-...`
+`logo`
+`imagen 1`
+`imagen 2`
+`imagen 3`
+`imagen 4`
+`imagen 5`
+`imagen 6`
+`imagen 7`
+`imagen 8`
+
+NO exijas nombres semánticos en referencias y NO pidas otra subida.
+
+Si eliges una imagen para producción:
+- conserva la referencia original;
+- crea la versión optimizada necesaria en `assets/`;
+- puedes nombrar los derivados de forma semántica, por ejemplo:
+  - `garelon-fondue-hero-...`
+  - `garelon-fondue-red-...`
+  - `garelon-fondue-white-...`
+  - `garelon-fondue-brown-...`
+  - `garelon-fondue-lifestyle-...`
+  - `garelon-fondue-how-to-...`
+  - `garelon-fondue-logo-...`
 
 Genera tamaños responsive siguiendo el patrón GARELON actual.
 
-No borres referencias originales hasta haber decidido cuáles son necesarias.
+No borres ni renombres las 9 referencias originales.
+
+En el informe final indica claramente:
+- cuáles analizaste;
+- cuáles usaste;
+- cuáles descartaste;
+- el motivo de cada decisión.
 
 ============================================================
 20. LIMPIEZA DEL SÉRUM
