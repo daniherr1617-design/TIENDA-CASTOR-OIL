@@ -2,7 +2,7 @@
   GARELON · Navegación principal de la tienda de un solo producto.
 
   Enlaces: Inicio, las secciones de la home que se activen en la cabecera
-  (Cómo usarlo, Ingredientes, Preguntas frecuentes) y Contacto. No enlaza al catálogo
+  (Cómo funciona, Qué incluye, Preguntas frecuentes) y Contacto. No enlaza al catálogo
   ni a colecciones. Las URLs son dinámicas: routes.root_url y la página de contacto
   real resuelta por el snippet garelon-url.
 
@@ -23,14 +23,14 @@
   assign urls = home_url
   assign ids = 'inicio'
   if section.settings.nav_show_how
-    assign labels = labels | append: '|Cómo usarlo'
-    assign urls = urls | append: '|' | append: home_url | append: '#como-usarlo'
-    assign ids = ids | append: '|como-usarlo'
+    assign labels = labels | append: '|Cómo funciona'
+    assign urls = urls | append: '|' | append: home_url | append: '#como-funciona'
+    assign ids = ids | append: '|como-funciona'
   endif
   if section.settings.nav_show_ingredients
-    assign labels = labels | append: '|Ingredientes'
-    assign urls = urls | append: '|' | append: home_url | append: '#ingredientes'
-    assign ids = ids | append: '|ingredientes'
+    assign labels = labels | append: '|Qué incluye'
+    assign urls = urls | append: '|' | append: home_url | append: '#que-incluye'
+    assign ids = ids | append: '|que-incluye'
   endif
   if section.settings.nav_show_faq
     assign labels = labels | append: '|Preguntas frecuentes'

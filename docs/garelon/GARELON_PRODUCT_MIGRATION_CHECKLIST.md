@@ -11,7 +11,7 @@
 ## 0. Antes de empezar
 
 - [ ] 🅲 La base es Dawn 16.0.0 con la capa GARELON → `config/settings_schema.json`: `theme_version` 16.0.0 y `theme_name` «GARELON (Dawn)».
-- [ ] 🅲 Existen las 9 secciones `sections/garelon-*.liquid` y los 13 snippets `snippets/garelon-*.liquid` (§6).
+- [ ] 🅲 Existen las 10 secciones `sections/garelon-*.liquid` y los 16 snippets `snippets/garelon-*.liquid` (§6; desde la 1.6 incluyen `garelon-choice` y `garelon-packs-diagnostic`).
 - [ ] 🅲 Línea base de Theme Check: 0 errores y 9 avisos de Dawn (§ anexo B.4).
 - [ ] 🅲 El validador de plantillas da `OK` antes de tocar nada (§ anexo B.2).
 - [ ] 🅲/🆂 Se sabe si el tema publicado tiene cambios del editor que no están en el repositorio. Si los tiene, se han incorporado.
@@ -95,7 +95,8 @@
 - [ ] 🅲 Las pestañas `tab_ingredientes` y `tab_uso` están adaptadas: título, icono y contenido. `tab_envios` sin cambios.
 - [ ] 🅲 El bloque `inventory` sigue con `inventory_threshold: 0` y `show_inventory_quantity: false`.
 - [ ] 🅲 Packs (§10.11): si el producto se vende en packs, el bloque `packs` está activo, sin `variant_picker` ni `quantity_selector` en la plantilla; si no, se quita (o muestra el selector estándar).
-- [ ] 🅲 Home: «Oferta limitada · Elige tu pack» y las 3 tarjetas con su ahorro visibles **antes** de «Añadir al carrito», justo tras la portada. El ahorro nunca aparece solo en el carrito.
+- [ ] 🅲 Home: (Color →) «Elige tu pack» y las 3 tarjetas con su ahorro visibles **antes** de «Añadir al carrito», justo tras la portada, **sin** «Oferta limitada» (1.6). El ahorro nunca aparece solo en el carrito.
+- [ ] 🅲 Si el producto tiene colores (Color × Pack): los 3 colores como botones, el ahorro se recalcula frente a 1 unidad **del mismo color**, combinación inexistente = «No disponible», agotada = «Agotado», la compra fija dice «Color · N unidades» y el carrito «Color: X · Pack: N unidades» × 1.
 - [ ] 🅲 Regresión de cantidad: con `quantity_selector` añadido a la vez que los packs, el selector no se pinta y el formulario envía un solo `quantity=1`.
 - [ ] 🅲 La sección de compra de la home tiene el **producto elegido** explícitamente (no «el primero del catálogo»).
 - [ ] 🅲 El bloque `shipping` (plazos) tiene textos de estimación prudentes y los mismos plazos que la pestaña «Envíos y devoluciones» y la FAQ.
@@ -127,8 +128,9 @@
 - [ ] 🆂 Las variantes aparecen con sus nombres reales. Al cambiar de variante se actualizan precio, stock, botón y multimedia (en la ficha).
 - [ ] 🆂 El stock dice «En stock» o «Agotado» según el inventario real, sin cifras.
 - [ ] 🆂 Proveedor: producto importado o conectado; cada variante emparejada con la suya (packs: «1 unidad» → CJ «1 unidad», «2 unidades» → CJ «2 unidades», «3 unidades» → CJ «3 piezas»); SKU correcto; no sobrescribe título, descripción, imágenes, nombres de variante ni precios editados.
+- [ ] 🆂 Color × Pack en Shopify (si hay colores): opciones «Color» y «Pack», **todas** las combinaciones creadas (Taza Fondue: 3 × 3 = 9) y el editor sin el aviso «Faltan combinaciones». Cada combinación emparejada en el proveedor con **N unidades del mismo color**.
 - [ ] 🆂 Packs en Shopify: opción «Pack» con «1 unidad» como primera variante; precio real en cada variante; **precio comparado vacío**; sin descuentos automáticos («Compra X y obtén Y», segunda unidad, packs) que se acumulen.
-- [ ] 🆂 Descuentos antiguos **desactivados**: con el pack de 2 en el carrito, total 35,00 € sin línea de descuento; con el de 3, 48,00 €. Si al subir la cantidad aparece un descuento, sigue activo uno antiguo.
+- [ ] 🆂 Descuentos antiguos **desactivados**: con el pack de 2 en el carrito, total igual al precio de la variante sin línea de descuento (Taza Fondue: 39,99 €; con el de 3, 54,99 €; sérum: 35,00 € / 48,00 €). Si al subir la cantidad aparece un descuento, sigue activo uno antiguo.
 - [ ] 🆂 Editor de temas **sin** el aviso rojo «Configuración de Shopify pendiente o incorrecta para packs» en la home ni en la ficha.
 - [ ] 🆂 **Envío gratis real (obligatorio):** Shopify Admin → Configuración → **Envío y entrega** → en cada zona donde GARELON ofrece envío gratis, la tarifa es **0 €** (o «Gratis»). Qué zonas están incluidas (Península, Baleares, Canarias, Ceuta, Melilla, otros países…) lo decide el dueño y depende de las zonas configuradas; si no son todas, escribir la aclaración en el bloque (`free_shipping_note`). Comprobar en un checkout de prueba que el envío sale a 0 €.
 - [ ] 🆂 **Métodos de pago:** se configuran en Configuración → Pagos y el cliente los ve en el checkout oficial de Shopify. El tema no los muestra (R21); no hay nada que ajustar en el editor para ello.
@@ -147,7 +149,7 @@
 - [ ] 🅲 Sin CSS, JS ni manipulación del DOM del checkout.
 - [ ] 🆂 Estado agotado: el botón se desactiva y la compra fija lo refleja. La tarjeta del pack agotado dice «Agotado» y no se puede elegir.
 - [ ] 🆂 Cada pack llega al carrito como **una línea «Pack: N unidades» × 1** (nunca «N unidades» × N) y la compra fija muestra el pack elegido.
-- [ ] 🆂 Pedido de prueba de cada pack (o, como mínimo, mapping revisado): el proveedor recibe la variante correcta, cantidad 1, la dirección y el método de envío (hoy CJPacket Euro Cosmetic Line). Tracking confirmado antes de lanzar campañas.
+- [ ] 🆂 Pedido de prueba de cada pack (o, como mínimo, mapping revisado): el proveedor recibe la variante correcta, cantidad 1, la dirección y el método de envío (el que se configure en CJ; con el sérum era CJPacket Euro Cosmetic Line). Tracking confirmado antes de lanzar campañas.
 - [ ] 🆂 Carrito vacío → «Seguir comprando» lleva a la home.
 
 ## 8. Cabecera y navegación
@@ -167,7 +169,7 @@
 
 ## 9. Barra superior
 
-- [ ] 🅲 Texto simple y verdadero, sin urgencia. Hoy «Envío disponible a toda España» + bandera (`show_flag_es`).
+- [ ] 🅲 Texto simple y verdadero, sin urgencia. Hoy «Envío gratis disponible en España» + bandera (`show_flag_es`), solo con la tarifa real de 0 € configurada.
 - [ ] 🅲 Una sola línea (~38 px) de 320 a 1440 px.
 - [ ] 🆂 El texto coincide con las zonas de envío configuradas en Shopify.
 

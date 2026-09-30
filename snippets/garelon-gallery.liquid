@@ -2,8 +2,8 @@
   GARELON · Galería de la zona de compra de la home.
 
   Muestra las imágenes del producto incluidas en el tema, en el orden de la historia:
-  producto (IMAGEN 1) → presentación y beneficios (IMAGEN 10) → técnica con roller (IMAGEN 7)
-  → ingredientes (IMAGEN 5) → cómo usarlo (IMAGEN 4) → tamaño (IMAGEN 9).
+  los tres colores (imagen1) → roja (imagen2) → blanca (imagen3) → marrón (imagen4).
+  Empieza por los tres colores porque la portada, justo encima, ya muestra la taza roja.
 
   Usa el carrusel de Dawn (<slider-component>, definido en global.js): se desliza con el
   dedo en móvil y tiene flechas y contador en todos los tamaños. Todas las imágenes se
@@ -18,7 +18,7 @@
 {{ 'component-slider.css' | asset_url | stylesheet_tag }}
 
 {%- liquid
-  assign keys = 'img01-producto,img10-presentacion,img07-roller,img05-ingredientes,img04-uso,img09-tamano' | split: ','
+  assign keys = 'colores,principal,blanco,marron' | split: ','
   assign slider_id = 'Slider-GGallery-' | append: section_id
 -%}
 

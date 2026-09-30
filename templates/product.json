@@ -6,7 +6,7 @@
         "eyebrow": {
           "type": "text",
           "settings": {
-            "text": "Sérum contorno de ojos · 10 ml",
+            "text": "Taza Fondue · 130 ml",
             "text_style": "uppercase"
           }
         },
@@ -25,16 +25,18 @@
         "subtitle": {
           "type": "text",
           "settings": {
-            "text": "Con aceite de ricino y aplicador roller metálico para hidratar y cuidar el contorno de ojos.",
+            "text": "Taza de cerámica con tenedor de fondue incluido y hueco para una vela (no incluida). Para chocolate o queso.",
             "text_style": "subtitle"
           }
         },
         "packs": {
           "type": "garelon_packs",
           "settings": {
-            "offer_label": "Oferta limitada",
+            "offer_label": "",
             "heading": "Elige tu pack",
-            "intro": "Cuantas más unidades incluye tu pack, menos pagas por cada una.",
+            "intro": "Packs del mismo color. Cada taza incluye su tenedor de fondue.",
+            "style_heading": "Color",
+            "style_intro": "",
             "option_name": "",
             "pack_units": "",
             "unit_singular": "unidad",
@@ -42,13 +44,16 @@
             "show_unit_price": true,
             "show_savings": true,
             "show_percent": true,
+            "show_reference": true,
+            "reference_label": "Comprando por separado:",
+            "single_note": "Sin descuento",
+            "tag_1": "Individual",
+            "tag_2": "Para compartir",
+            "tag_3": "",
             "badge_text": "Mejor precio/unidad",
             "savings_note": "",
             "picker_type": "button",
-            "swatch_shape": "none",
-            "show_reference": true,
-            "reference_label": "Comprando por separado:",
-            "single_note": "Sin descuento"
+            "swatch_shape": "none"
           }
         },
         "buy_buttons": {
@@ -78,40 +83,24 @@
           "type": "icon-with-text",
           "settings": {
             "layout": "horizontal",
-            "icon_1": "eye",
-            "heading_1": "Aplicación precisa",
-            "icon_2": "bottle",
-            "heading_2": "10 ml",
-            "icon_3": "stopwatch",
-            "heading_3": "Rutina en 3 pasos"
+            "icon_1": "serving_dish",
+            "heading_1": "Cerámica · 130 ml",
+            "icon_2": "check_mark",
+            "heading_2": "Tenedor incluido",
+            "icon_3": "fire",
+            "heading_3": "Hueco para vela"
           }
         },
         "description": {
           "type": "description",
           "settings": {}
         },
-        "tab_ingredientes": {
-          "type": "collapsible_tab",
-          "settings": {
-            "heading": "Ingredientes",
-            "icon": "leaf",
-            "content": "<p>Ricinus Communis (Castor) Seed Oil (aceite de ricino), Acetyl Tripeptide-1, Collagen (colágeno), Boswellia Serrata Extract (extracto de Boswellia Serrata), Aqua (agua).</p><p>Ingredientes según la información facilitada por el proveedor. Consulta siempre el envase del producto.</p>"
-          }
-        },
-        "tab_uso": {
-          "type": "collapsible_tab",
-          "settings": {
-            "heading": "Modo de uso",
-            "icon": "clipboard",
-            "content": "<p>1. Limpia y seca bien el rostro y el contorno de ojos.<br>2. Desliza suavemente el roller por la zona del contorno.<br>3. Masajea con movimientos suaves usando la bola metálica hasta distribuir el sérum.</p><p>Solo para uso externo. Evita el contacto directo con los ojos.</p>"
-          }
-        },
         "tab_envios": {
           "type": "collapsible_tab",
           "settings": {
             "heading": "Envíos y devoluciones",
             "icon": "truck",
-            "content": "<p>Preparación estimada: 1–3 días. Entrega estimada en España: aproximadamente 8–16 días. Son plazos orientativos y pueden variar según destino y transporte.</p><p>Consulta los detalles en nuestra <a href=\"/policies/shipping-policy\" title=\"Política de envío\">política de envío</a> y las condiciones en nuestra <a href=\"/policies/refund-policy\" title=\"Política de devoluciones\">política de devoluciones</a>. El pago se realiza en el checkout seguro de Shopify.</p>"
+            "content": "<p>Preparación estimada: 1–3 días. Entrega estimada en España: aproximadamente 8–18 días. Son plazos orientativos y pueden variar según destino y transporte.</p><p>Consulta los detalles en nuestra <a href=\"/policies/shipping-policy\" title=\"Política de envío\">política de envío</a> y las condiciones en nuestra <a href=\"/policies/refund-policy\" title=\"Política de devoluciones\">política de devoluciones</a>.</p>"
           }
         },
         "share": {
@@ -124,9 +113,25 @@
           "type": "garelon_shipping",
           "settings": {
             "preparation": "Preparación estimada: 1–3 días.",
-            "delivery": "Entrega estimada en España: aproximadamente 8–16 días.",
+            "delivery": "Entrega estimada en España: aprox. 8–18 días.",
             "note": "Los plazos pueden variar según destino y transporte.",
             "link_label": "Política de envío"
+          }
+        },
+        "tab_incluye": {
+          "type": "collapsible_tab",
+          "settings": {
+            "heading": "Qué incluye",
+            "icon": "box",
+            "content": "<p>Cada unidad: 1 Taza Fondue de cerámica de 130 ml y 1 tenedor tipo fondue.</p><p>Colores: rojo, blanco o marrón. Los packs de 2 y 3 unidades son del mismo color.</p><p>Vela no incluida (usa una vela tipo tealight).</p>"
+          }
+        },
+        "tab_uso": {
+          "type": "collapsible_tab",
+          "settings": {
+            "heading": "Cómo se usa",
+            "icon": "clipboard",
+            "content": "<p>1. Coloca una vela tipo tealight en el hueco inferior.<br>2. Añade chocolate o queso en la parte superior.<br>3. Enciende la vela y deja que se caliente o se funda.<br>4. Remueve con el tenedor.<br>5. Disfruta con tus acompañamientos favoritos.</p><p>Usa la taza sobre una superficie estable y resistente al calor, no dejes la vela encendida sin vigilancia y mantenla fuera del alcance de los niños.</p>"
           }
         }
       },
@@ -143,7 +148,7 @@
         "shipping",
         "highlights",
         "description",
-        "tab_ingredientes",
+        "tab_incluye",
         "tab_uso",
         "tab_envios",
         "share"
@@ -212,49 +217,40 @@
     "benefits": {
       "type": "garelon-benefits",
       "blocks": {
-        "ojeras": {
+        "b-chocolate": {
           "type": "benefit",
           "settings": {
-            "icon": "eye-under",
-            "title": "Ojeras",
-            "text": "Contribuye a mejorar la apariencia de la zona oscura del contorno."
+            "icon": "chocolate",
+            "title": "Chocolate o queso",
+            "text": "Úsala para preparar una fondue individual de chocolate o de queso."
           }
         },
-        "bolsas": {
+        "b-compartir": {
           "type": "benefit",
           "settings": {
-            "icon": "eye",
-            "title": "Bolsas",
-            "text": "El masaje con roller complementa una rutina orientada a una mirada más descansada."
+            "icon": "heart",
+            "title": "Hecha para compartir",
+            "text": "Fresas, fruta, pan o gofres: elige tus acompañamientos y disfruta."
           }
         },
-        "lineas": {
+        "b-taza": {
           "type": "benefit",
           "settings": {
-            "icon": "lines",
-            "title": "Líneas finas",
-            "text": "La hidratación ayuda a mantener una apariencia más suave."
-          }
-        },
-        "hidratacion": {
-          "type": "benefit",
-          "settings": {
-            "icon": "drop",
-            "title": "Hidratación",
-            "text": "Aporta cuidado e hidratación a la zona del contorno."
+            "icon": "mug",
+            "title": "Todo en una taza",
+            "text": "Diseño compacto con hueco para una vela y tenedor tipo fondue incluido."
           }
         }
       },
       "block_order": [
-        "ojeras",
-        "bolsas",
-        "lineas",
-        "hidratacion"
+        "b-chocolate",
+        "b-compartir",
+        "b-taza"
       ],
       "settings": {
-        "eyebrow": "Beneficios",
-        "heading": "Cuida una de las zonas más delicadas de tu rostro",
-        "text": "<p>La piel del contorno de ojos es más fina y puede mostrar signos de cansancio, sequedad, bolsas y líneas finas. Dedicarle un momento cada día es un gesto sencillo dentro de tu rutina.</p>",
+        "eyebrow": "La experiencia",
+        "heading": "Convierte cualquier sobremesa en un pequeño momento especial",
+        "text": "<p>Sin montar una fondue grande: una taza, tus acompañamientos favoritos y un rato para disfrutar.</p>",
         "note": "",
         "alignment": "center",
         "color_scheme": "scheme-2",
@@ -270,42 +266,60 @@
           "type": "step",
           "settings": {
             "label": "01",
-            "title": "Limpia",
-            "text": "Limpia y seca bien el rostro y el contorno de ojos."
+            "title": "Coloca una vela",
+            "text": "Pon una vela tipo tealight en el hueco inferior de la taza."
           }
         },
         "paso-2": {
           "type": "step",
           "settings": {
             "label": "02",
-            "title": "Aplica",
-            "text": "Presiona y desliza suavemente el roller para que salga el sérum y distribúyelo por el contorno."
+            "title": "Añade chocolate o queso",
+            "text": "Añádelo en la parte superior de la taza."
           }
         },
         "paso-3": {
           "type": "step",
           "settings": {
             "label": "03",
-            "title": "Masajea",
-            "text": "Masajea con suavidad con la bola metálica para favorecer la distribución del sérum."
+            "title": "Enciende la vela",
+            "text": "Deja que el calor lo vaya fundiendo o lo mantenga caliente."
+          }
+        },
+        "paso-4": {
+          "type": "step",
+          "settings": {
+            "label": "04",
+            "title": "Remueve con el tenedor",
+            "text": "Remueve de vez en cuando con el tenedor de fondue."
+          }
+        },
+        "paso-5": {
+          "type": "step",
+          "settings": {
+            "label": "05",
+            "title": "Disfruta",
+            "text": "Pincha tus acompañamientos favoritos y mójalos en la taza."
           }
         }
       },
       "block_order": [
         "paso-1",
         "paso-2",
-        "paso-3"
+        "paso-3",
+        "paso-4",
+        "paso-5"
       ],
       "settings": {
-        "eyebrow": "Cómo usarlo",
-        "heading": "3 pasos. Menos de un minuto.",
+        "eyebrow": "Cómo funciona",
+        "heading": "Tan sencillo como preparar, calentar y disfrutar",
+        "fallback_image": "blanco",
         "show_images": false,
-        "note": "Solo para uso externo. Evita el contacto directo con los ojos. Si notas cualquier molestia, interrumpe su uso.",
+        "note": "Vela no incluida. Usa la taza sobre una superficie estable y resistente al calor, no dejes la vela encendida sin vigilancia y mantenla fuera del alcance de los niños.",
         "color_scheme": "scheme-1",
-        "anchor": "como-usarlo",
+        "anchor": "como-funciona",
         "padding_top": 56,
-        "padding_bottom": 56,
-        "fallback_image": "img04-uso"
+        "padding_bottom": 56
       }
     },
     "reviews": {
@@ -324,80 +338,88 @@
     "faq": {
       "type": "garelon-faq",
       "blocks": {
-        "q-que-es": {
+        "q-incluye": {
           "type": "question",
           "settings": {
-            "question": "¿Qué es el sérum de contorno de ojos de GARELON?",
-            "answer": "<p>Es un sérum para el contorno de ojos con aceite de ricino y aplicador roller metálico, en un frasco de vidrio ámbar de 10 ml. GARELON es la tienda desde la que lo comercializamos: el producto procede de un fabricante externo, por lo que en el frasco y en la caja verás la marca original del fabricante.</p>"
+            "question": "¿Qué incluye cada taza?",
+            "answer": "<p>Una taza de cerámica de 130 ml y un tenedor tipo fondue. La vela no está incluida.</p><p>GARELON es la tienda desde la que lo comercializamos: el producto procede de un fabricante externo, por eso la taza lleva el texto «Chocolat...» y no la marca GARELON.</p>"
           }
         },
         "q-como": {
           "type": "question",
           "settings": {
             "question": "¿Cómo se utiliza?",
-            "answer": "<p>1. Limpia y seca bien el rostro y el contorno de ojos.<br>2. Desliza suavemente el roller por la zona del contorno para que salga el producto.<br>3. Masajea con movimientos suaves usando la bola metálica hasta distribuir el sérum.</p>"
+            "answer": "<p>Coloca una vela en el compartimento inferior, añade chocolate o queso y deja que el calor ayude a fundirlo o a mantenerlo caliente. Remueve de vez en cuando y utiliza el tenedor para tus acompañamientos. No dejes la vela encendida sin vigilancia.</p>"
           }
         },
-        "q-frecuencia": {
+        "q-queso": {
           "type": "question",
           "settings": {
-            "question": "¿Con qué frecuencia puedo incorporarlo a mi rutina?",
-            "answer": "<p>Está pensado para formar parte de tu rutina diaria de cuidado. Aplícalo siempre sobre la piel limpia y seca y sigue las indicaciones del envase. Si notas cualquier molestia, interrumpe su uso.</p>"
+            "question": "¿Puedo usarla con queso?",
+            "answer": "<p>Sí. Puedes preparar una fondue individual de chocolate o de queso.</p>"
           }
         },
-        "q-cantidad": {
+        "q-microondas": {
           "type": "question",
           "settings": {
-            "question": "¿Cuánto producto contiene?",
-            "answer": "<p>Cada frasco contiene 10 ml (0.34 fl oz).</p>"
+            "question": "¿Es apta para microondas?",
+            "answer": "<p>Según la información facilitada por el proveedor, sí.</p>"
           }
         },
-        "q-donde": {
+        "q-capacidad": {
           "type": "question",
           "settings": {
-            "question": "¿Dónde debo aplicarlo?",
-            "answer": "<p>En la zona del contorno de ojos, deslizando el roller con suavidad. Evita el contacto directo con los ojos. Solo para uso externo.</p>"
+            "question": "¿Qué capacidad tiene?",
+            "answer": "<p>130 ml.</p>"
           }
         },
-        "q-ingredientes": {
+        "q-colores": {
           "type": "question",
           "settings": {
-            "question": "¿Qué ingredientes contiene?",
-            "answer": "<p>Según la información facilitada por el proveedor: aceite de ricino (Ricinus Communis Seed Oil), Acetyl Tripeptide-1, colágeno (Collagen), extracto de Boswellia Serrata y agua (Aqua). Consulta siempre el envase del producto.</p>"
+            "question": "¿Qué colores hay?",
+            "answer": "<p>Rojo, blanco y marrón.</p>"
+          }
+        },
+        "q-packs": {
+          "type": "question",
+          "settings": {
+            "question": "¿Qué incluyen los packs?",
+            "answer": "<p>1, 2 o 3 tazas del mismo color. Cada taza incluye su tenedor de fondue y no se mezclan colores dentro de un pack. El precio de cada pack es el que ves al elegirlo y, si su precio por unidad es más bajo, verás cuánto ahorras frente a comprar las mismas unidades por separado.</p>"
+          }
+        },
+        "q-vela": {
+          "type": "question",
+          "settings": {
+            "question": "¿La vela está incluida?",
+            "answer": "<p>No. La taza tiene un hueco inferior para una vela tipo tealight, que no se incluye.</p>"
           }
         },
         "q-envio": {
           "type": "question",
           "settings": {
             "question": "¿Cuándo recibiré mi pedido?",
-            "answer": "<p>Preparamos tu pedido en un plazo estimado de 1–3 días y la entrega estimada en España es de aproximadamente 8–16 días. Son plazos orientativos: pueden variar según el destino y el transporte. Encontrarás los detalles en nuestra <a href=\"/policies/shipping-policy\" title=\"Política de envío\">política de envío</a> y durante el proceso de compra.</p>"
+            "answer": "<p>Preparamos tu pedido en un plazo estimado de 1–3 días y la entrega estimada en España es de aproximadamente 8–18 días. Son plazos orientativos: pueden variar según el destino y el transporte. Encontrarás los detalles en nuestra <a href=\"/policies/shipping-policy\" title=\"Política de envío\">política de envío</a>.</p>"
           }
         },
-        "q-dudas": {
+        "q-danada": {
           "type": "question",
           "settings": {
-            "question": "¿Qué ocurre si tengo una duda con mi pedido?",
-            "answer": "<p>Escríbenos desde nuestra <a href=\"/pages/contacto\" title=\"Contacto\">página de contacto</a> indicando tu número de pedido y te responderemos lo antes posible. Puedes consultar también nuestra <a href=\"/policies/refund-policy\" title=\"Política de devoluciones\">política de devoluciones</a>.</p>"
-          }
-        },
-        "q-packs": {
-          "type": "question",
-          "settings": {
-            "question": "¿Qué incluye cada pack?",
-            "answer": "<p>Cada pack incluye el número de unidades indicado: 1, 2 o 3 sérums iguales de 10 ml. El precio de cada pack es el que ves al elegirlo. Si un pack tiene un precio por unidad más bajo, verás cuánto ahorras frente a comprar las mismas unidades por separado.</p>"
+            "question": "¿Qué hago si llega dañada o tengo una duda con mi pedido?",
+            "answer": "<p>Escríbenos desde nuestra <a href=\"/pages/contacto\" title=\"Contacto\">página de contacto</a> con tu número de pedido y, si llega dañada, una foto del producto y del paquete. Te indicaremos los pasos según nuestra <a href=\"/policies/refund-policy\" title=\"Política de devoluciones\">política de devoluciones y reembolsos</a>.</p>"
           }
         }
       },
       "block_order": [
-        "q-que-es",
+        "q-incluye",
         "q-como",
-        "q-frecuencia",
-        "q-cantidad",
+        "q-queso",
+        "q-microondas",
+        "q-capacidad",
+        "q-colores",
         "q-packs",
-        "q-donde",
-        "q-ingredientes",
+        "q-vela",
         "q-envio",
-        "q-dudas"
+        "q-danada"
       ],
       "settings": {
         "eyebrow": "",
@@ -417,6 +439,23 @@
         "show_on_desktop": false,
         "color_scheme": "scheme-4"
       }
+    },
+    "lifestyle": {
+      "type": "garelon-image-text",
+      "settings": {
+        "fallback_image": "marron",
+        "image_shape": "rounded",
+        "image_position": "right",
+        "eyebrow": "Para compartir",
+        "heading": "Un plan sencillo para compartir",
+        "text": "<p>Una sobremesa diferente para una noche en casa, una cita o un pequeño regalo. Elige tu color, prepara tus acompañamientos y crea tu propia fondue.</p>",
+        "button_label": "",
+        "button_secondary": false,
+        "color_scheme": "scheme-2",
+        "anchor": "compartir",
+        "padding_top": 56,
+        "padding_bottom": 56
+      }
     }
   },
   "order": [
@@ -425,6 +464,7 @@
     "service",
     "benefits",
     "how_to",
+    "lifestyle",
     "faq",
     "sticky"
   ]

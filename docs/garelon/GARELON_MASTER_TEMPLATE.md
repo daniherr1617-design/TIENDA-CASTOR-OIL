@@ -1,6 +1,6 @@
 # GARELON · MASTER STORE TEMPLATE
 
-> **Versión 1.5 · septiembre 2026.** Extraído del repositorio `TIENDA-CASTOR-OIL` (rama `claude/great-lamport-8mb0rc`), la tienda GARELON del sérum de contorno de ojos. Versión 1.0 sacada del commit `755240b`. La 1.1 recoge el cambio de proveedor (**AutoDS → CJ Dropshipping**) y los **packs como variantes reales**. La 1.2 añade la **oferta visible antes del carrito** («Oferta limitada · Elige tu pack»), la **cantidad 1 blindada**, el **aviso de configuración** en el editor y el flujo **Shopify + GitHub**. La 1.3 añade la **confianza junto a la compra** (envío gratis + pago seguro con los métodos de pago habilitados en Shopify) y la sección de **opiniones reales** (`garelon-reviews`). La 1.4, tras publicar el tema en Shopify, añade el modo de iconos de pago **«Manual verificado»** (opcional), el diagnóstico de métodos de pago en el editor y las opiniones sin resumen duplicado. La 1.5 **simplifica** para la fase de aprendizaje: **opiniones justo después de la compra** (home y ficha) y **ningún icono ni «Pago seguro» en la tienda** (el bloque de compra queda en «Envío gratis»; el pie, sin logos). Detalle en `GARELON-CAMBIOS-CJ-PACKS.md`, en la raíz. Todos los archivos, ajustes y valores que aparecen aquí salen del código real.
+> **Versión 1.6 · septiembre 2026.** Extraído del repositorio `TIENDA-CASTOR-OIL`. Hasta la 1.5 describía la tienda GARELON del sérum de contorno de ojos (baseline congelado en la rama `baseline/garelon-serum`, commit `f08f9bb`); desde la 1.6 la tienda vende la **Taza Fondue de Chocolate con Tenedor** (rama `claude/fondue-mug`). Versión 1.0 sacada del commit `755240b`. La 1.1 recoge el cambio de proveedor (**AutoDS → CJ Dropshipping**) y los **packs como variantes reales**. La 1.2 añade la **oferta visible antes del carrito** («Oferta limitada · Elige tu pack»), la **cantidad 1 blindada**, el **aviso de configuración** en el editor y el flujo **Shopify + GitHub**. La 1.3 añade la **confianza junto a la compra** (envío gratis + pago seguro con los métodos de pago habilitados en Shopify) y la sección de **opiniones reales** (`garelon-reviews`). La 1.4, tras publicar el tema en Shopify, añade el modo de iconos de pago **«Manual verificado»** (opcional), el diagnóstico de métodos de pago en el editor y las opiniones sin resumen duplicado. La 1.5 **simplifica** para la fase de aprendizaje: **opiniones justo después de la compra** (home y ficha) y **ningún icono ni «Pago seguro» en la tienda** (el bloque de compra queda en «Envío gratis»; el pie, sin logos). La 1.6 es la **primera migración de producto** (sérum → Taza Fondue): packs **Color × Pack** (variantes reales, packs siempre del mismo color), fuera la etiqueta «Oferta limitada» (urgencia sin datos), **isotipo propio de cada versión de producto** (el nombre GARELON no cambia) y catálogo de imágenes `garelon-fondue-*`. Detalle en `GARELON-CAMBIOS-CJ-PACKS.md` y `GARELON-CAMBIOS-FONDUE.md`, en la raíz. Todos los archivos, ajustes y valores que aparecen aquí salen del código real.
 >
 > **Cómo se usa:**
 > - **ChatGPT:** lee primero la sección 29, rellena la sección 1 con el brief (`GARELON_PRODUCT_BRIEF_TEMPLATE.md`) y genera el prompt final para Claude Code.
@@ -99,7 +99,7 @@ NEW PRODUCT DATA
                                     1–3 días» · «Entrega estimada en España: aproximadamente 8–16 días»).
 {{PRODUCT_SUPPLIER}}              = Proveedor/fulfillment actual y método de envío (hoy CJ Dropshipping ·
                                     CJPacket Euro Cosmetic Line). Dato interno: nunca se muestra al cliente.
-{{ANNOUNCEMENT_TEXT}}             = Texto de la barra superior (actualmente «Envío disponible a toda España»).
+{{ANNOUNCEMENT_TEXT}}             = Texto de la barra superior (actualmente «Envío gratis disponible en España»).
 {{PRODUCT_POLICY_IMPACT}}         = Respuestas a las preguntas de la sección 19: devoluciones, higiene,
                                     seguridad, garantía, edad, restricciones.
 
@@ -153,10 +153,10 @@ Ninguna instrucción posterior las anula, tampoco el prompt adaptado. Si una pet
 - **R4 · Antes/después.** No se crean resultados falsos ni se alteran imágenes para exagerar. Los antes/después del proveedor se evalúan y se descartan por defecto: sin resultados documentados restan confianza. Así se hizo con IMAGEN 6 y 8 del sérum.
 - **R5 · Reseñas.** Nunca se inventan: ni ⭐⭐⭐⭐⭐, ni «4,9/5», ni «más de X clientes», ni testimonios, nombres, fotos, fechas ni «Compra verificada». Solo se muestran opiniones **reales** de una app de reseñas: su **bloque de app** dentro de `sections/garelon-reviews.liquid` y/o la valoración estándar de Shopify que rellena la app (`product.metafields.reviews.rating` y `reviews.rating_count`). Sin ninguna de las dos, la sección no se pinta para el cliente (solo un aviso en el editor), nunca «0 opiniones». Con un bloque de app, la media propia se oculta por defecto para no duplicar el resumen de la app. El bloque `rating` de Dawn solo se muestra si existe el metafield `reviews.rating`. Nunca se dejan reseñas de prueba en el tema.
 - **R6 · Urgencia.** Sin «quedan 3», «20 personas viendo», cuentas atrás ni «oferta acaba en…» si no son datos reales. El stock se muestra solo como «En stock» o «Agotado», nunca con cifras (`garelon-stock`; bloque `inventory` con `inventory_threshold: 0` y `show_inventory_quantity: false`).
-- **R7 · Descuentos y packs.** `compare_at_price` solo se muestra si existe en Shopify y es un precio anterior real: nunca se usa para fingir una rebaja (nada de «~~39,98 €~~ 35,00 €»). Los packs son **variantes reales con su propio precio** (p. ej. «2 unidades» a 35,00 €): es un precio real de variante, no un descuento ficticio. El ahorro que se muestra se calcula de forma transparente frente al precio real de la variante de 1 unidad × unidades del pack («Ahorra 4,98 € · -12 %», «Comprando por separado: 39,98 €»), y se ve **antes** de añadir al carrito, nunca solo en el carrito o el checkout. «Oferta limitada» solo como etiqueta, sin cuenta atrás, fecha, stock ni «últimas unidades» que no sean reales. Sin «Compra X y obtén Y», «segunda unidad» ni descuentos automáticos que se acumulen con el precio de los packs. Insignias solo objetivas («Mejor precio/unidad»), nunca «Más vendido» sin datos.
+- **R7 · Descuentos y packs.** `compare_at_price` solo se muestra si existe en Shopify y es un precio anterior real: nunca se usa para fingir una rebaja (nada de «~~39,98 €~~ 35,00 €»). Los packs son **variantes reales con su propio precio** (p. ej. «2 unidades» a 35,00 €): es un precio real de variante, no un descuento ficticio. El ahorro que se muestra se calcula de forma transparente frente al precio real de la variante de 1 unidad × unidades del pack («Ahorra 4,98 € · -12 %», «Comprando por separado: 39,98 €»), y se ve **antes** de añadir al carrito, nunca solo en el carrito o el checkout. Nada de «Oferta limitada», «Producto viral», «Últimas unidades», cuentas atrás ni fechas sin datos reales (desde la 1.6 la etiqueta de oferta del bloque de packs va vacía). Si el producto tiene otra opción (p. ej. Color), el ahorro se calcula frente a la variante de 1 unidad **del mismo color**. Etiquetas editoriales permitidas en los packs: «Individual», «Para compartir» (no son datos de ventas). Sin «Compra X y obtén Y», «segunda unidad» ni descuentos automáticos que se acumulen con el precio de los packs. Insignias solo objetivas («Mejor precio/unidad»), nunca «Más vendido» sin datos.
 
 **Shopify, proveedor y compra**
-- **R8 · Shopify y proveedor.** Nunca se hardcodea precio, precio comparado, inventario, disponibilidad, SKU, variantes ni IDs de variante: todo se lee del objeto `product` de Shopify. El proveedor/fulfillment actual (hoy CJ Dropshipping) se conecta a Shopify con su app; el tema no depende de él y no se toca su fulfillment, sincronización ni configuración. **Un pack es siempre UNA variante con cantidad 1**: nunca «1 unidad» × N ni «N unidades» × N (el proveedor enviaría otra cantidad).
+- **R8 · Shopify y proveedor.** Nunca se hardcodea precio, precio comparado, inventario, disponibilidad, SKU, variantes ni IDs de variante: todo se lee del objeto `product` de Shopify. El proveedor/fulfillment actual (hoy CJ Dropshipping) se conecta a Shopify con su app; el tema no depende de él y no se toca su fulfillment, sincronización ni configuración. **Un pack es siempre UNA variante con cantidad 1**: nunca «1 unidad» × N ni «N unidades» × N (el proveedor enviaría otra cantidad). Con colores, cada combinación **Color × Pack** es una variante propia («Rojo / 2 unidades»), así un pack nunca mezcla colores; su mapping con el proveedor se valida con un pedido de prueba antes de publicar.
 - **R9 · Formulario de producto.** Se reutiliza el de Dawn (`snippets/buy-buttons.liquid` + `assets/product-form.js`), sin crear otro. Debe seguir funcionando con variantes (packs incluidos), cantidad, carrito AJAX, cart drawer y apps.
 - **R10 · Carrito.** Se mantienen imagen, producto, variante, cantidad, eliminar, precio, subtotal y botón de pago. No se añaden productos automáticamente, seguros, casillas premarcadas ni upsells no pedidos.
 - **R11 · Checkout.** No se modifica con hacks de CSS, JavaScript ni DOM. Lo que controla Shopify, como el orden de PayPal, Shop Pay, Apple Pay, Google Pay y tarjeta, se respeta. Solo se usan vías oficiales (ajustes de Pagos, apps de personalización de pagos).
@@ -166,7 +166,7 @@ Ninguna instrucción posterior las anula, tampoco el prompt adaptado. Si una pet
 - **R13 · Catálogo.** Mientras haya un solo producto no se muestra ningún Catálogo en la navegación pública. Las colecciones internas pueden existir. El catálogo solo se reintroduce cuando el dueño lo pida explícitamente (sección 28).
 - **R14 · Contacto.** Hay una única página de contacto permanente, que no se recrea al cambiar de producto. Todo enlace de soporte apunta a ella mediante `snippets/garelon-url.liquid`.
 - **R15 · Políticas.** Son independientes del producto. Se revisan solo si el nuevo producto las afecta (sección 19) y nunca se reescriben automáticamente.
-- **R16 · Identidad.** Se conservan la marca, el logotipo, el isotipo, los colores, la tipografía, los botones, la cabecera, el pie, la barra superior, el responsive y la experiencia general (secciones 7 y 8). Se adapta la historia del producto, no el sistema de marca.
+- **R16 · Identidad.** Se conservan la marca (el nombre y el wordmark GARELON), los colores, la tipografía, los botones, la cabecera, el pie, la barra superior, el responsive y la experiencia general (secciones 7 y 8). Se adapta la historia del producto, no el sistema de marca. **Isotipo (desde la 1.6):** cada versión de producto puede tener su propio emblema a la izquierda de GARELON (cabecera, pie, cierre y favicon) si el dueño lo entrega; el del sérum era un ojo, el de la Taza Fondue es la taza roja con chocolate y tenedor (`LOGO.png`). Nunca se pone sobre el producto físico.
 
 **Arquitectura y calidad**
 - **R17 · Arquitectura OS 2.0.** Plantillas JSON, secciones, bloques, snippets y grupos de secciones. Nada de convertir la home en un archivo Liquid gigante con contenido fijo. El contenido va en ajustes editables desde el editor de temas.
@@ -208,7 +208,7 @@ La decoración va siempre la última.
 | Elemento | Dónde vive |
 |---|---|
 | Nombre **GARELON** y dominio | Admin (nombre de la tienda, dominio) |
-| Logotipo, isotipo, wordmark, favicon | `assets/garelon-logo-240.webp`, `garelon-logo-480.webp`, `garelon-isotipo-96.webp`, `garelon-wordmark-480.webp`, `garelon-favicon-32.png`, `garelon-apple-touch-180.png`; originales en `referencias/logo-garelon-completo.png` y `referencias/isotipo-garelon.png` |
+| Wordmark GARELON | `assets/garelon-wordmark-480.webp` (cabecera y pie). El isotipo, el favicon y el icono de iOS son de la versión de producto (5.B) |
 | Colores (5 esquemas) y tokens | `config/settings_data.json` (`color_schemes`), `assets/garelon.css` (`:root`) |
 | Tipografía (Playfair Display + Inter) y escala | `config/settings_data.json` (`type_header_font`, `type_body_font`, `heading_scale`, `body_scale`), `assets/garelon.css` |
 | Botones, radios, bordes, sombras | `config/settings_data.json` (`buttons_*`, `*_radius`…), `assets/garelon.css` |
@@ -240,7 +240,8 @@ La decoración va siempre la última.
 | Textos del producto escritos en el código (alt, valores por defecto, presets) | Lista exacta en la sección 16.3 |
 | Descripción de marca del pie («Cuidado diario para tu mirada.») | `config/settings_data.json` → `brand_description` |
 | Metadatos SEO de la home, imagen para redes y redirección del producto anterior | Admin → Tienda online → Preferencias; Admin → Navegación → Redirecciones URL |
-| Iconos específicos del producto | `snippets/garelon-icon.liquid` (se añaden, sin borrar los genéricos) |
+| Iconos específicos del producto | `snippets/garelon-icon.liquid` (se añaden los del producto nuevo y se quitan los del anterior; los genéricos se quedan) |
+| Isotipo, favicon e icono de iOS de la versión de producto | Taza Fondue: `assets/garelon-fondue-logo-{96,192}.webp`, `garelon-fondue-favicon-32.png`, `garelon-fondue-apple-touch-180.png` (desde `LOGO.png`). Los del sérum (ojo) están en `baseline/garelon-serum` y en `referencias/isotipo-garelon.png` y `logo-garelon-completo.png` |
 
 ### 5.C · Elementos que se deciden según el producto
 
@@ -266,7 +267,7 @@ La decoración va siempre la última.
 - La lógica de enlaces de `snippets/garelon-url.liquid` y el orden legal del pie.
 - Las reglas CSS de la cabecera móvil en `assets/garelon.css` (bloque «Cabecera móvil (< 750 px)»).
 - Los esquemas de color, las fuentes y los ajustes de botones, salvo que el dueño lo pida.
-- Los assets de marca `garelon-logo-*`, `garelon-isotipo-96`, `garelon-wordmark-480`, `garelon-favicon-32` y `garelon-apple-touch-180`.
+- El wordmark `garelon-wordmark-480` (el isotipo y el favicon cambian con la versión de producto solo si el dueño entrega uno nuevo, R16).
 - `layout/theme.liquid`, salvo que haga falta algo imprescindible y justificado.
 
 ### 5.E · Comprobaciones después de cada cambio de producto
@@ -303,8 +304,8 @@ Están en `GARELON_PRODUCT_MIGRATION_CHECKLIST.md`, y el resumen en la sección 
 | `sections/garelon-hero.liquid` | GARELON Portada | Primera pantalla: imagen principal (carga inmediata), antetítulo, H1, texto, precio real, botón a `/#comprar`, botón secundario y hasta 3 micro-beneficios |
 | `sections/garelon-trust-bar.liquid` | GARELON Confianza | Hasta 4 elementos con icono: características en la home, servicio (atención, envío, devoluciones) en la ficha |
 | `sections/garelon-benefits.liquid` | GARELON Beneficios | Encabezado + texto que plantea el problema + hasta 6 tarjetas de beneficio con icono |
-| `sections/garelon-image-text.liquid` | GARELON Imagen y texto | Imagen + texto a dos columnas. Hoy muestra la característica diferencial (el roller). Reutilizable para lifestyle, «qué incluye», medidas… |
-| `sections/garelon-ingredients.liquid` | GARELON Ingredientes | Imagen + lista de hasta 12 elementos (nombre, INCI o línea técnica, descripción) + nota del proveedor. Reutilizable para materiales o especificaciones. |
+| `sections/garelon-image-text.liquid` | GARELON Imagen y texto | Imagen + texto a dos columnas. Hoy: lifestyle «Un plan sencillo para compartir» (taza marrón). Reutilizable para diferencial, «qué incluye», medidas… |
+| `sections/garelon-ingredients.liquid` | GARELON Detalles (hasta la 1.5, «GARELON Ingredientes») | Imagen + lista de hasta 12 elementos (nombre, línea técnica, descripción) + nota del proveedor. Hoy: «Elige tu color» + qué incluye cada unidad (taza, tenedor, colores, vela no incluida). Sirve para ingredientes, materiales o especificaciones. |
 | `sections/garelon-how-to-use.liquid` | GARELON Cómo usarlo | Imagen + lista de hasta 5 pasos numerados + nota de precaución |
 | `sections/garelon-faq.liquid` | GARELON FAQ | Acordeón accesible (`details`/`summary`) de hasta 20 preguntas; resuelve los enlaces de contacto y de políticas |
 | `sections/garelon-final-cta.liquid` | GARELON Llamada final | Cierre centrado: isotipo, H2, texto, precio real y botón a `/#comprar`; imagen opcional |
@@ -316,7 +317,7 @@ Están en `GARELON_PRODUCT_MIGRATION_CHECKLIST.md`, y el resumen en la sección 
 | Archivo | Función |
 |---|---|
 | `snippets/garelon-image.liquid` | Imagen responsive. Con imagen del editor: `image_url` + `image_tag` (anchos 360-1800). Sin ella: asset del tema con `srcset` 480/720/1080. `eager` = carga inmediata + `fetchpriority="high"`; el resto `loading="lazy"` + `decoding="async"`. El marcador gris solo aparece en el editor. |
-| `snippets/garelon-fallback-image.liquid` | **Catálogo de imágenes del producto dentro del tema:** convierte una clave (`img01-producto`…) en el nombre del asset y su texto alternativo. **Depende del producto.** |
+| `snippets/garelon-fallback-image.liquid` | **Catálogo de imágenes del producto dentro del tema:** convierte una clave (`principal`, `colores`, `blanco`, `marron`) en el nombre del asset y su texto alternativo. **Depende del producto.** |
 | `snippets/garelon-srcset.liquid` | Solo el valor `srcset`, para el `<source>` de `<picture>` (portada con imagen distinta en móvil) |
 | `snippets/garelon-gallery.liquid` | Galería de la zona de compra de la home. Usa el carrusel de Dawn (`slider-component`), con flechas y contador. **La lista de claves depende del producto.** |
 | `snippets/garelon-stock.liquid` | «En stock» o «Agotado», solo si Shopify controla el inventario, sin cifras. El id `Inventory-<sección>` lo actualiza `product-info.js` de Dawn. |
@@ -324,9 +325,11 @@ Están en `GARELON_PRODUCT_MIGRATION_CHECKLIST.md`, y el resumen en la sección 
 | `snippets/garelon-nav.liquid` | Navegación de la tienda de un producto: Inicio, anclas opcionales de la home y Contacto. Versiones `inline` (escritorio) y `drawer` (móvil). Pone `aria-current` en la página actual. |
 | `snippets/garelon-url.liquid` | Resuelve las URL reales de Contacto, Devoluciones, Envíos y Cookies (`type`, `url` o `html`) |
 | `snippets/garelon-logo-fallback.liquid` | Logo desde los assets si no hay uno subido: `wordmark` (cabecera), `stacked` (pie), `isotype` (isotipo a la izquierda del nombre) |
-| `snippets/garelon-icon.liquid` | Iconos SVG lineales en línea (`currentColor`, trazo 1.3) |
+| `snippets/garelon-icon.liquid` | Iconos SVG lineales en línea (`currentColor`, trazo 1.3). Taza Fondue: `mug`, `fork`, `candle`, `chocolate`, `colors`, `heart`, `gift`; genéricos: `drop`, `leaf`, `steps`, `sparkle`, `lock`, `chat`, `truck`, `return`, `check` |
 | `snippets/garelon-flag-es.liquid` | Bandera de España en SVG 3:2 para la barra superior (decorativa, `aria-hidden`) |
-| `snippets/garelon-packs.liquid` | **Selector de packs sobre variantes reales**: pinta el `<variant-selects>` de Dawn con una tarjeta por variante (unidades, precio, precio por unidad, ahorro e insignia calculados con `variant.price`). Si el producto no tiene packs reconocibles, pinta el selector estándar de Dawn. Sin JS propio. |
+| `snippets/garelon-packs.liquid` | **Color × Pack sobre variantes reales**: pinta el `<variant-selects>` de Dawn con los botones de las otras opciones (Color) y una tarjeta por pack (unidades, precio, precio por unidad, ahorro e insignia calculados con `variant.price` del color elegido). Si el producto no tiene packs reconocibles, pinta el selector estándar de Dawn. Sin JS propio. |
+| `snippets/garelon-choice.liquid` | Botones de las opciones que no son el pack (Color: muestra + nombre + «Agotado»), dentro de `garelon-packs` (1.6) |
+| `snippets/garelon-packs-diagnostic.liquid` | Aviso de configuración de Color × Pack, solo en el editor (1.6): opción sin configurar, valores sin número, falta «1 unidad», **faltan combinaciones** (p. ej. 8 de 9), sección sin producto |
 | `snippets/garelon-shipping.liquid` | Plazos de envío junto a la compra (bloque `garelon_shipping`): texto editable y prudente + enlace a la política de envío real. |
 | `snippets/garelon-free-shipping.liquid` | «✓ Envío gratis» (+ aclaración opcional) bajo los botones de compra (bloque `garelon_free_shipping`, sección 10.15). Sin iconos ni textos de pago. |
 
@@ -337,18 +340,15 @@ Están en `GARELON_PRODUCT_MIGRATION_CHECKLIST.md`, y el resumen en la sección 
 | `garelon.css` (29 KB) | Permanente | Toda la capa visual GARELON: tokens, botones, cabecera móvil, secciones, galería, packs, plazos de envío, compra fija, políticas, movimiento reducido |
 | `garelon.js` (4,5 KB) | Permanente | `<garelon-sticky-atc>` (muestra la variante/pack elegido y su precio). Solo se carga en la ficha de producto. Los packs no usan JS propio. |
 | `garelon-nav.js` (0,8 KB) | Permanente | Cierra el menú móvil al pulsar un ancla de la misma página. Se carga con `defer` desde la cabecera. |
-| `garelon-logo-240.webp`, `garelon-logo-480.webp` | Marca · permanente | Logo apilado (isotipo + GARELON), 480×425. Pie de página. |
-| `garelon-wordmark-480.webp` | Marca · permanente | Nombre GARELON, 480×72. Cabecera. |
-| `garelon-isotipo-96.webp` | Marca · permanente | Isotipo, 96×104. Cabecera y llamada final. |
-| `garelon-favicon-32.png`, `garelon-apple-touch-180.png` | Marca · permanente | Favicon e icono de iOS de respaldo |
-| `garelon-img01-producto-{480,720,1080}.webp` | Producto · temporal | IMAGEN 1: producto real limpio |
-| `garelon-img10-presentacion-{…}.webp` | Producto · temporal | IMAGEN 10: presentación y beneficios |
-| `garelon-img07-roller-{…}.webp` | Producto · temporal | IMAGEN 7: característica diferencial |
-| `garelon-img05-ingredientes-{…}.webp` | Producto · temporal | IMAGEN 5: ingredientes |
-| `garelon-img04-modo-de-uso-{…}.webp` | Producto · temporal | IMAGEN 4: modo de uso (clave `img04-uso`) |
-| `garelon-img09-tamano-{…}.webp` | Producto · temporal | IMAGEN 9: medidas |
+| `garelon-wordmark-480.webp` | Marca · permanente | Nombre GARELON, 480×72. Cabecera y pie. |
+| `garelon-fondue-logo-96.webp`, `garelon-fondue-logo-192.webp` | Isotipo de la versión Taza Fondue | Emblema cuadrado (desde `LOGO.png`, sin cambios). Cabecera, pie (encima del nombre) y llamada final. |
+| `garelon-fondue-favicon-32.png`, `garelon-fondue-apple-touch-180.png` | Isotipo de la versión Taza Fondue | Favicon e icono de iOS de respaldo (el de iOS sobre crema `#F8F4EC`) |
+| `garelon-fondue-principal-{480,720,1080}.webp` | Producto · temporal | imagen2: taza roja (principal) |
+| `garelon-fondue-colores-{…}.webp` | Producto · temporal | imagen1: los tres colores |
+| `garelon-fondue-blanco-{…}.webp` | Producto · temporal | imagen3: taza blanca |
+| `garelon-fondue-marron-{…}.webp` | Producto · temporal | imagen4: taza marrón |
 
-Todos los `garelon-img*` son cuadrados (1080×1080, 720×720 y 480×480) y pesan entre 37 y 180 KB. El resto de `assets/` es de Dawn (JS, CSS de componentes, iconos `icon-*.svg`).
+Todos los `garelon-fondue-*` de producto son cuadrados (1080×1080, 720×720 y 480×480) y pesan entre 12 y 68 KB. El resto de `assets/` es de Dawn (JS, CSS de componentes, iconos `icon-*.svg`).
 
 ### 6.6 Archivos de Dawn modificados (cambios mínimos, marcados `GARELON:`)
 
@@ -382,7 +382,7 @@ Todos los `garelon-img*` son cuadrados (1080×1080, 720×720 y 480×480) y pesan
 
 | Archivo | Contenido |
 |---|---|
-| `sections/header-group.json` | `announcement-bar` (esquema 3, 1 bloque: «Envío disponible a toda España» + `show_flag_es: true`) y `header` (esquema 1, `logo_position: middle-left`, `mobile_logo_position: center`, `menu_type_desktop: dropdown`, `sticky_header_type: on-scroll-up`, `show_line_separator: true`, márgenes 12/12, `nav_source: garelon`, `nav_show_how: false`, `nav_show_ingredients: true`, `nav_show_faq: true`, `hide_catalog_links: true`, `show_isotype: true`) |
+| `sections/header-group.json` | `announcement-bar` (esquema 3, 1 bloque: «Envío gratis disponible en España» + `show_flag_es: true`) y `header` (esquema 1, `logo_position: middle-left`, `mobile_logo_position: center`, `menu_type_desktop: dropdown`, `sticky_header_type: on-scroll-up`, `show_line_separator: true`, márgenes 12/12, `nav_source: garelon`, `nav_show_how: false`, `nav_show_ingredients: true`, `nav_show_faq: true`, `hide_catalog_links: true`, `show_isotype: true`) |
 | `sections/footer-group.json` | `footer` (esquema 2, bloques `brand` y `ayuda`, `newsletter_enable: false`, `payment_enable: false` (sin iconos de pago, 1.5), `show_policy: true`, márgenes 48/32) |
 
 ### 6.9 Otras carpetas y archivos
@@ -552,18 +552,20 @@ Inferidas del código y de las medidas del render. Son el «estilo GARELON»: un
 
 Antes de la home están los grupos: **barra superior** (esquema 3) y **cabecera** (esquema 1). Después, el **pie** (esquema 2).
 
-| # | Id en `index.json` | Tipo de sección | Esquema | Ancla | Contenido actual (sérum) | Imagen | Márgenes |
+| # | Id en `index.json` | Tipo de sección | Esquema | Ancla | Contenido actual (Taza Fondue, 1.6) | Imagen | Márgenes |
 |---|---|---|---|---|---|---|---|
-| 1 | `hero` | `garelon-hero` | 1 | `inicio` | Antetítulo «GARELON»; **H1** «Una mirada con aspecto más descansado»; 1 frase qué es; precio («A partir de 19,99 €» si varía entre packs); «Comprar el sérum» → `/#comprar`; «Cómo se usa» → `/#como-usarlo`; puntos: Aplicador roller · 10 ml · Rutina sencilla | IMAGEN 1 (producto limpio), carga inmediata | 24 / 32 |
-| 2 | `product_cta` | `featured-product` (Dawn) | **2** | `comprar` | **Compra justo después de la portada**: antetítulo «El sérum», título del producto (H2), precio, **packs** (`garelon_packs`: «Elige tu pack»), botones de compra con pago dinámico, **«Envío gratis»** (`garelon_free_shipping`), stock y **plazos de envío** (`garelon_shipping`). En móvil, formulario antes que la galería (`garelon_mobile_info_first`). Sin selector de cantidad ni subtítulo. | Galería del tema: IMAGEN 1 → 10 → 7 → 5 → 4 → 9 | 40 / 56 |
-| 3 | `reviews` | `garelon-reviews` | 1 | `opiniones` | «Opiniones · Lo que opinan nuestros clientes». **Solo reseñas reales** (bloque de app + valoración de Shopify). **Justo después de la compra** (prueba social pronto en móvil). Hoy no hay app: **oculta para el cliente, sin hueco** | — | 56 / 56 |
-| 4 | `trust` | `garelon-trust-bar` | 1 | — | 4 características: Aplicación precisa · Roller metálico · Rutina en 3 pasos · Fórmula con aceite de ricino (H2 oculto «Características») | — | 32 / 32 |
-| 5 | `benefits` | `garelon-benefits` | 2 | `beneficios` | Antetítulo «Beneficios»; H2; entradilla con el **problema**; 4 tarjetas: Ojeras · Bolsas · Líneas finas · Hidratación | — | 56 / 56 |
-| 6 | `roller` | `garelon-image-text` | 2 | `roller` | **Característica diferencial**: el roller (2 párrafos, sin botón) | IMAGEN 7, `rounded`, a la derecha | 56 / 56 |
-| 7 | `ingredients` | `garelon-ingredients` | 1 | `ingredientes` | 5 ingredientes (nombre + INCI + frase neutra) + nota «según el proveedor» | IMAGEN 5 | 56 / 56 |
-| 8 | `how_to` | `garelon-how-to-use` | 2 | `como-usarlo` | «3 pasos. Menos de un minuto.»: Limpia · Aplica · Masajea + nota de precaución | IMAGEN 4 | 56 / 56 |
-| 9 | `faq` | `garelon-faq` | 2 | `preguntas-frecuentes` | 9 preguntas: qué es (con la aclaración de fabricante externo) · cómo se usa · frecuencia · cantidad y medidas · **qué incluye cada pack** · dónde aplicarlo · ingredientes · envío (plazos estimados + enlace a la política) · dudas con el pedido (enlaces a contacto y devoluciones) | — | 56 / 56 |
-| 10 | `final_cta` | `garelon-final-cta` | 1 | — | Isotipo; H2 «Tu rutina empieza con un pequeño gesto»; «Cuidado diario para tu mirada.»; precio; «Comprar el sérum» → `/#comprar` | Ninguna (`none`, centrado) | 56 / 64 |
+| 1 | `hero` | `garelon-hero` | 1 | `inicio` | Antetítulo «Un pequeño plan que sabe a mucho»; **H1** «Tu fondue de chocolate, directamente en una taza»; 1 frase qué es; precio («A partir de 24,99 €»); «Elegir color y pack» → `/#comprar`; «Cómo funciona» → `/#como-funciona`; puntos: Tenedor incluido · 130 ml · 3 colores | imagen2 (taza roja), carga inmediata | 24 / 32 |
+| 2 | `product_cta` | `featured-product` (Dawn) | **2** | `comprar` | Antetítulo «Taza Fondue», título (H2), precio, «Cada unidad: taza de cerámica de 130 ml + tenedor de fondue. Vela no incluida.», **Color × Pack** (`garelon_packs`), botones con pago dinámico, «Envío gratis», stock y plazos (1–3 días · aprox. 8–18 días) | Galería del tema: tres colores → roja → blanca → marrón | 40 / 56 |
+| 3 | `reviews` | `garelon-reviews` | 1 | `opiniones` | Solo reseñas reales; sin app, **0 px** | — | 56 / 56 |
+| 4 | `trust` | `garelon-trust-bar` | 1 | — | Cerámica (taza de 130 ml) · Tenedor incluido (uno por taza) · Hueco para vela (vela no incluida) · 3 colores | — | 32 / 32 |
+| 5 | `benefits` | `garelon-benefits` | 2 | `beneficios` | «Convierte cualquier sobremesa en un pequeño momento especial»: Chocolate o queso · Hecha para compartir · Todo en una taza | — | 56 / 56 |
+| 6 | `how_to` | `garelon-how-to-use` | 1 | `como-funciona` | «Tan sencillo como preparar, calentar y disfrutar»: 5 pasos + nota «Vela no incluida» y uso responsable de la llama | imagen3 (blanca) | 56 / 56 |
+| 7 | `lifestyle` | `garelon-image-text` | 2 | `compartir` | «Un plan sencillo para compartir» | imagen4 (marrón) | 56 / 56 |
+| 8 | `includes` | `garelon-ingredients` | 1 | `que-incluye` | «Elige tu color»: taza de cerámica 130 ml · tenedor (1 por taza) · Rojo · Blanco · Marrón · vela no incluida + nota del proveedor | imagen1 (tres colores) | 56 / 56 |
+| 9 | `faq` | `garelon-faq` | 2 | `preguntas-frecuentes` | 10 preguntas: qué incluye (con fabricante externo), uso, queso, microondas (según el proveedor), capacidad, colores, packs, vela, envío, daños/dudas | — | 56 / 56 |
+| 10 | `final_cta` | `garelon-final-cta` | 1 | — | Isotipo; «Tu próxima sobremesa puede empezar aquí»; precio; «Elegir mi Taza Fondue» → `/#comprar` | Ninguna | 56 / 64 |
+
+La estructura del sérum (con `roller` e `ingredients`) está en la rama `baseline/garelon-serum`.
 
 **Por qué la compra va arriba (actualización de packs, septiembre 2026):** la home recibe tráfico móvil de anuncios y el dueño quiere que los packs se vean casi desde el primer momento. Se **movió** el formulario real (no se duplicó): medido en local a 390 × 844, la portada termina a ~730 px con precio y CTA visibles, y las tarjetas de packs empiezan a ~1090 px (un deslizamiento); el CTA de la portada lleva directo a ellas. El resto de la historia (características → beneficios → diferencial → composición → uso → FAQ → cierre) sigue igual.
 
@@ -673,7 +675,7 @@ Para cada componente: **archivo · función · entradas y ajustes · qué puede 
 
 ### 10.6 Cómo usarlo · `sections/garelon-how-to-use.liquid`
 - **Función:** pasos de uso.
-- **Ajustes:** `eyebrow`, `heading`, `image`, `fallback_image` (hoy `img04-uso`, `img07-roller` o `none`), `show_images` (imagen por paso, `false`), `note` (precaución), `color_scheme`, `anchor` (`como-usarlo`), márgenes.
+- **Ajustes:** `eyebrow`, `heading`, `image`, `fallback_image` (hoy `blanco`; opciones `principal`, `colores`, `blanco`, `marron` o `none`), `show_images` (imagen por paso, `false`), `note` (precaución), `color_scheme`, `anchor` (`como-usarlo`), márgenes.
 - **Bloques:** `step` (`image`, `label` «01», `title`, `text`), máximo 5. Cada H3 lleva «Paso N:» oculto para lectores de pantalla.
 - **Cambia:** los pasos, la nota y la imagen.
 - **Se conserva:**
@@ -746,10 +748,12 @@ Para cada componente: **archivo · función · entradas y ajustes · qué puede 
 - **Un solo `<variant-selects>` por sección:** si existe el bloque de packs, el bloque `variant_picker` de Dawn no se pinta aunque esté en la plantilla.
 - **Estado actual:** activo en la home (`product_cta`) y en la ficha (`main`).
 - **Opción recomendada en Shopify:** nombre «Pack» (el carrito muestra «Pack: 2 unidades» junto a la cantidad 1). «Cantidad» también funciona, pero en el carrito se lee «Cantidad: 2 unidades» al lado del selector de cantidad.
+- **Color × Pack (1.6):** el producto puede tener otra opción con varios valores (p. ej. «Color: Rojo / Blanco / Marrón»). La opción de packs se detecta por el ajuste `option_name`, por el nombre («Pack», «Packs», «Cantidad») o por ser la única cuyos valores llevan número; las demás se pintan como botones (`snippets/garelon-choice.liquid`: muestra de color, nombre y «Agotado») encima de las tarjetas. Cada tarjeta usa **la variante de ese pack en el color elegido** (`value.variant`), así que precio, ahorro, precio por unidad e insignia se recalculan al cambiar de color (Dawn vuelve a pedir la sección). Combinación inexistente: tarjeta «No disponible»; agotada: «Agotado». El carrito muestra «Color: Rojo · Pack: 2 unidades» × 1. La compra fija muestra «Rojo · 2 unidades». En el editor, `garelon-packs-diagnostic` avisa si faltan combinaciones.
+- **Ajustes nuevos (1.6):** `style_heading` («Color»), `style_intro`, `tag_1`/`tag_2`/`tag_3` (etiquetas editoriales «Individual», «Para compartir»). `offer_label` sin valor por defecto y vacío en las plantillas (R6/R7).
 
 ### 10.12 Plazos de envío · bloque `garelon_shipping` (en `main-product` y `featured-product`) + `snippets/garelon-shipping.liquid`
 - **Función:** plazos junto a la compra, en tono de estimación. Icono de camión, dos líneas y una nota con enlace a la política de envío real (`garelon-url`).
-- **Ajustes:** `preparation` («Preparación estimada: 1–3 días.»), `delivery` («Entrega estimada en España: aproximadamente 8–16 días.»), `note` («Los plazos pueden variar según destino y transporte.»), `link_label` («Política de envío»; vacío = sin enlace).
+- **Ajustes:** `preparation` («Preparación estimada: 1–3 días.»), `delivery` («Entrega estimada en España: aprox. 8–18 días.»; con el sérum era 8–16), `note` («Los plazos pueden variar según destino y transporte.»), `link_label` («Política de envío»; vacío = sin enlace).
 - **Reglas:** nunca «entrega garantizada», «recíbelo en X días», «24/48 h» ni «envío express» sin soporte; nunca costes internos del proveedor, aduanas ni márgenes; no se nombra al proveedor.
 - **Estado actual:** activo en la home (tras el stock) y en la ficha (tras el inventario).
 
@@ -838,7 +842,7 @@ Su API está documentada en el comentario de cabecera de cada archivo.
 
 - **Sección:** `sections/announcement-bar.liquid` (Dawn), dentro de `sections/header-group.json`, con el esquema 3 (tinta con texto crema).
 - **Un solo bloque** `announcement`:
-  - `text`: «Envío disponible a toda España»;
+  - `text`: «Envío gratis disponible en España»;
   - `link`: vacío;
   - `show_flag_es`: `true` (ajuste añadido por GARELON).
 - **Bandera:** `snippets/garelon-flag-es.liquid`, SVG de 3:2 (`#AA151B` / `#F1BF00`), `.garelon-flag` de 1,5 em × 1 em, `aria-hidden`. Se usa en vez del emoji 🇪🇸 porque Windows no muestra emojis de bandera (saldría «ES»).
@@ -883,7 +887,7 @@ Su API está documentada en el comentario de cabecera de cada archivo.
   - El texto de devoluciones del sérum está en `GARELON-POLITICA-DEVOLUCIONES.md`.
   - Una política vacía no aparece en el pie.
 - **Cookies:** es una **página** (Shopify no tiene política nativa de cookies). Se busca en `garelon_cookies_page` o por los handles `politica-de-cookies`, `cookies` y `politica-cookies`. El banner de cookies es el de Shopify (Privacidad del cliente); el tema no añade uno propio.
-- **Envíos:** la política vive en el Admin. Con CJ Dropshipping debe decir los plazos como estimación (preparación 1–3 días; transporte aproximadamente 8–16 días; pueden variar por destino, transporte, festivos o incidencias), sin nombrar al proveedor ni prometer «sin aduanas». Propuesta en `GARELON-CAMBIOS-CJ-PACKS.md`.
+- **Envíos:** la política vive en el Admin. Con CJ Dropshipping debe decir los plazos como estimación (preparación 1–3 días; transporte aproximadamente 8–18 días con la Taza Fondue; pueden variar por destino, transporte, festivos o incidencias), sin nombrar al proveedor ni prometer «sin aduanas». Propuesta en `GARELON-CAMBIOS-CJ-PACKS.md`.
 - **Devoluciones y envíos:** `garelon-url` usa la política nativa si tiene contenido. Si no, la página elegida en `garelon_refund_page` o `garelon_shipping_page`, o las de handle habitual.
 
 ### 13.4 Información de empresa (R12)
@@ -902,7 +906,7 @@ Su API está documentada en el comentario de cabecera de cada archivo.
   - esquema 1, márgenes 16/36.
 - **Galería:** la **multimedia del producto de Shopify** (la que importa o conecta el proveedor), no los assets del tema.
 - **Bloques, en orden:**
-  1. `eyebrow` (`text`, uppercase): «Sérum contorno de ojos · 10 ml» → **cambia**
+  1. `eyebrow` (`text`, uppercase): «Taza Fondue · 130 ml» → **cambia**
   2. `title`: **H1** con `product.title` del Admin
   3. `rating`: solo con app de reseñas (metafield `reviews.rating`)
   4. `price`: dinámico
@@ -912,9 +916,9 @@ Su API está documentada en el comentario de cabecera de cada archivo.
   8. `free_shipping` (`garelon_free_shipping`): «Envío gratis» (sección 10.15)
   9. `inventory`: `inventory_threshold: 0`, `show_inventory_quantity: false`, así que nunca muestra «Pocas unidades» ni cifras
   10. `shipping` (`garelon_shipping`): plazos estimados (sección 10.12)
-  11. `highlights` (`icon-with-text` de Dawn: ojo / frasco / cronómetro, «Aplicación precisa · 10 ml · Rutina en 3 pasos») → **cambia**
+  11. `highlights` (`icon-with-text` de Dawn: fuente / check / fuego, «Cerámica · 130 ml · Tenedor incluido · Hueco para vela») → **cambia**
   12. `description`: `product.description` del Admin, que **hay que limpiar en el Admin**
-  13. `tab_ingredientes`, `tab_uso` (`collapsible_tab`) → **cambian** (título, icono de Dawn, contenido)
+  13. `tab_incluye` («Qué incluye», antes `tab_ingredientes`), `tab_uso` («Cómo se usa») (`collapsible_tab`) → **cambian** (título, icono de Dawn, contenido)
   14. `tab_envios` («Envíos y devoluciones»: plazos estimados + enlaces a las políticas): **permanente**
   15. `share`
 - **Después, en este orden (1.5):**
@@ -963,7 +967,7 @@ Ver las secciones 10.10, 10.11, 10.12 y 10.15. **Envío gratis (R22):** el tema 
 - **Sistema vigente:** Shopify es la fuente de verdad (producto, variantes, precios, disponibilidad, inventario, IDs, carrito). **CJ Dropshipping** se conecta desde su app y hace el fulfillment. El tema no tiene ninguna línea de código de CJ.
 - **Mapping de packs:** cada variante de Shopify está emparejada con su variante de CJ: «1 unidad» → CJ «1 unidad»; «2 unidades» → CJ «2 unidades»; «3 unidades» → CJ «3 piezas». Cantidad siempre 1 por pack.
 - **Método de envío interno:** CJPacket Euro Cosmetic Line (elegido por ser cosmético). Pesos de CJ: 62 g / 112 g / 168 g. Costes internos de CJ (envío, aranceles, despacho): **nunca** en la tienda.
-- **Plazos al cliente:** conservadores, a partir de los datos de CJ: «Preparación estimada: 1–3 días» y «Entrega estimada en España: aproximadamente 8–16 días». El «5–11 días para el 54 %» de CJ no se convierte en promesa.
+- **Plazos al cliente:** conservadores, a partir de los datos de CJ: «Preparación estimada: 1–3 días» y «Entrega estimada en España: aproximadamente 8–16 días» (sérum; Taza Fondue: aprox. 8–18 días). El «5–11 días para el 54 %» de CJ no se convierte en promesa.
 - **AutoDS:** proveedor histórico. Se desconecta **para este producto** solo cuando CJ esté probado con pedidos reales, para que no vuelva a sobrescribir stock, precio, imágenes, variantes o fulfillment. No se desinstala nada crítico antes.
 - **Futuro:** donde antes ponía «Producto → AutoDS», la regla es «Producto → proveedor/fulfillment actual (hoy CJ Dropshipping)». Cambiar de proveedor no cambia el tema.
 - **Si el proveedor importa el producto con varias opciones** («Color», «Cantidad»…): en Shopify se deja **una sola opción «Pack»** y después se mapea cada variante. El esquema interno del proveedor no se copia tal cual.
@@ -1000,6 +1004,8 @@ Ver las secciones 10.10, 10.11, 10.12 y 10.15. **Envío gratis (R22):** el tema 
 - **Ajustes globales:** colores, tipografía, botones, logo, favicon, redes, descripción de marca y GARELON · Enlaces (`config/settings_data.json`).
 
 ### 16.3 Textos del producto escritos en el código (cambiar en cada migración)
+
+> **1.6:** esta lista es la del sérum y la primera migración ya la aplicó: los valores por defecto y presets de los schemas son ahora **neutros** («Característica», «Beneficio», «Paso 1»…), los textos alternativos salen de `garelon-fallback-image` o de `product.title`, y el contenido real vive en los JSON. En la próxima migración solo cambian `garelon-fallback-image`, `garelon-gallery`, las opciones `fallback_image`, los iconos del producto y las plantillas.
 
 Lista completa del commit `755240b`.
 
@@ -1081,7 +1087,7 @@ Cada frase del proveedor pasa por este filtro:
 ### 17.4 Frases GARELON reutilizables (permanentes, ajustando el nombre)
 - **FAQ «¿Qué es…?»:** «… GARELON es la tienda desde la que lo comercializamos: el producto procede de un fabricante externo, por lo que en el producto y en su caja verás la marca original del fabricante.» Si el producto no lleva marca visible, se adapta esa parte.
 - **Nota de origen:** «[Ingredientes / Materiales / Especificaciones] según la información facilitada por el proveedor. Consulta siempre el envase del producto.»
-- **FAQ de envío:** «Preparamos tu pedido en un plazo estimado de 1–3 días y la entrega estimada en España es de aproximadamente 8–16 días. Son plazos orientativos: pueden variar según el destino y el transporte. Encontrarás los detalles en nuestra política de envío y durante el proceso de compra.» (ajustar los plazos a los del proveedor vigente).
+- **FAQ de envío:** «Preparamos tu pedido en un plazo estimado de 1–3 días y la entrega estimada en España es de aproximadamente 8–18 días. Son plazos orientativos: pueden variar según el destino y el transporte. Encontrarás los detalles en nuestra política de envío y durante el proceso de compra.» (ajustar los plazos a los del proveedor vigente).
 - **FAQ de packs** (si hay packs): «Cada pack incluye el número de unidades indicado: 1, 2 o 3 [productos] iguales. El precio de cada pack es el que ves al elegirlo. Si un pack tiene un precio por unidad más bajo, verás cuánto ahorras frente a comprar las mismas unidades por separado.»
 - **FAQ de dudas:** «Escríbenos desde nuestra página de contacto indicando tu número de pedido y te responderemos lo antes posible. Puedes consultar también nuestra política de devoluciones.»
 - **Nota de precaución:** redactada con las advertencias reales del envase (hoy: «Solo para uso externo. Evita el contacto directo con los ojos. Si notas cualquier molestia, interrumpe su uso.»).
@@ -1148,6 +1154,8 @@ Una imagen puede aparecer en su sección **y** en la galería de compra, pero **
 **Convención actual** (sérum): `garelon-imgNN-<slug>-<ancho>.webp`, donde NN es el número de la imagen original en `referencias/`:
 - asset `garelon-img01-producto-1080.webp`, clave `img01-producto`;
 - excepción: la clave `img04-uso` apunta a `garelon-img04-modo-de-uso`.
+
+**Convención de la Taza Fondue (1.6):** `garelon-fondue-<rol>-<ancho>.webp`, clave = rol: `principal`, `colores`, `blanco`, `marron`. Las opciones de los selects `fallback_image` usan esas claves.
 
 **Convención recomendada desde la próxima migración:** separar marca y producto.
 - **Marca (permanente):** `garelon-<nombre>`. Ya existen y no se renombran: `garelon-logo-*`, `garelon-isotipo-96`, `garelon-wordmark-480`, `garelon-favicon-32`, `garelon-apple-touch-180`.
@@ -1516,9 +1524,9 @@ mandan sus reglas permanentes (sección 3).
 
 ---
 
-## Anexo A · Valores actuales del producto de referencia (sérum de contorno de ojos)
+## Anexo A · Producto de referencia histórico (sérum de contorno de ojos, baseline)
 
-Sirven como ejemplo resuelto y como lista de lo que hay que sustituir en la primera migración.
+Baseline congelado en `baseline/garelon-serum` (commit `f08f9bb`). Sirve como ejemplo resuelto; la primera migración (Taza Fondue, 1.6) ya sustituyó todo lo de esta lista. El producto actual está en el anexo A2.
 
 ### A.1 Datos
 | Variable | Valor del sérum |
@@ -1563,6 +1571,22 @@ Sirven como ejemplo resuelto y como lista de lo que hay que sustituir en la prim
 `sérum`, `serum`, `contorno`, `ojos`, `mirada`, `ojeras`, `bolsas`, `líneas finas`, `roller`, `bola metálica`, `masaje`, `masajea`, `ricino`, `castor`, `Ricinus`, `Tripeptide`, `colágeno`, `Collagen`, `Boswellia`, `10 ml`, `0.34`, `8,7`, `8,4`, `Baafven`, `ámbar`, `IMAGEN 1`…`IMAGEN 10`, `img01`, `img04`, `img05`, `img07`, `img09`, `img10`, `Cuidado diario para tu mirada`, `Comprar el sérum`, `Ver el sérum`.
 
 ---
+
+## Anexo A2 · Producto actual: Taza Fondue de Chocolate con Tenedor (1.6)
+
+| Variable | Valor |
+|---|---|
+| `PRODUCT_NAME` / corto | Taza Fondue de Chocolate con Tenedor / Taza Fondue |
+| Contenido por unidad | 1 taza de cerámica de **130 ml** + 1 tenedor tipo fondue. **Vela no incluida.** Texto físico «Chocolat...» (sin GARELON) |
+| Opciones de Shopify | Color (Rojo, Blanco, Marrón) × Pack (1 unidad, 2 unidades, 3 unidades) = 9 variantes; packs monocolor |
+| Precios (en Shopify) | 24,99 / 39,99 / 54,99 € → 24,99 · 20,00 · 18,33 €/unidad; ahorro 9,99 € (-20 %) y 19,98 € (-27 %); «Mejor precio/unidad» en el de 3 |
+| Proveedor | CJ Dropshipping (SKU por color en el brief; mapping de packs pendiente de validar) |
+| Plazos al cliente | Preparación estimada 1–3 días · entrega estimada en España aprox. 8–18 días |
+| Imágenes usadas | imagen2 (principal, roja) · imagen1 (tres colores) · imagen3 (blanca) · imagen4 (marrón); isotipo `LOGO.png` |
+| Imágenes descartadas | imagen5 (dos tenedores con una taza) · imagen6 (casi igual que imagen3) · imagen7 («Negro», corazones, claims) · imagen8 (texto físico «Chocolat» cambiado, dos tenedores) |
+| Términos del sérum que ya no deben aparecer | los del anexo A.4 |
+
+Informe completo y tareas de Shopify/CJ: `GARELON-CAMBIOS-FONDUE.md`.
 
 ## Anexo B · Comandos útiles (ejecutar desde la raíz del repositorio)
 

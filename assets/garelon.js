@@ -3,8 +3,8 @@
   - <garelon-sticky-atc>: barra fija de compra en móvil. No crea su propio
     formulario: pulsa el botón real del formulario de Dawn, así el carrito
     (drawer/AJAX), las apps y los eventos de Shopify siguen funcionando igual.
-    Muestra la variante elegida (p. ej. «2 unidades») y su precio real.
-  - Los packs (snippets/garelon-packs.liquid) no necesitan JS propio: son
+    Muestra la variante elegida (p. ej. «Rojo · 2 unidades») y su precio real.
+  - Color × Pack (snippets/garelon-packs.liquid) no necesita JS propio: son
     variantes reales dentro del <variant-selects> de Dawn.
 */
 
@@ -86,9 +86,19 @@ if (!customElements.get('garelon-sticky-atc')) {
         }
 
         if (this.variantTarget) {
-          // Etiqueta del pack elegido (garelon-packs) o, si no hay packs, el nombre de la variante.
-          const checked = document.querySelector(`#variant-selects-${this.sectionId} input:checked`);
-          const label = (checked && checked.dataset.packLabel) || (variant && variant.title);
+          // Color y pack elegidos (garelon-packs: «Rojo · 2 unidades») o, si no hay packs, el nombre
+          // de la variante. Las opciones fijas ocultas no llevan etiqueta. Al cambiar de variante
+          // Dawn deja 500 ms el selector anterior oculto y con el mismo id: se lee solo el visible.
+          const selects = Array.from(document.querySelectorAll(`#variant-selects-${this.sectionId}`)).find(
+            (element) => element.style.display !== 'none'
+          );
+          const labels = selects
+            ? Array.from(
+                selects.querySelectorAll('input:checked'),
+                (input) => input.dataset.choiceLabel || input.dataset.packLabel
+              ).filter(Boolean)
+            : [];
+          const label = labels.join(' · ') || (variant && variant.title);
           if (label) this.variantTarget.textContent = label;
         }
 

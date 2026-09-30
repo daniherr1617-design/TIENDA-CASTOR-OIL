@@ -1,6 +1,6 @@
 # GARELON · BRIEF DE PRODUCTO · TAZA DE FONDUE DE CERÁMICA
 
-> **Versión 1 · 30/09/2026**
+> **Versión 1.1 · 30/09/2026** (1.1: estado de la migración del tema, sección 20)
 >
 > Estado: brief inicial con datos verificados/proporcionados. Lo no confirmado se marca como NO DISPONIBLE, PENDIENTE o PROPUESTA.
 
@@ -66,7 +66,7 @@ Color + capacidad fija **130 ml**.
 ## 8. ESPECIFICACIONES
 
 - Cerámica.
-- Capacidad 200 ml.
+- Capacidad 200 ml según la ficha del proveedor: **NO se usa**. La capacidad real y la que publica la tienda es **130 ml**.
 - Peso mostrado: 500 g/unidad.
 - Paquete: 100 × 100 × 110 mm.
 - Microondas: dato del proveedor; no usar como claim principal sin validar.
@@ -109,7 +109,7 @@ Revisar daños/roturas en transporte, fragilidad y seguridad por uso de calor/ve
 
 ## 16. IMÁGENES
 
-Hay imágenes originales de CJ como referencia de verdad física y un conjunto de imágenes regeneradas/lifestyle para la migración. Las imágenes finales se añadirán a `referencias/fondue-mug/` para que Claude Code las inspeccione y decida cuáles usar.
+Hay imágenes originales de CJ como referencia de verdad física y un conjunto de imágenes regeneradas/lifestyle para la migración. Las imágenes finales están en la raíz del repositorio con los nombres del usuario (`LOGO.png`, `imagen1.png` … `imagen8.png`); se conservan tal cual. La selección y los motivos están en la sección 20.
 
 **Regla de verdad visual:** manda el producto real de CJ. La taza debe conservar forma, abertura inferior, asa, soporte lateral, tenedor, texto físico `Chocolat...` y colores reales. La vela puede aparecer como contexto de uso, pero **NO está incluida**.
 
@@ -154,3 +154,27 @@ Usarlo solo para estudiar CRO/estructura móvil/oferta. No copiar marca, logo, t
 3. Importar/conectar producto a Shopify y obtener handle.
 4. Revisar advertencias/seguridad o muestra física.
 5. Confirmar que Shopify/CJ pueden mantener packs monocolor sin combinaciones mixtas.
+
+## 20. ESTADO DE LA MIGRACIÓN DEL TEMA (v1, rama `claude/fondue-mug`)
+
+**Hecho en el tema (probado en render local, no en Shopify):**
+- Color × Pack sobre variantes reales (bloque «GARELON Packs (variantes)»): botones Rojo / Blanco / Marrón + tarjetas 1 / 2 / 3 unidades con precio, precio por unidad y ahorro frente a 1 unidad **del mismo color**; `quantity=1`; compra fija «Rojo · 2 unidades»; aviso solo en el editor si faltan combinaciones o el producto no está configurado.
+- Home, ficha, FAQ y 404 con el copy de la taza; sin restos del sérum.
+- Isotipo nuevo (`LOGO.png`) en cabecera, pie, cierre y favicon.
+
+**Imágenes:**
+
+| Archivo | Decisión | Rol / motivo |
+|---|---|---|
+| `LOGO.png` | Usada | Isotipo, favicon e icono de iOS (emblema, no es una foto del producto) |
+| `imagen2.png` | Usada | Principal: portada, galería n.º 2, 404 (taza roja, fiel) |
+| `imagen1.png` | Usada | Los tres colores: galería n.º 1 y «Elige tu color» |
+| `imagen3.png` | Usada | Taza blanca: galería n.º 3 y «Cómo funciona» |
+| `imagen4.png` | Usada | Taza marrón: galería n.º 4 y «Un plan sencillo para compartir» |
+| `imagen5.png` | Descartada | Muestra **dos tenedores** con una sola taza (se incluye uno) |
+| `imagen6.png` | Descartada | Casi idéntica a `imagen3.png` (redundante) |
+| `imagen7.png` | Descartada | Llama **«Negro»** al marrón, añade **corazones** a la taza y claims no verificados («resistente», «duradera») |
+| `imagen8.png` | Descartada | Cambia el texto físico a «Chocolat» (sin «...», otra letra) y muestra dos tenedores; los pasos están en HTML |
+
+**Pendiente (Shopify / CJ, lo hace el dueño):** ver `GARELON-CAMBIOS-FONDUE.md` en la raíz.
+

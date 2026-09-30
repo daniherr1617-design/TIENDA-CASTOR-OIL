@@ -1,0 +1,102 @@
+{%- comment -%}
+  GARELON · Opciones del producto que no son el pack, dentro del <variant-selects> de
+  garelon-packs: con varios valores (p. ej. Color: Rojo / Blanco / Marrón) se muestran como
+  botones con muestra; con un solo valor (p. ej. «Color: Único» de CJ) van ocultas y marcadas.
+
+  Radios compatibles con Dawn (form, data-option-value-id, data-product-url, data-option-name):
+  al elegir un color, product-info.js pide la sección y los packs se recalculan con los
+  precios de ese color. data-choice-label = texto para la compra fija («Rojo · 2 unidades»).
+  Muestra: imagen de la variante si Shopify la tiene; si no, el color de Shopify (swatch) o un
+  tono por nombre (clase g-choice__dot--<valor>).
+
+  Accepts:
+  - product: {Object}
+  - block: {Object} bloque garelon_packs (style_heading, style_intro)
+  - pack_option_name: {String} nombre de la opción de packs (no se pinta aquí)
+  - product_form_id: {String}
+{%- endcomment -%}
+{%- for option in product.options_with_values -%}
+  {%- if option.name == pack_option_name -%}
+    {%- continue -%}
+  {%- endif -%}
+  {%- if option.values.size == 1 -%}
+    {%- comment -%} Opción de un solo valor (p. ej. importada de CJ): va marcada y oculta. {%- endcomment -%}
+    <fieldset class="g-packs__fixed" hidden>
+      <legend>{{ option.name | escape }}</legend>
+      {%- assign fixed_value = option.values.first -%}
+      <input
+        type="radio"
+        id="{{ section.id }}-{{ option.position }}-0"
+        name="{{ option.name | escape }}-{{ option.position }}"
+        value="{{ fixed_value | escape }}"
+        data-option-value-id="{{ fixed_value.id }}"
+        data-option-name="{{ option.name | escape }}"
+        checked
+      >
+    </fieldset>
+    {%- continue -%}
+  {%- endif -%}
+
+  <fieldset class="product-form__input g-choice">
+    <legend class="g-choice__legend">
+      {{- block.settings.style_heading | default: option.name | escape -}}:
+      <span class="g-choice__current" data-selected-value>{{ option.selected_value | escape }}</span>
+    </legend>
+    {%- if block.settings.style_intro != blank -%}
+      <p class="g-choice__intro">{{ block.settings.style_intro | escape }}</p>
+    {%- endif -%}
+    <div class="g-choice__list">
+      {%- for value in option.values -%}
+        {%- liquid
+          assign input_id = section.id | append: '-' | append: option.position | append: '-' | append: forloop.index0
+          assign swatch_key = value.name | handleize
+          assign swatch_image = null
+          if value.variant.featured_image
+            assign swatch_image = value.variant.featured_image
+          endif
+        -%}
+        <div class="g-choice__item">
+          <input
+            type="radio"
+            class="g-choice__input"
+            id="{{ input_id }}"
+            name="{{ option.name | escape }}-{{ option.position }}"
+            value="{{ value | escape }}"
+            form="{{ product_form_id }}"
+            data-product-url="{{ value.product_url }}"
+            data-option-value-id="{{ value.id }}"
+            data-option-name="{{ option.name | escape }}"
+            data-choice-label="{{ value.name | escape }}"
+            {% if value.selected %}
+              checked
+            {% endif %}
+          >
+          <label
+            class="g-choice__button{% unless value.available %} g-choice__button--soldout{% endunless %}"
+            for="{{ input_id }}"
+          >
+            {%- if swatch_image -%}
+              {{
+                swatch_image
+                | image_url: width: 96
+                | image_tag: class: 'g-choice__thumb', width: 32, height: 32, alt: '', loading: 'lazy'
+              }}
+            {%- else -%}
+              <span
+                class="g-choice__dot g-choice__dot--{{ swatch_key }}"
+                {% if value.swatch.color %}
+                  style="--g-dot: rgb({{ value.swatch.color.rgb }});"
+                {% endif %}
+                aria-hidden="true"
+              ></span>
+            {%- endif -%}
+            <span class="g-choice__name">{{ value.name | escape }}</span>
+            {%- unless value.available -%}
+              <span class="g-choice__status">{{ 'products.product.sold_out' | t }}</span>
+            {%- endunless -%}
+          </label>
+        </div>
+      {%- endfor -%}
+    </div>
+  </fieldset>
+{%- endfor -%}
