@@ -20,11 +20,11 @@
 | `templates/index.json` | Bloque `payment_trust` tras `buy_buttons`; sección `reviews` entre `how_to` y `faq` |
 | `templates/product.json` | Igual: `payment_trust` tras `buy_buttons`; `reviews` entre `how_to` y `faq` |
 | `assets/garelon.css` | Estilos `.g-buytrust`, `.g-pay`, `.g-reviews`, `.g-editor-note` |
-| `locales/es.json` | Una línea: bajo el precio, «Los gastos de envío se calculan en la pantalla de pago» → «Consulta nuestra política de envío.» (contradecía «Envío gratis») |
+| `locales/es.json` | Solo textos. Bajo el precio: «Los gastos de envío se calculan en la pantalla de pago» → «Consulta nuestra política de envío.». En el carrito (cart drawer y `/cart`): las 8 variantes de «Descuentos y envío calculados en la pantalla de pago» → «Envío gratis según…» (ver C15). Ambas contradecían «Envío gratis» |
 | `docs/garelon/GARELON_MASTER_TEMPLATE.md` (v1.3), `docs/garelon/GARELON_PRODUCT_MIGRATION_CHECKLIST.md`, este documento | Reglas R21-R23, R5 ampliada, secciones 10.15 y 10.16, checklist |
 | `docs/garelon/capturas/confianza/` | 6 capturas |
 
-Sin cambios en: packs, precios, `quantity=1`, formulario de Dawn, cart drawer, checkout, botón de pago dinámico, cabecera, navegación, pie, logo, paleta, tipografías, imágenes, claims, ingredientes, políticas ni mapping de CJ. Ningún archivo JS nuevo ni librería.
+Sin cambios en: packs, precios, `quantity=1`, formulario de Dawn, lógica y Liquid del cart drawer y de `/cart` (solo cambian sus textos en `locales/es.json`), checkout, botón de pago dinámico, cabecera, navegación, pie, logo, paleta, tipografías, imágenes, claims, ingredientes, políticas ni mapping de CJ. Ningún archivo JS nuevo ni librería.
 
 ## C2. Opiniones: cómo están hechas
 
@@ -124,6 +124,7 @@ Probado en local a 320, 360, 375, 390, 430, 768, 1024 y 1440 px, en home y ficha
 - Home y ficha: «ENVÍO GRATIS» y «PAGO SEGURO» presentes; orden botones → envío/pagos → plazos; iconos = métodos habilitados (6, mismo orden); lista accesible; botón de pago dinámico intacto; plazos visibles; logos 38 × 24 sin deformar; sin «30 días» ni «100 %».
 - 2 métodos → 2 iconos; 0 métodos → sin fila y sin aviso para el cliente; 0 métodos en el editor → aviso.
 - Línea de impuestos sin «gastos de envío se calculan».
+- Carrito (cart drawer y `/cart`): nota «Impuestos incluidos. Envío gratis según las zonas indicadas en nuestra política de envío. Descuentos calculados en la pantalla de pago.», con y sin política de envío (ver C15).
 - Opiniones sin datos → ocultas (home y ficha); en el editor → aviso; con bloque de app → dentro de la sección y antes de la FAQ; ficha con valoración → «4,6/5 · 12 opiniones» con `aria-label` «4,6 de 5 estrellas»; home sin producto elegido → sin media (no se adivina el producto).
 - Responsive de 320 a 1440 px sin desbordes; sin errores JS ni HTTP.
 - **Regresión de packs: 56/56** (1/2/3 unidades, precios, ahorro, `quantity=1`, `quantity_selector` bloqueado, carrito «Pack: N unidades» × 1, cart drawer, compra fija, agotado, `?variant=`).
@@ -145,6 +146,22 @@ Probado en local a 320, 360, 375, 390, 430, 768, 1024 y 1440 px, en home y ficha
 6. **Ficha:** `payment_trust` tras los botones; `reviews` entre «Cómo usarlo» y la FAQ; el widget de la app de reseñas solo una vez por página.
 7. **Checklist del dueño:** tarifa 0 € en las zonas anunciadas, métodos de pago activos, app de reseñas (opcional) y producto elegido en «GARELON Opiniones» de la home.
 8. **Texto bajo el precio:** «Consulta nuestra política de envío.» en vez de «Los gastos de envío se calculan en la pantalla de pago».
+9. **Texto del carrito (cart drawer y `/cart`):** «Impuestos incluidos. Envío gratis según las zonas indicadas en nuestra política de envío. Descuentos calculados en la pantalla de pago.» en vez de «Impuestos incluidos. Descuentos y envío calculados en la pantalla de pago.». Ningún texto público dice que el envío tenga un coste calculado en el checkout, ni nombra territorios concretos.
+
+## C15. Corrección: textos del carrito coherentes con «Envío gratis»
+
+El cart drawer (`snippets/cart-drawer.liquid`) y la página `/cart` (`sections/main-cart-footer.liquid`) de Dawn eligen una de 8 frases según tres datos de Shopify: si los impuestos están incluidos, si los aranceles están incluidos y si existe política de envío. Todas decían «… envío calculados en la pantalla de pago». Solo se han cambiado sus textos en `locales/es.json`; el Liquid y la lógica del carrito no se tocan.
+
+| Caso | Con política de envío (enlace a «política de envío») | Sin política de envío |
+|---|---|---|
+| Aranceles e impuestos incluidos | Aranceles e impuestos incluidos. Envío gratis según las zonas indicadas en nuestra política de envío. Descuentos calculados en la pantalla de pago. | Aranceles e impuestos incluidos. Envío gratis según la zona de entrega; lo verás confirmado al pagar. Descuentos calculados en la pantalla de pago. |
+| Solo impuestos incluidos (caso habitual en España) | Impuestos incluidos. Envío gratis según las zonas indicadas en nuestra política de envío. Descuentos calculados en la pantalla de pago. | Impuestos incluidos. Envío gratis según la zona de entrega; lo verás confirmado al pagar. Descuentos calculados en la pantalla de pago. |
+| Solo aranceles incluidos | Aranceles incluidos. Envío gratis según las zonas indicadas en nuestra política de envío. Impuestos y descuentos calculados en la pantalla de pago. | Aranceles incluidos. Envío gratis según la zona de entrega; lo verás confirmado al pagar. Impuestos y descuentos calculados en la pantalla de pago. |
+| Ninguno incluido | Envío gratis según las zonas indicadas en nuestra política de envío. Impuestos y descuentos calculados en la pantalla de pago. | Envío gratis según la zona de entrega; lo verás confirmado al pagar. Impuestos y descuentos calculados en la pantalla de pago. |
+
+- Compatible con R22: no se nombran territorios; la zona del cliente se determina en el checkout, y las zonas con envío gratis son las que tengan tarifa 0 € en Shopify Admin → Configuración → Envío y entrega.
+- La política de envío debe indicar esas zonas (propuesta de la parte B, «Gastos de envío»). Si no existe política, el texto no remite a ella.
+- Los otros idiomas de Dawn (`en.default.json`, etc.) no se han tocado: la tienda está en español.
 
 ---
 
@@ -692,7 +709,7 @@ No tengo acceso a tu Shopify ni a CJ, así que **no puedo afirmar que CJ reciba 
 - **Carrito y checkout reales:**
   - botones de pago dinámico (Shop Pay, PayPal, Apple Pay…);
   - descuentos del Admin;
-  - impuestos y gastos de envío.
+  - impuestos y tarifa de envío 0 € en las zonas anunciadas.
 - **Editor de temas:** ajustes del bloque de packs y de plazos.
 - **CJ:**
   - mapping de variantes;
@@ -815,7 +832,7 @@ En **Admin → Descuentos**, desactiva (o limita para que no afecten al sérum) 
 - descuentos de «packs» o de «segunda unidad» creados antes;
 - códigos promocionales antiguos que pudieran combinarse con los packs, si no quieres ese doble descuento.
 
-**Cómo comprobarlo:** en la vista previa, añade el pack de 2 y el de 3 al carrito. El total debe ser exactamente 35,00 € y 48,00 € (más el envío en el checkout), sin líneas de descuento.
+**Cómo comprobarlo:** en la vista previa, añade el pack de 2 y el de 3 al carrito. El total debe ser exactamente 35,00 € y 48,00 €, sin líneas de descuento. En el checkout, con una dirección de una zona con envío gratis, el envío debe aparecer a 0 €.
 
 **Cantidad Shopify / precios por volumen (B2B):** no los uses para los packs. El ahorro ya está en el precio de cada variante.
 

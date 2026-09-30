@@ -361,7 +361,7 @@ Todos los `garelon-img*` son cuadrados (1080×1080, 720×720 y 480×480) y pesan
 | `sections/main-404.liquid`, `sections/main-cart-items.liquid` (2 enlaces), `snippets/cart-drawer.liquid` | «Seguir comprando» → `routes.root_url` en vez del catálogo |
 | `config/settings_schema.json` | Nombre del tema y grupo **GARELON · Enlaces** (`garelon_contact_page`, `garelon_refund_page`, `garelon_shipping_page`, `garelon_cookies_page`) |
 | `config/settings_data.json` | Colores, fuentes, botones, radios, carrito en cajón, descripción de marca |
-| `locales/es.json` | Español de España: «Añadir al carrito», «Artículo añadido…», «En stock», «Pocas unidades», «Finalizar compra». `products.product.shipping_policy_html` (línea bajo el precio) = « Consulta nuestra política de envío.» en vez de «Los gastos de envío se calculan en la pantalla de pago», que contradecía «Envío gratis». |
+| `locales/es.json` | Español de España: «Añadir al carrito», «Artículo añadido…», «En stock», «Pocas unidades», «Finalizar compra». `products.product.shipping_policy_html` (línea bajo el precio) = « Consulta nuestra política de envío.» en vez de «Los gastos de envío se calculan en la pantalla de pago», que contradecía «Envío gratis». `sections.cart.*shipping_at_checkout*` (8 claves: nota del cart drawer y de `/cart`) = «[Impuestos incluidos.] Envío gratis según las zonas indicadas en nuestra política de envío. Descuentos calculados en la pantalla de pago.» (sin política: «… según la zona de entrega …»), en vez de «Descuentos y envío calculados en la pantalla de pago». |
 | `templates/page.contact.json` | Margen superior del formulario (16 px) |
 
 ### 6.7 Plantillas (`templates/`)

@@ -310,14 +310,14 @@
       },
       "estimated_total": "Total estimado",
       "new_estimated_total": "Nuevo total estimado",
-      "duties_and_taxes_included_shipping_at_checkout_with_policy_html": "Aranceles e impuestos incluidos. Descuentos y <a href=\"{{ link }}\">envío</a> calculados en la pantalla de pago.",
-      "duties_and_taxes_included_shipping_at_checkout_without_policy": "Aranceles e impuestos incluidos. Descuentos y envío calculados en la pantalla de pago.",
-      "taxes_included_shipping_at_checkout_with_policy_html": "Impuestos incluidos. Descuentos y <a href=\"{{ link }}\">envío</a> calculados en la pantalla de pago.",
-      "taxes_included_shipping_at_checkout_without_policy": "Impuestos incluidos. Descuentos y envío calculados en la pantalla de pago.",
-      "duties_included_taxes_at_checkout_shipping_at_checkout_with_policy_html": "Aranceles incluidos. Impuestos, descuentos y <a href=\"{{ link }}\">envío</a> calculados en la pantalla de pago.",
-      "duties_included_taxes_at_checkout_shipping_at_checkout_without_policy": "Aranceles incluidos. Impuestos, descuentos y envío calculados en la pantalla de pago.",
-      "taxes_at_checkout_shipping_at_checkout_with_policy_html": "Impuestos, descuentos y <a href=\"{{ link }}\">envío</a> calculados en la pantalla de pago.",
-      "taxes_at_checkout_shipping_at_checkout_without_policy": "Impuestos, descuentos y envío calculados en la pantalla de pago."
+      "duties_and_taxes_included_shipping_at_checkout_with_policy_html": "Aranceles e impuestos incluidos. Envío gratis según las zonas indicadas en nuestra <a href=\"{{ link }}\">política de envío</a>. Descuentos calculados en la pantalla de pago.",
+      "duties_and_taxes_included_shipping_at_checkout_without_policy": "Aranceles e impuestos incluidos. Envío gratis según la zona de entrega; lo verás confirmado al pagar. Descuentos calculados en la pantalla de pago.",
+      "taxes_included_shipping_at_checkout_with_policy_html": "Impuestos incluidos. Envío gratis según las zonas indicadas en nuestra <a href=\"{{ link }}\">política de envío</a>. Descuentos calculados en la pantalla de pago.",
+      "taxes_included_shipping_at_checkout_without_policy": "Impuestos incluidos. Envío gratis según la zona de entrega; lo verás confirmado al pagar. Descuentos calculados en la pantalla de pago.",
+      "duties_included_taxes_at_checkout_shipping_at_checkout_with_policy_html": "Aranceles incluidos. Envío gratis según las zonas indicadas en nuestra <a href=\"{{ link }}\">política de envío</a>. Impuestos y descuentos calculados en la pantalla de pago.",
+      "duties_included_taxes_at_checkout_shipping_at_checkout_without_policy": "Aranceles incluidos. Envío gratis según la zona de entrega; lo verás confirmado al pagar. Impuestos y descuentos calculados en la pantalla de pago.",
+      "taxes_at_checkout_shipping_at_checkout_with_policy_html": "Envío gratis según las zonas indicadas en nuestra <a href=\"{{ link }}\">política de envío</a>. Impuestos y descuentos calculados en la pantalla de pago.",
+      "taxes_at_checkout_shipping_at_checkout_without_policy": "Envío gratis según la zona de entrega; lo verás confirmado al pagar. Impuestos y descuentos calculados en la pantalla de pago."
     },
     "footer": {
       "payment": "Formas de pago"

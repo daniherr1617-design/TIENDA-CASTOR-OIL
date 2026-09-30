@@ -113,7 +113,7 @@
 - [ ] 🅲 Métodos de pago: solo los de `shop.enabled_payment_types` con `payment_type_svg_tag`; ningún logo de pago en `assets/` ni escrito en el código. Texto «Pago seguro», nunca «100 % seguro».
 - [ ] 🅲 Sin garantías ni periodos («Garantía de 30 días», «satisfecho o te devolvemos el dinero») que no estén en una política real.
 - [ ] 🅲 Sin urgencia falsa: cuentas atrás, «quedan X», «personas viendo».
-- [ ] 🅲 Sin descuentos ficticios. «Envío gratis» visible bajo los botones de compra (home y ficha) y sin textos que lo contradigan (p. ej. «los gastos de envío se calculan…» junto al precio).
+- [ ] 🅲 Sin descuentos ficticios. «Envío gratis» visible bajo los botones de compra (home y ficha) y sin textos que lo contradigan (p. ej. «los gastos de envío se calculan…» junto al precio, o «descuentos y envío calculados en la pantalla de pago» en el cart drawer y en `/cart`).
 - [ ] 🅲 Packs: ahorro calculado frente al precio real de 1 unidad × unidades; sin precios tachados inventados; insignia solo objetiva («Mejor precio/unidad»), nunca «Más vendido».
 - [ ] 🅲 Plazos de envío como estimación: sin «entrega garantizada», «24/48 h» ni costes internos del proveedor.
 - [ ] 🅲 Los datos técnicos (medidas, capacidad, materiales o ingredientes) coinciden en todos los sitios: home, ficha, FAQ, alt e imágenes.
