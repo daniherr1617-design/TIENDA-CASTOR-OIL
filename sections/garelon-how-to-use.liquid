@@ -3,10 +3,11 @@
   if section.settings.image == blank and section.settings.fallback_image == 'none'
     assign has_media = false
   endif
+  assign cards = true
+  if section.settings.steps_style == 'list'
+    assign cards = false
+  endif
 -%}
-{%- if has_media and section.settings.image_zoom -%}
-  <script src="{{ 'garelon.js' | asset_url }}" defer="defer"></script>
-{%- endif -%}
 
 <div
   {% if section.settings.anchor != blank %}
@@ -23,6 +24,9 @@
       {%- if section.settings.heading != blank -%}
         <h2 class="g-h2">{{ section.settings.heading | escape }}</h2>
       {%- endif -%}
+      {%- if section.settings.text != blank -%}
+        <div class="g-lead">{{ section.settings.text }}</div>
+      {%- endif -%}
     </div>
 
     <div class="g-steps__layout{% if has_media %} g-steps__layout--media{% endif %}">
@@ -34,9 +38,7 @@
               fallback: section.settings.fallback_image,
               alt: section.settings.heading,
               sizes: '(min-width: 990px) 540px, (min-width: 750px) 45vw, calc(100vw - 3rem)',
-              class: 'g-media__img',
-              zoom: section.settings.image_zoom,
-              zoom_label: section.settings.heading
+              class: 'g-media__img'
             -%}
           </div>
           {%- if section.settings.image_caption != blank -%}
@@ -47,13 +49,7 @@
 
       <div class="g-steps__content">
         {%- if section.blocks.size > 0 -%}
-          {%- liquid
-            assign compact = false
-            if section.settings.steps_style == 'compact'
-              assign compact = true
-            endif
-          -%}
-          <ol class="g-steps__list{% if compact %} g-steps__list--compact{% elsif has_media %} g-steps__list--stacked{% endif %}">
+          <ol class="g-steps__list{% if cards %} g-steps__list--cards{% endif %}">
             {%- for block in section.blocks -%}
               <li class="g-steps__item" {{ block.shopify_attributes }}>
                 {%- if section.settings.show_images and block.settings.image != blank -%}
@@ -65,6 +61,8 @@
                       class: 'g-steps__img'
                     -%}
                   </div>
+                {%- elsif cards and block.settings.icon != 'none' -%}
+                  <span class="g-steps__icon">{%- render 'garelon-icon', icon: block.settings.icon -%}</span>
                 {%- endif -%}
                 <div class="g-steps__body">
                   <p class="g-steps__number" aria-hidden="true">
@@ -74,7 +72,7 @@
                     <span class="visually-hidden">Paso {{ forloop.index }}:</span>
                     {{ block.settings.title | escape }}
                   </h3>
-                  {%- if block.settings.text != blank and compact == false -%}
+                  {%- if block.settings.text != blank -%}
                     <p class="g-steps__text">{{ block.settings.text | escape }}</p>
                   {%- endif -%}
                 </div>
@@ -84,7 +82,10 @@
         {%- endif -%}
 
         {%- if section.settings.note != blank -%}
-          <p class="g-note{% unless has_media %} g-note--center{% endunless %}">{{ section.settings.note | escape }}</p>
+          <p class="g-note g-steps__note">
+            {%- render 'garelon-icon', icon: 'candle' -%}
+            <span>{{ section.settings.note | escape }}</span>
+          </p>
         {%- endif -%}
       </div>
     </div>
@@ -96,7 +97,7 @@
   "name": "GARELON Cómo usarlo",
   "tag": "section",
   "class": "section",
-  "max_blocks": 5,
+  "max_blocks": 6,
   "settings": [
     {
       "type": "text",
@@ -111,10 +112,25 @@
       "default": "Cómo se usa"
     },
     {
+      "type": "richtext",
+      "id": "text",
+      "label": "Entradilla (opcional)"
+    },
+    {
+      "type": "select",
+      "id": "steps_style",
+      "label": "Pasos",
+      "options": [
+        { "value": "cards", "label": "Tarjetas con icono" },
+        { "value": "list", "label": "Lista" }
+      ],
+      "default": "cards"
+    },
+    {
       "type": "image_picker",
       "id": "image",
-      "label": "Imagen de la sección",
-      "info": "Vacía = la imagen del tema elegida abajo."
+      "label": "Imagen de la sección (opcional)",
+      "info": "Vacía = la imagen del tema elegida abajo. Solo fotos del producto REAL."
     },
     {
       "type": "select",
@@ -126,41 +142,21 @@
         { "value": "colores", "label": "Los tres colores" },
         { "value": "blanco", "label": "Taza blanca" },
         { "value": "marron", "label": "Taza marrón" },
-        { "value": "como-funciona", "label": "Infografía «Cómo funciona»" },
-        { "value": "caracteristicas", "label": "Infografía «Características»" },
+        { "value": "usos", "label": "Tres tazas con acompañamientos" },
         { "value": "none", "label": "Ninguna (solo los pasos)" }
       ],
       "default": "none"
     },
     {
-      "type": "checkbox",
-      "id": "image_zoom",
-      "label": "Ampliar la imagen al tocarla",
-      "info": "Recomendado para infografías con texto: en móvil se abre a pantalla completa.",
-      "default": false
-    },
-    {
       "type": "text",
       "id": "image_caption",
-      "label": "Pie de imagen (opcional)",
-      "info": "Por ejemplo, qué incluye realmente cada unidad."
-    },
-    {
-      "type": "select",
-      "id": "steps_style",
-      "label": "Pasos",
-      "options": [
-        { "value": "full", "label": "Título y texto" },
-        { "value": "compact", "label": "Solo títulos (con infografía)" }
-      ],
-      "default": "full",
-      "info": "«Solo títulos» resume los pasos junto a una infografía que ya los explica."
+      "label": "Pie de imagen (opcional)"
     },
     {
       "type": "checkbox",
       "id": "show_images",
       "label": "Mostrar la imagen de cada paso",
-      "info": "Solo en los pasos a los que les hayas elegido una imagen.",
+      "info": "Solo en los pasos a los que les hayas elegido una imagen (sustituye al icono).",
       "default": false
     },
     {
@@ -207,6 +203,42 @@
       "name": "Paso",
       "settings": [
         {
+          "type": "select",
+          "id": "icon",
+          "label": "Icono",
+          "options": [
+                  { "value": "none", "label": "Ninguno" },
+                  { "value": "mug", "label": "Taza" },
+                  { "value": "fork", "label": "Tenedor" },
+                  { "value": "candle", "label": "Vela" },
+                  { "value": "flame", "label": "Llama" },
+                  { "value": "melt", "label": "Calor" },
+                  { "value": "stir", "label": "Remover" },
+                  { "value": "chocolate", "label": "Chocolate" },
+                  { "value": "cheese", "label": "Queso" },
+                  { "value": "strawberry", "label": "Fresa" },
+                  { "value": "fruit", "label": "Fruta" },
+                  { "value": "bread", "label": "Pan" },
+                  { "value": "waffle", "label": "Gofre" },
+                  { "value": "measure", "label": "Capacidad" },
+                  { "value": "microwave", "label": "Microondas" },
+                  { "value": "box", "label": "Caja" },
+                  { "value": "colors", "label": "Colores" },
+                  { "value": "heart", "label": "Corazón" },
+                  { "value": "gift", "label": "Regalo" },
+                  { "value": "users", "label": "Compartir" },
+                  { "value": "home", "label": "Casa" },
+                  { "value": "moon", "label": "Noche" },
+                  { "value": "sparkle", "label": "Destello" },
+                  { "value": "clock", "label": "Reloj" },
+                  { "value": "truck", "label": "Envío" },
+                  { "value": "return", "label": "Devolución" },
+                  { "value": "chat", "label": "Contacto" },
+                  { "value": "check", "label": "Check" }
+          ],
+          "default": "check"
+        },
+        {
           "type": "image_picker",
           "id": "image",
           "label": "Imagen del paso (opcional)",
@@ -216,7 +248,7 @@
           "type": "text",
           "id": "label",
           "label": "Número visible",
-          "default": "01"
+          "default": "1"
         },
         {
           "type": "text",
@@ -237,9 +269,9 @@
     {
       "name": "GARELON Cómo usarlo",
       "blocks": [
-        { "type": "step", "settings": { "label": "01", "title": "Paso 1" } },
-        { "type": "step", "settings": { "label": "02", "title": "Paso 2" } },
-        { "type": "step", "settings": { "label": "03", "title": "Paso 3" } }
+        { "type": "step", "settings": { "label": "1", "title": "Paso 1" } },
+        { "type": "step", "settings": { "label": "2", "title": "Paso 2" } },
+        { "type": "step", "settings": { "label": "3", "title": "Paso 3" } }
       ]
     }
   ]

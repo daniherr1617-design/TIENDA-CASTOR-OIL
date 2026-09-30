@@ -10,41 +10,43 @@
             "text": "Tenedor incluido"
           }
         },
+        "p-envio": {
+          "type": "point",
+          "settings": {
+            "icon": "truck",
+            "text": "Envío gratis"
+          }
+        },
         "p-130ml": {
           "type": "point",
           "settings": {
-            "icon": "mug",
+            "icon": "measure",
             "text": "130 ml"
-          }
-        },
-        "p-colores": {
-          "type": "point",
-          "settings": {
-            "icon": "colors",
-            "text": "3 colores"
           }
         }
       },
       "block_order": [
         "p-tenedor",
-        "p-130ml",
-        "p-colores"
+        "p-envio",
+        "p-130ml"
       ],
       "settings": {
         "image_position": "right",
+        "show_stage": true,
         "mobile_image_first": true,
         "eyebrow": "Un pequeño plan que sabe a mucho",
-        "heading": "Tu fondue de chocolate, directamente en una taza",
+        "heading": "Tu fondue de chocolate, en una taza",
         "use_h1": true,
-        "text": "<p>Taza de cerámica con tenedor de fondue incluido. Prepara chocolate o queso y disfruta con fresas, fruta, pan o gofres.</p>",
+        "text": "<p>Taza de cerámica de 130 ml con tenedor de fondue incluido. Para chocolate o queso.</p>",
         "show_price": true,
+        "show_colors": true,
         "button_label": "Elegir color y pack",
         "button2_label": "Cómo funciona",
         "button2_link": "/#como-funciona",
         "color_scheme": "scheme-1",
         "anchor": "inicio",
-        "padding_top": 24,
-        "padding_bottom": 32
+        "padding_top": 16,
+        "padding_bottom": 40
       }
     },
     "product_cta": {
@@ -79,7 +81,7 @@
           "settings": {
             "offer_label": "",
             "heading": "Elige tu pack",
-            "intro": "Packs del mismo color. Cada taza incluye su tenedor de fondue.",
+            "intro": "Siempre del mismo color. Cada taza incluye su tenedor.",
             "style_heading": "Color",
             "style_intro": "",
             "option_name": "",
@@ -89,14 +91,14 @@
             "show_unit_price": true,
             "show_savings": true,
             "show_percent": true,
-            "show_reference": true,
+            "show_reference": false,
             "reference_label": "Comprando por separado:",
-            "single_note": "Sin descuento",
+            "single_note": "",
             "tag_1": "Individual",
             "tag_2": "Para compartir",
             "tag_3": "",
             "badge_text": "Mejor precio/unidad",
-            "savings_note": "",
+            "savings_note": "Ahorro calculado frente a comprar las mismas tazas de 1 en 1.",
             "picker_type": "button",
             "swatch_shape": "none"
           }
@@ -116,18 +118,18 @@
             "free_shipping_note": ""
           }
         },
-        "stock": {
-          "type": "garelon_stock",
-          "settings": {}
-        },
         "shipping": {
           "type": "garelon_shipping",
           "settings": {
-            "preparation": "Preparación estimada: 1–3 días.",
-            "delivery": "Entrega estimada en España: aprox. 8–18 días.",
-            "note": "Los plazos pueden variar según destino y transporte.",
+            "preparation": "Preparación: 1–3 días · Entrega en España: aprox. 8–18 días.",
+            "delivery": "",
+            "note": "Plazos orientativos.",
             "link_label": "Política de envío"
           }
+        },
+        "stock": {
+          "type": "garelon_stock",
+          "settings": {}
         }
       },
       "block_order": [
@@ -138,13 +140,13 @@
         "packs",
         "buy_buttons",
         "free_shipping",
-        "stock",
-        "shipping"
+        "shipping",
+        "stock"
       ],
       "settings": {
         "color_scheme": "scheme-2",
         "secondary_background": false,
-        "media_size": "medium",
+        "media_size": "small",
         "constrain_to_viewport": true,
         "media_fit": "contain",
         "media_position": "left",
@@ -171,110 +173,14 @@
         "padding_bottom": 56
       }
     },
-    "trust": {
-      "type": "garelon-trust-bar",
-      "blocks": {
-        "t-ceramica": {
-          "type": "item",
-          "settings": {
-            "icon": "mug",
-            "title": "Cerámica",
-            "text": "Taza de 130 ml"
-          }
-        },
-        "t-tenedor": {
-          "type": "item",
-          "settings": {
-            "icon": "fork",
-            "title": "Tenedor incluido",
-            "text": "Tipo fondue, uno por taza"
-          }
-        },
-        "t-vela": {
-          "type": "item",
-          "settings": {
-            "icon": "candle",
-            "title": "Hueco para vela",
-            "text": "Vela no incluida"
-          }
-        },
-        "t-colores": {
-          "type": "item",
-          "settings": {
-            "icon": "colors",
-            "title": "3 colores",
-            "text": "Rojo, blanco y marrón"
-          }
-        }
-      },
-      "block_order": [
-        "t-ceramica",
-        "t-tenedor",
-        "t-vela",
-        "t-colores"
-      ],
-      "disabled": true,
-      "settings": {
-        "heading": "Características",
-        "show_borders": true,
-        "color_scheme": "scheme-1",
-        "anchor": "",
-        "padding_top": 32,
-        "padding_bottom": 32
-      }
-    },
-    "benefits": {
-      "type": "garelon-benefits",
-      "blocks": {
-        "b-chocolate": {
-          "type": "benefit",
-          "settings": {
-            "icon": "chocolate",
-            "title": "Chocolate o queso",
-            "text": "Úsala para preparar una fondue individual de chocolate o de queso."
-          }
-        },
-        "b-compartir": {
-          "type": "benefit",
-          "settings": {
-            "icon": "heart",
-            "title": "Hecha para compartir",
-            "text": "Fresas, fruta, pan o gofres: elige tus acompañamientos y disfruta."
-          }
-        },
-        "b-taza": {
-          "type": "benefit",
-          "settings": {
-            "icon": "mug",
-            "title": "Todo en una taza",
-            "text": "Diseño compacto con hueco para una vela y tenedor tipo fondue incluido."
-          }
-        }
-      },
-      "block_order": [
-        "b-chocolate",
-        "b-compartir",
-        "b-taza"
-      ],
-      "settings": {
-        "eyebrow": "La experiencia",
-        "heading": "Convierte cualquier sobremesa en un pequeño momento especial",
-        "text": "<p>Sin montar una fondue grande: una taza, tus acompañamientos favoritos y un rato para disfrutar.</p>",
-        "note": "",
-        "alignment": "center",
-        "color_scheme": "scheme-1",
-        "anchor": "beneficios",
-        "padding_top": 56,
-        "padding_bottom": 56
-      }
-    },
     "how_to": {
       "type": "garelon-how-to-use",
       "blocks": {
         "paso-1": {
           "type": "step",
           "settings": {
-            "label": "01",
+            "icon": "candle",
+            "label": "1",
             "title": "Coloca una vela",
             "text": "Pon una vela tipo tealight en el hueco inferior de la taza."
           }
@@ -282,33 +188,46 @@
         "paso-2": {
           "type": "step",
           "settings": {
-            "label": "02",
+            "icon": "chocolate",
+            "label": "2",
             "title": "Añade chocolate o queso",
-            "text": "Añádelo en la parte superior de la taza."
+            "text": "Ponlo en la parte de arriba de la taza."
           }
         },
         "paso-3": {
           "type": "step",
           "settings": {
-            "label": "03",
+            "icon": "flame",
+            "label": "3",
             "title": "Enciende la vela",
-            "text": "Deja que el calor lo vaya fundiendo o lo mantenga caliente."
+            "text": "Con la taza sobre una superficie estable."
           }
         },
         "paso-4": {
           "type": "step",
           "settings": {
-            "label": "04",
-            "title": "Remueve con el tenedor",
-            "text": "Remueve de vez en cuando con el tenedor de fondue."
+            "icon": "melt",
+            "label": "4",
+            "title": "Deja que el calor actúe",
+            "text": "Ayuda a fundirlo o a mantenerlo caliente."
           }
         },
         "paso-5": {
           "type": "step",
           "settings": {
-            "label": "05",
+            "icon": "stir",
+            "label": "5",
+            "title": "Remueve",
+            "text": "De vez en cuando, con el tenedor de fondue."
+          }
+        },
+        "paso-6": {
+          "type": "step",
+          "settings": {
+            "icon": "strawberry",
+            "label": "6",
             "title": "Disfruta",
-            "text": "Pincha tus acompañamientos favoritos y mójalos en la taza."
+            "text": "Con fresas, fruta, pan o gofres."
           }
         }
       },
@@ -317,21 +236,181 @@
         "paso-2",
         "paso-3",
         "paso-4",
-        "paso-5"
+        "paso-5",
+        "paso-6"
       ],
       "settings": {
         "eyebrow": "Cómo funciona",
-        "heading": "Tan sencillo como preparar, calentar y disfrutar",
-        "fallback_image": "como-funciona",
-        "image_zoom": true,
-        "image_caption": "Imagen ilustrativa. Cada unidad incluye 1 taza y 1 tenedor; la vela no está incluida.",
-        "steps_style": "compact",
+        "heading": "Así se prepara tu fondue",
+        "text": "<p>Solo necesitas una vela tipo tealight (no incluida) y lo que te apetezca mojar.</p>",
+        "steps_style": "cards",
+        "fallback_image": "none",
+        "image_caption": "",
         "show_images": false,
         "note": "Vela no incluida. Usa la taza sobre una superficie estable y resistente al calor, no dejes la vela encendida sin vigilancia y mantenla fuera del alcance de los niños.",
         "color_scheme": "scheme-1",
         "anchor": "como-funciona",
-        "padding_top": 56,
-        "padding_bottom": 56
+        "padding_top": 64,
+        "padding_bottom": 64
+      }
+    },
+    "features": {
+      "type": "garelon-features",
+      "blocks": {
+        "f-ceramica": {
+          "type": "feature",
+          "settings": {
+            "icon": "mug",
+            "title": "Cerámica",
+            "text": "Taza con asa y hueco para vela"
+          }
+        },
+        "f-capacidad": {
+          "type": "feature",
+          "settings": {
+            "icon": "measure",
+            "title": "130 ml",
+            "text": "Capacidad de la taza"
+          }
+        },
+        "f-tenedor": {
+          "type": "feature",
+          "settings": {
+            "icon": "fork",
+            "title": "Tenedor incluido",
+            "text": "Uno por taza, tipo fondue"
+          }
+        },
+        "f-colores": {
+          "type": "feature",
+          "settings": {
+            "icon": "colors",
+            "title": "3 colores",
+            "text": "Rojo, blanco y marrón"
+          }
+        },
+        "u-chocolate": {
+          "type": "use",
+          "settings": {
+            "icon": "chocolate",
+            "label": "Chocolate"
+          }
+        },
+        "u-queso": {
+          "type": "use",
+          "settings": {
+            "icon": "cheese",
+            "label": "Queso"
+          }
+        },
+        "u-fresas": {
+          "type": "use",
+          "settings": {
+            "icon": "strawberry",
+            "label": "Fresas"
+          }
+        },
+        "u-fruta": {
+          "type": "use",
+          "settings": {
+            "icon": "fruit",
+            "label": "Fruta"
+          }
+        },
+        "u-pan": {
+          "type": "use",
+          "settings": {
+            "icon": "bread",
+            "label": "Pan"
+          }
+        },
+        "u-gofres": {
+          "type": "use",
+          "settings": {
+            "icon": "waffle",
+            "label": "Gofres"
+          }
+        }
+      },
+      "block_order": [
+        "f-ceramica",
+        "f-capacidad",
+        "f-tenedor",
+        "f-colores",
+        "u-chocolate",
+        "u-queso",
+        "u-fresas",
+        "u-fruta",
+        "u-pan",
+        "u-gofres"
+      ],
+      "settings": {
+        "eyebrow": "Características y usos",
+        "heading": "Todo lo que necesitas, en una taza",
+        "text": "",
+        "fallback_image": "usos",
+        "image_caption": "La vela que aparece en la imagen no está incluida.",
+        "features_heading": "Características",
+        "uses_heading": "Perfecta para",
+        "note": "Apta para microondas según la información del proveedor.",
+        "color_scheme": "scheme-2",
+        "anchor": "caracteristicas",
+        "padding_top": 64,
+        "padding_bottom": 64
+      }
+    },
+    "benefits": {
+      "type": "garelon-benefits",
+      "blocks": {
+        "b-sobremesa": {
+          "type": "benefit",
+          "settings": {
+            "icon": "mug",
+            "title": "Sobremesa",
+            "text": "Un final dulce sin montar nada."
+          }
+        },
+        "b-noche": {
+          "type": "benefit",
+          "settings": {
+            "icon": "moon",
+            "title": "Noche en casa",
+            "text": "Una peli, una manta y algo que mojar."
+          }
+        },
+        "b-cita": {
+          "type": "benefit",
+          "settings": {
+            "icon": "heart",
+            "title": "Una cita",
+            "text": "Un plan sencillo para dos."
+          }
+        },
+        "b-regalo": {
+          "type": "benefit",
+          "settings": {
+            "icon": "gift",
+            "title": "Un regalo sencillo",
+            "text": "Para quien no dice que no al chocolate."
+          }
+        }
+      },
+      "block_order": [
+        "b-sobremesa",
+        "b-noche",
+        "b-cita",
+        "b-regalo"
+      ],
+      "settings": {
+        "eyebrow": "Para cualquier momento",
+        "heading": "Convierte cualquier sobremesa en un pequeño plan",
+        "text": "<p>Sin montar una fondue grande: una taza, tus acompañamientos favoritos y un rato para disfrutar.</p>",
+        "note": "",
+        "alignment": "center",
+        "color_scheme": "scheme-1",
+        "anchor": "momentos",
+        "padding_top": 64,
+        "padding_bottom": 64
       }
     },
     "lifestyle": {
@@ -341,71 +420,141 @@
         "image_shape": "rounded",
         "image_position": "right",
         "eyebrow": "Para compartir",
-        "heading": "Un plan sencillo para compartir",
-        "text": "<p>Una sobremesa diferente para una noche en casa, una cita o un pequeño regalo. Elige tu color, prepara tus acompañamientos y crea tu propia fondue.</p>",
+        "heading": "Una taza para cada uno",
+        "text": "<p>Fresas o gofres en el centro, una taza para cada uno y un buen rato por delante. Con los packs de 2 o 3 tazas (del mismo color) hay para todos.</p>",
         "button_label": "",
         "button_secondary": false,
         "color_scheme": "scheme-2",
         "anchor": "compartir",
-        "padding_top": 56,
-        "padding_bottom": 56
+        "padding_top": 64,
+        "padding_bottom": 64
       }
     },
-    "includes": {
-      "type": "garelon-ingredients",
+    "colors": {
+      "type": "garelon-colors",
       "blocks": {
-        "i-taza": {
-          "type": "ingredient",
+        "c-rojo": {
+          "type": "color",
           "settings": {
-            "name": "Taza Fondue de cerámica",
-            "inci": "130 ml · 1 por unidad",
-            "text": "Con el texto «Chocolat...» y un hueco inferior para una vela tipo tealight."
+            "name": "Rojo",
+            "fallback_image": "roja",
+            "alt": ""
+          }
+        },
+        "c-blanco": {
+          "type": "color",
+          "settings": {
+            "name": "Blanco",
+            "fallback_image": "blanco",
+            "alt": ""
+          }
+        },
+        "c-marron": {
+          "type": "color",
+          "settings": {
+            "name": "Marrón",
+            "fallback_image": "marron",
+            "alt": ""
+          }
+        },
+        "i-taza": {
+          "type": "include",
+          "settings": {
+            "icon": "mug",
+            "text": "1 Taza Fondue de cerámica · 130 ml",
+            "muted": false
           }
         },
         "i-tenedor": {
-          "type": "ingredient",
+          "type": "include",
           "settings": {
-            "name": "Tenedor tipo fondue",
-            "inci": "1 por taza",
-            "text": "Para pinchar fruta, pan o gofres y mojarlos."
-          }
-        },
-        "i-colores": {
-          "type": "ingredient",
-          "settings": {
-            "name": "Colores",
-            "inci": "Rojo · Blanco · Marrón",
-            "text": "Elige el color al comprar."
+            "icon": "fork",
+            "text": "1 tenedor tipo fondue",
+            "muted": false
           }
         },
         "i-vela": {
-          "type": "ingredient",
+          "type": "include",
           "settings": {
-            "name": "Vela",
-            "inci": "No incluida",
-            "text": "Necesitas una vela tipo tealight."
+            "icon": "candle",
+            "text": "Vela no incluida",
+            "muted": true
           }
         }
       },
       "block_order": [
+        "c-rojo",
+        "c-blanco",
+        "c-marron",
         "i-taza",
         "i-tenedor",
-        "i-colores",
         "i-vela"
       ],
       "settings": {
-        "eyebrow": "Características y colores",
+        "eyebrow": "Colores",
         "heading": "Elige tu color",
         "text": "<p>Rojo, blanco o marrón. Los packs de 2 y 3 unidades son siempre del mismo color.</p>",
-        "fallback_image": "caracteristicas",
-        "image_zoom": true,
-        "image_caption": "La vela que aparece en la imagen no está incluida.",
-        "show_note": true,
-        "note": "Datos según la información facilitada por el proveedor.",
-        "color_scheme": "scheme-2",
+        "button_label": "Elegir",
+        "includes_heading": "Cada unidad incluye",
+        "color_scheme": "scheme-1",
         "anchor": "que-incluye",
-        "padding_top": 56,
-        "padding_bottom": 56
+        "padding_top": 64,
+        "padding_bottom": 64
+      }
+    },
+    "trust": {
+      "type": "garelon-trust-bar",
+      "blocks": {
+        "t-envio": {
+          "type": "item",
+          "settings": {
+            "icon": "truck",
+            "title": "Envío gratis",
+            "text": "Preparación: 1–3 días",
+            "link": ""
+          }
+        },
+        "t-plazo": {
+          "type": "item",
+          "settings": {
+            "icon": "clock",
+            "title": "Entrega 8–18 días",
+            "text": "Aprox., en España",
+            "link": "/policies/shipping-policy"
+          }
+        },
+        "t-contacto": {
+          "type": "item",
+          "settings": {
+            "icon": "chat",
+            "title": "¿Dudas?",
+            "text": "Escríbenos",
+            "link": "/pages/contacto"
+          }
+        },
+        "t-devoluciones": {
+          "type": "item",
+          "settings": {
+            "icon": "return",
+            "title": "Devoluciones",
+            "text": "Consulta las condiciones",
+            "link": "/policies/refund-policy"
+          }
+        }
+      },
+      "block_order": [
+        "t-envio",
+        "t-plazo",
+        "t-contacto",
+        "t-devoluciones"
+      ],
+      "settings": {
+        "heading": "Compra con confianza",
+        "show_borders": true,
+        "color_scheme": "scheme-2",
+        "anchor": "",
+        "padding_top": 40,
+        "padding_bottom": 40
       }
     },
     "faq": {
@@ -422,7 +571,7 @@
           "type": "question",
           "settings": {
             "question": "¿Cómo se utiliza?",
-            "answer": "<p>Coloca una vela en el compartimento inferior, añade chocolate o queso y deja que el calor ayude a fundirlo o a mantenerlo caliente. Remueve de vez en cuando y utiliza el tenedor para tus acompañamientos. No dejes la vela encendida sin vigilancia.</p>"
+            "answer": "<p>Coloca una vela tipo tealight en el hueco inferior, añade chocolate o queso arriba y enciende la vela: el calor ayuda a fundirlo o a mantenerlo caliente. Remueve de vez en cuando y usa el tenedor para tus acompañamientos. No dejes la vela encendida sin vigilancia.</p>"
           }
         },
         "q-queso": {
@@ -471,7 +620,7 @@
           "type": "question",
           "settings": {
             "question": "¿Cuándo recibiré mi pedido?",
-            "answer": "<p>Preparamos tu pedido en un plazo estimado de 1–3 días y la entrega estimada en España es de aproximadamente 8–18 días. Son plazos orientativos: pueden variar según el destino y el transporte. Encontrarás los detalles en nuestra <a href=\"/policies/shipping-policy\" title=\"Política de envío\">política de envío</a>.</p>"
+            "answer": "<p>El envío es gratis. Preparamos tu pedido en un plazo estimado de 1–3 días y la entrega estimada en España es de aproximadamente 8–18 días. Son plazos orientativos: pueden variar según el destino y el transporte. Encontrarás los detalles en nuestra <a href=\"/policies/shipping-policy\" title=\"Política de envío\">política de envío</a>.</p>"
           }
         },
         "q-danada": {
@@ -495,14 +644,14 @@
         "q-danada"
       ],
       "settings": {
-        "eyebrow": "",
+        "eyebrow": "Dudas",
         "heading": "Preguntas frecuentes",
         "open_first": false,
         "contact_text": "",
         "color_scheme": "scheme-1",
         "anchor": "preguntas-frecuentes",
-        "padding_top": 56,
-        "padding_bottom": 56
+        "padding_top": 64,
+        "padding_bottom": 64
       }
     },
     "final_cta": {
@@ -516,8 +665,16 @@
         "button_label": "Elegir mi Taza Fondue",
         "color_scheme": "scheme-5",
         "anchor": "",
-        "padding_top": 56,
-        "padding_bottom": 64
+        "padding_top": 64,
+        "padding_bottom": 72
+      }
+    },
+    "sticky": {
+      "type": "garelon-sticky-atc",
+      "settings": {
+        "button_label": "Añadir",
+        "show_on_desktop": false,
+        "color_scheme": "scheme-4"
       }
     }
   },
@@ -526,11 +683,13 @@
     "product_cta",
     "reviews",
     "how_to",
-    "includes",
-    "trust",
+    "features",
     "benefits",
     "lifestyle",
+    "colors",
+    "trust",
     "faq",
-    "final_cta"
+    "final_cta",
+    "sticky"
   ]
 }

@@ -22,7 +22,7 @@
   style="--g-pt: {{ section.settings.padding_top }}px; --g-pb: {{ section.settings.padding_bottom }}px;"
 >
   <div class="page-width g-hero__grid{% if section.settings.image_position == 'left' %} g-hero__grid--image-left{% endif %}{% unless section.settings.mobile_image_first %} g-hero__grid--text-first{% endunless %}">
-    <div class="g-hero__media">
+    <div class="g-hero__media{% if section.settings.show_stage %} g-hero__media--stage{% endif %}">
       {%- if desktop_image != blank and mobile_image != blank -%}
         <picture>
           <source
@@ -63,17 +63,44 @@
         <div class="g-hero__text">{{ section.settings.text }}</div>
       {%- endif -%}
 
-      {%- if section.settings.show_price -%}
-        {%- render 'garelon-price-inline', product: product -%}
+      {%- liquid
+        # Colores reales de la opción «Color» de Shopify (sin escribirlos a mano).
+        assign color_option = null
+        if section.settings.show_colors
+          for option in product.options_with_values
+            assign option_key = option.name | downcase | strip
+            if option_key == 'color' or option_key == 'colour' or option_key == 'colores'
+              assign color_option = option
+            endif
+          endfor
+        endif
+      -%}
+      {%- if section.settings.show_price or color_option -%}
+        <div class="g-hero__meta">
+          {%- if section.settings.show_price -%}
+            {%- render 'garelon-price-inline', product: product -%}
+          {%- endif -%}
+          {%- if color_option and color_option.values.size > 1 -%}
+            <p class="g-hero__colors">
+              <span class="g-hero__dots" aria-hidden="true">
+                {%- for value in color_option.values -%}
+                  <span class="g-choice__dot g-choice__dot--{{ value.name | handleize }}"></span>
+                {%- endfor -%}
+              </span>
+              <span>{{ color_option.values | join: ' · ' | escape }}</span>
+            </p>
+          {%- endif -%}
+        </div>
       {%- endif -%}
 
-      <div class="g-buttons">
+      <div class="g-buttons g-hero__actions">
         {%- if section.settings.button_label != blank -%}
           <a href="{{ primary_url }}" class="button button--primary">{{ section.settings.button_label | escape }}</a>
         {%- endif -%}
         {%- if section.settings.button2_label != blank and section.settings.button2_link != blank -%}
-          <a href="{{ section.settings.button2_link }}" class="button button--secondary">
+          <a href="{{ section.settings.button2_link }}" class="g-link-arrow">
             {{- section.settings.button2_label | escape -}}
+            <span aria-hidden="true">→</span>
           </a>
         {%- endif -%}
       </div>
@@ -133,6 +160,12 @@
     },
     {
       "type": "checkbox",
+      "id": "show_stage",
+      "label": "Fondo circular suave detrás del producto",
+      "default": true
+    },
+    {
+      "type": "checkbox",
       "id": "mobile_image_first",
       "label": "En móvil, mostrar la imagen antes del texto",
       "default": true
@@ -171,6 +204,13 @@
       "id": "show_price",
       "label": "Mostrar el precio del producto",
       "info": "El precio se lee siempre de Shopify.",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "show_colors",
+      "label": "Mostrar los colores disponibles",
+      "info": "Lee los valores de la opción «Color» del producto en Shopify.",
       "default": true
     },
     {
@@ -251,14 +291,29 @@
             { "value": "mug", "label": "Taza" },
             { "value": "fork", "label": "Tenedor" },
             { "value": "candle", "label": "Vela" },
+            { "value": "flame", "label": "Llama" },
+            { "value": "melt", "label": "Calor" },
+            { "value": "stir", "label": "Remover" },
             { "value": "chocolate", "label": "Chocolate" },
+            { "value": "cheese", "label": "Queso" },
+            { "value": "strawberry", "label": "Fresa" },
+            { "value": "fruit", "label": "Fruta" },
+            { "value": "bread", "label": "Pan" },
+            { "value": "waffle", "label": "Gofre" },
+            { "value": "measure", "label": "Capacidad" },
+            { "value": "microwave", "label": "Microondas" },
+            { "value": "box", "label": "Caja" },
             { "value": "colors", "label": "Colores" },
             { "value": "heart", "label": "Corazón" },
             { "value": "gift", "label": "Regalo" },
+            { "value": "users", "label": "Compartir" },
+            { "value": "home", "label": "Casa" },
+            { "value": "moon", "label": "Noche" },
             { "value": "sparkle", "label": "Destello" },
-            { "value": "steps", "label": "Reloj" },
-            { "value": "drop", "label": "Gota" },
-            { "value": "leaf", "label": "Hoja" },
+            { "value": "clock", "label": "Reloj" },
+            { "value": "truck", "label": "Envío" },
+            { "value": "return", "label": "Devolución" },
+            { "value": "chat", "label": "Contacto" },
             { "value": "check", "label": "Check" }
           ],
           "default": "check"

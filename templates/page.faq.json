@@ -21,7 +21,7 @@
           "type": "question",
           "settings": {
             "question": "¿Cómo se utiliza?",
-            "answer": "<p>Coloca una vela en el compartimento inferior, añade chocolate o queso y deja que el calor ayude a fundirlo o a mantenerlo caliente. Remueve de vez en cuando y utiliza el tenedor para tus acompañamientos. No dejes la vela encendida sin vigilancia.</p>"
+            "answer": "<p>Coloca una vela tipo tealight en el hueco inferior, añade chocolate o queso arriba y enciende la vela: el calor ayuda a fundirlo o a mantenerlo caliente. Remueve de vez en cuando y usa el tenedor para tus acompañamientos. No dejes la vela encendida sin vigilancia.</p>"
           }
         },
         "q-queso": {
@@ -70,7 +70,7 @@
           "type": "question",
           "settings": {
             "question": "¿Cuándo recibiré mi pedido?",
-            "answer": "<p>Preparamos tu pedido en un plazo estimado de 1–3 días y la entrega estimada en España es de aproximadamente 8–18 días. Son plazos orientativos: pueden variar según el destino y el transporte. Encontrarás los detalles en nuestra <a href=\"/policies/shipping-policy\" title=\"Política de envío\">política de envío</a>.</p>"
+            "answer": "<p>El envío es gratis. Preparamos tu pedido en un plazo estimado de 1–3 días y la entrega estimada en España es de aproximadamente 8–18 días. Son plazos orientativos: pueden variar según el destino y el transporte. Encontrarás los detalles en nuestra <a href=\"/policies/shipping-policy\" title=\"Política de envío\">política de envío</a>.</p>"
           }
         },
         "q-danada": {

@@ -11,7 +11,8 @@
 ## 0. Antes de empezar
 
 - [ ] 🅲 La base es Dawn 16.0.0 con la capa GARELON → `config/settings_schema.json`: `theme_version` 16.0.0 y `theme_name` «GARELON (Dawn)».
-- [ ] 🅲 Existen las 10 secciones `sections/garelon-*.liquid` y los 16 snippets `snippets/garelon-*.liquid` (§6; desde la 1.6 incluyen `garelon-choice` y `garelon-packs-diagnostic`).
+- [ ] 🅲 Existen las 12 secciones `sections/garelon-*.liquid` y los 17 snippets `snippets/garelon-*.liquid` (§6; desde la 1.6 incluyen `garelon-choice` y `garelon-packs-diagnostic`; desde la 1.8, `garelon-features`, `garelon-colors` y `garelon-cart-thumb`).
+- [ ] 🅲 Paleta, tipografía y botones: se deciden **para el producto nuevo** (§7). No se heredan del anterior por defecto ni se convierten en regla.
 - [ ] 🅲 Línea base de Theme Check: 0 errores y 9 avisos de Dawn (§ anexo B.4).
 - [ ] 🅲 El validador de plantillas da `OK` antes de tocar nada (§ anexo B.2).
 - [ ] 🅲/🆂 Se sabe si el tema publicado tiene cambios del editor que no están en el repositorio. Si los tiene, se han incorporado.
@@ -45,7 +46,9 @@
 - [ ] 🅲 Selección de 5-8 imágenes, cada una responde a una pregunta distinta.
 - [ ] 🅲 El orden de la galería sigue la historia comercial: producto → beneficio → problema → funcionamiento → composición → uso → detalles/medidas. Nunca por nombre ni por fecha.
 - [ ] 🅲 Ninguna imagen se repite en dos secciones del cuerpo de la home (sí puede repetirse en su sección + la galería).
-- [ ] 🅲 Assets WebP en 480, 720 y 1080 px, sin recortes, filtros ni ampliaciones. Peso de 1080 px ≤ ~200 KB.
+- [ ] 🅲 Assets WebP en 480, 720 y 1080 px, sin filtros ni ampliaciones (los recortes solo para acercar el producto o quitar elementos falsos). Peso de 1080 px ≤ ~200 KB.
+- [ ] 🅲 Si el producto tiene colores: muestras `garelon-fondue-swatch-<color>.webp` (160 px) para el selector, la compra fija y el carrito, y las claves de color de `garelon-choice`, `garelon-gallery` (`data-g-color`), `garelon-cart-thumb` y la compra fija adaptadas.
+- [ ] 🅲 Infografías generadas: no se publican si tienen claims sin prueba, texto físico distinto o piezas de más. Se reconstruyen en HTML (`garelon-how-to-use` con iconos, `garelon-features`) y, como mucho, se aprovecha una franja de foto corregida.
 - [ ] 🅲 A la vez, sin claves huérfanas:
   - las claves de `garelon-fallback-image`;
   - `keys` de `garelon-gallery`;
@@ -84,7 +87,7 @@
 - [ ] 🅲 **Opiniones** (`garelon-reviews`, §10.16) **justo después de la compra**: home `product_cta` → `reviews` → `trust`; ficha `main` → `reviews` → `service`. Sin contenido de ejemplo; título «Opiniones · Lo que opinan nuestros clientes» (o equivalente). En la home, el ajuste «Producto de la valoración media» apunta al producto nuevo. Sin datos reales no deja hueco.
 - [ ] 🅲 **FAQ** (`garelon-faq`): 6-10 preguntas. Se mantienen «¿Qué es…?» (con la aclaración de fabricante externo), la de envío (→ política) y la de dudas (→ contacto + devoluciones).
 - [ ] 🅲 **Cierre** (`garelon-final-cta`): isotipo, frase breve, precio y CTA → `/#comprar`.
-- [ ] 🅲 Alternancia de esquemas crema/arena mantenida, como mucho 2 seguidas iguales (§8).
+- [ ] 🅲 Alternancia de esquemas (fondo principal / alterno) mantenida, como mucho 2 seguidas iguales (§8).
 - [ ] 🅲 Máximo 3 CTAs de compra en la home.
 - [ ] 🅲 Secciones sin contenido real eliminadas, no vacías.
 
@@ -101,7 +104,8 @@
 - [ ] 🅲 La sección de compra de la home tiene el **producto elegido** explícitamente (no «el primero del catálogo»).
 - [ ] 🅲 El bloque `shipping` (plazos) tiene textos de estimación prudentes y los mismos plazos que la pestaña «Envíos y devoluciones» y la FAQ.
 - [ ] 🅲 La barra de servicio (`service`: Atención · Envío · Devoluciones) no ha cambiado (sin «Pago seguro» desde la 1.5).
-- [ ] 🅲 `benefits`, `how_to` y `faq` están actualizados; `sticky` presente.
+- [ ] 🅲 `benefits`, `how_to`, `features` y `faq` están actualizados; `sticky` presente (ficha y home).
+- [ ] 🅲 Galería de la ficha (`garelon_gallery` de `main-product`): «Imágenes del tema» mientras la multimedia de Shopify no esté revisada; «Multimedia de Shopify» cuando cada color tenga su foto.
 - [ ] 🆂 El título y la descripción del producto en el Admin están limpios: en español, sin claims prohibidos y sin ingredientes o datos falsos importados.
 
 ## 5. Claims, fidelidad y honestidad
@@ -211,7 +215,7 @@
 - [ ] 🅲 FAQ con `details`/`summary`; pasos con «Paso N:» oculto; galería con botones etiquetados; stock con `role="status"`.
 - [ ] 🅲 Iconos, bandera e isotipos decorativos con `aria-hidden` o `alt=""`.
 - [ ] 🅲 Valoración de opiniones con `aria-label` («4,6 de 5 estrellas»), nunca solo estrellas. (Si en el futuro se vuelven a mostrar iconos de pago: lista con `aria-label` y cada SVG de Shopify con su título.)
-- [ ] 🅲 Contraste: texto pequeño dorado con `--g-gold-text` (#7A5A24), nunca `#B88A3B` sobre crema.
+- [ ] 🅲 Contraste AA: color de acción con texto blanco ≥ 4,5:1 y texto pequeño de acento ≥ 4,5:1 sobre los fondos usados (Taza Fondue: `#B3161E`, 6,9:1).
 - [ ] 🅲 Objetivos táctiles ≥ 44 px (botones de 50 px).
 - [ ] 🅲 Con `prefers-reduced-motion` no hay transiciones GARELON.
 
@@ -227,7 +231,7 @@
 
 | Ancho | Sin scroll horizontal | Cabecera OK | Barra en 1 línea | Precio + CTA en 1.ª pantalla | Secciones legibles |
 |---|---|---|---|---|---|
-| 320 px | [ ] | [ ] | [ ] | (tolerado: CTA ~28 px por debajo) | [ ] |
+| 320 px (640 alto) | [ ] | [ ] | [ ] | [ ] | [ ] |
 | 360 px | [ ] | [ ] | [ ] | [ ] | [ ] |
 | 375 px (667 alto) | [ ] | [ ] | [ ] | [ ] | [ ] |
 | 390 px | [ ] | [ ] | [ ] | [ ] | [ ] |

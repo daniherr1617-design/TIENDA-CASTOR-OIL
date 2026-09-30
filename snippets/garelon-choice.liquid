@@ -6,8 +6,9 @@
   Radios compatibles con Dawn (form, data-option-value-id, data-product-url, data-option-name):
   al elegir un color, product-info.js pide la sección y los packs se recalculan con los
   precios de ese color. data-choice-label = texto para la compra fija («Rojo · 2 unidades»).
-  Muestra: imagen de la variante si Shopify la tiene; si no, el color de Shopify (swatch) o un
-  tono por nombre (clase g-choice__dot--<valor>).
+  Muestra: imagen de la variante si Shopify la tiene; si no, la foto del color incluida en el
+  tema (garelon-fondue-swatch-rojo|blanco|marron.webp, taza recortada de las fotos del producto);
+  si tampoco, el color de Shopify (swatch) o un tono por nombre (clase g-choice__dot--<valor>).
 
   Accepts:
   - product: {Object}
@@ -54,6 +55,11 @@
           if value.variant.featured_image
             assign swatch_image = value.variant.featured_image
           endif
+          # Sin imagen de variante en Shopify: foto del color incluida en el tema (si existe).
+          assign swatch_asset = ''
+          if swatch_key == 'rojo' or swatch_key == 'blanco' or swatch_key == 'marron'
+            assign swatch_asset = 'garelon-fondue-swatch-' | append: swatch_key | append: '.webp'
+          endif
         -%}
         <div class="g-choice__item">
           <input
@@ -79,8 +85,17 @@
               {{
                 swatch_image
                 | image_url: width: 96
-                | image_tag: class: 'g-choice__thumb', width: 32, height: 32, alt: '', loading: 'lazy'
+                | image_tag: class: 'g-choice__thumb', width: 40, height: 40, alt: '', loading: 'lazy'
               }}
+            {%- elsif swatch_asset != '' -%}
+              <img
+                class="g-choice__thumb"
+                src="{{ swatch_asset | asset_url }}"
+                width="40"
+                height="40"
+                alt=""
+                loading="lazy"
+              >
             {%- else -%}
               <span
                 class="g-choice__dot g-choice__dot--{{ swatch_key }}"

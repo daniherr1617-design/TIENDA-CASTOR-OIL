@@ -73,11 +73,28 @@
   {%- endif -%}
 
   {% assign variant_images = product.images | where: 'attached_to_variant?', true | map: 'src' %}
+  {%- comment -%}
+    GARELON: galería con las imágenes del tema (fieles y en el orden de venta) en lugar de la
+    multimedia de Shopify, que al importar desde el proveedor puede traer fotos que no
+    coinciden con el producto real. «auto» = solo si el producto no tiene multimedia.
+  {%- endcomment -%}
+  {%- liquid
+    assign garelon_gallery = false
+    if section.settings.garelon_gallery == 'always'
+      assign garelon_gallery = true
+    elsif section.settings.garelon_gallery == 'auto' and product.media.size == 0
+      assign garelon_gallery = true
+    endif
+  -%}
   <product-component view-event-payload="{{ product | standard_event_data: 'view', context: 'page' | escape }}">
     <div class="page-width">
-      <div class="product product--{{ section.settings.media_size }} product--{{ section.settings.media_position }} product--{{ section.settings.gallery_layout }} product--mobile-{{ section.settings.mobile_thumbnails }} grid grid--1-col {% if product.media.size > 0 %}grid--2-col-tablet{% else %}product--no-media{% endif %}">
+      <div class="product product--{{ section.settings.media_size }} product--{{ section.settings.media_position }} product--{{ section.settings.gallery_layout }} product--mobile-{{ section.settings.mobile_thumbnails }} grid grid--1-col {% if product.media.size > 0 or garelon_gallery %}grid--2-col-tablet{% else %}product--no-media{% endif %}{% if garelon_gallery %} g-product--gallery{% endif %}">
         <div class="grid__item product__media-wrapper">
-          {% render 'product-media-gallery', variant_images: variant_images %}
+          {%- if garelon_gallery -%}
+            {%- render 'garelon-gallery', section_id: section.id, eager: true -%}
+          {%- else -%}
+            {% render 'product-media-gallery', variant_images: variant_images %}
+          {%- endif -%}
         </div>
         <div class="product__info-wrapper grid__item{% if settings.page_width > 1400 and section.settings.media_size == "small" %} product__info-wrapper--extra-padding{% endif %}{% if settings.animations_reveal_on_scroll %} scroll-trigger animate--slide-in{% endif %}">
           <section
@@ -2548,6 +2565,18 @@
       ],
       "default": "left",
       "label": "t:sections.main-product.settings.media_position.label"
+    },
+    {
+      "type": "select",
+      "id": "garelon_gallery",
+      "label": "Galería (GARELON)",
+      "options": [
+        { "value": "always", "label": "Imágenes del tema" },
+        { "value": "auto", "label": "Del tema si no hay multimedia" },
+        { "value": "shopify", "label": "Multimedia de Shopify" }
+      ],
+      "default": "auto",
+      "info": "«Imágenes del tema»: taza roja, los tres colores, blanca y marrón; al elegir un color se muestra su foto. Usa «Multimedia de Shopify» cuando hayas subido tus fotos al producto y asignado una a cada color."
     },
     {
       "type": "select",

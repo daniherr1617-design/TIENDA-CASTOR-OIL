@@ -1,6 +1,6 @@
 # GARELON · MASTER STORE TEMPLATE
 
-> **Versión 1.7 · septiembre 2026.** Extraído del repositorio `TIENDA-CASTOR-OIL`. Hasta la 1.5 describía la tienda GARELON del sérum de contorno de ojos (baseline congelado en la rama `baseline/garelon-serum`, commit `f08f9bb`); desde la 1.6 la tienda vende la **Taza Fondue de Chocolate con Tenedor** (rama `claude/fondue-mug`). Versión 1.0 sacada del commit `755240b`. La 1.1 recoge el cambio de proveedor (**AutoDS → CJ Dropshipping**) y los **packs como variantes reales**. La 1.2 añade la **oferta visible antes del carrito** («Oferta limitada · Elige tu pack»), la **cantidad 1 blindada**, el **aviso de configuración** en el editor y el flujo **Shopify + GitHub**. La 1.3 añade la **confianza junto a la compra** (envío gratis + pago seguro con los métodos de pago habilitados en Shopify) y la sección de **opiniones reales** (`garelon-reviews`). La 1.4, tras publicar el tema en Shopify, añade el modo de iconos de pago **«Manual verificado»** (opcional), el diagnóstico de métodos de pago en el editor y las opiniones sin resumen duplicado. La 1.5 **simplifica** para la fase de aprendizaje: **opiniones justo después de la compra** (home y ficha) y **ningún icono ni «Pago seguro» en la tienda** (el bloque de compra queda en «Envío gratis»; el pie, sin logos). La 1.6 es la **primera migración de producto** (sérum → Taza Fondue): packs **Color × Pack** (variantes reales, packs siempre del mismo color), fuera la etiqueta «Oferta limitada» (urgencia sin datos), **isotipo propio de cada versión de producto** (el nombre GARELON no cambia) y catálogo de imágenes `garelon-fondue-*`. La 1.7 es una **ronda visual** de la Taza Fondue: **fondo blanco y acentos en el rojo de la taza** (sustituyen a crema/arena y dorado), la taza roja como protagonista, y las **dos infografías** del producto («Cómo funciona» y «Características y usos») en la home, ampliables al tocarlas. Detalle en `GARELON-CAMBIOS-CJ-PACKS.md` y `GARELON-CAMBIOS-FONDUE.md`, en la raíz. Todos los archivos, ajustes y valores que aparecen aquí salen del código real.
+> **Versión 1.8 · septiembre 2026.** Extraído del repositorio `TIENDA-CASTOR-OIL`. Hasta la 1.5 describía la tienda GARELON del sérum de contorno de ojos (baseline congelado en la rama `baseline/garelon-serum`, commit `f08f9bb`); desde la 1.6 la tienda vende la **Taza Fondue de Chocolate con Tenedor** (rama `claude/fondue-mug`). Versión 1.0 sacada del commit `755240b`. La 1.1 recoge el cambio de proveedor (**AutoDS → CJ Dropshipping**) y los **packs como variantes reales**. La 1.2 añade la **oferta visible antes del carrito** («Oferta limitada · Elige tu pack»), la **cantidad 1 blindada**, el **aviso de configuración** en el editor y el flujo **Shopify + GitHub**. La 1.3 añade la **confianza junto a la compra** (envío gratis + pago seguro con los métodos de pago habilitados en Shopify) y la sección de **opiniones reales** (`garelon-reviews`). La 1.4, tras publicar el tema en Shopify, añade el modo de iconos de pago **«Manual verificado»** (opcional), el diagnóstico de métodos de pago en el editor y las opiniones sin resumen duplicado. La 1.5 **simplifica** para la fase de aprendizaje: **opiniones justo después de la compra** (home y ficha) y **ningún icono ni «Pago seguro» en la tienda** (el bloque de compra queda en «Envío gratis»; el pie, sin logos). La 1.6 es la **primera migración de producto** (sérum → Taza Fondue): packs **Color × Pack** (variantes reales, packs siempre del mismo color), fuera la etiqueta «Oferta limitada» (urgencia sin datos), **isotipo propio de cada versión de producto** (el nombre GARELON no cambia) y catálogo de imágenes `garelon-fondue-*`. La 1.7 es una **ronda visual** de la Taza Fondue: **fondo blanco y acentos en el rojo de la taza** (sustituyen a crema/arena y dorado), la taza roja como protagonista, y las **dos infografías** del producto («Cómo funciona» y «Características y usos») en la home, ampliables al tocarlas. La 1.8 es la **ronda PRO** de la Taza Fondue: tras comparar los temas gratuitos oficiales (Dawn, Horizon, Savor, Taste, Crave) **se mantiene Dawn** y se rehace a fondo la capa GARELON: secciones nuevas reutilizables **GARELON Características** (`garelon-features`) y **GARELON Colores** (`garelon-colors`), «Cómo funciona» con **pasos e iconos en HTML** (sustituye a las infografías, que tenían claims y detalles falsos), **muestras de color con foto**, galería del tema también en la **ficha** (con salto a la foto del color elegido), **compra fija también en la home**, miniatura de respaldo en el **carrito** y título `Producto | GARELON`. **Paleta, tipografía y forma de los botones son decisiones de cada producto, no reglas GARELON** (sección 7). Detalle en `GARELON-CAMBIOS-CJ-PACKS.md` y `GARELON-CAMBIOS-FONDUE.md`, en la raíz. Todos los archivos, ajustes y valores que aparecen aquí salen del código real.
 >
 > **Cómo se usa:**
 > - **ChatGPT:** lee primero la sección 29, rellena la sección 1 con el brief (`GARELON_PRODUCT_BRIEF_TEMPLATE.md`) y genera el prompt final para Claude Code.
@@ -99,7 +99,7 @@ NEW PRODUCT DATA
                                     1–3 días» · «Entrega estimada en España: aproximadamente 8–16 días»).
 {{PRODUCT_SUPPLIER}}              = Proveedor/fulfillment actual y método de envío (hoy CJ Dropshipping ·
                                     CJPacket Euro Cosmetic Line). Dato interno: nunca se muestra al cliente.
-{{ANNOUNCEMENT_TEXT}}             = Texto de la barra superior (actualmente «Envío gratis disponible en España»).
+{{ANNOUNCEMENT_TEXT}}             = Texto de la barra superior (actualmente «Envío gratis a España»).
 {{PRODUCT_POLICY_IMPACT}}         = Respuestas a las preguntas de la sección 19: devoluciones, higiene,
                                     seguridad, garantía, edad, restricciones.
 
@@ -209,8 +209,8 @@ La decoración va siempre la última.
 |---|---|
 | Nombre **GARELON** y dominio | Admin (nombre de la tienda, dominio) |
 | Wordmark GARELON | `assets/garelon-wordmark-480.webp` (cabecera y pie). El isotipo, el favicon y el icono de iOS son de la versión de producto (5.B) |
-| Colores (5 esquemas) y tokens | `config/settings_data.json` (`color_schemes`), `assets/garelon.css` (`:root`) |
-| Tipografía (Playfair Display + Inter) y escala | `config/settings_data.json` (`type_header_font`, `type_body_font`, `heading_scale`, `body_scale`), `assets/garelon.css` |
+| Colores: estructura de 5 esquemas y tokens (los **valores** los decide cada producto, §7) | `config/settings_data.json` (`color_schemes`), `assets/garelon.css` (`:root`) |
+| Tipografía: par serif + sans de la biblioteca de Shopify (el par concreto lo decide cada producto; Taza Fondue: Lora + Inter) | `config/settings_data.json` (`type_header_font`, `type_body_font`, `heading_scale`, `body_scale`), `assets/garelon.css` |
 | Botones, radios, bordes, sombras | `config/settings_data.json` (`buttons_*`, `*_radius`…), `assets/garelon.css` |
 | Cabecera `[isotipo] GARELON` enlazada a la home y su versión móvil | `sections/header.liquid`, `snippets/garelon-logo-fallback.liquid`, `snippets/header-drawer.liquid`, `assets/garelon.css` |
 | Navegación mínima (Inicio · anclas de la home · Contacto) | `snippets/garelon-nav.liquid`, ajustes `nav_*` de la cabecera |
@@ -301,34 +301,37 @@ Están en `GARELON_PRODUCT_MIGRATION_CHECKLIST.md`, y el resumen en la sección 
 
 | Archivo | Nombre en el editor | Función |
 |---|---|---|
-| `sections/garelon-hero.liquid` | GARELON Portada | Primera pantalla: imagen principal (carga inmediata), antetítulo, H1, texto, precio real, botón a `/#comprar`, botón secundario y hasta 3 micro-beneficios |
-| `sections/garelon-trust-bar.liquid` | GARELON Confianza | Hasta 4 elementos con icono: características en la home, servicio (atención, envío, devoluciones) en la ficha |
-| `sections/garelon-benefits.liquid` | GARELON Beneficios | Encabezado + texto que plantea el problema + hasta 6 tarjetas de beneficio con icono |
-| `sections/garelon-image-text.liquid` | GARELON Imagen y texto | Imagen + texto a dos columnas. Hoy: lifestyle «Un plan sencillo para compartir» (taza marrón). Reutilizable para diferencial, «qué incluye», medidas… |
-| `sections/garelon-ingredients.liquid` | GARELON Detalles (hasta la 1.5, «GARELON Ingredientes») | Imagen + lista de hasta 12 elementos (nombre, línea técnica, descripción) + nota del proveedor. Hoy: «Elige tu color» + qué incluye cada unidad (taza, tenedor, colores, vela no incluida). Sirve para ingredientes, materiales o especificaciones. |
-| `sections/garelon-how-to-use.liquid` | GARELON Cómo usarlo | Imagen + lista de hasta 5 pasos numerados + nota de precaución |
+| `sections/garelon-hero.liquid` | GARELON Portada | Primera pantalla: imagen principal (carga inmediata) sobre un disco suave opcional (`show_stage`), antetítulo, H1, texto, precio real, **colores leídos de la opción «Color» de Shopify** (`show_colors`), botón a `/#comprar`, enlace secundario con flecha y hasta 3 micro-beneficios |
+| `sections/garelon-trust-bar.liquid` | GARELON Confianza | Hasta 4 elementos con icono y enlace opcional: envío gratis, plazo, dudas (contacto) y devoluciones en la home y en la ficha |
+| `sections/garelon-benefits.liquid` | GARELON Beneficios | Encabezado + entradilla + hasta 6 tarjetas con icono. En la Taza Fondue: **momentos** (sobremesa, noche en casa, cita, regalo), no características |
+| `sections/garelon-image-text.liquid` | GARELON Imagen y texto | Imagen + texto a dos columnas. Hoy: «Una taza para cada uno» (tres colores) |
+| `sections/garelon-features.liquid` | GARELON Características (1.8) | **Características y usos en HTML**: foto ancha opcional + tarjetas de característica (icono, título, detalle) + etiquetas de uso (icono + texto) + nota. Sustituye a las infografías con texto pequeño |
+| `sections/garelon-colors.liquid` | GARELON Colores (1.8) | Una tarjeta por color con su foto y «Elegir» (marca ese color en la compra y lleva hasta ella; sin compra en la página, abre la ficha con esa variante) + «Cada unidad incluye» (lista con iconos; lo no incluido, atenuado). Disponibilidad real: color sin stock = «Agotado» |
+| `sections/garelon-ingredients.liquid` | GARELON Detalles | Imagen + lista de hasta 12 elementos (nombre, línea técnica, descripción) + nota. Hoy no se usa en la Taza Fondue; sirve para ingredientes, materiales o especificaciones |
+| `sections/garelon-how-to-use.liquid` | GARELON Cómo usarlo | Hasta **6 pasos** como **tarjetas con icono** (móvil: línea de tiempo; escritorio: 3 × 2) o lista; imagen opcional; nota de precaución con icono |
 | `sections/garelon-faq.liquid` | GARELON FAQ | Acordeón accesible (`details`/`summary`) de hasta 20 preguntas; resuelve los enlaces de contacto y de políticas |
 | `sections/garelon-final-cta.liquid` | GARELON Llamada final | Cierre centrado: isotipo, H2, texto, precio real y botón a `/#comprar`; imagen opcional |
-| `sections/garelon-sticky-atc.liquid` | GARELON Compra fija | Barra fija de compra en móvil, solo en la plantilla de producto. Pulsa el botón real del formulario de Dawn. |
-| `sections/garelon-reviews.liquid` | GARELON Opiniones | Opiniones **solo reales**: bloques de app (`@app`) de una app de reseñas + valoración media opcional desde `reviews.rating` / `reviews.rating_count` (oculta por defecto si hay app, para no duplicar). Sin datos reales no se pinta nada al cliente; en el editor, aviso «Instala o añade el bloque de una app de reseñas para mostrar opiniones reales.» con el estado de cada fuente (sección 10.16) |
+| `sections/garelon-sticky-atc.liquid` | GARELON Compra fija | Barra fija de compra en móvil, **en la ficha y en la home** (1.8). Pulsa el botón real del formulario de Dawn |
+| `sections/garelon-reviews.liquid` | GARELON Opiniones | Opiniones **solo reales**: bloques de app (`@app`) + valoración media opcional desde `reviews.rating` / `reviews.rating_count`. Sin datos reales no se pinta nada al cliente (sección 10.16) |
 
 ### 6.4 Snippets GARELON (`snippets/garelon-*.liquid`)
 
 | Archivo | Función |
 |---|---|
 | `snippets/garelon-image.liquid` | Imagen responsive. Con imagen del editor: `image_url` + `image_tag` (anchos 360-1800). Sin ella: asset del tema con `srcset` 480/720/1080. `eager` = carga inmediata + `fetchpriority="high"`; el resto `loading="lazy"` + `decoding="async"`. El marcador gris solo aparece en el editor. |
-| `snippets/garelon-fallback-image.liquid` | **Catálogo de imágenes del producto dentro del tema:** convierte una clave (`principal`, `colores`, `blanco`, `marron`) en el nombre del asset y su texto alternativo. **Depende del producto.** |
+| `snippets/garelon-fallback-image.liquid` | **Catálogo de imágenes del producto dentro del tema:** convierte una clave (`principal`, `roja`, `colores`, `blanco`, `marron`, `usos`) en el nombre del asset, su alto real y su texto alternativo. **Depende del producto.** |
 | `snippets/garelon-srcset.liquid` | Solo el valor `srcset`, para el `<source>` de `<picture>` (portada con imagen distinta en móvil) |
-| `snippets/garelon-gallery.liquid` | Galería de la zona de compra de la home. Usa el carrusel de Dawn (`slider-component`), con flechas y contador. **La lista de claves depende del producto.** |
+| `snippets/garelon-gallery.liquid` | Galería con las imágenes del tema (compra de la home y, si se elige, la ficha). Carrusel de Dawn (`slider-component`) con flechas y contador. Cada foto de un color lleva `data-g-color`: al elegir ese color, `garelon.js` desliza hasta ella. `eager: true` en la ficha (LCP). **La lista de claves depende del producto.** |
 | `snippets/garelon-stock.liquid` | «En stock» o «Agotado», solo si Shopify controla el inventario, sin cifras. El id `Inventory-<sección>` lo actualiza `product-info.js` de Dawn. |
 | `snippets/garelon-price-inline.liquid` | Precio compacto real: «Desde» si varía entre variantes, tachado solo si `compare_at_price > price`, «Agotado» |
 | `snippets/garelon-nav.liquid` | Navegación de la tienda de un producto: Inicio, anclas opcionales de la home y Contacto. Versiones `inline` (escritorio) y `drawer` (móvil). Pone `aria-current` en la página actual. |
 | `snippets/garelon-url.liquid` | Resuelve las URL reales de Contacto, Devoluciones, Envíos y Cookies (`type`, `url` o `html`) |
 | `snippets/garelon-logo-fallback.liquid` | Logo desde los assets si no hay uno subido: `wordmark` (cabecera), `stacked` (pie), `isotype` (isotipo a la izquierda del nombre) |
-| `snippets/garelon-icon.liquid` | Iconos SVG lineales en línea (`currentColor`, trazo 1.3). Taza Fondue: `mug`, `fork`, `candle`, `chocolate`, `colors`, `heart`, `gift`; genéricos: `drop`, `leaf`, `steps`, `sparkle`, `lock`, `chat`, `truck`, `return`, `check` |
+| `snippets/garelon-icon.liquid` | Iconos SVG lineales en línea (`currentColor`, trazo 1.3). Producto/cocina: `mug`, `fork`, `candle`, `flame`, `melt`, `stir`, `chocolate`, `cheese`, `strawberry`, `fruit`, `bread`, `waffle`, `measure`, `microwave`, `box`, `colors`; momentos: `heart`, `gift`, `users`, `home`, `moon`; genéricos: `drop`, `leaf`, `steps`/`clock`, `sparkle`, `lock`, `chat`, `truck`, `return`, `check` |
 | `snippets/garelon-flag-es.liquid` | Bandera de España en SVG 3:2 para la barra superior (decorativa, `aria-hidden`) |
 | `snippets/garelon-packs.liquid` | **Color × Pack sobre variantes reales**: pinta el `<variant-selects>` de Dawn con los botones de las otras opciones (Color) y una tarjeta por pack (unidades, precio, precio por unidad, ahorro e insignia calculados con `variant.price` del color elegido). Si el producto no tiene packs reconocibles, pinta el selector estándar de Dawn. Sin JS propio. |
-| `snippets/garelon-choice.liquid` | Botones de las opciones que no son el pack (Color: muestra + nombre + «Agotado»), dentro de `garelon-packs` (1.6) |
+| `snippets/garelon-choice.liquid` | Botones de las opciones que no son el pack (Color: **foto** + nombre + «Agotado»), dentro de `garelon-packs`. Muestra: imagen de la variante de Shopify; si no hay, `garelon-fondue-swatch-<color>.webp` del tema; si no, punto de color |
+| `snippets/garelon-cart-thumb.liquid` | (1.8) Miniatura de respaldo en el cart drawer y en `/cart` cuando la línea no tiene imagen en Shopify: foto del color elegido. Solo visual |
 | `snippets/garelon-packs-diagnostic.liquid` | Aviso de configuración de Color × Pack, solo en el editor (1.6): opción sin configurar, valores sin número, falta «1 unidad», **faltan combinaciones** (p. ej. 8 de 9), sección sin producto |
 | `snippets/garelon-shipping.liquid` | Plazos de envío junto a la compra (bloque `garelon_shipping`): texto editable y prudente + enlace a la política de envío real. |
 | `snippets/garelon-free-shipping.liquid` | «✓ Envío gratis» (+ aclaración opcional) bajo los botones de compra (bloque `garelon_free_shipping`, sección 10.15). Sin iconos ni textos de pago. |
@@ -337,8 +340,8 @@ Están en `GARELON_PRODUCT_MIGRATION_CHECKLIST.md`, y el resumen en la sección 
 
 | Archivo | Tipo | Función |
 |---|---|---|
-| `garelon.css` (29 KB) | Permanente | Toda la capa visual GARELON: tokens, botones, cabecera móvil, secciones, galería, packs, plazos de envío, compra fija, políticas, movimiento reducido |
-| `garelon.js` (4,5 KB) | Permanente | `<garelon-sticky-atc>` (muestra la variante/pack elegido y su precio). Solo se carga en la ficha de producto. Los packs no usan JS propio. |
+| `garelon.css` (~48 KB) | Permanente | Toda la capa visual GARELON: tokens, tipografía, botones, cabecera móvil, portada, zona de compra (color, packs, botones, envío), galería, secciones, compra fija, carrito, políticas, movimiento reducido |
+| `garelon.js` (~8 KB) | Permanente | `<garelon-sticky-atc>` (elección «Color · Pack», precio y foto del color), salto de la galería a la foto del color elegido y botones «Elegir» de la sección Colores. Lo cargan la compra fija y la sección Colores (una sola vez). Los packs no usan JS propio. |
 | `garelon-nav.js` (0,8 KB) | Permanente | Cierra el menú móvil al pulsar un ancla de la misma página. Se carga con `defer` desde la cabecera. |
 | `garelon-wordmark-480.webp` | Marca · permanente | Nombre GARELON, 480×72. Cabecera y pie. |
 | `garelon-fondue-logo-96.webp`, `garelon-fondue-logo-192.webp` | Isotipo de la versión Taza Fondue | Emblema cuadrado (desde `LOGO.png`, sin cambios). Cabecera, pie (encima del nombre) y llamada final. |
@@ -347,8 +350,11 @@ Están en `GARELON_PRODUCT_MIGRATION_CHECKLIST.md`, y el resumen en la sección 
 | `garelon-fondue-colores-{…}.webp` | Producto · temporal | imagen1: los tres colores |
 | `garelon-fondue-blanco-{…}.webp` | Producto · temporal | imagen3: taza blanca |
 | `garelon-fondue-marron-{…}.webp` | Producto · temporal | imagen4: taza marrón |
+| `garelon-fondue-roja-{…}.webp` | Producto · temporal | imagen2 recortada en la taza (galería n.º 1 y tarjeta Rojo) |
+| `garelon-fondue-usos-{480,720,1080}.webp` | Producto · temporal | Franja central de imagen7 corregida (1080 × 426): tres tazas con acompañamientos. Sin la cabecera de iconos con claims |
+| `garelon-fondue-swatch-{rojo,blanco,marron}.webp` | Producto · temporal | Taza de cada color recortada, 160 × 160: muestras del selector, compra fija y carrito |
 
-Todos los `garelon-fondue-*` de producto son cuadrados (1080×1080, 720×720 y 480×480) y pesan entre 12 y 68 KB. El resto de `assets/` es de Dawn (JS, CSS de componentes, iconos `icon-*.svg`).
+Los `garelon-fondue-*` de producto son cuadrados (1080×1080, 720×720 y 480×480) salvo `usos` (horizontal) y las muestras (160×160); pesan entre 4 y 68 KB. El resto de `assets/` es de Dawn (JS, CSS de componentes, iconos `icon-*.svg`).
 
 ### 6.6 Archivos de Dawn modificados (cambios mínimos, marcados `GARELON:`)
 
@@ -360,8 +366,9 @@ Todos los `garelon-fondue-*` de producto son cuadrados (1080×1080, 720×720 y 4
 | `sections/announcement-bar.liquid` | Ajuste de bloque `show_flag_es`: añade la bandera SVG al final del texto |
 | `sections/footer.liquid` | Bloque `garelon_help` (Ayuda). Logo apilado de respaldo. Enlaces legales en orden fijo y solo si tienen contenido. Menús del pie resueltos con `garelon-url`. |
 | `sections/featured-product.liquid` | Sin producto elegido usa `collections.all.products.first`. Ajustes `garelon_gallery`, `garelon_anchor` y `garelon_mobile_info_first` (en móvil, formulario antes que la galería). Bloques `garelon_stock`, `garelon_packs`, `garelon_free_shipping` y `garelon_shipping`. El bloque `variant_picker` no se pinta si hay bloque de packs (un solo `<variant-selects>`). Clase `g-anchor` en la sección. Sin modal de multimedia cuando se usa la galería GARELON. |
-| `sections/main-product.liquid` | Bloques `garelon_packs` (packs = variantes reales), `garelon_free_shipping` y `garelon_shipping`. El bloque `variant_picker` no se pinta si hay bloque de packs. Las pestañas (`collapsible_tab`) resuelven enlaces con `garelon-url`. |
-| `sections/main-404.liquid`, `sections/main-cart-items.liquid` (2 enlaces), `snippets/cart-drawer.liquid` | «Seguir comprando» → `routes.root_url` en vez del catálogo |
+| `sections/main-product.liquid` | Ajuste `garelon_gallery` (1.8): «Imágenes del tema» / «Del tema si no hay multimedia» / «Multimedia de Shopify». Bloques `garelon_packs` (packs = variantes reales), `garelon_free_shipping` y `garelon_shipping`. El bloque `variant_picker` no se pinta si hay bloque de packs. Las pestañas (`collapsible_tab`) resuelven enlaces con `garelon-url`. |
+| `sections/main-404.liquid`, `sections/main-cart-items.liquid` (2 enlaces), `snippets/cart-drawer.liquid` | «Seguir comprando» → `routes.root_url` en vez del catálogo. (1.8) Si la línea no tiene imagen: `garelon-cart-thumb` |
+| `layout/theme.liquid` (1.8) | Título de página `Producto | GARELON` (separador `|` en vez de `–`) |
 | `config/settings_schema.json` | Nombre del tema y grupo **GARELON · Enlaces** (`garelon_contact_page`, `garelon_refund_page`, `garelon_shipping_page`, `garelon_cookies_page`) |
 | `config/settings_data.json` | Colores, fuentes, botones, radios, carrito en cajón, descripción de marca |
 | `locales/es.json` | Español de España: «Añadir al carrito», «Artículo añadido…», «En stock», «Pocas unidades», «Finalizar compra». `products.product.shipping_policy_html` (línea bajo el precio) = « Consulta nuestra política de envío.» en vez de «Los gastos de envío se calculan en la pantalla de pago», que contradecía «Envío gratis». `sections.cart.*shipping_at_checkout*` (8 claves: nota del cart drawer y de `/cart`) = «[Impuestos incluidos.] Envío gratis según las zonas indicadas en nuestra política de envío. Descuentos calculados en la pantalla de pago.» (sin política: «… según la zona de entrega …»), en vez de «Descuentos y envío calculados en la pantalla de pago». |
@@ -371,8 +378,8 @@ Todos los `garelon-fondue-*` de producto son cuadrados (1080×1080, 720×720 y 4
 
 | Archivo | Página | Contenido |
 |---|---|---|
-| `templates/index.json` | **Home / landing** | 9 secciones (sección 9.1) |
-| `templates/product.json` | Ficha de producto | `main-product` + confianza (servicio) + beneficios + cómo usarlo + FAQ + compra fija |
+| `templates/index.json` | **Home / landing** | 12 secciones (sección 9.1) |
+| `templates/product.json` | Ficha de producto | `main-product` (galería del tema) + opiniones + cómo funciona + características + momentos + compartir + confianza + FAQ + compra fija |
 | `templates/page.contact.json` | Contacto | `main-page` + `contact-form` de Dawn |
 | `templates/page.faq.json` | Página de preguntas frecuentes (handle `preguntas-frecuentes`, plantilla `faq`) | `main-page` + `garelon-faq` con las mismas 8 preguntas que la home |
 | `templates/404.json` | 404 | `main-404` + `garelon-final-cta` (IMAGEN 1, «Ver el sérum») |
@@ -382,7 +389,7 @@ Todos los `garelon-fondue-*` de producto son cuadrados (1080×1080, 720×720 y 4
 
 | Archivo | Contenido |
 |---|---|
-| `sections/header-group.json` | `announcement-bar` (esquema 3, 1 bloque: «Envío gratis disponible en España» + `show_flag_es: true`) y `header` (esquema 1, `logo_position: middle-left`, `mobile_logo_position: center`, `menu_type_desktop: dropdown`, `sticky_header_type: on-scroll-up`, `show_line_separator: true`, márgenes 12/12, `nav_source: garelon`, `nav_show_how: false`, `nav_show_ingredients: true`, `nav_show_faq: true`, `hide_catalog_links: true`, `show_isotype: true`) |
+| `sections/header-group.json` | `announcement-bar` (esquema 3, 1 bloque: «Envío gratis a España» + `show_flag_es: true`) y `header` (esquema 1, `logo_position: middle-left`, `mobile_logo_position: center`, `menu_type_desktop: dropdown`, `sticky_header_type: on-scroll-up`, `show_line_separator: true`, márgenes 8/8, `nav_source: garelon`, `nav_show_how: true`, `nav_show_ingredients: true`, `nav_show_faq: true`, `hide_catalog_links: true`, `show_isotype: true`) |
 | `sections/footer-group.json` | `footer` (esquema 2, bloques `brand` y `ayuda`, `newsletter_enable: false`, `payment_enable: false` (sin iconos de pago, 1.5), `show_policy: true`, márgenes 48/32) |
 
 ### 6.9 Otras carpetas y archivos
@@ -396,43 +403,43 @@ Todos los `garelon-fondue-*` de producto son cuadrados (1080×1080, 720×720 y 4
 
 ## 7. Sistema de diseño GARELON (valores reales del código)
 
+> **Regla (1.8):** la estructura (5 esquemas, fondo claro, un color de acción con contraste AA, alternancia de fondos) es GARELON. **Los valores concretos son de cada producto.** Blanco + rojo de la taza + chocolate es la decisión de la Taza Fondue, no una regla para el siguiente producto.
+
 ### 7.1 Esquemas de color (`config/settings_data.json` → `color_schemes`)
 
-Valores de la versión Taza Fondue (v1.7). El baseline del sérum usaba crema `#F8F4EC`, arena `#EFE6D7`, tinta `#1B1714` y dorado `#B88A3B` (rama `baseline/garelon-serum`).
+Valores de la Taza Fondue (1.8). El sérum usaba crema `#F8F4EC`, arena `#EFE6D7`, tinta `#1B1714` y dorado `#B88A3B` (rama `baseline/garelon-serum`); la 1.7, rojo `#C8161D` y barra roja.
 
 | Esquema | Fondo | Texto | Botón | Texto del botón | Botón secundario | Uso actual |
 |---|---|---|---|---|---|---|
-| `scheme-1` | `#FFFFFF` blanco | `#22150F` tinta chocolate | `#C8161D` rojo de la taza | `#FFFFFF` | `#22150F` | Fondo principal: cabecera, portada, opiniones, cómo funciona, beneficios, FAQ, carrito, ficha |
-| `scheme-2` | `#F7F5F3` casi blanco | `#22150F` | `#C8161D` | `#FFFFFF` | `#22150F` | Secciones alternas: compra de la home, características y colores, compartir, pie, 404 |
-| `scheme-3` | `#B8141B` rojo | `#FFFFFF` | `#FFFFFF` | `#B8141B` | `#FFFFFF` | Solo la barra superior |
-| `scheme-4` | `#FFFFFF` | `#22150F` | `#C8161D` | `#FFFFFF` | `#22150F` | Tarjetas de Dawn y la barra de compra fija |
-| `scheme-5` | `#FDF1EF` rosado muy suave | `#22150F` | `#C8161D` | `#FFFFFF` | `#22150F` | Solo la llamada final de la home |
+| `scheme-1` | `#FFFFFF` blanco | `#1E1A17` carbón | `#B3161E` rojo de la taza | `#FFFFFF` | `#1E1A17` | Cabecera, portada, cómo funciona, momentos, colores, FAQ, carrito, ficha |
+| `scheme-2` | `#FAF6F2` blanco cálido | `#1E1A17` | `#B3161E` | `#FFFFFF` | `#1E1A17` | Compra de la home, características, compartir, confianza, pie |
+| `scheme-3` | `#3A2219` chocolate | `#FFFFFF` | `#FFFFFF` | `#3A2219` | `#FFFFFF` | Solo la barra superior (el rojo queda para la acción) |
+| `scheme-4` | `#FFFFFF` | `#1E1A17` | `#B3161E` | `#FFFFFF` | `#1E1A17` | Tarjetas de Dawn y la compra fija |
+| `scheme-5` | `#FCF1EE` rosado muy suave | `#1E1A17` | `#B3161E` | `#FFFFFF` | `#1E1A17` | Solo la llamada final |
 
-Sombra en todos: `#22150F`, sin degradados. Además: `card_color_scheme: scheme-4`, `cart_color_scheme: scheme-1`, `sale_badge_color_scheme: scheme-3` y `sold_out_badge_color_scheme: scheme-2`. `<meta name="theme-color">` usa el fondo del esquema 1. Contraste: rojo `#C8161D` con texto blanco 5,9:1; texto rojo pequeño `#B8141B` 6,7:1 sobre blanco.
+Contraste: rojo `#B3161E` con texto blanco **6,9:1**; como texto pequeño sobre blanco 6,9:1 y sobre `#FAF6F2` 6,4:1; carbón sobre blanco 17,3:1; blanco sobre chocolate 14,8:1.
 
 ### 7.2 Tokens CSS GARELON (`assets/garelon.css` → `:root`)
 
 ```css
---g-red: #c8161d;       /* rojo de la taza: botones, radios, bordes de lo elegido, iconos */
---g-red-dark: #a8121a;  /* hover y texto del ahorro */
---g-red-text: #b8141b;  /* texto rojo pequeño (antetítulos, etiquetas): 6,7:1 sobre blanco */
---g-red-soft: #fdf1ef;  /* fondo del pack y del color elegidos */
---g-red-tint: #fde4e2;  /* fondo de «Ahorra …» */
---g-choc: #5a3222;      /* chocolate, solo de apoyo */
---g-icon: var(--g-red);
---g-ink: #22150f;       /* tinta */
---g-accent-text: var(--g-red-text);
---g-line: rgba(34, 21, 15, 0.12);   /* líneas finas neutras */
---g-radius: 8px;
+--g-red: #b3161e;        /* acción: botones, radios, bordes de lo elegido, iconos */
+--g-red-dark: #93121a;   /* hover y texto del ahorro */
+--g-red-text: #b3161e;   /* texto rojo pequeño (antetítulos) */
+--g-red-soft: #fcf1ee;   /* círculo de iconos, fondo del «+» de la FAQ */
+--g-red-tint: #f8e0dc;   /* fondo de «Ahorra …» */
+--g-stage: #f7e8e3;      /* disco detrás de la taza en la portada */
+--g-choc: #3a2219;       /* chocolate, solo apoyo (barra superior) */
+--g-ink: #1e1a17;        /* carbón */
+--g-line: rgba(30, 26, 23, 0.12);  --g-line-strong: rgba(30, 26, 23, 0.22);
+--g-radius: 12px;  --g-radius-lg: 20px;
+--g-shadow: 0 1px 2px rgba(30,26,23,.05), 0 10px 28px rgba(30,26,23,.07);
 ```
 
-Dentro de `.color-scheme-3` (barra roja): `--g-accent-text`, `--g-icon` en blanco y `--g-line: rgba(255, 255, 255, 0.4)`.
+Dentro de `.color-scheme-3` (barra chocolate): `--g-accent-text` y `--g-icon` en blanco.
 
-Compra: con el pago dinámico activado, «Añadir al carrito» se pinta en rojo (acción principal) y «Comprar ahora» (botón sin marca de Shopify) con borde oscuro, a todo el ancho. Solo CSS: el formulario, el carrito y el checkout no cambian.
+Compra: con el pago dinámico activado, «Añadir al carrito» se pinta en rojo (acción principal, píldora a todo el ancho) y «Comprar ahora» (sin marca de Shopify) con borde. Solo CSS: el formulario, el carrito y el checkout no cambian.
 
-Infografías: `garelon-fallback-image` con `zoom: true` envuelve la imagen en un botón «Ampliar imagen» que la abre en un `<dialog>` nativo (`assets/garelon.js`): en móvil a 720 px de ancho, centrada y desplazable; se cierra con la ×, tocando fuera o con Escape.
-
-Por sección: `--g-pt` y `--g-pb` (márgenes superior e inferior, desde los ajustes `padding_top`/`padding_bottom`).
+Por sección: `--g-pt` y `--g-pb` (márgenes superior e inferior; en móvil × 0,75).
 
 ### 7.3 Variables de Dawn usadas por la capa GARELON
 
@@ -444,48 +451,40 @@ Las genera `layout/theme.liquid` a partir de los ajustes. **No se escriben a man
 
 ### 7.4 Tipografía
 
-| Elemento | Valor |
+Regla: dos fuentes de la biblioteca de Shopify (sin Google Fonts ni CDN), serif para títulos y sans para texto; **el par concreto lo decide cada producto.** Taza Fondue (1.8): **Lora** sustituye a Playfair Display (herencia del sérum, de alto contraste y aire cosmético); Lora es cálida, de cocina/regalo y se lee mejor en tamaños medianos.
+
+| Elemento | Valor (Taza Fondue) |
 |---|---|
-| Títulos | **Playfair Display 400** (`type_header_font: playfair_display_n4`), `heading_scale: 100` |
-| Texto | **Inter 400** (`type_body_font: inter_n4`), `body_scale: 100` |
-| Cuerpo (Dawn) | 15 px en móvil, 16 px desde 750 px; `letter-spacing: 0.06rem` |
-| Antetítulo `.g-eyebrow` | 11,5 px, peso 500, `letter-spacing: 0.24em`, MAYÚSCULAS, color `--g-accent-text`. Centrado lleva filetes dorados de 24 px a los lados. |
-| H1 portada `.g-hero__heading` | `clamp(3rem, 2.4rem + 2.6vw, 5.2rem)`: 30-52 px, `line-height: 1.1` |
-| H2 de sección `.g-h2` | `clamp(2.5rem, 6.4vw, 3.8rem)`: 25-38 px, `line-height: 1.15` |
-| H3 `.g-h3` | 18,5 px, `line-height: 1.3` |
-| Entradilla `.g-lead` / texto `.g-rte` | 15,5 px en móvil, 17 px desde 750 px, `line-height: 1.65`, color al 80 % |
-| Texto de portada `.g-hero__text` | 15,5 px en móvil, 18 px desde 750 px, máximo 52ch |
-| Texto de tarjeta / paso | 14,5 px, color al 78 % |
-| Nota `.g-note` | 12,5 px, color al 68 % |
-| Número de paso `.g-steps__number` | Fuente de títulos, 15 px, `letter-spacing: 0.14em`, dorado |
-| Pregunta de la FAQ | Fuente de texto, 16 px, peso 500 |
-| Precio `.g-price` | 19 px, peso 500; tachado 15 px al 60 % |
-| Título de la ficha de producto | `clamp(2.4rem, 5.6vw, 3.4rem)` |
+| Títulos | **Lora 400** (`type_header_font: lora_n4`) |
+| Texto | **Inter 400** (`type_body_font: inter_n4`), sin el espaciado entre letras de Dawn (`letter-spacing: 0`) |
+| Antetítulo `.g-eyebrow` | 13 px, peso 600, `letter-spacing: 0.08em`, mayúsculas, rojo, con punto delante |
+| H1 portada `.g-hero__heading` | `clamp(3.2rem, 2.4rem + 2.6vw, 5.4rem)`, `line-height: 1.06` (30 px en pantallas bajas) |
+| H2 `.g-h2` | `clamp(2.7rem, 1.9rem + 2.4vw, 4.2rem)`, `line-height: 1.12` |
+| H3 `.g-h3` | 19 px |
+| Entradilla / texto | 16 px en móvil, 17,5 px desde 750 px, color al 78 % |
+| Paso | «Paso N» 12 px rojo + título Lora 18,5 px + frase 14,5 px |
+| FAQ | Inter 16 px, peso 600; «+» rojo en círculo suave |
+| Precio en la compra | Inter 26 px, peso 600 |
+| Barra superior | Inter 13 px, peso 500 |
 
 ### 7.5 Botones
 
-- **Forma:** Dawn con `buttons_radius: 4`, `buttons_border_thickness: 1`, `buttons_border_opacity: 100`, `buttons_shadow_opacity: 0`.
-- **GARELON (`garelon.css`):**
-  - texto 13 px, peso 500, `letter-spacing: 0.12em`, MAYÚSCULAS;
-  - `min-height: 5rem` (50 px);
-  - transición de color de 0,2 s.
-- **Hover:** el principal pasa a `rgba(var(--color-button), 0.88)`; el secundario, a un fondo `rgba(var(--color-foreground), 0.04)`.
-- **Estilos:** primario tinta sobre crema, con texto blanco; secundario con contorno tinta.
-- **Portada en móvil:** los botones ocupan el 100 % del ancho; desde 750 px, ancho automático.
-- **Barra de compra fija:** 46 px de alto y 110 px de ancho mínimo.
+- **Taza Fondue (1.8):** píldora (`buttons_radius: 40`), texto normal (sin mayúsculas forzadas), 16 px peso 600, 52 px de alto (56 px en «Añadir al carrito»). Hover: el principal se oscurece un 14 %; foco: contorno de 2 px.
+- **Portada en móvil:** botón a todo el ancho y «Cómo funciona» como **enlace con flecha** (no compite con el botón). Escritorio: ancho mínimo 240 px.
+- **Compra fija:** botón píldora de 48 px, 120 px de ancho mínimo.
+- **Agotado:** el botón de Dawn dice «Agotado», gris al 45 %, sin acción.
 
 ### 7.6 Radios, bordes y sombras
 
-| Elemento | Valor |
+| Elemento | Valor (Taza Fondue) |
 |---|---|
-| Botones, campos, píldoras de variante, insignias | 4 px |
-| Tarjetas, contenedores de texto, multimedia, ventanas emergentes | 6 px (`--g-radius`, `card_corner_radius`, `media_radius`, `text_boxes_radius`, `popup_corner_radius`) |
-| Tarjeta GARELON `.g-card` | Borde de 1 px `rgba(tinta, 0.08)`, fondo `rgba(tinta, 0.025)`, radio 6 px, **sin sombra** |
-| Tarjeta de pack `.g-pack` | Borde de 1 px `rgba(tinta, 0.22)`, fondo blanco, radio 8 px. **Seleccionada:** borde rojo de 2 px, fondo `--g-red-soft` y radio rojo lleno. Ahorro en `--g-red-dark` sobre `--g-red-tint`. Insignia: fondo rojo con texto blanco, 10 px en mayúsculas, sobre el borde superior. Agotada: borde discontinuo y texto al 50 %. Los botones de color siguen el mismo patrón. |
-| Caja de plazos `.g-ship` | Borde de 1 px `--g-line`, fondo `rgba(tinta, 0.02)`, radio 6 px, icono de camión en `--g-icon` |
-| Líneas | 1 px `--g-line` (tinta al 12 %) en la barra de características, la FAQ y los pasos |
-| Sombras | Ninguna, salvo la barra de compra fija (`0 -0.6rem 2rem rgba(27,23,20,.06)`) y las ventanas emergentes de Dawn (opacidad del 5 %) |
-| Imagen en arco / círculo (opcional) | Arco `999px 999px 6px 6px`; círculo con doble anillo dorado |
+| Botones y píldoras de color | Píldora (999 px) |
+| Tarjetas GARELON, campos | 12 px (`--g-radius`); imágenes y bloques grandes 20 px (`--g-radius-lg`) |
+| Tarjeta `.g-card` / `.g-features__item` / `.g-colors__card` | Fondo blanco, borde 1 px `--g-line`, sin sombra (sobre fondo blanco cálido se distinguen solas) |
+| Tarjeta de pack `.g-pack` | Radio 14 px, borde `--g-line-strong`. **Elegida:** borde rojo de 2 px y fondo `#FFFAFA`. Etiqueta gris en píldora; ahorro «Ahorra X € (-N %)» en píldora `--g-red-tint`; insignia roja en píldora sobre el borde. Agotada/inexistente: borde discontinuo |
+| Botón de color `.g-choice__button` | Píldora con la foto de la taza (40 px); elegido: borde rojo de 2 px |
+| Iconos de sección | Círculo `--g-red-soft` de 44-56 px con el icono rojo |
+| Sombras | Solo la foto de «Características» (`--g-shadow`) y la compra fija |
 
 ### 7.7 Espaciado y anchos
 
@@ -510,11 +509,9 @@ Las genera `layout/theme.liquid` a partir de los ajustes. **No se escriben a man
 
 ### 7.9 Iconos
 
-- **Estilo:** SVG lineal 24×24, `fill="none"`, `stroke="currentColor"`, `stroke-width="1.3"`, extremos y uniones redondeados. Color `--g-icon` (#9A7433), tamaño 2 rem (2,2 rem en beneficios, dentro de un círculo de 4,4 rem con borde `--g-line`).
-- **Disponibles** (`snippets/garelon-icon.liquid`): `eye`, `eye-under`, `drop`, `lines`, `roller`, `leaf`, `steps`, `sparkle`, `lock`, `chat`, `truck`, `return`, `bottle`, `check`, `none`.
-- **Genéricos** (sirven para cualquier producto): `lock`, `chat`, `truck`, `return`, `check`, `sparkle`, `leaf`, `drop`, `steps`.
-- **Propios del sérum:** `eye`, `eye-under`, `lines`, `roller`, `bottle`.
-- **Iconos nuevos:** se añaden como nuevo `when` en el snippet y como opción en el schema de las secciones que lo usen (portada, confianza, beneficios), con el mismo estilo de trazo. No se usan emojis, packs de iconos externos ni iconos rellenos. Los iconos de Dawn (`icon-*.svg`) solo se usan dentro de los bloques de Dawn (destacados `icon-with-text`, pestañas).
+- **Estilo:** SVG lineal 24×24, `fill="none"`, `stroke="currentColor"`, trazo 1.3 (1.4 en los pasos), extremos redondeados, color `--g-icon`.
+- **Disponibles:** ver 6.4 (`garelon-icon`). Los esquemas de portada, confianza, beneficios, cómo usarlo, características y colores comparten la misma lista de opciones.
+- **Iconos nuevos:** nuevo `when` en el snippet + opción en los schemas que lo usen. Sin emojis, packs externos ni iconos rellenos.
 
 ### 7.10 Tratamiento de imágenes
 
@@ -538,14 +535,14 @@ Inferidas del código y de las medidas del render. Son el «estilo GARELON»: un
 | Decisión | Cómo es hoy | Regla para futuros productos |
 |---|---|---|
 | **Estilo** | Premium limpio y luminoso: fondo blanco/casi blanco, tinta y el color protagonista del producto como acento (en la Taza Fondue, el rojo de la taza; en el sérum era dorado); serif en títulos, sans en texto; mucho aire | Se mantiene para cualquier categoría, también gadgets o mascotas |
-| **Densidad** | 1 idea por sección. Encabezado (antetítulo + H2 + ≤ 1 entradilla) + una lista, tarjetas o imagen. 9 secciones en la home. | 8-11 secciones. No añadir secciones sin contenido o imagen fuerte. |
-| **Portada** | Móvil: imagen ≤ 34vh → marca → H1 (6 palabras) → 1 frase → precio → CTA a ancho completo → secundario → 3 micro-beneficios. Precio y CTA en la primera pantalla a 360-430 px. Escritorio: 2 columnas 1:1, imagen a la derecha. | Igual. El H1 cuenta el beneficio, no el nombre técnico. |
+| **Densidad** | 1 idea por sección. Encabezado (antetítulo + H2 + ≤ 1 entradilla) + una lista, tarjetas o imagen. 11 secciones de contenido en la home (+ compra fija). | 8-12 secciones. No añadir secciones sin contenido o imagen fuerte. |
+| **Portada** | Móvil: imagen ≤ 36vh sobre disco suave → antetítulo → H1 (6-7 palabras) → 1 frase → precio + colores → CTA a ancho completo → enlace «Cómo funciona» → 3 micro-beneficios. **Producto, H1, precio y CTA en la primera pantalla de 320 × 640 a 430 × 932** (en pantallas bajas se oculta la frase). Escritorio: 2 columnas, imagen a la derecha. | Igual. El H1 cuenta el beneficio, no el nombre técnico. |
 | **Texto/imagen** | Divididas 1:1. Imagen ≤ 520 px. En móvil, la imagen va antes que el texto. | Igual |
 | **CTAs** | 3 puntos de compra en la home: portada → `#comprar`, formulario real con packs en `#comprar` (justo después de la portada), llamada final → `#comprar`. Más 1 secundario informativo («Cómo se usa»). La sección del diferencial no lleva botón. | Máximo 3 CTAs de compra. Nada de botones en cada sección. |
-| **Color de acento** (rojo en la Taza Fondue) | Botones de compra, barra superior, antetítulos, filetes de 24 px, trazo de iconos, números de paso, pack y color elegidos, insignia y ahorro | Nunca fondos rojos de sección (solo la barra superior) ni texto rojo largo; el chocolate/marrón solo como apoyo |
-| **Alternancia de fondos** | Blanco / casi blanco para separar secciones sin líneas; rojo solo en la barra superior y un rosado muy suave solo en la llamada final. Orden actual de la home: 1-2-(1)-1-2-1-2-1-5 (portada, compra, opiniones si hay datos reales, cómo funciona, características y colores, beneficios, compartir, FAQ, cierre). | Mantener la alternancia. Dos seguidas con el mismo esquema, como mucho. |
+| **Color de acción** (rojo en la Taza Fondue) | Botones de compra, antetítulos, iconos, números de paso, pack y color elegidos, insignia y ahorro | El color de acción es solo para acción y acentos: nunca fondos de sección ni texto largo. (1.8) La barra superior va en el color de apoyo para no competir con los botones |
+| **Alternancia de fondos** | Blanco / blanco cálido para separar secciones sin líneas; chocolate solo en la barra superior y un rosado muy suave solo en la llamada final. Orden actual de la home: 1-2-(1)-1-2-1-2-1-2-1-5 (portada, compra, opiniones si hay datos reales, cómo funciona, características, momentos, compartir, colores, confianza, FAQ, cierre). | Mantener la alternancia. Dos seguidas con el mismo esquema, como mucho. |
 | **Espacio en blanco** | 56 px por sección en escritorio (~36 px en móvil). 1200 px de ancho. Encabezados centrados con 60ch. | Igual |
-| **Tarjetas** | Borde casi invisible, fondo muy sutil, radio 6 px, sin sombra, icono en círculo con línea dorada | Igual |
+| **Tarjetas** | Blancas con borde casi invisible, sin sombra, icono en círculo de color suave (Taza Fondue: radio 12 px, círculo `--g-red-soft`) | Igual; radio y color del círculo, según el producto |
 | **Longitud del copy** | Frases cortas y prudentes (sección 17.3). Ni párrafos largos ni listas enormes. | Igual |
 | **Composición móvil** | Una columna. Características en 2×2. Beneficios en lista con el icono a la izquierda. Ingredientes en 2 columnas. Pasos apilados. FAQ a ancho completo. Galería deslizable de borde a borde. | Igual |
 | **Cabecera** | 56 px de alto en móvil. Menú · [isotipo GARELON] · carrito. Barra superior de una línea (38 px). | Igual (R18) |
@@ -563,20 +560,22 @@ Antes de la home están los grupos: **barra superior** (esquema 3) y **cabecera*
 
 | # | Id en `index.json` | Tipo de sección | Esquema | Ancla | Contenido actual (Taza Fondue, 1.7) | Imagen | Márgenes |
 |---|---|---|---|---|---|---|---|
-| 1 | `hero` | `garelon-hero` | 1 | `inicio` | Antetítulo «Un pequeño plan que sabe a mucho»; **H1** «Tu fondue de chocolate, directamente en una taza»; 1 frase qué es; precio («A partir de 24,99 €»); «Elegir color y pack» (rojo) → `/#comprar`; «Cómo funciona» → `/#como-funciona`; puntos: Tenedor incluido · 130 ml · 3 colores | imagen2 (taza roja), carga inmediata | 24 / 32 |
-| 2 | `product_cta` | `featured-product` (Dawn) | **2** | `comprar` | Antetítulo «Taza Fondue», título (H2), precio, «Cada unidad: taza de cerámica de 130 ml + tenedor de fondue. Vela no incluida.», **Color × Pack** (`garelon_packs`), «Añadir al carrito» en rojo + pago dinámico, «Envío gratis», stock y plazos (1–3 días · aprox. 8–18 días) | Galería del tema: roja de cerca → tres colores → blanca → marrón | 40 / 56 |
+| 1 | `hero` | `garelon-hero` | 1 | `inicio` | «Un pequeño plan que sabe a mucho»; **H1** «Tu fondue de chocolate, en una taza»; «Taza de cerámica de 130 ml con tenedor de fondue incluido. Para chocolate o queso.»; «A partir de 24,99 €» + Rojo · Blanco · Marrón (de Shopify); «Elegir color y pack» → `/#comprar`; «Cómo funciona →»; Tenedor incluido · Envío gratis · 130 ml | imagen2 (taza roja) sobre disco suave, carga inmediata | 16 / 40 |
+| 2 | `product_cta` | `featured-product` (Dawn) | **2** | `comprar` | «Taza Fondue», título, precio, «Cada unidad…», **Color** (fotos) × **Pack** (tarjetas), «Añadir al carrito» + pago dinámico, Envío gratis, plazos, stock | Galería del tema: roja → tres colores → blanca → marrón (salta al color elegido) | 40 / 56 |
 | 3 | `reviews` | `garelon-reviews` | 1 | `opiniones` | Solo reseñas reales; sin app, **0 px** | — | 56 / 56 |
-| 4 | `how_to` | `garelon-how-to-use` | 1 | `como-funciona` | «Tan sencillo como preparar, calentar y disfrutar»: infografía + 5 pasos en versión compacta (solo títulos) + pie «Imagen ilustrativa. Cada unidad incluye 1 taza y 1 tenedor; la vela no está incluida.» + nota de uso responsable de la llama | **Infografía «Cómo funciona»** (imagen8), ampliable | 56 / 56 |
-| 5 | `includes` | `garelon-ingredients` | **2** | `que-incluye` | Antetítulo «Características y colores»; «Elige tu color»: taza de cerámica 130 ml · tenedor (1 por taza) · Rojo · Blanco · Marrón · vela no incluida + pie «La vela que aparece en la imagen no está incluida.» + nota del proveedor | **Infografía «Características y usos»** (imagen7 corregida), ampliable | 56 / 56 |
-| 6 | `trust` | `garelon-trust-bar` | 1 | — | **Desactivada** (`"disabled": true`): la infografía de características la cubre. Se reactiva en el editor. | — | 32 / 32 |
-| 7 | `benefits` | `garelon-benefits` | 1 | `beneficios` | «Convierte cualquier sobremesa en un pequeño momento especial»: Chocolate o queso · Hecha para compartir · Todo en una taza | — | 56 / 56 |
-| 8 | `lifestyle` | `garelon-image-text` | 2 | `compartir` | «Un plan sencillo para compartir» | imagen1 (tres colores, la roja delante) | 56 / 56 |
-| 9 | `faq` | `garelon-faq` | 1 | `preguntas-frecuentes` | 10 preguntas: qué incluye (con fabricante externo), uso, queso, microondas (según el proveedor), capacidad, colores, packs, vela, envío, daños/dudas | — | 56 / 56 |
-| 10 | `final_cta` | `garelon-final-cta` | **5** | — | Isotipo; «Tu próxima sobremesa puede empezar aquí»; precio; «Elegir mi Taza Fondue» → `/#comprar` | Ninguna | 56 / 64 |
+| 4 | `how_to` | `garelon-how-to-use` | 1 | `como-funciona` | «Así se prepara tu fondue»: **6 pasos con icono** (vela → chocolate o queso → encender → calor → remover → disfrutar) + nota «Vela no incluida…» | — (HTML) | 64 / 64 |
+| 5 | `features` | `garelon-features` | **2** | `caracteristicas` | «Todo lo que necesitas, en una taza»: Cerámica · 130 ml · Tenedor incluido · 3 colores + Perfecta para: Chocolate, Queso, Fresas, Fruta, Pan, Gofres + «Apta para microondas según la información del proveedor.» | Tres tazas con acompañamientos (imagen7 corregida, sin la cabecera de iconos) | 64 / 64 |
+| 6 | `benefits` | `garelon-benefits` | 1 | `momentos` | «Convierte cualquier sobremesa en un pequeño plan»: Sobremesa · Noche en casa · Una cita · Un regalo sencillo | — | 64 / 64 |
+| 7 | `lifestyle` | `garelon-image-text` | 2 | `compartir` | «Una taza para cada uno» | imagen1 (tres colores, la roja delante) | 64 / 64 |
+| 8 | `colors` | `garelon-colors` | 1 | `que-incluye` | «Elige tu color»: Rojo · Blanco · Marrón con «Elegir» + «Cada unidad incluye»: taza 130 ml · tenedor · vela no incluida | Roja, blanca y marrón | 64 / 64 |
+| 9 | `trust` | `garelon-trust-bar` | 2 | — | Envío gratis · Entrega 8–18 días · ¿Dudas? · Devoluciones | — | 40 / 40 |
+| 10 | `faq` | `garelon-faq` | 1 | `preguntas-frecuentes` | 10 preguntas | — | 64 / 64 |
+| 11 | `final_cta` | `garelon-final-cta` | **5** | — | Isotipo; «Tu próxima sobremesa puede empezar aquí»; precio; «Elegir mi Taza Fondue» → `/#comprar` | — | 64 / 72 |
+| 12 | `sticky` | `garelon-sticky-atc` | 4 | — | Compra fija en móvil al pasar la compra: foto del color · «Rojo · 1 unidad» · precio · «Añadir» | — | — |
 
-**Por qué este orden (1.7):** tráfico frío de TikTok Ads en móvil. Tras la compra (y las opiniones reales, si hay), la infografía «Cómo funciona» explica en una imagen qué es y cómo se usa; justo después, «Características y usos» muestra qué incluye y los tres colores. Beneficios, compartir y FAQ quedan como apoyo. Las infografías tienen texto pequeño: por eso se pueden ampliar al tocarlas y los pasos también están en texto (accesibles y legibles).
+**Por qué este orden (1.8):** tráfico frío de TikTok en móvil. Portada = qué es + precio + CTA en la primera pantalla; compra justo después; prueba social real; **cómo funciona** (la duda n.º 1: «¿cómo se calienta?»); **características y usos** (qué es exactamente y con qué se come); momentos y lifestyle (deseo); colores + qué incluye (decisión y verdad del producto, con «Elegir» que devuelve a la compra); confianza; dudas; cierre. La compra fija acompaña todo el scroll sin tapar la portada.
 
-**Infografía de características corregida:** `garelon-fondue-caracteristicas-*.webp` sale de imagen7 con dos correcciones para que coincida con el producto real: la etiqueta del color oscuro dice «Marrón» (el original decía otro nombre) y se retiraron los corazones dibujados sobre las tazas (la taza real solo lleva «Chocolat...»). El original sigue en la raíz sin tocar. Quedan en ambas infografías, con pie aclaratorio: la vela encendida (no incluida) y, en la de «Cómo funciona», el texto «Chocolat» sin puntos y un segundo tenedor en la escena.
+**Infografías (imagen7/imagen8):** ya no se muestran como imagen. imagen8 tenía «Chocolat» sin los puntos, dos tenedores y una burbuja «Apto para microondas»; imagen7, «Cerámica resistente · Duradera». Se usan como **referencia** de la sección en HTML; de imagen7 solo se aprovecha la franja central de fotos (corregida).
 
 La estructura del sérum (con `roller` e `ingredients`) está en la rama `baseline/garelon-serum`.
 
@@ -687,14 +686,10 @@ Para cada componente: **archivo · función · entradas y ajustes · qué puede 
 - **Se conserva:** la lista siempre en HTML, aunque la imagen la repita (accesibilidad y SEO); la nota de origen de los datos; imagen y lista a 2 columnas desde 990 px.
 
 ### 10.6 Cómo usarlo · `sections/garelon-how-to-use.liquid`
-- **Función:** pasos de uso.
-- **Ajustes:** `eyebrow`, `heading`, `image`, `fallback_image` (hoy `blanco`; opciones `principal`, `colores`, `blanco`, `marron` o `none`), `show_images` (imagen por paso, `false`), `note` (precaución), `color_scheme`, `anchor` (`como-usarlo`), márgenes.
-- **Bloques:** `step` (`image`, `label` «01», `title`, `text`), máximo 5. Cada H3 lleva «Paso N:» oculto para lectores de pantalla.
-- **Cambia:** los pasos, la nota y la imagen.
-- **Se conserva:**
-  - lista `<ol>` apilada junto a la imagen;
-  - sin imagen, en columnas desde 750 px;
-  - números en dorado con la fuente de títulos.
+- **Función:** pasos de uso legibles en móvil, sin texto dentro de imágenes.
+- **Ajustes:** `eyebrow`, `heading`, `text` (entradilla), `steps_style` (`cards` = tarjetas con icono · `list`), `image` + `fallback_image` (opcional), `image_caption`, `show_images` (foto por paso en lugar del icono), `note` (precaución, con icono), esquema, `anchor` (`como-funciona`), márgenes.
+- **Bloques:** `step` (`icon`, `image`, `label`, `title`, `text`), máximo **6**. Cada H3 lleva «Paso N:» oculto para lectores de pantalla; el número visible se pinta como «Paso N».
+- **Se conserva:** `<ol>`; móvil en línea de tiempo vertical; escritorio 3 × 2; sin tiempos ni temperaturas si no hay dato oficial.
 
 ### 10.7 Compra en la home · `sections/featured-product.liquid` (Dawn + GARELON)
 - **Función:** vender en la home con el formulario real de Shopify.
@@ -723,12 +718,10 @@ Para cada componente: **archivo · función · entradas y ajustes · qué puede 
 - **Se conserva:** isotipo GARELON, composición centrada sin imagen, precio real.
 
 ### 10.10 Compra fija · `sections/garelon-sticky-atc.liquid` + `assets/garelon.js`
-- **Función:** barra inferior en móvil con miniatura, título, precio y botón. Aparece cuando el botón principal sale de la pantalla por arriba.
-- **Solo en la ficha:** `enabled_on.templates: ["product"]`.
-- **Ajustes:** `button_label` («Añadir»), `show_on_desktop` (`false`), `color_scheme` (`scheme-4`).
-- **Funcionamiento:** no tiene formulario propio. Pulsa `#ProductSubmitButton-<sección>`, copia el precio de `#price-<sección>` y escucha `PUB_SUB_EVENTS.variantChange`. Muestra la variante elegida: la etiqueta del pack marcado (`#variant-selects-<sección> input:checked` → `data-pack-label`) o, sin packs, `variant.title`.
-- **Cambia:** nada, salvo la etiqueta si hiciera falta.
-- **Se conserva:** entera.
+- **Función:** barra inferior en móvil con la foto del color, la elección («Rojo · 2 unidades»), el precio y «Añadir». Aparece cuando el botón principal sale de la pantalla por arriba y se oculta al volver.
+- **Dónde (1.8):** ficha y **home** (`enabled_on.templates: ["product", "index"]`). En la home usa el producto del ajuste `product` (el mismo que la compra) y el formulario de la sección de compra.
+- **Ajustes:** `product` (solo home), `button_label` («Añadir»), `show_on_desktop` (`false`), `color_scheme` (`scheme-4`).
+- **Funcionamiento:** no tiene formulario propio. Pulsa `#ProductSubmitButton-<sección>` (ficha: `product-info#MainProduct-…`; home: el primer botón de compra), copia `#price-<sección>`, escucha `PUB_SUB_EVENTS.variantChange` y lee las etiquetas marcadas (`data-choice-label`). Miniatura: la de la variante de Shopify; si no hay, la foto del color del selector.
 
 ### 10.11 Packs · bloque `garelon_packs` (en `main-product` y `featured-product`) + `snippets/garelon-packs.liquid`
 - **Qué es:** un selector visual de **variantes reales**. Cada tarjeta es una variante de Shopify («1 unidad», «2 unidades», «3 unidades») y al elegirla se selecciona **esa variante con cantidad 1**. Así el carrito y el proveedor reciben una línea «2 unidades» × 1, nunca «1 unidad» × 2 ni «2 unidades» × 2. (Hasta septiembre de 2026 el bloque solo cambiaba la cantidad: ese sistema ya no existe.)
@@ -786,6 +779,22 @@ Para cada componente: **archivo · función · entradas y ajustes · qué puede 
 - **Sin datos reales:** no se pinta nada para el cliente (nada de «0 opiniones»). En el editor: «Instala o añade el bloque de una app de reseñas para mostrar opiniones reales.» y el estado de cada fuente: bloque de app, producto de la valoración media (sin elegir / nombre) y valoración de Shopify (sin producto / no existe / existe pero desactivada).
 - **Conectar una app:** Shopify App Store → app de reseñas compatible con bloques de app (theme app blocks) → en el editor, sección «GARELON Opiniones» → «Añadir bloque» → **Apps** → el bloque de la app (en la home, el de carrusel o «todas las reseñas»; en la ficha, el widget de reseñas del producto). No añadir el mismo widget también en `main-product` (se duplicaría). Configurar en la app los colores GARELON: texto `#1b1714`, estrellas/acento `#9a7433`, borde `rgba(184,138,59,.32)`, fondo blanco/crema, sin carruseles automáticos.
 - **Sin JS propio ni librerías.** El diseño de las tarjetas lo pone la app; el tema da el contenedor (máx. 1100 px), el encabezado y la valoración.
+
+### 10.17 Características y usos · `sections/garelon-features.liquid` (1.8)
+- **Función:** qué es el producto y para qué sirve, en HTML: foto ancha opcional + tarjetas de característica + etiquetas de uso + nota.
+- **Ajustes:** `eyebrow`, `heading`, `text`, `image`, `fallback_image` (`usos`, `colores`, `principal`, `none`), `image_caption`, `features_heading`, `uses_heading`, `note`, esquema, `anchor` (`caracteristicas`), márgenes.
+- **Bloques:** `feature` (`icon`, `title`, `text`) y `use` (`icon`, `label`), 16 en total.
+- **Reglas:** solo datos confirmados; lo que solo afirma el proveedor va en la nota («según la información del proveedor»). Nada de «resistente», «duradera» ni certificados.
+
+### 10.18 Colores · `sections/garelon-colors.liquid` (1.8)
+- **Función:** elegir color con foto y dejar claro qué incluye cada unidad.
+- **Ajustes:** `product`, `eyebrow`, `heading`, `text`, `button_label` («Elegir»), `includes_heading`, esquema, `anchor` (`que-incluye`), márgenes.
+- **Bloques:** `color` (`name` = valor exacto de la opción Color, `image`, `fallback_image`, `alt`) e `include` (`icon`, `text`, `muted` para lo no incluido).
+- **Funcionamiento:** el enlace «Elegir» apunta a la primera variante disponible de ese color (`?variant=`); con JS marca ese color en el selector de la compra de la misma página y lleva hasta ella. Sin variantes disponibles de ese color: «Agotado».
+
+### 10.19 Galería del tema en la ficha · ajuste `garelon_gallery` de `main-product` (1.8)
+- **Por qué:** la multimedia importada del proveedor puede no coincidir con el producto real. Con «Imágenes del tema» la ficha usa `garelon-gallery` (fotos elegidas, primera con carga prioritaria) y salta a la foto del color elegido.
+- **Cuándo cambiarlo:** a «Multimedia de Shopify» cuando las fotos buenas estén subidas al producto y cada color tenga su imagen (así también el carrito, la compra fija y los emails muestran la foto del color).
 
 ### 10.13 Ayuda del pie · bloque `garelon_help` de `sections/footer.liquid`
 - **Ajustes:**
@@ -855,7 +864,7 @@ Su API está documentada en el comentario de cabecera de cada archivo.
 
 - **Sección:** `sections/announcement-bar.liquid` (Dawn), dentro de `sections/header-group.json`, con el esquema 3 (tinta con texto crema).
 - **Un solo bloque** `announcement`:
-  - `text`: «Envío gratis disponible en España»;
+  - `text`: «Envío gratis a España»;
   - `link`: vacío;
   - `show_flag_es`: `true` (ajuste añadido por GARELON).
 - **Bandera:** `snippets/garelon-flag-es.liquid`, SVG de 3:2 (`#AA151B` / `#F1BF00`), `.garelon-flag` de 1,5 em × 1 em, `aria-hidden`. Se usa en vez del emoji 🇪🇸 porque Windows no muestra emojis de bandera (saldría «ES»).

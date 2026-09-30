@@ -8,9 +8,10 @@
   color (2 rojas, 3 blancas…): lo garantiza la propia variante, nunca se mezclan colores.
 
   Qué ve el cliente ANTES de añadir al carrito:
-    Color (botones con muestra) → Elige tu pack (tarjetas con precio del pack, precio por
-    unidad, «Ahorra X € · -N %», «Comprando por separado: Y €» e insignia «Mejor
-    precio/unidad» si de verdad es el pack con el precio por unidad más bajo).
+    Color (botones con la foto de ese color) → Elige tu pack (tarjetas con precio del pack,
+    precio por unidad, «Ahorra X € (-N %)», referencia «Comprando por separado: Y €» visible u
+    oculta según el ajuste, e insignia «Mejor precio/unidad» si de verdad es el pack con el
+    precio por unidad más bajo).
   Sin opción de color, funciona igual que antes (solo packs).
 
   Cada combinación es UNA variante y la cantidad es siempre 1: «Rojo / 2 unidades» llega al
@@ -433,7 +434,7 @@
                   <span class="g-pack__save">
                     Ahorra {{ savings | money -}}
                     {%- if block.settings.show_percent -%}
-                      <span aria-hidden="true"> · </span><span class="g-pack__percent">-{{ savings_percent }}&nbsp;%</span>
+                      {{ ' ' }}<span class="g-pack__percent">(-{{ savings_percent }}&nbsp;%)</span>
                     {%- endif -%}
                   </span>
                   {%- if block.settings.show_reference and block.settings.reference_label != blank -%}
