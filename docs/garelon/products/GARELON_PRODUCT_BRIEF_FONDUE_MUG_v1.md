@@ -8,7 +8,7 @@
 
 **Nombre provisional:** Taza de fondue de cerámica para chocolate  
 **Nombre corto:** la taza de fondue  
-**Contenido confirmado por ficha:** “Taza x 1 unidad + Cuchara x 1 unidad”. Las fotos muestran un utensilio tipo tenedor, así que el tipo exacto queda **PENDIENTE DE CONFIRMAR**. La vela tealight aparece en imágenes pero **NO está confirmada como incluida**.  
+**Contenido confirmado:** 1 taza + 1 tenedor tipo fondue para pinchar fruta (p. ej. fresas) y sumergirla en chocolate. **La vela tealight NO está incluida.**  
 **Marca física:** no hay marca comercial verificada; lleva el texto decorativo `Chocolat...`.
 
 ## 2. TÍTULO DEL PROVEEDOR
@@ -21,7 +21,7 @@ Proveedor actual: **CJ Dropshipping**.
 
 Material: cerámica. Patrón: color sólido. Embalaje individual. Estructura: capa única. Forma: redonda. Capacidad declarada: 101–200 ml. La ficha indica microondas disponible. El proveedor la posiciona para regalos, parejas, amigos, celebraciones y usos de chocolate/olla caliente.
 
-Lista de empaque: `Taza x 1 unidad + Cuchara x 1 unidad`.
+Lista real confirmada por el propietario: **1 taza + 1 tenedor tipo fondue**. La ficha del proveedor dice “cuchara”, pero se considera incorrecto frente al producto real confirmado. **La vela no está incluida.**
 
 ## 4. CATEGORÍA
 
@@ -37,7 +37,7 @@ Producto: **2,17 €/ud.**
 | 2 uds. | 16,78 € | 8,39 € |
 | 3 uds. | 23,44 € | ≈7,81 € |
 
-**Precios de venta: NO DEFINITIVOS.** Propuesta de trabajo: 24,99 / 39,99 / 54,99 €. No hardcodear en tema.
+**Precios de venta definidos:** 1 unidad **24,99 €** · 2 unidades **39,99 €** · 3 unidades **54,99 €**. El tema debe leerlos de Shopify; no hardcodear precios comerciales en Liquid.
 
 ## 6. VARIANTES
 
@@ -51,7 +51,7 @@ Color + capacidad fija 200 ml.
 
 `Lists: 57` no se interpreta como stock.
 
-**Packs 1/2/3:** comercialmente interesantes, pero **PENDIENTE DE ARQUITECTURA** por coexistencia con Color. No crear Color × Pack sin validar mapping CJ.
+**Packs 1/2/3 confirmados.** Cada pack debe ser **monocolor**: 2 rojas / 2 blancas / 2 marrones; 3 rojas / 3 blancas / 3 marrones. No se permiten combinaciones mixtas dentro del mismo pack. La arquitectura objetivo deberá representar **Color × Pack** sin mezclar colores y deberá validarse contra el mapping real de CJ antes de publicar.
 
 ## 7. CARACTERÍSTICAS OBJETIVAS
 
@@ -60,7 +60,7 @@ Color + capacidad fija 200 ml.
 - Tres colores.
 - Compartimento inferior visible para tealight.
 - Asa lateral.
-- Utensilio lateral incluido según imágenes/ficha, tipo exacto pendiente.
+- **Tenedor tipo fondue** incluido, destinado a pinchar fruta y mojarla en chocolate.
 - Embalaje individual.
 
 ## 8. ESPECIFICACIONES
@@ -82,7 +82,7 @@ Instrucciones oficiales completas: **NO DISPONIBLE**. Las imágenes muestran tea
 
 ## 11. ADVERTENCIAS
 
-Faltan advertencias oficiales. Validar antes de publicar: llama abierta, superficies calientes, limpieza, microondas, inclusión de vela y uso por menores.
+Faltan advertencias oficiales. Validar antes de publicar: llama abierta, superficies calientes, limpieza, microondas y uso por menores. **La vela no está incluida.**
 
 ## 12. ARGUMENTOS DEL PROVEEDOR
 
@@ -90,7 +90,7 @@ Producto de cerámica para chocolate/olla caliente, visual y orientado también 
 
 ## 13. CLAIMS A EVITAR
 
-No afirmar sin prueba: tiempos/temperaturas exactos, seguridad absoluta, certificaciones alimentarias, resistencia térmica concreta, vela incluida, utensilio exacto, apto para niños, “más vendido”, cifras de ventas o reseñas.
+No afirmar sin prueba: tiempos/temperaturas exactos, seguridad absoluta, certificaciones alimentarias, resistencia térmica concreta, apto para niños, “más vendido”, cifras de ventas o reseñas. **No afirmar que incluye vela.** El utensilio sí puede describirse como **tenedor tipo fondue**.
 
 ## 14. ENVÍO
 
@@ -131,15 +131,12 @@ Usarlo solo para estudiar CRO/estructura móvil/oferta. No copiar marca, logo, t
 - Rama congelada: `baseline/garelon-serum`.
 - Rama nueva: `claude/fondue-mug`.
 - Handle Shopify nuevo: NO DISPONIBLE.
-- Packs: PENDIENTE decidir Color × Pack + mapping CJ.
+- Packs: **confirmados 1/2/3 y monocolor**. Arquitectura: Color × Pack, sin mezclas. Mapping CJ aún pendiente de validar.
 
 ## PENDIENTES CRÍTICOS
 
 1. Descargar imágenes originales CJ.
-2. Confirmar tenedor/cuchara.
-3. Confirmar si la vela se incluye.
-4. Resolver arquitectura Color × Pack.
-5. Validar mapping CJ.
-6. Fijar precios definitivos.
-7. Importar/conectar producto a Shopify y obtener handle.
-8. Revisar advertencias/seguridad o muestra física.
+2. Validar mapping CJ para las 9 combinaciones Color × Pack o la alternativa técnica que use CJ.
+3. Importar/conectar producto a Shopify y obtener handle.
+4. Revisar advertencias/seguridad o muestra física.
+5. Confirmar que Shopify/CJ pueden mantener packs monocolor sin combinaciones mixtas.
