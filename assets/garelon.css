@@ -1,0 +1,1805 @@
+/* ==========================================================================
+   GARELON · Capa de marca sobre Dawn
+   Mobile first. Sin dependencias externas. Colores de marca como tokens;
+   los colores de fondo/texto/botón vienen de los esquemas de Dawn
+   (Configuración del tema › Colores), así todo sigue siendo editable.
+   ========================================================================== */
+
+:root {
+  --g-gold: #b88a3b;
+  --g-gold-light: #d2b06a;
+  --g-gold-text: #7a5a24; /* dorado accesible para texto pequeño sobre crema */
+  --g-icon: #9a7433;
+  --g-ink: #1b1714;
+  --g-accent-text: var(--g-gold-text);
+  --g-line: rgba(184, 138, 59, 0.32);
+  --g-radius: 6px;
+}
+
+.color-scheme-3 {
+  --g-accent-text: var(--g-gold-light);
+  --g-icon: var(--g-gold-light);
+  --g-line: rgba(210, 176, 106, 0.4);
+}
+
+/* ---------- Botones ---------- */
+.button,
+.shopify-challenge__button,
+.customer button {
+  font-size: 1.3rem;
+  font-weight: 500;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  min-height: 5rem;
+  transition: background-color 0.2s ease, color 0.2s ease;
+}
+
+.button--primary:not([disabled]):hover {
+  background-color: rgba(var(--color-button), 0.88);
+}
+
+.button--secondary:not([disabled]):hover {
+  background-color: rgba(var(--color-foreground), 0.04);
+}
+
+/* ---------- Cabecera ---------- */
+.garelon-logo--wordmark .header__heading-logo {
+  display: block;
+  height: auto;
+}
+
+@media screen and (max-width: 749px) {
+  .garelon-logo--wordmark .header__heading-logo {
+    width: 12.4rem;
+  }
+}
+
+/* Isotipo a la izquierda del nombre: mismo enlace, misma altura de cabecera. */
+.garelon-brand-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.9rem;
+}
+
+.garelon-brand-link .header__heading-logo-wrapper {
+  flex: 0 0 auto;
+  width: auto;
+}
+
+.garelon-header-isotype {
+  display: block;
+  flex: 0 0 auto;
+  width: auto;
+  height: 2.8rem;
+}
+
+@media screen and (max-width: 749px) {
+  .garelon-brand-link {
+    gap: 0.6rem;
+  }
+
+  .garelon-header-isotype {
+    height: 2.3rem;
+  }
+}
+
+/* Cabecera móvil (< 750 px): menú · [isotipo GARELON] · carrito.
+   Con la cuenta de cliente activada Dawn pone 4 iconos (menú, lupa, cuenta y carrito)
+   y en 320–430 px se montaban sobre el logo. La búsqueda y la cuenta pasan al menú
+   (.garelon-drawer-utility) y el logo queda centrado entre dos columnas iguales. */
+@media screen and (max-width: 749px) {
+  .section-header .header-wrapper .header.header--has-menu:not(.header--mobile-left) {
+    grid-template-areas: 'left-icons heading icons';
+    grid-template-columns: 1fr auto 1fr;
+  }
+
+  .section-header .header-wrapper .header.header--has-menu > .header__search,
+  .section-header .header-wrapper .header.header--has-menu .header__icons > .header__search,
+  .section-header .header-wrapper .header.header--has-menu .header__icons > .header__icon--account {
+    display: none;
+  }
+}
+
+/* Búsqueda y cuenta dentro del menú móvil (solo cuando salen de la barra). */
+.garelon-drawer-utility {
+  display: none;
+  margin: 0;
+  padding: 1.2rem 0;
+}
+
+.garelon-drawer-utility__link {
+  display: flex;
+  align-items: center;
+  gap: 1.2rem;
+  padding: 1.1rem 3rem;
+  font-size: 1.5rem;
+  color: rgb(var(--color-foreground));
+  text-decoration: none;
+}
+
+.garelon-drawer-utility__link .svg-wrapper {
+  display: inline-flex;
+  width: 2rem;
+  height: 2rem;
+}
+
+.garelon-drawer-utility__link .icon {
+  width: 2rem;
+  height: 2rem;
+}
+
+@media screen and (max-width: 749px) {
+  .garelon-drawer-utility {
+    display: block;
+  }
+}
+
+/* Barra superior: bandera de España al final del texto, sin cambiar la altura. */
+.garelon-flag {
+  display: inline-block;
+  width: 1.5em;
+  height: 1em;
+  margin-left: 0.15em;
+  vertical-align: -0.12em;
+  border-radius: 0.15rem;
+  box-shadow: 0 0 0 0.05rem rgba(0, 0, 0, 0.12);
+}
+
+.footer .garelon-logo--stacked img {
+  display: block;
+  width: 100%;
+  height: auto;
+}
+
+/* ---------- Pie de página: bloque Ayuda ---------- */
+.garelon-help__text > :first-child {
+  margin-top: 0;
+}
+
+.garelon-help__text > :last-child {
+  margin-bottom: 0;
+}
+
+.garelon-help__text {
+  max-width: 34rem;
+}
+
+.garelon-help__link {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.6rem;
+  margin-top: 1.2rem;
+  padding: 0.6rem 0;
+  color: rgb(var(--color-foreground));
+  font-size: 1.4rem;
+  font-weight: 500;
+  text-decoration: none;
+}
+
+.garelon-help__label {
+  text-decoration: underline;
+  text-underline-offset: 0.4rem;
+  text-decoration-thickness: 0.1rem;
+  transition: text-decoration-thickness var(--duration-short) ease;
+}
+
+.garelon-help__link:hover .garelon-help__label {
+  text-decoration-thickness: 0.2rem;
+}
+
+.garelon-help__arrow {
+  display: inline-block;
+  transition: transform var(--duration-short) ease;
+}
+
+.garelon-help__link:hover .garelon-help__arrow,
+.garelon-help__link:focus-visible .garelon-help__arrow {
+  transform: translateX(0.3rem);
+}
+
+.garelon-help__menu {
+  margin-top: 1.2rem;
+}
+
+/* ---------- Estructura de sección ---------- */
+.g-section {
+  padding-top: calc(var(--g-pt, 48px) * 0.65);
+  padding-bottom: calc(var(--g-pb, 48px) * 0.65);
+}
+
+.g-section[id] {
+  scroll-margin-top: 7.2rem;
+}
+
+@media screen and (min-width: 750px) {
+  .g-section {
+    padding-top: var(--g-pt, 48px);
+    padding-bottom: var(--g-pb, 48px);
+  }
+}
+
+/* Destino de los botones «Comprar» (/#comprar): deja sitio a la cabecera fija. */
+.g-anchor[id] {
+  scroll-margin-top: 7.2rem;
+}
+
+/* ---------- Tipografía ---------- */
+.g-eyebrow {
+  margin: 0 0 1.2rem;
+  font-size: 1.15rem;
+  font-weight: 500;
+  letter-spacing: 0.24em;
+  line-height: 1.4;
+  text-transform: uppercase;
+  color: var(--g-accent-text);
+}
+
+.g-h2 {
+  margin: 0 0 1.4rem;
+  font-size: clamp(2.5rem, 6.4vw, 3.8rem);
+  line-height: 1.15;
+  letter-spacing: 0;
+}
+
+.g-h3 {
+  margin: 0 0 0.6rem;
+  font-size: 1.85rem;
+  line-height: 1.3;
+  letter-spacing: 0;
+}
+
+.g-lead,
+.g-rte {
+  font-size: 1.55rem;
+  line-height: 1.65;
+  color: rgba(var(--color-foreground), 0.8);
+}
+
+.g-lead p,
+.g-rte p {
+  margin: 0 0 1.2rem;
+}
+
+.g-lead > :last-child,
+.g-rte > :last-child {
+  margin-bottom: 0;
+}
+
+.g-rte a {
+  color: rgb(var(--color-foreground));
+  text-underline-offset: 0.3rem;
+}
+
+@media screen and (min-width: 750px) {
+  .g-lead,
+  .g-rte {
+    font-size: 1.7rem;
+  }
+}
+
+.g-heading-group {
+  margin-bottom: 2.8rem;
+}
+
+.g-heading-group > :last-child {
+  margin-bottom: 0;
+}
+
+.g-heading-group--center {
+  max-width: 68rem;
+  margin-inline: auto;
+  text-align: center;
+}
+
+.g-heading-group--center .g-lead {
+  margin-inline: auto;
+  max-width: 60ch;
+}
+
+.g-heading-group--center .g-eyebrow {
+  display: inline-flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.g-heading-group--center .g-eyebrow::before,
+.g-heading-group--center .g-eyebrow::after {
+  content: '';
+  width: 2.4rem;
+  height: 1px;
+  background: var(--g-gold);
+}
+
+@media screen and (min-width: 750px) {
+  .g-heading-group {
+    margin-bottom: 4rem;
+  }
+}
+
+.g-note {
+  margin: 2.4rem 0 0;
+  font-size: 1.25rem;
+  line-height: 1.5;
+  color: rgba(var(--color-foreground), 0.68);
+}
+
+.g-note--center {
+  text-align: center;
+}
+
+.g-icon {
+  width: 2rem;
+  height: 2rem;
+  flex: none;
+  color: var(--g-icon);
+}
+
+.g-buttons {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+  margin-top: 2.4rem;
+}
+
+.g-buttons--center {
+  justify-content: center;
+}
+
+.g-card {
+  border: 1px solid rgba(var(--color-foreground), 0.08);
+  border-radius: var(--g-radius);
+  background: rgba(var(--color-foreground), 0.025);
+}
+
+.garelon-placeholder {
+  display: block;
+  width: 100%;
+  height: auto;
+  aspect-ratio: 4 / 3;
+  background: rgba(var(--color-foreground), 0.05);
+  fill: rgba(var(--color-foreground), 0.25);
+}
+
+/* ---------- Precio compacto ---------- */
+.g-price {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 0.4rem 1rem;
+  margin: 1.8rem 0 0;
+  font-size: 1.9rem;
+  font-weight: 500;
+  line-height: 1.3;
+}
+
+.g-price__compare {
+  font-size: 1.5rem;
+  font-weight: 400;
+  color: rgba(var(--color-foreground), 0.6);
+}
+
+.g-price__status {
+  font-size: 1.2rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+
+/* ---------- Hero ---------- */
+.g-hero__grid {
+  display: grid;
+  gap: 1.6rem;
+  align-items: center;
+}
+
+.g-hero__grid--text-first .g-hero__content {
+  order: -1;
+}
+
+.g-hero__media img {
+  display: block;
+  width: auto;
+  max-width: 100%;
+  height: auto;
+  max-height: 34vh;
+  margin: 0 auto;
+  border-radius: var(--g-radius);
+  object-fit: contain;
+}
+
+.g-hero__heading {
+  margin: 0 0 1.2rem;
+  font-size: clamp(3rem, 2.4rem + 2.6vw, 5.2rem);
+  line-height: 1.1;
+  letter-spacing: 0;
+}
+
+.g-hero__text {
+  max-width: 52ch;
+  font-size: 1.55rem;
+  line-height: 1.55;
+  color: rgba(var(--color-foreground), 0.8);
+}
+
+.g-hero__text p {
+  margin: 0;
+}
+
+.g-hero .g-buttons {
+  margin-top: 1.6rem;
+}
+
+.g-hero .g-buttons .button {
+  flex: 1 1 100%;
+}
+
+.g-hero__points {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.8rem 1.8rem;
+  margin: 2rem 0 0;
+  padding: 0;
+  list-style: none;
+  font-size: 1.3rem;
+  color: rgba(var(--color-foreground), 0.8);
+}
+
+.g-hero__point {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.6rem;
+}
+
+/* Móviles bajos (p. ej. 375 × 667): imagen algo menor para que precio y botón
+   entren en la primera pantalla. */
+@media screen and (max-width: 749px) and (max-height: 700px) {
+  .g-hero__media img {
+    max-height: 26vh;
+  }
+}
+
+@media screen and (min-width: 750px) {
+  .g-hero__grid {
+    grid-template-columns: 1fr 1fr;
+    gap: 4rem;
+  }
+
+  .g-hero__grid .g-hero__content {
+    order: 1;
+  }
+
+  .g-hero__grid .g-hero__media {
+    order: 2;
+  }
+
+  .g-hero__grid--image-left .g-hero__media {
+    order: 0;
+  }
+
+  .g-hero__media img {
+    width: 100%;
+    max-height: 72vh;
+  }
+
+  .g-hero__text {
+    font-size: 1.8rem;
+  }
+
+  .g-hero .g-buttons .button {
+    flex: 0 1 auto;
+  }
+}
+
+/* ---------- Barra de confianza ---------- */
+.g-trust__list {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1.4rem 1.2rem;
+  margin: 0;
+  padding: 1.6rem 0;
+  list-style: none;
+}
+
+.g-trust__list--bordered {
+  border-top: 1px solid var(--g-line);
+  border-bottom: 1px solid var(--g-line);
+}
+
+.g-trust__item {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  font-size: 1.35rem;
+  line-height: 1.35;
+}
+
+.g-trust__text {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+}
+
+.g-trust__title {
+  font-weight: 500;
+  color: rgb(var(--color-foreground));
+  text-decoration: none;
+}
+
+a.g-trust__title {
+  text-decoration: underline;
+  text-decoration-color: var(--g-line);
+  text-underline-offset: 0.3rem;
+}
+
+.g-trust__desc {
+  font-size: 1.25rem;
+  color: rgba(var(--color-foreground), 0.72);
+}
+
+@media screen and (min-width: 990px) {
+  .g-trust__list {
+    grid-template-columns: none;
+    grid-auto-flow: column;
+    grid-auto-columns: 1fr;
+    padding: 2rem 0;
+  }
+
+  .g-trust__item {
+    justify-content: center;
+  }
+}
+
+/* ---------- Beneficios ---------- */
+.g-benefits__grid {
+  display: grid;
+  gap: 1.2rem;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.g-benefits__item {
+  display: flex;
+  align-items: flex-start;
+  gap: 1.4rem;
+  padding: 1.6rem;
+}
+
+.g-benefits__icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex: none;
+  width: 4.4rem;
+  height: 4.4rem;
+  border: 1px solid var(--g-line);
+  border-radius: 50%;
+}
+
+.g-benefits__icon .g-icon {
+  width: 2.2rem;
+  height: 2.2rem;
+}
+
+.g-benefits__text {
+  margin: 0;
+  font-size: 1.45rem;
+  line-height: 1.55;
+  color: rgba(var(--color-foreground), 0.78);
+}
+
+@media screen and (min-width: 750px) {
+  .g-benefits__grid {
+    grid-template-columns: 1fr 1fr;
+    gap: 1.6rem;
+  }
+}
+
+@media screen and (min-width: 990px) {
+  .g-benefits__grid {
+    grid-template-columns: repeat(auto-fit, minmax(20rem, 1fr));
+  }
+
+  .g-benefits__item {
+    flex-direction: column;
+    align-items: center;
+    padding: 2.8rem 2rem;
+    text-align: center;
+  }
+}
+
+/* ---------- Imagen con texto ---------- */
+.g-split__grid {
+  display: grid;
+  gap: 2.8rem;
+  align-items: center;
+}
+
+.g-split__media {
+  width: 100%;
+  max-width: 52rem;
+  justify-self: center;
+}
+
+.g-split__content {
+  max-width: 54rem;
+}
+
+@media screen and (min-width: 750px) {
+  .g-split__grid {
+    grid-template-columns: 1fr 1fr;
+    gap: 6rem;
+  }
+
+  .g-split__grid--image-right .g-split__media {
+    order: 2;
+  }
+
+  .g-split__grid--no-media {
+    grid-template-columns: minmax(0, 1fr);
+    justify-items: center;
+  }
+}
+
+.g-media {
+  position: relative;
+}
+
+.g-media__frame {
+  overflow: hidden;
+  border-radius: var(--g-radius);
+  background: rgba(var(--color-foreground), 0.04);
+}
+
+.g-media__img {
+  display: block;
+  width: 100%;
+  height: auto;
+}
+
+.g-media--arch .g-media__frame {
+  border-radius: 999px 999px var(--g-radius) var(--g-radius);
+}
+
+.g-media--arch .g-media__img {
+  aspect-ratio: 1;
+  object-fit: cover;
+  object-position: center 30%;
+}
+
+@media screen and (min-width: 750px) {
+  .g-media--arch .g-media__img {
+    aspect-ratio: 4 / 5;
+  }
+}
+
+.g-media--circle .g-media__frame {
+  max-width: 34rem;
+  margin-inline: auto;
+  aspect-ratio: 1;
+  border-radius: 50%;
+  box-shadow: 0 0 0 1px var(--g-line), 0 0 0 0.8rem rgb(var(--color-background)), 0 0 0 calc(0.8rem + 1px) var(--g-line);
+}
+
+.g-media--circle .g-media__img {
+  height: 100%;
+  object-fit: cover;
+}
+
+.g-massage-lines {
+  position: absolute;
+  right: 0;
+  bottom: -1.6rem;
+  width: 9.6rem;
+  height: auto;
+  fill: none;
+  stroke: var(--g-gold);
+  stroke-width: 1.2;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+/* ---------- Ingredientes ---------- */
+.g-ingredients__grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1rem;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.g-ingredients__item {
+  padding: 1.8rem 1.4rem;
+  text-align: center;
+  background: rgba(var(--color-background), 0.6);
+}
+
+.g-ingredients__item:last-child:nth-child(odd) {
+  grid-column: 1 / -1;
+}
+
+.g-ingredients__item::before {
+  content: '';
+  display: block;
+  width: 0.6rem;
+  height: 0.6rem;
+  margin: 0 auto 1.2rem;
+  border-radius: 50%;
+  background: var(--g-gold);
+}
+
+.g-ingredients__name {
+  margin: 0 0 0.4rem;
+  font-size: 1.75rem;
+  line-height: 1.25;
+  letter-spacing: 0;
+}
+
+.g-ingredients__inci {
+  margin: 0 0 0.8rem;
+  font-size: 1.1rem;
+  letter-spacing: 0.08em;
+  line-height: 1.4;
+  text-transform: uppercase;
+  color: var(--g-accent-text);
+}
+
+.g-ingredients__text {
+  margin: 0;
+  font-size: 1.35rem;
+  line-height: 1.5;
+  color: rgba(var(--color-foreground), 0.76);
+}
+
+@media screen and (min-width: 990px) {
+  .g-ingredients__grid {
+    grid-template-columns: repeat(auto-fit, minmax(15rem, 1fr));
+    gap: 1.6rem;
+  }
+
+  .g-ingredients__item:last-child:nth-child(odd) {
+    grid-column: auto;
+  }
+
+  .g-ingredients__item {
+    padding: 2.8rem 2rem;
+  }
+}
+
+/* Ingredientes con imagen (IMAGEN 5): imagen completa y, al lado, la lista en HTML. */
+.g-ingredients__layout--media {
+  display: grid;
+  gap: 2.8rem;
+  align-items: center;
+}
+
+.g-ingredients__visual {
+  width: 100%;
+  max-width: 52rem;
+  justify-self: center;
+}
+
+@media screen and (min-width: 990px) {
+  .g-ingredients__layout--media {
+    grid-template-columns: 1fr 1fr;
+    gap: 5rem;
+  }
+
+  .g-ingredients__layout--media .g-ingredients__grid {
+    grid-template-columns: 1fr 1fr;
+  }
+
+  .g-ingredients__layout--media .g-ingredients__item {
+    padding: 2rem 1.6rem;
+  }
+
+  .g-ingredients__layout--media .g-ingredients__item:last-child:nth-child(odd) {
+    grid-column: 1 / -1;
+  }
+}
+
+/* ---------- Cómo usarlo ---------- */
+.g-steps__list {
+  display: grid;
+  gap: 1.4rem;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.g-steps__item {
+  display: grid;
+  grid-template-columns: 11.2rem 1fr;
+  gap: 1.6rem;
+  align-items: center;
+  padding-bottom: 1.4rem;
+  border-bottom: 1px solid var(--g-line);
+}
+
+.g-steps__item:last-child {
+  padding-bottom: 0;
+  border-bottom: 0;
+}
+
+.g-steps__item:not(:has(.g-steps__media)) {
+  grid-template-columns: 1fr;
+}
+
+.g-steps__media {
+  overflow: hidden;
+  aspect-ratio: 1;
+  border-radius: var(--g-radius);
+  background: rgba(var(--color-foreground), 0.04);
+}
+
+.g-steps__img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.g-steps__number {
+  margin: 0 0 0.2rem;
+  font-family: var(--font-heading-family);
+  font-size: 1.5rem;
+  letter-spacing: 0.14em;
+  color: var(--g-accent-text);
+}
+
+.g-steps__text {
+  margin: 0;
+  font-size: 1.45rem;
+  line-height: 1.5;
+  color: rgba(var(--color-foreground), 0.78);
+}
+
+@media screen and (min-width: 750px) {
+  .g-steps__list {
+    grid-auto-flow: column;
+    grid-auto-columns: 1fr;
+    gap: 3.2rem;
+  }
+
+  .g-steps__item {
+    grid-template-columns: 1fr;
+    align-items: start;
+    padding-bottom: 0;
+    border-bottom: 0;
+    text-align: center;
+  }
+
+  .g-steps__media {
+    aspect-ratio: 4 / 3;
+    border-radius: 999px 999px var(--g-radius) var(--g-radius);
+  }
+}
+
+/* Cómo usarlo con imagen (IMAGEN 4): la imagen ya muestra los pasos, así que al lado
+   van en una lista compacta de texto, legible en móvil y accesible. */
+.g-steps__layout--media {
+  display: grid;
+  gap: 2.8rem;
+  align-items: center;
+}
+
+.g-steps__visual {
+  width: 100%;
+  max-width: 52rem;
+  justify-self: center;
+}
+
+.g-steps__layout--media .g-note {
+  margin-top: 2rem;
+}
+
+.g-steps__list--stacked .g-steps__body {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  column-gap: 1.2rem;
+  align-items: baseline;
+}
+
+.g-steps__list--stacked .g-steps__number {
+  margin: 0;
+}
+
+.g-steps__list--stacked .g-h3 {
+  margin-bottom: 0.4rem;
+}
+
+.g-steps__list--stacked .g-steps__text {
+  grid-column: 2;
+}
+
+@media screen and (min-width: 750px) {
+  .g-steps__layout--media {
+    grid-template-columns: 1fr 1fr;
+    gap: 6rem;
+  }
+
+  .g-steps__list--stacked {
+    grid-auto-flow: row;
+    grid-auto-columns: auto;
+    gap: 1.6rem;
+  }
+
+  .g-steps__list--stacked .g-steps__item {
+    text-align: left;
+    padding-bottom: 1.6rem;
+    border-bottom: 1px solid var(--g-line);
+  }
+
+  .g-steps__list--stacked .g-steps__item:last-child {
+    padding-bottom: 0;
+    border-bottom: 0;
+  }
+}
+
+/* ---------- Preguntas frecuentes ---------- */
+.g-faq__wrap {
+  max-width: 82rem;
+}
+
+.g-faq__list {
+  border-top: 1px solid var(--g-line);
+}
+
+.g-faq__item {
+  border-bottom: 1px solid var(--g-line);
+}
+
+.g-faq__question {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1.6rem;
+  min-height: 4.8rem;
+  padding: 1.6rem 0;
+  list-style: none;
+  cursor: pointer;
+}
+
+.g-faq__question::-webkit-details-marker {
+  display: none;
+}
+
+.g-faq__question-text {
+  margin: 0;
+  font-family: var(--font-body-family);
+  font-size: 1.6rem;
+  font-weight: 500;
+  line-height: 1.4;
+  letter-spacing: 0;
+}
+
+.g-faq__toggle {
+  position: relative;
+  flex: none;
+  width: 1.4rem;
+  height: 1.4rem;
+  color: var(--g-icon);
+}
+
+.g-faq__toggle::before,
+.g-faq__toggle::after {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 0;
+  right: 0;
+  height: 1.5px;
+  background: currentColor;
+  transition: transform 0.25s ease;
+}
+
+.g-faq__toggle::after {
+  transform: rotate(90deg);
+}
+
+.g-faq__item[open] .g-faq__toggle::after {
+  transform: rotate(0deg);
+}
+
+.g-faq__answer {
+  padding: 0 3rem 2rem 0;
+  font-size: 1.5rem;
+}
+
+.g-faq__contact {
+  margin-top: 2.4rem;
+  text-align: center;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .g-faq__item[open] .g-faq__answer {
+    animation: g-fade-in 0.3s ease;
+  }
+}
+
+@keyframes g-fade-in {
+  from {
+    opacity: 0;
+    transform: translateY(-0.4rem);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+/* ---------- Llamada final ---------- */
+.g-final__grid {
+  display: grid;
+  gap: 2.8rem;
+  align-items: center;
+}
+
+.g-final__content {
+  max-width: 56rem;
+  margin-inline: auto;
+  text-align: center;
+}
+
+.g-final__isotype {
+  display: block;
+  width: 3.6rem;
+  height: auto;
+  margin: 0 auto 1.6rem;
+}
+
+.g-final .g-price {
+  justify-content: center;
+}
+
+@media screen and (min-width: 750px) {
+  .g-final__grid {
+    grid-template-columns: 1fr 1fr;
+    gap: 6rem;
+  }
+
+  .g-final__grid--no-media {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}
+
+/* ---------- Galería de la zona de compra (home) ---------- */
+.g-gallery__track {
+  display: flex;
+  gap: 0;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  border-radius: var(--g-radius);
+  scrollbar-width: none;
+}
+
+.g-gallery__track::-webkit-scrollbar {
+  display: none;
+}
+
+.g-gallery__slide {
+  flex: 0 0 100%;
+  width: 100%;
+}
+
+.g-gallery__img {
+  display: block;
+  width: 100%;
+  height: auto;
+  border-radius: var(--g-radius);
+}
+
+.g-gallery__buttons {
+  margin-top: 0.4rem;
+}
+
+/* En móvil Dawn lleva la galería de producto de borde a borde: sin esquinas redondeadas. */
+@media screen and (max-width: 749px) {
+  .g-gallery__track,
+  .g-gallery__img {
+    border-radius: 0;
+  }
+}
+
+/* ---------- Packs: oferta sobre variantes reales (ficha y compra de la home) ----------
+   Tarjetas dentro del <variant-selects> de Dawn (snippets/garelon-packs.liquid).
+   Jerarquía: unidades y precio del pack → precio por unidad → ahorro → precio por separado.
+   Seleccionada: borde tinta doble, fondo blanco y radio lleno. Agotada: borde discontinuo. */
+.g-packs {
+  display: block;
+  max-width: 44rem;
+  margin: 0.4rem 0 1.6rem;
+}
+
+.g-packs__offer {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.8rem;
+  margin: 0 0 1rem;
+  padding: 0.5rem 1.2rem;
+  border: 1px solid var(--g-gold);
+  border-radius: 999px;
+  color: var(--g-accent-text);
+  font-size: 1.15rem;
+  font-weight: 600;
+  line-height: 1.3;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+}
+
+.g-packs__offer::before {
+  content: '';
+  flex: none;
+  width: 0.6rem;
+  height: 0.6rem;
+  border-radius: 50%;
+  background: var(--g-gold);
+}
+
+.g-packs .g-packs__fieldset {
+  min-width: 0;
+  max-width: none;
+  margin: 0;
+  padding: 0;
+  border: 0;
+}
+
+.g-packs .g-packs__legend {
+  display: block;
+  margin: 0 0 0.4rem;
+  padding: 0;
+  font-family: var(--font-heading-family);
+  font-size: 2.4rem;
+  font-weight: var(--font-heading-weight);
+  line-height: 1.2;
+  letter-spacing: 0.01em;
+  color: rgb(var(--color-foreground));
+}
+
+.g-packs__intro {
+  margin: 0 0 1.6rem;
+  font-size: 1.4rem;
+  line-height: 1.5;
+  color: rgba(var(--color-foreground), 0.75);
+}
+
+.g-packs__list {
+  display: grid;
+  gap: 1.6rem;
+  margin-top: 1.2rem;
+}
+
+.g-packs__intro + .g-packs__list {
+  margin-top: 0;
+}
+
+.g-packs__item {
+  position: relative;
+}
+
+.g-packs .g-packs__input {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  margin: 0;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  opacity: 0;
+}
+
+.g-pack {
+  position: relative;
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr);
+  align-items: start;
+  column-gap: 1.2rem;
+  padding: 1.5rem 1.6rem;
+  border: 1px solid rgba(var(--color-foreground), 0.22);
+  border-radius: var(--g-radius);
+  background: rgba(255, 255, 255, 0.45);
+  color: rgb(var(--color-foreground));
+  cursor: pointer;
+  transition: border-color 0.2s ease, background-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.g-pack:hover {
+  border-color: rgba(var(--color-foreground), 0.5);
+}
+
+.g-packs__input:checked + .g-pack {
+  border-color: rgb(var(--color-foreground));
+  box-shadow: inset 0 0 0 1px rgb(var(--color-foreground)), 0 0.6rem 1.8rem rgba(27, 23, 20, 0.08);
+  background: #fff;
+}
+
+.g-packs__input:focus-visible + .g-pack {
+  outline: 0.2rem solid rgba(var(--color-foreground), 0.6);
+  outline-offset: 0.3rem;
+}
+
+.g-pack__radio {
+  display: grid;
+  place-items: center;
+  width: 2.2rem;
+  height: 2.2rem;
+  margin-top: 0.1rem;
+  border: 1.5px solid rgba(var(--color-foreground), 0.5);
+  border-radius: 50%;
+  background: #fff;
+}
+
+.g-pack__radio::after {
+  content: '';
+  width: 1.1rem;
+  height: 1.1rem;
+  border-radius: 50%;
+  background: rgb(var(--color-foreground));
+  transform: scale(0);
+  transition: transform 0.2s ease;
+}
+
+.g-packs__input:checked + .g-pack .g-pack__radio {
+  border-color: rgb(var(--color-foreground));
+}
+
+.g-packs__input:checked + .g-pack .g-pack__radio::after {
+  transform: scale(1);
+}
+
+.g-pack__body {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 0.4rem;
+  min-width: 0;
+}
+
+.g-pack__head {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 0.2rem 1.2rem;
+  width: 100%;
+}
+
+.g-pack__name {
+  font-size: 1.6rem;
+  font-weight: 600;
+  line-height: 1.3;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.g-pack__price {
+  margin-left: auto;
+  font-size: 1.9rem;
+  font-weight: 600;
+  line-height: 1.2;
+  white-space: nowrap;
+}
+
+.g-pack__unit {
+  font-size: 1.35rem;
+  line-height: 1.4;
+  color: rgba(var(--color-foreground), 0.75);
+}
+
+.g-pack__save {
+  display: inline-block;
+  margin-top: 0.2rem;
+  padding: 0.3rem 0.8rem;
+  border-radius: 4px;
+  background: rgba(184, 138, 59, 0.16);
+  color: var(--g-gold-text);
+  font-size: 1.25rem;
+  font-weight: 600;
+  line-height: 1.4;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+
+.g-pack__percent {
+  white-space: nowrap;
+}
+
+.g-pack__ref,
+.g-pack__plain {
+  font-size: 1.25rem;
+  line-height: 1.4;
+  color: rgba(var(--color-foreground), 0.68);
+}
+
+/* Insignia objetiva (mejor precio por unidad) sobre el borde superior de la tarjeta. */
+.g-pack__badge {
+  position: absolute;
+  top: 0;
+  right: 1.2rem;
+  padding: 0.3rem 0.9rem;
+  border-radius: 4px;
+  background: var(--g-ink);
+  color: var(--g-gold-light);
+  font-size: 1.05rem;
+  font-weight: 600;
+  line-height: 1.4;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  white-space: nowrap;
+  transform: translateY(-50%);
+}
+
+.g-pack--badge {
+  padding-top: 2rem;
+}
+
+/* Variante agotada: visible pero no seleccionable. */
+.g-packs__input:disabled + .g-pack {
+  border-style: dashed;
+  background: transparent;
+  box-shadow: none;
+  cursor: not-allowed;
+}
+
+.g-packs__input:disabled + .g-pack .g-pack__name,
+.g-packs__input:disabled + .g-pack .g-pack__price,
+.g-packs__input:disabled + .g-pack .g-pack__unit {
+  color: rgba(var(--color-foreground), 0.5);
+}
+
+.g-packs__input:disabled + .g-pack .g-pack__radio {
+  border-style: dashed;
+  background: transparent;
+}
+
+.g-pack__status {
+  font-size: 1.15rem;
+  font-weight: 600;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: rgb(var(--color-foreground));
+}
+
+.g-packs__note {
+  margin: 1rem 0 0;
+  font-size: 1.2rem;
+  line-height: 1.5;
+  color: rgba(var(--color-foreground), 0.7);
+}
+
+@media screen and (min-width: 750px) {
+  .g-packs .g-packs__legend {
+    font-size: 2.8rem;
+  }
+}
+
+/* Tablet y portátil pequeño: la columna de compra es estrecha; se compacta la tarjeta para
+   que unidades y precio sigan en la misma línea. */
+@media screen and (min-width: 750px) and (max-width: 1199px) {
+  .g-pack {
+    column-gap: 1rem;
+    padding: 1.4rem;
+  }
+
+  .g-pack__head {
+    column-gap: 0.8rem;
+  }
+
+  .g-pack__name {
+    font-size: 1.5rem;
+    letter-spacing: 0.05em;
+  }
+
+  .g-pack__price {
+    font-size: 1.8rem;
+  }
+}
+
+@media screen and (min-width: 1200px) {
+  .g-pack {
+    padding: 1.6rem 2rem;
+  }
+
+  .g-pack--badge {
+    padding-top: 2.2rem;
+  }
+
+  .g-pack__price {
+    font-size: 2rem;
+  }
+}
+
+/* Aviso de configuración: solo en el editor de temas (request.design_mode). */
+.g-packs-diagnostic {
+  max-width: 44rem;
+  margin: 0 0 1.6rem;
+  padding: 1.2rem 1.4rem;
+  border: 2px dashed #b3261e;
+  border-radius: var(--g-radius);
+  background: #fff4f2;
+  color: #5c1410;
+  font-size: 1.3rem;
+  line-height: 1.5;
+}
+
+.g-packs-diagnostic p {
+  margin: 0 0 0.6rem;
+}
+
+.g-packs-diagnostic .g-packs-diagnostic__title {
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+}
+
+.g-packs-diagnostic .g-packs-diagnostic__foot {
+  margin: 0;
+  font-size: 1.15rem;
+  opacity: 0.8;
+}
+
+/* ---------- Plazos de envío junto a la compra ---------- */
+.g-ship {
+  display: flex;
+  align-items: flex-start;
+  gap: 1.2rem;
+  max-width: 44rem;
+  margin: 1.6rem 0;
+  padding: 1.2rem 1.4rem;
+  border: 1px solid var(--g-line);
+  border-radius: var(--g-radius);
+  background: rgba(var(--color-foreground), 0.02);
+}
+
+.g-ship__icon {
+  flex: none;
+  line-height: 0;
+}
+
+.g-ship__icon .g-icon {
+  width: 2.2rem;
+  height: 2.2rem;
+}
+
+.g-ship__body {
+  min-width: 0;
+}
+
+.g-ship__line {
+  margin: 0;
+  font-size: 1.4rem;
+  line-height: 1.5;
+}
+
+.g-ship__line + .g-ship__line {
+  margin-top: 0.2rem;
+}
+
+.g-ship__note {
+  margin: 0.6rem 0 0;
+  font-size: 1.25rem;
+  line-height: 1.5;
+  color: rgba(var(--color-foreground), 0.72);
+}
+
+.g-ship__link {
+  color: inherit;
+  text-underline-offset: 0.3rem;
+}
+
+/* ---------- Envío gratis bajo los botones de compra ---------- */
+.g-buytrust {
+  max-width: 44rem;
+  margin: 1.6rem 0 0;
+}
+
+.g-buytrust__list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.8rem 2.4rem;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.g-buytrust__item {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.8rem;
+  min-width: 0;
+}
+
+.g-buytrust__icon {
+  flex: none;
+  line-height: 0;
+}
+
+.g-buytrust__icon .g-icon {
+  width: 1.8rem;
+  height: 1.8rem;
+}
+
+.g-buytrust__text {
+  min-width: 0;
+}
+
+.g-buytrust__label {
+  display: block;
+  font-size: 1.25rem;
+  font-weight: 600;
+  letter-spacing: 0.12em;
+  line-height: 1.8rem;
+  text-transform: uppercase;
+}
+
+.g-buytrust__note {
+  display: block;
+  margin-top: 0.2rem;
+  font-size: 1.2rem;
+  line-height: 1.45;
+  color: rgba(var(--color-foreground), 0.72);
+}
+
+.g-buytrust + .product__inventory,
+.g-buytrust + .g-ship {
+  margin-top: 1.6rem;
+}
+
+/* ---------- Avisos solo del editor de temas ---------- */
+.g-editor-note {
+  margin: 1.2rem 0 0;
+  padding: 1rem 1.2rem;
+  border: 2px dashed var(--g-gold);
+  border-radius: var(--g-radius);
+  background: #fffaf0;
+  color: #4a3714;
+  font-size: 1.3rem;
+  line-height: 1.5;
+}
+
+.g-editor-note p {
+  margin: 0;
+}
+
+.g-editor-note p + p {
+  margin-top: 0.4rem;
+}
+
+.g-editor-note__title {
+  font-weight: 600;
+}
+
+.g-editor-note--center {
+  max-width: 60rem;
+  margin: 0 auto;
+  text-align: center;
+}
+
+.g-editor-note__list {
+  display: grid;
+  gap: 0.3rem;
+  max-width: 52rem;
+  margin: 0.6rem auto;
+  padding: 0;
+  list-style: none;
+  text-align: left;
+}
+
+.g-editor-note__list li::before {
+  content: '· ';
+}
+
+/* ---------- Opiniones (solo reales: bloques de app / valoración de Shopify) ---------- */
+.g-reviews__sub {
+  max-width: 56rem;
+  margin: 0.8rem auto 0;
+  font-size: 1.5rem;
+  line-height: 1.55;
+  color: rgba(var(--color-foreground), 0.75);
+}
+
+.g-reviews__summary {
+  display: inline-flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: center;
+  gap: 0.4rem 1.2rem;
+  margin-top: 1.8rem;
+  padding: 0.9rem 1.8rem;
+  border: 1px solid var(--g-line);
+  border-radius: 99rem;
+  background: rgb(var(--color-background));
+}
+
+.g-reviews .rating-star {
+  --color-rating-star: var(--g-icon);
+  --letter-spacing: 0.2;
+  --font-size: 1.8;
+}
+
+.g-reviews__score {
+  margin: 0;
+  font-size: 1.4rem;
+  line-height: 1.4;
+  letter-spacing: 0.04em;
+}
+
+.g-reviews__value {
+  font-weight: 600;
+}
+
+.g-reviews__apps {
+  max-width: 110rem;
+  margin: 0 auto;
+}
+
+/* Compra de la home justo después de la portada: en móvil, formulario antes que la galería. */
+@media screen and (max-width: 749px) {
+  .g-mobile-info-first > .product__info-wrapper {
+    order: -1;
+  }
+
+  .g-mobile-info-first > .product__media-wrapper {
+    margin-top: 2.4rem;
+  }
+}
+
+/* ---------- Compra fija (móvil) ---------- */
+.g-sticky {
+  position: fixed;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  z-index: 4;
+  padding: 0.8rem 0 calc(0.8rem + env(safe-area-inset-bottom));
+  border-top: 1px solid rgba(var(--color-foreground), 0.1);
+  background: rgb(var(--color-background));
+  box-shadow: 0 -0.6rem 2rem rgba(27, 23, 20, 0.06);
+  transform: translateY(110%);
+  visibility: hidden;
+  transition: transform 0.25s ease, visibility 0s linear 0.25s;
+}
+
+.g-sticky.is-visible {
+  transform: none;
+  visibility: visible;
+  transition: transform 0.25s ease;
+}
+
+.g-sticky__inner {
+  display: flex;
+  align-items: center;
+  gap: 1.2rem;
+}
+
+.g-sticky__thumb {
+  flex: none;
+  width: 4.8rem;
+  height: 4.8rem;
+  border-radius: 4px;
+  object-fit: cover;
+}
+
+.g-sticky__info {
+  flex: 1;
+  min-width: 0;
+}
+
+.g-sticky__title {
+  margin: 0;
+  overflow: hidden;
+  font-size: 1.3rem;
+  line-height: 1.3;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+
+.g-sticky__row {
+  display: flex;
+  align-items: baseline;
+  gap: 0.8rem;
+  min-width: 0;
+}
+
+.g-sticky__variant {
+  overflow: hidden;
+  font-size: 1.25rem;
+  line-height: 1.3;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  color: rgba(var(--color-foreground), 0.74);
+}
+
+.g-sticky__price .price {
+  margin: 0;
+  font-size: 1.4rem;
+}
+
+.g-sticky__price .price .price-item {
+  font-size: 1.4rem;
+}
+
+.g-sticky__price .badge,
+.g-sticky__price .unit-price {
+  display: none;
+}
+
+.g-sticky__button.button {
+  flex: none;
+  min-width: 11rem;
+  min-height: 4.6rem;
+  padding: 0 1.8rem;
+}
+
+@media screen and (max-width: 749px) {
+  body.g-sticky-open {
+    padding-bottom: calc(6.8rem + env(safe-area-inset-bottom));
+  }
+}
+
+@media screen and (min-width: 750px) {
+  .g-sticky:not(.g-sticky--desktop) {
+    display: none;
+  }
+}
+
+/* ---------- Ficha de producto (Dawn) ---------- */
+.product__info-container .product__title h1 {
+  font-size: clamp(2.4rem, 5.6vw, 3.4rem);
+  line-height: 1.2;
+  letter-spacing: 0;
+}
+
+.product__info-container .product__text.caption-with-letter-spacing {
+  color: var(--g-accent-text);
+  letter-spacing: 0.22em;
+}
+
+.product__info-container .product__text.subtitle {
+  font-size: 1.55rem;
+  line-height: 1.55;
+  color: rgba(var(--color-foreground), 0.8);
+}
+
+/* ---------- Políticas y páginas ---------- */
+.shopify-policy__container {
+  max-width: 76rem;
+  margin-left: auto;
+  margin-right: auto;
+  padding: 4rem 1.5rem 6rem;
+}
+
+@media screen and (min-width: 750px) {
+  .shopify-policy__container {
+    padding-left: 5rem;
+    padding-right: 5rem;
+    max-width: 86rem;
+  }
+}
+
+.shopify-policy__title h1 {
+  font-size: clamp(2.8rem, 6vw, 4rem);
+}
+
+.main-page-title {
+  font-size: clamp(2.8rem, 6vw, 4rem);
+}
+
+/* ---------- Movimiento reducido ---------- */
+@media (prefers-reduced-motion: reduce) {
+  .button,
+  .g-sticky,
+  .g-sticky.is-visible,
+  .g-pack,
+  .g-pack__radio::after,
+  .g-faq__toggle::before,
+  .g-faq__toggle::after,
+  .garelon-help__arrow {
+    transition: none;
+  }
+
+  .garelon-help__link:hover .garelon-help__arrow,
+  .garelon-help__link:focus-visible .garelon-help__arrow {
+    transform: none;
+  }
+}

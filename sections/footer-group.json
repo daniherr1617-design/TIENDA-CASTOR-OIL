@@ -1,0 +1,48 @@
+{
+  "name": "t:sections.footer.name",
+  "type": "footer",
+  "sections": {
+    "footer": {
+      "type": "footer",
+      "blocks": {
+        "brand": {
+          "type": "brand_information",
+          "settings": {
+            "show_social": true
+          }
+        },
+        "ayuda": {
+          "type": "garelon_help",
+          "settings": {
+            "heading": "Ayuda",
+            "text": "<p>¿Necesitas ayuda? Estamos aquí para resolver cualquier duda sobre tu pedido, nuestros productos o el proceso de compra.</p>",
+            "link_label": "Contacta con nuestro equipo",
+            "link": "",
+            "menu": ""
+          }
+        }
+      },
+      "block_order": [
+        "brand",
+        "ayuda"
+      ],
+      "settings": {
+        "color_scheme": "scheme-2",
+        "newsletter_enable": false,
+        "newsletter_heading": "Recibe novedades de GARELON",
+        "enable_follow_on_shop": false,
+        "show_social": true,
+        "enable_country_selector": false,
+        "enable_language_selector": false,
+        "payment_enable": false,
+        "show_policy": true,
+        "margin_top": 0,
+        "padding_top": 48,
+        "padding_bottom": 32
+      }
+    }
+  },
+  "order": [
+    "footer"
+  ]
+}

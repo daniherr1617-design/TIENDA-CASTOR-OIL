@@ -1,0 +1,90 @@
+{%- if product != blank -%}
+  <script src="{{ 'garelon.js' | asset_url }}" defer="defer"></script>
+  {%- liquid
+    assign variant = product.selected_or_first_available_variant
+    assign thumb = variant.featured_media | default: product.featured_media
+  -%}
+  <garelon-sticky-atc
+    class="g-sticky color-{{ section.settings.color_scheme }}{% if section.settings.show_on_desktop %} g-sticky--desktop{% endif %}"
+    inert
+  >
+    <div class="g-sticky__inner page-width">
+      {%- if thumb != blank -%}
+        <img
+          class="g-sticky__thumb"
+          src="{{ thumb.preview_image | image_url: width: 120 }}"
+          width="48"
+          height="48"
+          alt=""
+          loading="lazy"
+          data-sticky-thumb
+        >
+      {%- endif -%}
+      <div class="g-sticky__info">
+        <p class="g-sticky__title" id="StickyTitle-{{ section.id }}">{{ product.title | escape }}</p>
+        <div class="g-sticky__row">
+          {%- unless product.has_only_default_variant -%}
+            {%- comment -%} Variante elegida (p. ej. el pack); garelon.js la actualiza al cambiar. {%- endcomment -%}
+            <span class="g-sticky__variant" id="StickyVariant-{{ section.id }}" data-sticky-variant>
+              {{- variant.title | escape -}}
+            </span>
+          {%- endunless -%}
+          <div class="g-sticky__price" data-sticky-price aria-hidden="true">
+            {%- render 'price', product: product, use_variant: true -%}
+          </div>
+        </div>
+      </div>
+      <button
+        type="button"
+        class="button button--primary g-sticky__button"
+        data-sticky-button
+        aria-describedby="StickyTitle-{{ section.id }}{% unless product.has_only_default_variant %} StickyVariant-{{ section.id }}{% endunless %}"
+        {% unless variant.available %}
+          disabled
+        {% endunless %}
+      >
+        <span data-sticky-label>{{ section.settings.button_label | default: 'Añadir' | escape }}</span>
+      </button>
+    </div>
+  </garelon-sticky-atc>
+{%- endif -%}
+
+{% schema %}
+{
+  "name": "GARELON Compra fija",
+  "tag": "section",
+  "class": "section g-sticky-section",
+  "enabled_on": {
+    "templates": ["product"]
+  },
+  "settings": [
+    {
+      "type": "paragraph",
+      "content": "Barra discreta con miniatura, variante elegida (p. ej. el pack), precio y botón. Aparece al pasar el botón principal y usa el mismo formulario del producto (precio, variante y stock reales). Para desactivarla, oculta esta sección."
+    },
+    {
+      "type": "text",
+      "id": "button_label",
+      "label": "Texto del botón",
+      "default": "Añadir"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_on_desktop",
+      "label": "Mostrar también en escritorio",
+      "default": false
+    },
+    {
+      "type": "color_scheme",
+      "id": "color_scheme",
+      "label": "Esquema de color",
+      "default": "scheme-4"
+    }
+  ],
+  "presets": [
+    {
+      "name": "GARELON Compra fija"
+    }
+  ]
+}
+{% endschema %}

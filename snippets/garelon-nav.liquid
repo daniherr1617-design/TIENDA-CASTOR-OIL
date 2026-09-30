@@ -1,0 +1,101 @@
+{%- comment -%}
+  GARELON · Navegación principal de la tienda de un solo producto.
+
+  Enlaces: Inicio, las secciones de la home que se activen en la cabecera
+  (Cómo usarlo, Ingredientes, Preguntas frecuentes) y Contacto. No enlaza al catálogo
+  ni a colecciones. Las URLs son dinámicas: routes.root_url y la página de contacto
+  real resuelta por el snippet garelon-url.
+
+  Accepts:
+  - variant: {String} 'inline' (menú de escritorio) | 'drawer' (elementos <li> del menú móvil)
+
+  Usage:
+  {% render 'garelon-nav', variant: 'inline' %}
+{%- endcomment -%}
+{%- liquid
+  capture contact_url
+    render 'garelon-url', type: 'contact'
+  endcapture
+  assign contact_url = contact_url | strip
+  assign home_url = routes.root_url
+
+  assign labels = 'Inicio'
+  assign urls = home_url
+  assign ids = 'inicio'
+  if section.settings.nav_show_how
+    assign labels = labels | append: '|Cómo usarlo'
+    assign urls = urls | append: '|' | append: home_url | append: '#como-usarlo'
+    assign ids = ids | append: '|como-usarlo'
+  endif
+  if section.settings.nav_show_ingredients
+    assign labels = labels | append: '|Ingredientes'
+    assign urls = urls | append: '|' | append: home_url | append: '#ingredientes'
+    assign ids = ids | append: '|ingredientes'
+  endif
+  if section.settings.nav_show_faq
+    assign labels = labels | append: '|Preguntas frecuentes'
+    assign urls = urls | append: '|' | append: home_url | append: '#preguntas-frecuentes'
+    assign ids = ids | append: '|preguntas-frecuentes'
+  endif
+  assign labels = labels | append: '|Contacto'
+  assign urls = urls | append: '|' | append: contact_url
+  assign ids = ids | append: '|contacto'
+
+  assign labels = labels | split: '|'
+  assign urls = urls | split: '|'
+  assign ids = ids | split: '|'
+-%}
+
+{%- if variant == 'drawer' -%}
+  {%- for label in labels -%}
+    {%- liquid
+      assign url = urls[forloop.index0]
+      assign current = false
+      if forloop.first and request.page_type == 'index'
+        assign current = true
+      elsif forloop.last and request.path == contact_url
+        assign current = true
+      endif
+    -%}
+    <li>
+      <a
+        id="HeaderDrawer-{{ ids[forloop.index0] }}"
+        href="{{ url }}"
+        class="menu-drawer__menu-item list-menu__item link link--text focus-inset{% if current %} menu-drawer__menu-item--active{% endif %}"
+        {% if current %}
+          aria-current="page"
+        {% endif %}
+      >
+        {{ label }}
+      </a>
+    </li>
+  {%- endfor -%}
+{%- else -%}
+  <nav class="header__inline-menu">
+    <ul class="list-menu list-menu--inline" role="list">
+      {%- for label in labels -%}
+        {%- liquid
+          assign url = urls[forloop.index0]
+          assign current = false
+          if forloop.first and request.page_type == 'index'
+            assign current = true
+          elsif forloop.last and request.path == contact_url
+            assign current = true
+          endif
+        -%}
+        <li>
+          <a
+            id="HeaderMenu-{{ ids[forloop.index0] }}"
+            href="{{ url }}"
+            class="header__menu-item list-menu__item link link--text focus-inset"
+            {% if current %}
+              aria-current="page"
+            {% endif %}
+          >
+            <span {% if current %}class="header__active-menu-item"{% endif %}>{{ label }}</span>
+          </a>
+        </li>
+      {%- endfor -%}
+    </ul>
+  </nav>
+{%- endif -%}

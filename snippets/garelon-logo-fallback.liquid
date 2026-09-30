@@ -1,0 +1,53 @@
+{%- comment -%}
+  GARELON · Logo de respaldo desde los assets del tema.
+  Se usa solo cuando no hay un logo subido en Configuración del tema.
+
+  Accepts:
+  - variant: 'wordmark' (por defecto, cabecera) | 'stacked' (isotipo + nombre, pie de página)
+             | 'isotype' (solo el isotipo, a la izquierda del nombre en la cabecera)
+
+  Usage:
+  {% render 'garelon-logo-fallback', variant: 'stacked' %}
+{%- endcomment -%}
+{%- if variant == 'stacked' -%}
+  {%- assign logo_width = settings.brand_image_width | default: 120 -%}
+  {%- assign logo_height = logo_width | times: 425 | divided_by: 480 -%}
+  <div
+    class="footer-block__image-wrapper garelon-logo garelon-logo--stacked"
+    style="max-width: min(100%, {{ logo_width }}px);"
+  >
+    <img
+      src="{{ 'garelon-logo-480.webp' | asset_url }}"
+      srcset="{{ 'garelon-logo-240.webp' | asset_url }} 240w, {{ 'garelon-logo-480.webp' | asset_url }} 480w"
+      sizes="{{ logo_width }}px"
+      width="{{ logo_width }}"
+      height="{{ logo_height }}"
+      alt="{{ shop.name | escape }}"
+      loading="lazy"
+    >
+  </div>
+{%- elsif variant == 'isotype' -%}
+  {%- comment -%}
+    Decorativo: el enlace ya se anuncia con el nombre de la tienda (alt del logo),
+    así que alt vacío evita que los lectores de pantalla lean "GARELON" dos veces.
+  {%- endcomment -%}
+  <img
+    class="garelon-header-isotype"
+    src="{{ 'garelon-isotipo-96.webp' | asset_url }}"
+    width="96"
+    height="104"
+    alt=""
+  >
+{%- else -%}
+  {%- assign logo_width = settings.logo_width | default: 150 -%}
+  {%- assign logo_height = logo_width | times: 72 | divided_by: 480 -%}
+  <div class="header__heading-logo-wrapper garelon-logo garelon-logo--wordmark">
+    <img
+      class="header__heading-logo"
+      src="{{ 'garelon-wordmark-480.webp' | asset_url }}"
+      width="{{ logo_width }}"
+      height="{{ logo_height }}"
+      alt="{{ shop.name | escape }}"
+    >
+  </div>
+{%- endif -%}

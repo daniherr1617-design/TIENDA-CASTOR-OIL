@@ -1,0 +1,75 @@
+{%- comment -%}
+  GARELON · Imagen responsive.
+  Usa la imagen elegida en el editor de temas; si no hay ninguna, usa la
+  imagen del producto incluida en los assets del tema; si tampoco hay, no
+  muestra nada (el marcador de posición solo aparece dentro del editor).
+
+  Accepts:
+  - image: {Object} imagen del image_picker (opcional)
+  - fallback: {String} nombre base del asset, p. ej. 'garelon-img01-producto' (opcional)
+  - fallback_widths: {String} anchos disponibles del asset, p. ej. '480,720,1080'
+  - fallback_height: {Number} alto de la versión más ancha del asset
+  - alt: {String} texto alternativo por defecto
+  - sizes: {String} atributo sizes
+  - class: {String} clase CSS de la imagen
+  - eager: {Boolean} true para la imagen principal (LCP) de la página
+
+  Usage:
+  {% render 'garelon-image', image: section.settings.image, fallback: 'garelon-img01-producto', fallback_widths: '480,720,1080', fallback_height: 1080, alt: 'Sérum', sizes: '100vw' %}
+{%- endcomment -%}
+{%- liquid
+  assign loading = 'lazy'
+  assign priority = 'auto'
+  if eager
+    assign loading = 'eager'
+    assign priority = 'high'
+  endif
+  assign sizes = sizes | default: '100vw'
+-%}
+{%- if image != blank -%}
+  {%- assign image_alt = image.alt | default: alt | escape -%}
+  {{
+    image
+    | image_url: width: 1800
+    | image_tag:
+      widths: '360, 540, 720, 900, 1080, 1400, 1800',
+      sizes: sizes,
+      loading: loading,
+      fetchpriority: priority,
+      alt: image_alt,
+      class: class
+  }}
+{%- elsif fallback != blank -%}
+  {%- liquid
+    assign widths = fallback_widths | split: ','
+    assign max_width = widths | last
+    capture srcset
+      for w in widths
+        assign file = fallback | append: '-' | append: w | append: '.webp'
+        echo file | asset_url | append: ' ' | append: w | append: 'w'
+        unless forloop.last
+          echo ', '
+        endunless
+      endfor
+    endcapture
+    assign largest = fallback | append: '-' | append: max_width | append: '.webp'
+  -%}
+  <img
+    src="{{ largest | asset_url }}"
+    srcset="{{ srcset }}"
+    sizes="{{ sizes }}"
+    width="{{ max_width }}"
+    height="{{ fallback_height }}"
+    alt="{{ alt | escape }}"
+    loading="{{ loading }}"
+    fetchpriority="{{ priority }}"
+    {% unless eager %}
+      decoding="async"
+    {% endunless %}
+    {% if class != blank %}
+      class="{{ class }}"
+    {% endif %}
+  >
+{%- elsif request.design_mode -%}
+  {{ 'image' | placeholder_svg_tag: 'garelon-placeholder' }}
+{%- endif -%}

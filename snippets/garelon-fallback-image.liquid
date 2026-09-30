@@ -1,0 +1,47 @@
+{%- comment -%}
+  GARELON · Muestra la imagen elegida en el editor o, si está vacía, una de las
+  imágenes del producto incluidas en los assets del tema.
+
+  Los assets garelon-imgNN-*.webp son IMAGEN 1, 4, 5, 7, 9 y 10 (carpeta referencias/)
+  redimensionadas a 480, 720 y 1080 px: sin recortes, sin filtros y sin cambios de texto.
+
+  Accepts:
+  - image: {Object} imagen del image_picker
+  - fallback: {String} img01-producto | img10-presentacion | img07-roller | img05-ingredientes
+              | img04-uso | img09-tamano | none
+  - alt: {String} texto alternativo si la imagen elegida no tiene uno
+  - sizes: {String}
+  - class: {String}
+  - eager: {Boolean} true solo para la imagen principal (LCP)
+{%- endcomment -%}
+{%- liquid
+  assign asset_name = blank
+  assign asset_alt = blank
+  case fallback
+    when 'img01-producto'
+      assign asset_name = 'garelon-img01-producto'
+      assign asset_alt = 'Sérum para el contorno de ojos: frasco roller de vidrio ámbar de 10 ml con bola metálica, tapón negro y su caja'
+    when 'img10-presentacion'
+      assign asset_name = 'garelon-img10-presentacion'
+      assign asset_alt = 'Sérum contorno de ojos con roller metálico de 10 ml: ayuda a reducir la apariencia de ojeras y de bolsas, suaviza la apariencia de líneas finas, hidrata y aporta confort'
+    when 'img07-roller'
+      assign asset_name = 'garelon-img07-roller'
+      assign asset_alt = 'Técnica de masaje con roller para el contorno de ojos: primeros planos de bolsas y ojeras, el frasco con su caja y tres ventajas: aplicador metálico, uso cómodo y cuidado diario'
+    when 'img05-ingredientes'
+      assign asset_name = 'garelon-img05-ingredientes'
+      assign asset_alt = 'Ingredientes principales: aceite de ricino, Acetyl Tripeptide-1, colágeno, extracto de Boswellia Serrata y agua'
+    when 'img04-uso'
+      assign asset_name = 'garelon-img04-modo-de-uso'
+      assign asset_alt = 'Cómo usarlo en 3 pasos: limpia y seca el contorno de ojos, aplica el sérum con el roller y masajea con la bola metálica'
+    when 'img09-tamano'
+      assign asset_name = 'garelon-img09-tamano'
+      assign asset_alt = 'Tamaño del producto: caja de 8,7 cm de alto, 2,2 cm de ancho y 2,2 cm de fondo; frasco de 8,4 cm de alto y 1,9 cm de ancho'
+  endcase
+
+  assign final_alt = alt
+  if image == blank and asset_alt != blank
+    assign final_alt = asset_alt
+  endif
+
+  render 'garelon-image', image: image, fallback: asset_name, fallback_widths: '480,720,1080', fallback_height: 1080, alt: final_alt, sizes: sizes, class: class, eager: eager
+-%}
