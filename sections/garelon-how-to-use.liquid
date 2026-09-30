@@ -4,6 +4,9 @@
     assign has_media = false
   endif
 -%}
+{%- if has_media and section.settings.image_zoom -%}
+  <script src="{{ 'garelon.js' | asset_url }}" defer="defer"></script>
+{%- endif -%}
 
 <div
   {% if section.settings.anchor != blank %}
@@ -31,15 +34,26 @@
               fallback: section.settings.fallback_image,
               alt: section.settings.heading,
               sizes: '(min-width: 990px) 540px, (min-width: 750px) 45vw, calc(100vw - 3rem)',
-              class: 'g-media__img'
+              class: 'g-media__img',
+              zoom: section.settings.image_zoom,
+              zoom_label: section.settings.heading
             -%}
           </div>
+          {%- if section.settings.image_caption != blank -%}
+            <p class="g-media__caption">{{ section.settings.image_caption | escape }}</p>
+          {%- endif -%}
         </div>
       {%- endif -%}
 
       <div class="g-steps__content">
         {%- if section.blocks.size > 0 -%}
-          <ol class="g-steps__list{% if has_media %} g-steps__list--stacked{% endif %}">
+          {%- liquid
+            assign compact = false
+            if section.settings.steps_style == 'compact'
+              assign compact = true
+            endif
+          -%}
+          <ol class="g-steps__list{% if compact %} g-steps__list--compact{% elsif has_media %} g-steps__list--stacked{% endif %}">
             {%- for block in section.blocks -%}
               <li class="g-steps__item" {{ block.shopify_attributes }}>
                 {%- if section.settings.show_images and block.settings.image != blank -%}
@@ -60,7 +74,7 @@
                     <span class="visually-hidden">Paso {{ forloop.index }}:</span>
                     {{ block.settings.title | escape }}
                   </h3>
-                  {%- if block.settings.text != blank -%}
+                  {%- if block.settings.text != blank and compact == false -%}
                     <p class="g-steps__text">{{ block.settings.text | escape }}</p>
                   {%- endif -%}
                 </div>
@@ -108,12 +122,39 @@
       "label": "Imagen del tema si no eliges ninguna",
       "options": [
         { "value": "principal", "label": "Imagen principal (taza roja)" },
+        { "value": "roja", "label": "Taza roja de cerca" },
         { "value": "colores", "label": "Los tres colores" },
         { "value": "blanco", "label": "Taza blanca" },
         { "value": "marron", "label": "Taza marrón" },
+        { "value": "como-funciona", "label": "Infografía «Cómo funciona»" },
+        { "value": "caracteristicas", "label": "Infografía «Características»" },
         { "value": "none", "label": "Ninguna (solo los pasos)" }
       ],
       "default": "none"
+    },
+    {
+      "type": "checkbox",
+      "id": "image_zoom",
+      "label": "Ampliar la imagen al tocarla",
+      "info": "Recomendado para infografías con texto: en móvil se abre a pantalla completa.",
+      "default": false
+    },
+    {
+      "type": "text",
+      "id": "image_caption",
+      "label": "Pie de imagen (opcional)",
+      "info": "Por ejemplo, qué incluye realmente cada unidad."
+    },
+    {
+      "type": "select",
+      "id": "steps_style",
+      "label": "Pasos",
+      "options": [
+        { "value": "full", "label": "Título y texto" },
+        { "value": "compact", "label": "Solo títulos (con infografía)" }
+      ],
+      "default": "full",
+      "info": "«Solo títulos» resume los pasos junto a una infografía que ya los explica."
     },
     {
       "type": "checkbox",

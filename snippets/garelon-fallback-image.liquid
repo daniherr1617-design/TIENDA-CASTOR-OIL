@@ -2,17 +2,25 @@
   GARELON · Muestra la imagen elegida en el editor o, si está vacía, una de las
   imágenes del producto incluidas en los assets del tema.
 
-  Los assets garelon-fondue-*.webp son imagen2, imagen1, imagen3 e imagen4 (raíz del
-  repositorio) redimensionadas a 480, 720 y 1080 px: sin recortes, sin filtros y sin
-  cambios de texto. La vela que aparece encendida no está incluida (se dice en la tienda).
+  Los assets garelon-fondue-*.webp salen de las imágenes de la raíz del repositorio,
+  redimensionadas a 480, 720 y 1080 px y sin filtros:
+  - principal = imagen2 · roja = imagen2 recortada en la taza (misma foto, más cerca)
+  - colores = imagen1 · blanco = imagen3 · marron = imagen4
+  - como-funciona = imagen8 (infografía, sin cambios)
+  - caracteristicas = imagen7 (infografía) con dos correcciones para que coincida con el
+    producto real: la etiqueta del color oscuro pasa a llamarse «Marrón» y se quitan los corazones dibujados
+    sobre las tazas (la taza real solo lleva «Chocolat...»).
+  La vela que aparece encendida no está incluida (se dice en la tienda).
 
   Accepts:
   - image: {Object} imagen del image_picker
-  - fallback: {String} principal | colores | blanco | marron | none
+  - fallback: {String} principal | roja | colores | blanco | marron | como-funciona | caracteristicas | none
   - alt: {String} texto alternativo si la imagen elegida no tiene uno
   - sizes: {String}
   - class: {String}
   - eager: {Boolean} true solo para la imagen principal (LCP)
+  - zoom: {Boolean} envuelve la imagen en un botón que la abre ampliada (garelon.js)
+  - zoom_label: {String} qué se amplía, para el nombre accesible del botón
 {%- endcomment -%}
 {%- liquid
   assign asset_name = blank
@@ -21,6 +29,15 @@
     when 'principal'
       assign asset_name = 'garelon-fondue-principal'
       assign asset_alt = 'Taza Fondue roja de cerámica con el texto «Chocolat...», chocolate fundido, tenedor de fondue en el asa, vela encendida en el hueco inferior y fresas al lado. La vela no está incluida'
+    when 'roja'
+      assign asset_name = 'garelon-fondue-roja'
+      assign asset_alt = 'Taza Fondue roja de cerámica de cerca, con el texto «Chocolat...», chocolate fundido, tenedor de fondue en el asa y vela encendida en el hueco inferior. La vela no está incluida'
+    when 'como-funciona'
+      assign asset_name = 'garelon-fondue-como-funciona'
+      assign asset_alt = 'Cómo funciona: 1, coloca una vela en el hueco inferior; 2, añade chocolate o queso; 3, enciende la vela y deja que se funda; 4, remueve con el tenedor; 5, disfruta con fresas, fruta, pan o gofres. Imagen ilustrativa: cada unidad incluye una taza y un tenedor, la vela no está incluida'
+    when 'caracteristicas'
+      assign asset_name = 'garelon-fondue-caracteristicas'
+      assign asset_alt = 'Características y usos: taza de cerámica, apta para microondas según el proveedor, para derretir chocolate y queso, incluye tenedor tipo fondue, ideal para fresas, fruta, pan, gofres y algodón de azúcar. Tres colores disponibles: marrón, blanco y rojo. La vela no está incluida'
     when 'colores'
       assign asset_name = 'garelon-fondue-colores'
       assign asset_alt = 'Las tres Tazas Fondue: roja, blanca y marrón, cada una con su tenedor de fondue, chocolate fundido y vela encendida, junto a fresas y chocolate. La vela no está incluida'
@@ -37,5 +54,37 @@
     assign final_alt = asset_alt
   endif
 
-  render 'garelon-image', image: image, fallback: asset_name, fallback_widths: '480,720,1080', fallback_height: 1080, alt: final_alt, sizes: sizes, class: class, eager: eager
+  assign can_zoom = false
+  if zoom
+    if image != blank
+      assign zoom_url = image | image_url: width: 1600
+      assign can_zoom = true
+    elsif asset_name != blank
+      assign zoom_url = asset_name | append: '-1080.webp' | asset_url
+      assign can_zoom = true
+    endif
+  endif
 -%}
+{%- if can_zoom -%}
+  <button
+    type="button"
+    class="g-zoom"
+    data-g-zoom="{{ zoom_url }}"
+    aria-haspopup="dialog"
+    aria-label="Ampliar imagen: {{ zoom_label | default: final_alt | escape }}"
+  >
+{%- endif -%}
+{%- render 'garelon-image',
+  image: image,
+  fallback: asset_name,
+  fallback_widths: '480,720,1080',
+  fallback_height: 1080,
+  alt: final_alt,
+  sizes: sizes,
+  class: class,
+  eager: eager
+-%}
+{%- if can_zoom -%}
+  <span class="g-zoom__hint" aria-hidden="true">{% render 'garelon-icon', icon: 'zoom' %}Ampliar imagen</span>
+  </button>
+{%- endif -%}

@@ -1,6 +1,6 @@
 # GARELON · MASTER STORE TEMPLATE
 
-> **Versión 1.6 · septiembre 2026.** Extraído del repositorio `TIENDA-CASTOR-OIL`. Hasta la 1.5 describía la tienda GARELON del sérum de contorno de ojos (baseline congelado en la rama `baseline/garelon-serum`, commit `f08f9bb`); desde la 1.6 la tienda vende la **Taza Fondue de Chocolate con Tenedor** (rama `claude/fondue-mug`). Versión 1.0 sacada del commit `755240b`. La 1.1 recoge el cambio de proveedor (**AutoDS → CJ Dropshipping**) y los **packs como variantes reales**. La 1.2 añade la **oferta visible antes del carrito** («Oferta limitada · Elige tu pack»), la **cantidad 1 blindada**, el **aviso de configuración** en el editor y el flujo **Shopify + GitHub**. La 1.3 añade la **confianza junto a la compra** (envío gratis + pago seguro con los métodos de pago habilitados en Shopify) y la sección de **opiniones reales** (`garelon-reviews`). La 1.4, tras publicar el tema en Shopify, añade el modo de iconos de pago **«Manual verificado»** (opcional), el diagnóstico de métodos de pago en el editor y las opiniones sin resumen duplicado. La 1.5 **simplifica** para la fase de aprendizaje: **opiniones justo después de la compra** (home y ficha) y **ningún icono ni «Pago seguro» en la tienda** (el bloque de compra queda en «Envío gratis»; el pie, sin logos). La 1.6 es la **primera migración de producto** (sérum → Taza Fondue): packs **Color × Pack** (variantes reales, packs siempre del mismo color), fuera la etiqueta «Oferta limitada» (urgencia sin datos), **isotipo propio de cada versión de producto** (el nombre GARELON no cambia) y catálogo de imágenes `garelon-fondue-*`. Detalle en `GARELON-CAMBIOS-CJ-PACKS.md` y `GARELON-CAMBIOS-FONDUE.md`, en la raíz. Todos los archivos, ajustes y valores que aparecen aquí salen del código real.
+> **Versión 1.7 · septiembre 2026.** Extraído del repositorio `TIENDA-CASTOR-OIL`. Hasta la 1.5 describía la tienda GARELON del sérum de contorno de ojos (baseline congelado en la rama `baseline/garelon-serum`, commit `f08f9bb`); desde la 1.6 la tienda vende la **Taza Fondue de Chocolate con Tenedor** (rama `claude/fondue-mug`). Versión 1.0 sacada del commit `755240b`. La 1.1 recoge el cambio de proveedor (**AutoDS → CJ Dropshipping**) y los **packs como variantes reales**. La 1.2 añade la **oferta visible antes del carrito** («Oferta limitada · Elige tu pack»), la **cantidad 1 blindada**, el **aviso de configuración** en el editor y el flujo **Shopify + GitHub**. La 1.3 añade la **confianza junto a la compra** (envío gratis + pago seguro con los métodos de pago habilitados en Shopify) y la sección de **opiniones reales** (`garelon-reviews`). La 1.4, tras publicar el tema en Shopify, añade el modo de iconos de pago **«Manual verificado»** (opcional), el diagnóstico de métodos de pago en el editor y las opiniones sin resumen duplicado. La 1.5 **simplifica** para la fase de aprendizaje: **opiniones justo después de la compra** (home y ficha) y **ningún icono ni «Pago seguro» en la tienda** (el bloque de compra queda en «Envío gratis»; el pie, sin logos). La 1.6 es la **primera migración de producto** (sérum → Taza Fondue): packs **Color × Pack** (variantes reales, packs siempre del mismo color), fuera la etiqueta «Oferta limitada» (urgencia sin datos), **isotipo propio de cada versión de producto** (el nombre GARELON no cambia) y catálogo de imágenes `garelon-fondue-*`. La 1.7 es una **ronda visual** de la Taza Fondue: **fondo blanco y acentos en el rojo de la taza** (sustituyen a crema/arena y dorado), la taza roja como protagonista, y las **dos infografías** del producto («Cómo funciona» y «Características y usos») en la home, ampliables al tocarlas. Detalle en `GARELON-CAMBIOS-CJ-PACKS.md` y `GARELON-CAMBIOS-FONDUE.md`, en la raíz. Todos los archivos, ajustes y valores que aparecen aquí salen del código real.
 >
 > **Cómo se usa:**
 > - **ChatGPT:** lee primero la sección 29, rellena la sección 1 con el brief (`GARELON_PRODUCT_BRIEF_TEMPLATE.md`) y genera el prompt final para Claude Code.
@@ -398,30 +398,39 @@ Todos los `garelon-fondue-*` de producto son cuadrados (1080×1080, 720×720 y 4
 
 ### 7.1 Esquemas de color (`config/settings_data.json` → `color_schemes`)
 
+Valores de la versión Taza Fondue (v1.7). El baseline del sérum usaba crema `#F8F4EC`, arena `#EFE6D7`, tinta `#1B1714` y dorado `#B88A3B` (rama `baseline/garelon-serum`).
+
 | Esquema | Fondo | Texto | Botón | Texto del botón | Botón secundario | Uso actual |
 |---|---|---|---|---|---|---|
-| `scheme-1` | `#F8F4EC` crema | `#1B1714` tinta | `#1B1714` | `#FFFFFF` | `#1B1714` | Fondo principal: cabecera, portada, características, ingredientes, compra, cierre, carrito, ficha |
-| `scheme-2` | `#EFE6D7` arena | `#1B1714` | `#1B1714` | `#FFFFFF` | `#1B1714` | Secciones alternas: beneficios, diferencial, cómo usarlo, FAQ, pie, 404 |
-| `scheme-3` | `#1B1714` tinta | `#F8F4EC` | `#D2B06A` dorado claro | `#1B1714` | `#F8F4EC` | Solo la barra superior |
-| `scheme-4` | `#FFFFFF` | `#1B1714` | `#1B1714` | `#FFFFFF` | `#1B1714` | Tarjetas de Dawn y la barra de compra fija |
-| `scheme-5` | `#B88A3B` dorado | `#1B1714` | `#1B1714` | `#FFFFFF` | `#1B1714` | Definido, sin uso. No se usa como fondo de sección. |
+| `scheme-1` | `#FFFFFF` blanco | `#22150F` tinta chocolate | `#C8161D` rojo de la taza | `#FFFFFF` | `#22150F` | Fondo principal: cabecera, portada, opiniones, cómo funciona, beneficios, FAQ, carrito, ficha |
+| `scheme-2` | `#F7F5F3` casi blanco | `#22150F` | `#C8161D` | `#FFFFFF` | `#22150F` | Secciones alternas: compra de la home, características y colores, compartir, pie, 404 |
+| `scheme-3` | `#B8141B` rojo | `#FFFFFF` | `#FFFFFF` | `#B8141B` | `#FFFFFF` | Solo la barra superior |
+| `scheme-4` | `#FFFFFF` | `#22150F` | `#C8161D` | `#FFFFFF` | `#22150F` | Tarjetas de Dawn y la barra de compra fija |
+| `scheme-5` | `#FDF1EF` rosado muy suave | `#22150F` | `#C8161D` | `#FFFFFF` | `#22150F` | Solo la llamada final de la home |
 
-Sombra en todos: `#1B1714`, sin degradados. Además: `card_color_scheme: scheme-4`, `cart_color_scheme: scheme-1`, `sale_badge_color_scheme: scheme-3` y `sold_out_badge_color_scheme: scheme-2`. `<meta name="theme-color">` usa el fondo del esquema 1.
+Sombra en todos: `#22150F`, sin degradados. Además: `card_color_scheme: scheme-4`, `cart_color_scheme: scheme-1`, `sale_badge_color_scheme: scheme-3` y `sold_out_badge_color_scheme: scheme-2`. `<meta name="theme-color">` usa el fondo del esquema 1. Contraste: rojo `#C8161D` con texto blanco 5,9:1; texto rojo pequeño `#B8141B` 6,7:1 sobre blanco.
 
 ### 7.2 Tokens CSS GARELON (`assets/garelon.css` → `:root`)
 
 ```css
---g-gold: #b88a3b;         /* dorado de marca: líneas, puntos, filetes */
---g-gold-light: #d2b06a;   /* dorado claro: acentos sobre fondo oscuro */
---g-gold-text: #7a5a24;    /* dorado accesible para texto pequeño sobre crema (contraste AA) */
---g-icon: #9a7433;         /* trazo de iconos */
---g-ink: #1b1714;          /* tinta */
---g-accent-text: var(--g-gold-text);
---g-line: rgba(184, 138, 59, 0.32);   /* líneas finas doradas */
---g-radius: 6px;
+--g-red: #c8161d;       /* rojo de la taza: botones, radios, bordes de lo elegido, iconos */
+--g-red-dark: #a8121a;  /* hover y texto del ahorro */
+--g-red-text: #b8141b;  /* texto rojo pequeño (antetítulos, etiquetas): 6,7:1 sobre blanco */
+--g-red-soft: #fdf1ef;  /* fondo del pack y del color elegidos */
+--g-red-tint: #fde4e2;  /* fondo de «Ahorra …» */
+--g-choc: #5a3222;      /* chocolate, solo de apoyo */
+--g-icon: var(--g-red);
+--g-ink: #22150f;       /* tinta */
+--g-accent-text: var(--g-red-text);
+--g-line: rgba(34, 21, 15, 0.12);   /* líneas finas neutras */
+--g-radius: 8px;
 ```
 
-Dentro de `.color-scheme-3`: `--g-accent-text: var(--g-gold-light)`, `--g-icon: var(--g-gold-light)`, `--g-line: rgba(210, 176, 106, 0.4)`.
+Dentro de `.color-scheme-3` (barra roja): `--g-accent-text`, `--g-icon` en blanco y `--g-line: rgba(255, 255, 255, 0.4)`.
+
+Compra: con el pago dinámico activado, «Añadir al carrito» se pinta en rojo (acción principal) y «Comprar ahora» (botón sin marca de Shopify) con borde oscuro, a todo el ancho. Solo CSS: el formulario, el carrito y el checkout no cambian.
+
+Infografías: `garelon-fallback-image` con `zoom: true` envuelve la imagen en un botón «Ampliar imagen» que la abre en un `<dialog>` nativo (`assets/garelon.js`): en móvil a 720 px de ancho, centrada y desplazable; se cierra con la ×, tocando fuera o con Escape.
 
 Por sección: `--g-pt` y `--g-pb` (márgenes superior e inferior, desde los ajustes `padding_top`/`padding_bottom`).
 
@@ -472,9 +481,9 @@ Las genera `layout/theme.liquid` a partir de los ajustes. **No se escriben a man
 | Botones, campos, píldoras de variante, insignias | 4 px |
 | Tarjetas, contenedores de texto, multimedia, ventanas emergentes | 6 px (`--g-radius`, `card_corner_radius`, `media_radius`, `text_boxes_radius`, `popup_corner_radius`) |
 | Tarjeta GARELON `.g-card` | Borde de 1 px `rgba(tinta, 0.08)`, fondo `rgba(tinta, 0.025)`, radio 6 px, **sin sombra** |
-| Tarjeta de pack `.g-pack` | Borde de 1 px `rgba(tinta, 0.2)`, fondo blanco al 45 %, radio 6 px, mínimo 64 px de alto. **Seleccionada:** borde tinta de 2 px, fondo blanco al 92 % y radio lleno. Ahorro en `--g-gold-text`. Insignia: fondo tinta con texto dorado claro (`--g-gold-light`), 10 px en mayúsculas, sobre el borde superior. Agotada: borde discontinuo y texto al 50 %. |
+| Tarjeta de pack `.g-pack` | Borde de 1 px `rgba(tinta, 0.22)`, fondo blanco, radio 8 px. **Seleccionada:** borde rojo de 2 px, fondo `--g-red-soft` y radio rojo lleno. Ahorro en `--g-red-dark` sobre `--g-red-tint`. Insignia: fondo rojo con texto blanco, 10 px en mayúsculas, sobre el borde superior. Agotada: borde discontinuo y texto al 50 %. Los botones de color siguen el mismo patrón. |
 | Caja de plazos `.g-ship` | Borde de 1 px `--g-line`, fondo `rgba(tinta, 0.02)`, radio 6 px, icono de camión en `--g-icon` |
-| Líneas | 1 px `--g-line` (dorado al 32 %) en la barra de características, la FAQ y los pasos |
+| Líneas | 1 px `--g-line` (tinta al 12 %) en la barra de características, la FAQ y los pasos |
 | Sombras | Ninguna, salvo la barra de compra fija (`0 -0.6rem 2rem rgba(27,23,20,.06)`) y las ventanas emergentes de Dawn (opacidad del 5 %) |
 | Imagen en arco / círculo (opcional) | Arco `999px 999px 6px 6px`; círculo con doble anillo dorado |
 
@@ -528,13 +537,13 @@ Inferidas del código y de las medidas del render. Son el «estilo GARELON»: un
 
 | Decisión | Cómo es hoy | Regla para futuros productos |
 |---|---|---|
-| **Estilo** | Premium sereno y editorial: crema/arena, tinta y dorado como acento; serif en títulos, sans en texto; mucho aire | Se mantiene para cualquier categoría, también gadgets o mascotas |
+| **Estilo** | Premium limpio y luminoso: fondo blanco/casi blanco, tinta y el color protagonista del producto como acento (en la Taza Fondue, el rojo de la taza; en el sérum era dorado); serif en títulos, sans en texto; mucho aire | Se mantiene para cualquier categoría, también gadgets o mascotas |
 | **Densidad** | 1 idea por sección. Encabezado (antetítulo + H2 + ≤ 1 entradilla) + una lista, tarjetas o imagen. 9 secciones en la home. | 8-11 secciones. No añadir secciones sin contenido o imagen fuerte. |
 | **Portada** | Móvil: imagen ≤ 34vh → marca → H1 (6 palabras) → 1 frase → precio → CTA a ancho completo → secundario → 3 micro-beneficios. Precio y CTA en la primera pantalla a 360-430 px. Escritorio: 2 columnas 1:1, imagen a la derecha. | Igual. El H1 cuenta el beneficio, no el nombre técnico. |
 | **Texto/imagen** | Divididas 1:1. Imagen ≤ 520 px. En móvil, la imagen va antes que el texto. | Igual |
 | **CTAs** | 3 puntos de compra en la home: portada → `#comprar`, formulario real con packs en `#comprar` (justo después de la portada), llamada final → `#comprar`. Más 1 secundario informativo («Cómo se usa»). La sección del diferencial no lleva botón. | Máximo 3 CTAs de compra. Nada de botones en cada sección. |
-| **Dorado** | Solo acento: antetítulos (dorado oscuro accesible), filetes de 24 px, líneas al 32 %, trazo de iconos, puntos de ingredientes, números de paso, botón de la barra oscura | Nunca fondos dorados de sección ni texto dorado largo |
-| **Alternancia de fondos** | Crema / arena para separar secciones sin líneas; tinta solo en la barra superior. Orden actual: 1-2-(1)-1-2-2-1-2-2-1 (portada, compra, opiniones si hay datos reales, características … cierre). | Mantener la alternancia. Dos seguidas con el mismo esquema, como mucho. |
+| **Color de acento** (rojo en la Taza Fondue) | Botones de compra, barra superior, antetítulos, filetes de 24 px, trazo de iconos, números de paso, pack y color elegidos, insignia y ahorro | Nunca fondos rojos de sección (solo la barra superior) ni texto rojo largo; el chocolate/marrón solo como apoyo |
+| **Alternancia de fondos** | Blanco / casi blanco para separar secciones sin líneas; rojo solo en la barra superior y un rosado muy suave solo en la llamada final. Orden actual de la home: 1-2-(1)-1-2-1-2-1-5 (portada, compra, opiniones si hay datos reales, cómo funciona, características y colores, beneficios, compartir, FAQ, cierre). | Mantener la alternancia. Dos seguidas con el mismo esquema, como mucho. |
 | **Espacio en blanco** | 56 px por sección en escritorio (~36 px en móvil). 1200 px de ancho. Encabezados centrados con 60ch. | Igual |
 | **Tarjetas** | Borde casi invisible, fondo muy sutil, radio 6 px, sin sombra, icono en círculo con línea dorada | Igual |
 | **Longitud del copy** | Frases cortas y prudentes (sección 17.3). Ni párrafos largos ni listas enormes. | Igual |
@@ -552,18 +561,22 @@ Inferidas del código y de las medidas del render. Son el «estilo GARELON»: un
 
 Antes de la home están los grupos: **barra superior** (esquema 3) y **cabecera** (esquema 1). Después, el **pie** (esquema 2).
 
-| # | Id en `index.json` | Tipo de sección | Esquema | Ancla | Contenido actual (Taza Fondue, 1.6) | Imagen | Márgenes |
+| # | Id en `index.json` | Tipo de sección | Esquema | Ancla | Contenido actual (Taza Fondue, 1.7) | Imagen | Márgenes |
 |---|---|---|---|---|---|---|---|
-| 1 | `hero` | `garelon-hero` | 1 | `inicio` | Antetítulo «Un pequeño plan que sabe a mucho»; **H1** «Tu fondue de chocolate, directamente en una taza»; 1 frase qué es; precio («A partir de 24,99 €»); «Elegir color y pack» → `/#comprar`; «Cómo funciona» → `/#como-funciona`; puntos: Tenedor incluido · 130 ml · 3 colores | imagen2 (taza roja), carga inmediata | 24 / 32 |
-| 2 | `product_cta` | `featured-product` (Dawn) | **2** | `comprar` | Antetítulo «Taza Fondue», título (H2), precio, «Cada unidad: taza de cerámica de 130 ml + tenedor de fondue. Vela no incluida.», **Color × Pack** (`garelon_packs`), botones con pago dinámico, «Envío gratis», stock y plazos (1–3 días · aprox. 8–18 días) | Galería del tema: tres colores → roja → blanca → marrón | 40 / 56 |
+| 1 | `hero` | `garelon-hero` | 1 | `inicio` | Antetítulo «Un pequeño plan que sabe a mucho»; **H1** «Tu fondue de chocolate, directamente en una taza»; 1 frase qué es; precio («A partir de 24,99 €»); «Elegir color y pack» (rojo) → `/#comprar`; «Cómo funciona» → `/#como-funciona`; puntos: Tenedor incluido · 130 ml · 3 colores | imagen2 (taza roja), carga inmediata | 24 / 32 |
+| 2 | `product_cta` | `featured-product` (Dawn) | **2** | `comprar` | Antetítulo «Taza Fondue», título (H2), precio, «Cada unidad: taza de cerámica de 130 ml + tenedor de fondue. Vela no incluida.», **Color × Pack** (`garelon_packs`), «Añadir al carrito» en rojo + pago dinámico, «Envío gratis», stock y plazos (1–3 días · aprox. 8–18 días) | Galería del tema: roja de cerca → tres colores → blanca → marrón | 40 / 56 |
 | 3 | `reviews` | `garelon-reviews` | 1 | `opiniones` | Solo reseñas reales; sin app, **0 px** | — | 56 / 56 |
-| 4 | `trust` | `garelon-trust-bar` | 1 | — | Cerámica (taza de 130 ml) · Tenedor incluido (uno por taza) · Hueco para vela (vela no incluida) · 3 colores | — | 32 / 32 |
-| 5 | `benefits` | `garelon-benefits` | 2 | `beneficios` | «Convierte cualquier sobremesa en un pequeño momento especial»: Chocolate o queso · Hecha para compartir · Todo en una taza | — | 56 / 56 |
-| 6 | `how_to` | `garelon-how-to-use` | 1 | `como-funciona` | «Tan sencillo como preparar, calentar y disfrutar»: 5 pasos + nota «Vela no incluida» y uso responsable de la llama | imagen3 (blanca) | 56 / 56 |
-| 7 | `lifestyle` | `garelon-image-text` | 2 | `compartir` | «Un plan sencillo para compartir» | imagen4 (marrón) | 56 / 56 |
-| 8 | `includes` | `garelon-ingredients` | 1 | `que-incluye` | «Elige tu color»: taza de cerámica 130 ml · tenedor (1 por taza) · Rojo · Blanco · Marrón · vela no incluida + nota del proveedor | imagen1 (tres colores) | 56 / 56 |
-| 9 | `faq` | `garelon-faq` | 2 | `preguntas-frecuentes` | 10 preguntas: qué incluye (con fabricante externo), uso, queso, microondas (según el proveedor), capacidad, colores, packs, vela, envío, daños/dudas | — | 56 / 56 |
-| 10 | `final_cta` | `garelon-final-cta` | 1 | — | Isotipo; «Tu próxima sobremesa puede empezar aquí»; precio; «Elegir mi Taza Fondue» → `/#comprar` | Ninguna | 56 / 64 |
+| 4 | `how_to` | `garelon-how-to-use` | 1 | `como-funciona` | «Tan sencillo como preparar, calentar y disfrutar»: infografía + 5 pasos en versión compacta (solo títulos) + pie «Imagen ilustrativa. Cada unidad incluye 1 taza y 1 tenedor; la vela no está incluida.» + nota de uso responsable de la llama | **Infografía «Cómo funciona»** (imagen8), ampliable | 56 / 56 |
+| 5 | `includes` | `garelon-ingredients` | **2** | `que-incluye` | Antetítulo «Características y colores»; «Elige tu color»: taza de cerámica 130 ml · tenedor (1 por taza) · Rojo · Blanco · Marrón · vela no incluida + pie «La vela que aparece en la imagen no está incluida.» + nota del proveedor | **Infografía «Características y usos»** (imagen7 corregida), ampliable | 56 / 56 |
+| 6 | `trust` | `garelon-trust-bar` | 1 | — | **Desactivada** (`"disabled": true`): la infografía de características la cubre. Se reactiva en el editor. | — | 32 / 32 |
+| 7 | `benefits` | `garelon-benefits` | 1 | `beneficios` | «Convierte cualquier sobremesa en un pequeño momento especial»: Chocolate o queso · Hecha para compartir · Todo en una taza | — | 56 / 56 |
+| 8 | `lifestyle` | `garelon-image-text` | 2 | `compartir` | «Un plan sencillo para compartir» | imagen1 (tres colores, la roja delante) | 56 / 56 |
+| 9 | `faq` | `garelon-faq` | 1 | `preguntas-frecuentes` | 10 preguntas: qué incluye (con fabricante externo), uso, queso, microondas (según el proveedor), capacidad, colores, packs, vela, envío, daños/dudas | — | 56 / 56 |
+| 10 | `final_cta` | `garelon-final-cta` | **5** | — | Isotipo; «Tu próxima sobremesa puede empezar aquí»; precio; «Elegir mi Taza Fondue» → `/#comprar` | Ninguna | 56 / 64 |
+
+**Por qué este orden (1.7):** tráfico frío de TikTok Ads en móvil. Tras la compra (y las opiniones reales, si hay), la infografía «Cómo funciona» explica en una imagen qué es y cómo se usa; justo después, «Características y usos» muestra qué incluye y los tres colores. Beneficios, compartir y FAQ quedan como apoyo. Las infografías tienen texto pequeño: por eso se pueden ampliar al tocarlas y los pasos también están en texto (accesibles y legibles).
+
+**Infografía de características corregida:** `garelon-fondue-caracteristicas-*.webp` sale de imagen7 con dos correcciones para que coincida con el producto real: la etiqueta del color oscuro dice «Marrón» (el original decía otro nombre) y se retiraron los corazones dibujados sobre las tazas (la taza real solo lleva «Chocolat...»). El original sigue en la raíz sin tocar. Quedan en ambas infografías, con pie aclaratorio: la vela encendida (no incluida) y, en la de «Cómo funciona», el texto «Chocolat» sin puntos y un segundo tenedor en la escena.
 
 La estructura del sérum (con `roller` e `ingredients`) está en la rama `baseline/garelon-serum`.
 

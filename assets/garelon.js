@@ -6,6 +6,8 @@
     Muestra la variante elegida (p. ej. «Rojo · 2 unidades») y su precio real.
   - Color × Pack (snippets/garelon-packs.liquid) no necesita JS propio: son
     variantes reales dentro del <variant-selects> de Dawn.
+  - [data-g-zoom]: abre una imagen (p. ej. las infografías) ampliada en un
+    <dialog> nativo. Se cierra con la ×, tocando fuera o con Escape.
 */
 
 if (!customElements.get('garelon-sticky-atc')) {
@@ -119,3 +121,51 @@ if (!customElements.get('garelon-sticky-atc')) {
     }
   );
 }
+
+// Varias secciones pueden cargar este archivo: el zoom se registra una sola vez.
+(() => {
+  if (window.garelonZoomReady) return;
+  window.garelonZoomReady = true;
+  let dialog;
+  let opener;
+
+  function getDialog() {
+    if (dialog) return dialog;
+    dialog = document.createElement('dialog');
+    dialog.className = 'g-lightbox';
+    dialog.setAttribute('aria-label', 'Imagen ampliada');
+    dialog.innerHTML =
+      '<button type="button" class="g-lightbox__close" aria-label="Cerrar">&times;</button><img class="g-lightbox__img" alt="">';
+    dialog.querySelector('.g-lightbox__close').addEventListener('click', () => dialog.close());
+    dialog.addEventListener('click', (event) => {
+      if (event.target === dialog) dialog.close();
+    });
+    dialog.addEventListener('close', () => {
+      if (opener) opener.focus();
+    });
+    document.body.appendChild(dialog);
+    return dialog;
+  }
+
+  document.addEventListener('click', (event) => {
+    const trigger = event.target.closest('[data-g-zoom]');
+    if (!trigger) return;
+    const box = getDialog();
+    if (typeof box.showModal !== 'function') {
+      window.open(trigger.dataset.gZoom, '_blank', 'noopener');
+      return;
+    }
+    const img = box.querySelector('.g-lightbox__img');
+    const source = trigger.querySelector('img');
+    img.src = trigger.dataset.gZoom;
+    img.alt = source ? source.alt : '';
+    opener = trigger;
+    box.showModal();
+    const center = () => {
+      box.scrollLeft = (box.scrollWidth - box.clientWidth) / 2;
+      box.scrollTop = (box.scrollHeight - box.clientHeight) / 2;
+    };
+    if (img.complete) center();
+    else img.addEventListener('load', center, { once: true });
+  });
+})();

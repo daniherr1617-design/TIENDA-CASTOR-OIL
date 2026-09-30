@@ -3,7 +3,7 @@
 
   Accepts:
   - icon: {String} mug | fork | candle | chocolate | colors | heart | gift | drop | leaf | steps | sparkle | lock | chat
-           | truck | return | check | none
+           | truck | return | check | zoom | none
 
   Usage:
   {% render 'garelon-icon', icon: 'drop' %}
@@ -53,6 +53,8 @@
         <path d="M2.5 6.5h11v9.5h-11z"/><path d="M13.5 9.5h4.2l3.3 3.4v3.1h-7.5"/><circle cx="6.5" cy="17.5" r="1.7"/><circle cx="17" cy="17.5" r="1.7"/>
       {%- when 'return' -%}
         <path d="M8.5 5 4.5 9l4 4"/><path d="M4.5 9h10a5 5 0 0 1 0 10H9"/>
+      {%- when 'zoom' -%}
+        <circle cx="10.5" cy="10.5" r="6"/><path d="m15 15 5 5"/><path d="M10.5 8v5M8 10.5h5"/>
       {%- when 'check' -%}
         <circle cx="12" cy="12" r="8.5"/><path d="m8.3 12.2 2.4 2.4 5-5"/>
     {%- endcase -%}

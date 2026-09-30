@@ -313,7 +313,10 @@
       "settings": {
         "eyebrow": "Cómo funciona",
         "heading": "Tan sencillo como preparar, calentar y disfrutar",
-        "fallback_image": "blanco",
+        "fallback_image": "como-funciona",
+        "image_zoom": true,
+        "image_caption": "Imagen ilustrativa. Cada unidad incluye 1 taza y 1 tenedor; la vela no está incluida.",
+        "steps_style": "compact",
         "show_images": false,
         "note": "Vela no incluida. Usa la taza sobre una superficie estable y resistente al calor, no dejes la vela encendida sin vigilancia y mantenla fuera del alcance de los niños.",
         "color_scheme": "scheme-1",
@@ -443,7 +446,7 @@
     "lifestyle": {
       "type": "garelon-image-text",
       "settings": {
-        "fallback_image": "marron",
+        "fallback_image": "colores",
         "image_shape": "rounded",
         "image_position": "right",
         "eyebrow": "Para compartir",

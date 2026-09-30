@@ -6,20 +6,25 @@
    ========================================================================== */
 
 :root {
-  --g-gold: #b88a3b;
-  --g-gold-light: #d2b06a;
-  --g-gold-text: #7a5a24; /* dorado accesible para texto pequeño sobre crema */
-  --g-icon: #9a7433;
-  --g-ink: #1b1714;
-  --g-accent-text: var(--g-gold-text);
-  --g-line: rgba(184, 138, 59, 0.32);
-  --g-radius: 6px;
+  /* Rojo de la taza (protagonista), chocolate solo como apoyo y tinta casi negra. */
+  --g-red: #c8161d; /* botones y acentos: 5,9:1 sobre blanco */
+  --g-red-dark: #a8121a;
+  --g-red-text: #b8141b; /* texto rojo pequeño: 6,7:1 sobre blanco */
+  --g-red-soft: #fdf1ef;
+  --g-red-tint: #fde4e2;
+  --g-choc: #5a3222;
+  --g-icon: var(--g-red);
+  --g-ink: #22150f;
+  --g-accent-text: var(--g-red-text);
+  --g-line: rgba(34, 21, 15, 0.12);
+  --g-radius: 8px;
 }
 
+/* Barra superior roja: acentos en blanco. */
 .color-scheme-3 {
-  --g-accent-text: var(--g-gold-light);
-  --g-icon: var(--g-gold-light);
-  --g-line: rgba(210, 176, 106, 0.4);
+  --g-accent-text: #fff;
+  --g-icon: #fff;
+  --g-line: rgba(255, 255, 255, 0.4);
 }
 
 /* ---------- Botones ---------- */
@@ -315,7 +320,7 @@
   content: '';
   width: 2.4rem;
   height: 1px;
-  background: var(--g-gold);
+  background: var(--g-red);
 }
 
 @media screen and (min-width: 750px) {
@@ -720,7 +725,7 @@ a.g-trust__title {
   height: 0.6rem;
   margin: 0 auto 1.2rem;
   border-radius: 50%;
-  background: var(--g-gold);
+  background: var(--g-red);
 }
 
 .g-ingredients__name {
@@ -888,6 +893,12 @@ a.g-trust__title {
   margin-top: 2rem;
 }
 
+.g-steps__layout--media .g-steps__content {
+  width: 100%;
+  max-width: 52rem;
+  justify-self: center;
+}
+
 .g-steps__list--stacked .g-steps__body {
   display: grid;
   grid-template-columns: auto 1fr;
@@ -907,12 +918,14 @@ a.g-trust__title {
   grid-column: 2;
 }
 
-@media screen and (min-width: 750px) {
+@media screen and (min-width: 990px) {
   .g-steps__layout--media {
     grid-template-columns: 1fr 1fr;
     gap: 6rem;
   }
+}
 
+@media screen and (min-width: 750px) {
   .g-steps__list--stacked {
     grid-auto-flow: row;
     grid-auto-columns: auto;
@@ -1113,7 +1126,7 @@ a.g-trust__title {
   gap: 0.8rem;
   margin: 0 0 1rem;
   padding: 0.5rem 1.2rem;
-  border: 1px solid var(--g-gold);
+  border: 1px solid var(--g-red);
   border-radius: 999px;
   color: var(--g-accent-text);
   font-size: 1.15rem;
@@ -1129,7 +1142,7 @@ a.g-trust__title {
   width: 0.6rem;
   height: 0.6rem;
   border-radius: 50%;
-  background: var(--g-gold);
+  background: var(--g-red);
 }
 
 .g-packs .g-packs__fieldset {
@@ -1192,7 +1205,7 @@ a.g-trust__title {
   padding: 1.5rem 1.6rem;
   border: 1px solid rgba(var(--color-foreground), 0.22);
   border-radius: var(--g-radius);
-  background: rgba(255, 255, 255, 0.45);
+  background: #fff;
   color: rgb(var(--color-foreground));
   cursor: pointer;
   transition: border-color 0.2s ease, background-color 0.2s ease, box-shadow 0.2s ease;
@@ -1203,9 +1216,9 @@ a.g-trust__title {
 }
 
 .g-packs__input:checked + .g-pack {
-  border-color: rgb(var(--color-foreground));
-  box-shadow: inset 0 0 0 1px rgb(var(--color-foreground)), 0 0.6rem 1.8rem rgba(27, 23, 20, 0.08);
-  background: #fff;
+  border-color: var(--g-red);
+  box-shadow: inset 0 0 0 1px var(--g-red), 0 0.6rem 1.8rem rgba(200, 22, 29, 0.1);
+  background: var(--g-red-soft);
 }
 
 .g-packs__input:focus-visible + .g-pack {
@@ -1229,13 +1242,13 @@ a.g-trust__title {
   width: 1.1rem;
   height: 1.1rem;
   border-radius: 50%;
-  background: rgb(var(--color-foreground));
+  background: var(--g-red);
   transform: scale(0);
   transition: transform 0.2s ease;
 }
 
 .g-packs__input:checked + .g-pack .g-pack__radio {
-  border-color: rgb(var(--color-foreground));
+  border-color: var(--g-red);
 }
 
 .g-packs__input:checked + .g-pack .g-pack__radio::after {
@@ -1286,8 +1299,8 @@ a.g-trust__title {
   margin-top: 0.2rem;
   padding: 0.3rem 0.8rem;
   border-radius: 4px;
-  background: rgba(184, 138, 59, 0.16);
-  color: var(--g-gold-text);
+  background: var(--g-red-tint);
+  color: var(--g-red-dark);
   font-size: 1.25rem;
   font-weight: 600;
   line-height: 1.4;
@@ -1313,8 +1326,8 @@ a.g-trust__title {
   right: 1.2rem;
   padding: 0.3rem 0.9rem;
   border-radius: 4px;
-  background: var(--g-ink);
-  color: var(--g-gold-light);
+  background: var(--g-red);
+  color: #fff;
   font-size: 1.05rem;
   font-weight: 600;
   line-height: 1.4;
@@ -1428,7 +1441,7 @@ a.g-trust__title {
   padding: 0.8rem 0.6rem;
   border: 1px solid rgba(var(--color-foreground), 0.22);
   border-radius: var(--g-radius);
-  background: rgba(255, 255, 255, 0.45);
+  background: #fff;
   color: rgb(var(--color-foreground));
   font-size: 1.4rem;
   line-height: 1.2;
@@ -1441,9 +1454,9 @@ a.g-trust__title {
 }
 
 .g-choice__input:checked + .g-choice__button {
-  border-color: rgb(var(--color-foreground));
-  box-shadow: inset 0 0 0 1px rgb(var(--color-foreground));
-  background: #fff;
+  border-color: var(--g-red);
+  box-shadow: inset 0 0 0 1px var(--g-red);
+  background: var(--g-red-soft);
   font-weight: 600;
 }
 
@@ -1461,7 +1474,7 @@ a.g-trust__title {
 }
 
 .g-choice__dot {
-  border: 1px solid rgba(27, 23, 20, 0.25);
+  border: 1px solid rgba(34, 21, 15, 0.25);
   background: var(--g-dot, rgba(var(--color-foreground), 0.15));
 }
 
@@ -1473,7 +1486,7 @@ a.g-trust__title {
 
 .g-choice__dot--rojo,
 .g-choice__dot--red {
-  --g-dot: #b3261e;
+  --g-dot: var(--g-red);
 }
 
 .g-choice__dot--blanco,
@@ -1697,10 +1710,10 @@ a.g-trust__title {
 .g-editor-note {
   margin: 1.2rem 0 0;
   padding: 1rem 1.2rem;
-  border: 2px dashed var(--g-gold);
+  border: 2px dashed var(--g-red);
   border-radius: var(--g-radius);
   background: #fffaf0;
-  color: #4a3714;
+  color: #4a3714; /* aviso solo del editor */
   font-size: 1.3rem;
   line-height: 1.5;
 }
@@ -1802,7 +1815,7 @@ a.g-trust__title {
   padding: 0.8rem 0 calc(0.8rem + env(safe-area-inset-bottom));
   border-top: 1px solid rgba(var(--color-foreground), 0.1);
   background: rgb(var(--color-background));
-  box-shadow: 0 -0.6rem 2rem rgba(27, 23, 20, 0.06);
+  box-shadow: 0 -0.6rem 2rem rgba(34, 21, 15, 0.08);
   transform: translateY(110%);
   visibility: hidden;
   transition: transform 0.25s ease, visibility 0s linear 0.25s;
@@ -1931,6 +1944,212 @@ a.g-trust__title {
 
 .main-page-title {
   font-size: clamp(2.8rem, 6vw, 4rem);
+}
+
+/* ---------- Compra: acción principal en rojo ----------
+   Con el pago dinámico activado Dawn pinta «Añadir al carrito» como botón secundario.
+   Aquí es la acción principal (rojo de la taza) y «Comprar ahora» (botón sin marca de
+   Shopify) pasa a botón con borde oscuro, a todo el ancho. Solo estilo: no cambia el formulario. */
+.product-form__buttons .product-form__submit.button--secondary {
+  --color-button: 200, 22, 29;
+  --color-button-text: 255, 255, 255;
+  font-weight: 600;
+}
+
+.product-form__buttons .product-form__submit.button--secondary::after {
+  --border-opacity: 0;
+}
+
+.product-form__buttons .product-form__submit.button--secondary:not([disabled]):hover {
+  background-color: var(--g-red-dark);
+}
+
+.product-form__buttons .shopify-payment-button__button--unbranded {
+  --color-button: var(--color-background);
+  --color-button-text: var(--color-foreground);
+  --border-opacity: 1;
+  width: 100%;
+}
+
+.product-form__buttons .shopify-payment-button__button--unbranded:hover:not([disabled]) {
+  background-color: rgba(var(--color-foreground), 0.04);
+}
+
+/* ---------- Infografías e imágenes ampliables ---------- */
+.g-zoom {
+  position: relative;
+  display: block;
+  width: 100%;
+  margin: 0;
+  padding: 0;
+  border: 0;
+  background: none;
+  color: inherit;
+  font: inherit;
+  cursor: zoom-in;
+}
+
+.g-zoom:focus-visible {
+  outline: 0.2rem solid var(--g-red);
+  outline-offset: 0.3rem;
+}
+
+/* «Ampliar imagen» como franja bajo la imagen (dentro de la tarjeta), sin tapar texto de las infografías. */
+.g-zoom__hint {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.6rem;
+  padding: 1rem;
+  border-top: 1px solid var(--g-line);
+  background: #fff;
+  color: var(--g-ink);
+  font-size: 1.3rem;
+  font-weight: 600;
+  line-height: 1.2;
+  letter-spacing: 0.04em;
+}
+
+.g-zoom:hover .g-zoom__hint {
+  color: var(--g-red-dark);
+}
+
+.g-zoom__hint .g-icon {
+  width: 1.6rem;
+  height: 1.6rem;
+  color: var(--g-red);
+}
+
+.g-media__caption {
+  margin: 1rem 0 0;
+  font-size: 1.25rem;
+  line-height: 1.5;
+  text-align: center;
+  color: rgba(var(--color-foreground), 0.72);
+}
+
+/* Infografías: cuadradas, sin recorte, sobre tarjeta blanca con sombra suave. */
+.g-steps__visual .g-media__frame,
+.g-ingredients__visual .g-media__frame {
+  background: #fff;
+  box-shadow: 0 0.2rem 1.6rem rgba(34, 21, 15, 0.08);
+}
+
+/* Imagen ampliada: en móvil, casi al doble del ancho de pantalla para poder leer el texto
+   de las infografías (se desliza con el dedo y admite pellizcar); en escritorio, entera. */
+.g-lightbox {
+  width: 100vw;
+  height: 100dvh;
+  max-width: none;
+  max-height: none;
+  margin: 0;
+  padding: 0;
+  border: 0;
+  background: rgba(20, 12, 9, 0.9);
+  overflow: auto;
+  overscroll-behavior: contain;
+}
+
+.g-lightbox[open] {
+  display: flex;
+}
+
+.g-lightbox::backdrop {
+  background: rgba(20, 12, 9, 0.9);
+}
+
+.g-lightbox__img {
+  display: block;
+  flex: none;
+  width: max(100vw, 72rem);
+  max-width: 108rem;
+  height: auto;
+  margin: auto;
+  background: #fff;
+}
+
+@media screen and (min-width: 750px) {
+  .g-lightbox__img {
+    width: min(108rem, 94vw, 94dvh);
+  }
+}
+
+.g-lightbox__close {
+  position: fixed;
+  top: 1.2rem;
+  right: 1.2rem;
+  z-index: 1;
+  display: grid;
+  place-items: center;
+  width: 4.4rem;
+  height: 4.4rem;
+  padding: 0;
+  border: 0;
+  border-radius: 50%;
+  background: #fff;
+  box-shadow: 0 0.2rem 0.8rem rgba(0, 0, 0, 0.25);
+  color: var(--g-ink);
+  font-size: 2.6rem;
+  line-height: 1;
+  cursor: pointer;
+}
+
+.g-lightbox__close:focus-visible {
+  outline: 0.2rem solid #fff;
+  outline-offset: 0.2rem;
+}
+
+/* Pasos compactos junto a una infografía: número en círculo rojo + título. */
+.g-steps__list--compact {
+  gap: 0.8rem;
+}
+
+.g-steps__list--compact .g-steps__item {
+  padding: 0;
+  border: 0;
+}
+
+.g-steps__list--compact .g-steps__body {
+  display: flex;
+  align-items: center;
+  gap: 1.2rem;
+}
+
+.g-steps__list--compact .g-steps__number {
+  display: grid;
+  flex: none;
+  place-items: center;
+  width: 3.2rem;
+  height: 3.2rem;
+  margin: 0;
+  border-radius: 50%;
+  background: var(--g-red);
+  color: #fff;
+  font-family: var(--font-body-family);
+  font-size: 1.3rem;
+  font-weight: 700;
+  letter-spacing: 0;
+}
+
+.g-steps__list--compact .g-h3 {
+  margin: 0;
+  font-size: 1.7rem;
+  line-height: 1.3;
+}
+
+@media screen and (min-width: 750px) {
+  .g-steps__list--compact {
+    grid-auto-flow: row;
+    gap: 1.4rem;
+  }
+
+  .g-steps__list--compact .g-steps__item {
+    text-align: left;
+  }
+
+  .g-steps__list--compact .g-h3 {
+    font-size: 2rem;
+  }
 }
 
 /* ---------- Movimiento reducido ---------- */

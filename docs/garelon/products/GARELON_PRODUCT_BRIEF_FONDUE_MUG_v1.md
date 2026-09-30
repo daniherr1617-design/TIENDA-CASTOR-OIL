@@ -167,14 +167,14 @@ Usarlo solo para estudiar CRO/estructura móvil/oferta. No copiar marca, logo, t
 | Archivo | Decisión | Rol / motivo |
 |---|---|---|
 | `LOGO.png` | Usada | Isotipo, favicon e icono de iOS (emblema, no es una foto del producto) |
-| `imagen2.png` | Usada | Principal: portada, galería n.º 2, 404 (taza roja, fiel) |
-| `imagen1.png` | Usada | Los tres colores: galería n.º 1 y «Elige tu color» |
-| `imagen3.png` | Usada | Taza blanca: galería n.º 3 y «Cómo funciona» |
-| `imagen4.png` | Usada | Taza marrón: galería n.º 4 y «Un plan sencillo para compartir» |
+| `imagen2.png` | Usada | Principal: portada y 404; recortada en la taza, n.º 1 de la galería de compra (taza roja, fiel) |
+| `imagen1.png` | Usada | Los tres colores: galería n.º 2 y «Un plan sencillo para compartir» (la roja delante) |
+| `imagen3.png` | Usada | Taza blanca: galería n.º 3 |
+| `imagen4.png` | Usada | Taza marrón: galería n.º 4 |
 | `imagen5.png` | Descartada | Muestra **dos tenedores** con una sola taza (se incluye uno) |
 | `imagen6.png` | Descartada | Casi idéntica a `imagen3.png` (redundante) |
-| `imagen7.png` | Descartada | Llama **«Negro»** al marrón, añade **corazones** a la taza y claims no verificados («resistente», «duradera») |
-| `imagen8.png` | Descartada | Cambia el texto físico a «Chocolat» (sin «...», otra letra) y muestra dos tenedores; los pasos están en HTML |
+| `imagen7.png` | **Usada desde la ronda visual (v1.1 del tema), corregida** | Infografía «Características y usos» en «Elige tu color» (`#que-incluye`). Petición expresa del dueño. Derivado `garelon-fondue-caracteristicas-*`: la etiqueta del color oscuro dice **«Marrón»** y se quitaron los **corazones** dibujados sobre las tazas. Siguen en la imagen «Cerámica resistente · Duradera» y «Apto para microondas» (este, según el proveedor, igual que en la FAQ); pie: «La vela que aparece en la imagen no está incluida.» |
+| `imagen8.png` | **Usada desde la ronda visual (v1.1 del tema), sin cambios** | Infografía «Cómo funciona» en `#como-funciona` (home y ficha). Petición expresa del dueño. Siguen en la imagen «Chocolat» sin «...» y un segundo tenedor en la escena; pie: «Imagen ilustrativa. Cada unidad incluye 1 taza y 1 tenedor; la vela no está incluida.» y los 5 pasos en texto. |
 
 **Pendiente (Shopify / CJ, lo hace el dueño):** ver `GARELON-CAMBIOS-FONDUE.md` en la raíz.
 

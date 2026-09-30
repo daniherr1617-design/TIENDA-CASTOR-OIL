@@ -1,9 +1,9 @@
 {%- comment -%}
   GARELON · Galería de la zona de compra de la home.
 
-  Muestra las imágenes del producto incluidas en el tema, en el orden de la historia:
-  los tres colores (imagen1) → roja (imagen2) → blanca (imagen3) → marrón (imagen4).
-  Empieza por los tres colores porque la portada, justo encima, ya muestra la taza roja.
+  Muestra las imágenes del producto incluidas en el tema. La roja es la protagonista:
+  roja de cerca (imagen2 recortada en la taza, para no repetir la foto completa de la
+  portada) → los tres colores (imagen1) → blanca (imagen3) → marrón (imagen4).
 
   Usa el carrusel de Dawn (<slider-component>, definido en global.js): se desliza con el
   dedo en móvil y tiene flechas y contador en todos los tamaños. Todas las imágenes se
@@ -18,7 +18,7 @@
 {{ 'component-slider.css' | asset_url | stylesheet_tag }}
 
 {%- liquid
-  assign keys = 'colores,principal,blanco,marron' | split: ','
+  assign keys = 'roja,colores,blanco,marron' | split: ','
   assign slider_id = 'Slider-GGallery-' | append: section_id
 -%}
 

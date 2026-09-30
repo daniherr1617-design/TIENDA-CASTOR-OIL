@@ -213,6 +213,7 @@
         "t-vela",
         "t-colores"
       ],
+      "disabled": true,
       "settings": {
         "heading": "Características",
         "show_borders": true,
@@ -261,7 +262,7 @@
         "text": "<p>Sin montar una fondue grande: una taza, tus acompañamientos favoritos y un rato para disfrutar.</p>",
         "note": "",
         "alignment": "center",
-        "color_scheme": "scheme-2",
+        "color_scheme": "scheme-1",
         "anchor": "beneficios",
         "padding_top": 56,
         "padding_bottom": 56
@@ -321,7 +322,10 @@
       "settings": {
         "eyebrow": "Cómo funciona",
         "heading": "Tan sencillo como preparar, calentar y disfrutar",
-        "fallback_image": "blanco",
+        "fallback_image": "como-funciona",
+        "image_zoom": true,
+        "image_caption": "Imagen ilustrativa. Cada unidad incluye 1 taza y 1 tenedor; la vela no está incluida.",
+        "steps_style": "compact",
         "show_images": false,
         "note": "Vela no incluida. Usa la taza sobre una superficie estable y resistente al calor, no dejes la vela encendida sin vigilancia y mantenla fuera del alcance de los niños.",
         "color_scheme": "scheme-1",
@@ -333,7 +337,7 @@
     "lifestyle": {
       "type": "garelon-image-text",
       "settings": {
-        "fallback_image": "marron",
+        "fallback_image": "colores",
         "image_shape": "rounded",
         "image_position": "right",
         "eyebrow": "Para compartir",
@@ -390,13 +394,15 @@
         "i-vela"
       ],
       "settings": {
-        "eyebrow": "Colores y contenido",
+        "eyebrow": "Características y colores",
         "heading": "Elige tu color",
         "text": "<p>Rojo, blanco o marrón. Los packs de 2 y 3 unidades son siempre del mismo color.</p>",
-        "fallback_image": "colores",
+        "fallback_image": "caracteristicas",
+        "image_zoom": true,
+        "image_caption": "La vela que aparece en la imagen no está incluida.",
         "show_note": true,
         "note": "Datos según la información facilitada por el proveedor.",
-        "color_scheme": "scheme-1",
+        "color_scheme": "scheme-2",
         "anchor": "que-incluye",
         "padding_top": 56,
         "padding_bottom": 56
@@ -493,7 +499,7 @@
         "heading": "Preguntas frecuentes",
         "open_first": false,
         "contact_text": "",
-        "color_scheme": "scheme-2",
+        "color_scheme": "scheme-1",
         "anchor": "preguntas-frecuentes",
         "padding_top": 56,
         "padding_bottom": 56
@@ -508,7 +514,7 @@
         "text": "<p>Elige tu color y el pack que mejor encaje contigo.</p>",
         "show_price": true,
         "button_label": "Elegir mi Taza Fondue",
-        "color_scheme": "scheme-1",
+        "color_scheme": "scheme-5",
         "anchor": "",
         "padding_top": 56,
         "padding_bottom": 64
@@ -519,11 +525,11 @@
     "hero",
     "product_cta",
     "reviews",
+    "how_to",
+    "includes",
     "trust",
     "benefits",
-    "how_to",
     "lifestyle",
-    "includes",
     "faq",
     "final_cta"
   ]

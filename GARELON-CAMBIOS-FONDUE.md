@@ -1,4 +1,4 @@
-# GARELON · Migración a la Taza Fondue de Chocolate con Tenedor (v1)
+# GARELON · Migración a la Taza Fondue de Chocolate con Tenedor (v1 + ronda visual v1.1)
 
 > Rama `claude/fondue-mug`. Primera migración de producto sobre el baseline del sérum (`baseline/garelon-serum`, commit `f08f9bb`). Misma arquitectura: Dawn 16.0.0 + capa GARELON, carrito y checkout de Shopify, opiniones solo reales, sin pagos visuales.
 >
@@ -8,23 +8,24 @@
 
 **Home**
 
-| # | Sección | Contenido |
-|---|---|---|
-| 1 | Barra superior | «Envío gratis disponible en España» + bandera |
-| 2 | Cabecera | [isotipo de la taza] GARELON · Inicio · Qué incluye · Preguntas frecuentes · Contacto |
-| 3 | Portada | «Un pequeño plan que sabe a mucho» · **H1** «Tu fondue de chocolate, directamente en una taza» · «A partir de 24,99 €» · «Elegir color y pack» · «Cómo funciona» · Tenedor incluido · 130 ml · 3 colores |
-| 4 | Compra (`#comprar`) | Galería (tres colores → roja → blanca → marrón) · título · precio · «Cada unidad: taza de cerámica de 130 ml + tenedor de fondue. Vela no incluida.» · **Color** · **Elige tu pack** · Añadir al carrito · pago dinámico · Envío gratis · stock · plazos |
-| 5 | Opiniones | Solo reales (app de reseñas). Sin app: no se ve (0 px) |
-| 6 | Características | Cerámica · Tenedor incluido · Hueco para vela (vela no incluida) · 3 colores |
-| 7 | Beneficios | «Convierte cualquier sobremesa en un pequeño momento especial»: Chocolate o queso · Hecha para compartir · Todo en una taza |
-| 8 | Cómo funciona (`#como-funciona`) | 5 pasos + «Vela no incluida» y uso responsable de la llama |
-| 9 | Compartir | «Un plan sencillo para compartir» |
-| 10 | Colores y qué incluye (`#que-incluye`) | «Elige tu color»: taza de cerámica 130 ml · tenedor · Rojo / Blanco / Marrón · vela no incluida |
-| 11 | FAQ | 10 preguntas |
-| 12 | Cierre | «Tu próxima sobremesa puede empezar aquí» · «Elegir mi Taza Fondue» |
-| 13 | Pie | Isotipo + GARELON · «Pequeños planes que saben a mucho.» · Ayuda · políticas · sin iconos de pago |
+| # | Sección | Fondo | Contenido |
+|---|---|---|---|
+| 1 | Barra superior | Rojo | «Envío gratis disponible en España» + bandera |
+| 2 | Cabecera | Blanco | [isotipo de la taza] GARELON · Inicio · Qué incluye · Preguntas frecuentes · Contacto |
+| 3 | Portada | Blanco | «Un pequeño plan que sabe a mucho» · **H1** «Tu fondue de chocolate, directamente en una taza» · «A partir de 24,99 €» · «Elegir color y pack» (rojo) · «Cómo funciona» · Tenedor incluido · 130 ml · 3 colores · foto de la taza roja |
+| 4 | Compra (`#comprar`) | Casi blanco | Galería (roja de cerca → tres colores → blanca → marrón) · título · precio · «Cada unidad: taza de cerámica de 130 ml + tenedor de fondue. Vela no incluida.» · **Color** · **Elige tu pack** · **Añadir al carrito (rojo)** · Comprar ahora · Envío gratis · stock · plazos |
+| 5 | Opiniones | Blanco | Solo reales (app de reseñas). Sin app: no se ve (0 px) |
+| 6 | Cómo funciona (`#como-funciona`) | Blanco | **Infografía «Cómo funciona»** (ampliable) + 5 pasos cortos + «Vela no incluida» y uso responsable de la llama |
+| 7 | Características y colores (`#que-incluye`) | Casi blanco | «Elige tu color» · **infografía «Características y usos»** (ampliable) · taza 130 ml · tenedor · Rojo / Blanco / Marrón · vela no incluida |
+| 8 | Beneficios | Blanco | «Convierte cualquier sobremesa en un pequeño momento especial»: Chocolate o queso · Hecha para compartir · Todo en una taza |
+| 9 | Compartir | Casi blanco | «Un plan sencillo para compartir» (foto de los tres colores, la roja delante) |
+| 10 | FAQ | Blanco | 10 preguntas |
+| 11 | Cierre | Rosado muy suave | «Tu próxima sobremesa puede empezar aquí» · «Elegir mi Taza Fondue» (rojo) |
+| 12 | Pie | Casi blanco | Isotipo + GARELON · «Pequeños planes que saben a mucho.» · Ayuda · políticas · sin iconos de pago |
 
-**Ficha:** compra (multimedia de Shopify + Color × Pack) → opiniones → Compra con confianza → beneficios → cómo funciona → compartir → FAQ → compra fija en móvil.
+La barra «Características» (Cerámica · Tenedor incluido · Hueco para vela · 3 colores) sigue en la plantilla pero **desactivada**: la cubre la infografía. Se reactiva en el editor (Personalizar → ojo de la sección).
+
+**Ficha:** compra (multimedia de Shopify + Color × Pack) → opiniones → Compra con confianza → beneficios → cómo funciona (con la infografía) → compartir → FAQ → compra fija en móvil.
 
 **404:** «Aquí no hay chocolate que fundir» · «Vuelve a la tienda y encuentra tu Taza Fondue.» · «Volver a la tienda».
 
@@ -73,3 +74,15 @@ Además: título y meta descripción de la home en Tienda online → Preferencia
 - Taza Fondue: **84/84** (estáticas, Color × Pack, carrito, compra fija, agotados, combinación inexistente, avisos del editor, opiniones, pagos, 404, responsive 320–1440, primera pantalla y carga de imágenes).
 - Regresiones del baseline: packs 56/56, carrito 62/62, routing 14/14, confianza 47/47, ronda 6 57/57 (adaptadas solo en lo que cambió a propósito: sin «Oferta limitada», plazo 8–18 días, orden de secciones y etiquetas de pack).
 - Theme Check: 0 errores y los 9 avisos de Dawn de siempre. JSON y schemas válidos; nombres del editor ≤ 25 caracteres.
+
+## 6. Ronda visual (v1.1)
+
+Solo estilo y maquetación: los precios, packs, Color × Pack, `quantity=1`, carrito, checkout, opiniones y FAQ no cambian.
+
+- **Paleta:** fondo blanco (`#FFFFFF`) y casi blanco (`#F7F5F3`) en lugar de crema y arena; acento en el **rojo de la taza** (`#C8161D`, 5,9:1 con texto blanco) en lugar del dorado; tinta chocolate `#22150F` para el texto. Barra superior roja; llamada final en rosado muy suave (`#FDF1EF`). Esquemas en `config/settings_data.json`, tokens en `assets/garelon.css`.
+- **Taza roja protagonista:** portada con la roja; la galería de compra empieza por la roja de cerca (recorte de imagen2, para no repetir la foto completa de la portada); «Compartir» usa la foto de los tres colores con la roja delante; botones, color elegido, pack elegido e insignia en rojo. Blanca y marrón siguen en la galería y en el selector.
+- **Variante por defecto:** el tema elige la que marca Shopify (la primera disponible). Para que sea la roja, en Shopify pon **Rojo como primer valor** de la opción Color (paso 2 de la lista de pasos manuales).
+- **Infografías:** «Cómo funciona» (imagen8, sin cambios) en `#como-funciona`, justo después de la compra; «Características y usos» (imagen7 **corregida**: «Marrón» en lugar del nombre erróneo y sin los corazones dibujados sobre las tazas) en `#que-incluye`. Se amplían al tocarlas (en móvil, a 720 px, desplazables). Cada una lleva un pie con lo que incluye realmente cada unidad (la vela no).
+- **Botones de compra:** «Añadir al carrito» en rojo (acción principal); «Comprar ahora» con borde oscuro, a todo el ancho. Solo CSS.
+- **Archivos:** `config/settings_data.json`, `assets/garelon.css`, `assets/garelon.js` (zoom), `snippets/garelon-fallback-image.liquid` (imágenes nuevas + zoom), `snippets/garelon-gallery.liquid`, `snippets/garelon-icon.liquid` (icono de lupa), `sections/garelon-how-to-use.liquid` (pasos compactos, zoom, pie de imagen), `sections/garelon-ingredients.liquid` (zoom, pie de imagen), `sections/garelon-image-text.liquid` (opciones de imagen), `templates/index.json`, `templates/product.json`, 9 WebP nuevos (`garelon-fondue-{roja,como-funciona,caracteristicas}-{480,720,1080}.webp`).
+- **Pruebas:** Taza Fondue 91/91 (7 nuevas de la ronda visual: infografías, zoom, pasos, paleta, botones), packs 56/56, carrito 62/62, routing 14/14, confianza 47/47, ronda 6 57/57; responsive 320–1440 sin scroll horizontal; Theme Check 0 errores y los 9 avisos de Dawn.

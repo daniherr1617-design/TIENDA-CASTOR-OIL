@@ -4,6 +4,9 @@
     assign has_media = false
   endif
 -%}
+{%- if has_media and section.settings.image_zoom -%}
+  <script src="{{ 'garelon.js' | asset_url }}" defer="defer"></script>
+{%- endif -%}
 
 <div
   {% if section.settings.anchor != blank %}
@@ -34,9 +37,14 @@
               fallback: section.settings.fallback_image,
               alt: section.settings.heading,
               sizes: '(min-width: 990px) 540px, (min-width: 750px) 45vw, calc(100vw - 3rem)',
-              class: 'g-media__img'
+              class: 'g-media__img',
+              zoom: section.settings.image_zoom,
+              zoom_label: section.settings.heading
             -%}
           </div>
+          {%- if section.settings.image_caption != blank -%}
+            <p class="g-media__caption">{{ section.settings.image_caption | escape }}</p>
+          {%- endif -%}
         </div>
       {%- endif -%}
 
@@ -74,7 +82,7 @@
   "settings": [
     {
       "type": "paragraph",
-      "content": "Incluye solo ingredientes confirmados por el proveedor o por el envase. No añadas ingredientes por suposición."
+      "content": "Incluye solo datos confirmados por el proveedor. No añadas nada por suposición."
     },
     {
       "type": "text",
@@ -105,12 +113,28 @@
       "label": "Imagen del tema si no eliges ninguna",
       "options": [
         { "value": "principal", "label": "Imagen principal (taza roja)" },
+        { "value": "roja", "label": "Taza roja de cerca" },
         { "value": "colores", "label": "Los tres colores" },
         { "value": "blanco", "label": "Taza blanca" },
         { "value": "marron", "label": "Taza marrón" },
+        { "value": "como-funciona", "label": "Infografía «Cómo funciona»" },
+        { "value": "caracteristicas", "label": "Infografía «Características»" },
         { "value": "none", "label": "Ninguna (solo la lista)" }
       ],
       "default": "none"
+    },
+    {
+      "type": "checkbox",
+      "id": "image_zoom",
+      "label": "Ampliar la imagen al tocarla",
+      "info": "Recomendado para infografías con texto: en móvil se abre a pantalla completa.",
+      "default": false
+    },
+    {
+      "type": "text",
+      "id": "image_caption",
+      "label": "Pie de imagen (opcional)",
+      "info": "Por ejemplo, qué incluye realmente cada unidad."
     },
     {
       "type": "checkbox",
@@ -172,7 +196,7 @@
           "type": "text",
           "id": "inci",
           "label": "Línea técnica (opcional)",
-          "info": "P. ej. una medida, un material o la denominación INCI de un ingrediente."
+          "info": "P. ej. una medida, un material o una cantidad."
         },
         {
           "type": "textarea",
