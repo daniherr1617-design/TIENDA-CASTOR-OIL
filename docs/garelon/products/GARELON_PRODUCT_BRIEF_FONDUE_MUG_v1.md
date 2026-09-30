@@ -6,8 +6,8 @@
 
 ## 1. PRODUCTO
 
-**Nombre provisional:** Taza de fondue de cerámica para chocolate  
-**Nombre corto:** la taza de fondue  
+**Nombre definitivo de venta:** Taza Fondue de Chocolate con Tenedor  
+**Nombre corto:** Taza Fondue  
 **Contenido confirmado:** 1 taza + 1 tenedor tipo fondue para pinchar fruta (p. ej. fresas) y sumergirla en chocolate. **La vela tealight NO está incluida.**  
 **Marca física:** no hay marca comercial verificada; lleva el texto decorativo `Chocolat...`.
 
@@ -41,7 +41,7 @@ Producto: **2,17 €/ud.**
 
 ## 6. VARIANTES
 
-Color + capacidad fija 200 ml.
+Color + capacidad fija **130 ml**.
 
 | Color | SKU CJ | Inventario mostrado | CJ | Fábrica |
 |---|---|---:|---:|---:|
@@ -56,7 +56,7 @@ Color + capacidad fija 200 ml.
 ## 7. CARACTERÍSTICAS OBJETIVAS
 
 - Cerámica.
-- 200 ml.
+- **130 ml**.
 - Tres colores.
 - Compartimento inferior visible para tealight.
 - Asa lateral.
@@ -73,7 +73,7 @@ Color + capacidad fija 200 ml.
 
 ## 9. DIMENSIONES
 
-Capacidad 200 ml · peso 500 g · paquete 100 × 100 × 110 mm.  
+Capacidad **130 ml** · peso 500 g · paquete 100 × 100 × 110 mm.  
 Medidas exactas de la taza: **NO DISPONIBLE**.
 
 ## 10. USO
@@ -109,11 +109,25 @@ Revisar daños/roturas en transporte, fragilidad y seguridad por uso de calor/ve
 
 ## 16. IMÁGENES
 
-Se han visto imágenes de las tres variantes y lifestyle, pero **faltan los archivos originales de CJ en máxima calidad**. No usar capturas de interfaz como assets comerciales finales.
+Hay imágenes originales de CJ como referencia de verdad física y un conjunto de imágenes regeneradas/lifestyle para la migración. Las imágenes finales se añadirán a `referencias/fondue-mug/` para que Claude Code las inspeccione y decida cuáles usar.
+
+**Regla de verdad visual:** manda el producto real de CJ. La taza debe conservar forma, abertura inferior, asa, soporte lateral, tenedor, texto físico `Chocolat...` y colores reales. La vela puede aparecer como contexto de uso, pero **NO está incluida**.
+
+Si una imagen generada muestra un detalle que no coincide con el producto real (p. ej. corazones decorativos, color llamado “Negro” en vez de Marrón, texto físico distinto, claims no confirmados), no debe usarse como prueba del producto ni como imagen principal.
 
 ## 17. IMÁGENES MEJORADAS
 
-Ninguna todavía. Cuando se creen: no alterar forma, color, texto físico `Chocolat...`, utensilio ni proporciones; no añadir GARELON al producto.
+Se han creado imágenes limpias sobre fondo blanco, lifestyle, una infografía de características/usos, una guía “Cómo funciona” y un nuevo isotipo visual para este producto.
+
+Claude Code debe considerarlas candidatas, no obligatorias. Debe priorizar fidelidad al producto y conversión móvil. No añadir GARELON físicamente sobre la taza.
+
+**Notas importantes:**
+- Capacidad real para la tienda: **130 ml**.
+- Colores comerciales: **Rojo, Blanco y Marrón**.
+- Tenedor tipo fondue incluido.
+- Vela no incluida.
+- Según la ficha de CJ, apto para microondas.
+- Evitar cualquier imagen generada que presente como real una decoración física inexistente o un color incorrecto.
 
 ## 18. OTROS DATOS
 
