@@ -1607,6 +1607,20 @@ a.g-trust__title {
   text-align: center;
 }
 
+.g-editor-note__list {
+  display: grid;
+  gap: 0.3rem;
+  max-width: 52rem;
+  margin: 0.6rem auto;
+  padding: 0;
+  list-style: none;
+  text-align: left;
+}
+
+.g-editor-note__list li::before {
+  content: '· ';
+}
+
 /* ---------- Opiniones (solo reales: bloques de app / valoración de Shopify) ---------- */
 .g-reviews__sub {
   max-width: 56rem;

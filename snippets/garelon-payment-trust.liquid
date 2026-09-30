@@ -3,10 +3,15 @@
 
   - «Envío gratis»: solo comunica la oferta. La tarifa real (0 €) se configura en
     Shopify Admin › Configuración › Envío y entrega; el tema no la controla.
-  - Métodos de pago: SOLO los que Shopify tiene habilitados (shop.enabled_payment_types),
-    con los SVG oficiales de Shopify (payment_type_svg_tag), igual que el pie de página de Dawn.
-    Ningún logo está escrito a mano ni subido como imagen: si un método se desactiva en
-    Shopify, desaparece aquí automáticamente.
+  - Métodos de pago, dos modos (ajuste icons_mode del bloque):
+    · auto (por defecto): SOLO shop.enabled_payment_types, en el orden de Shopify, con los SVG
+      oficiales (payment_type_svg_tag). Misma lista que el pie de Dawn (footer.liquid).
+    · manual («Manual verificado»): lo que devuelve Shopify + los métodos que el dueño marque
+      tras comprobarlos en Configuración › Pagos. Solo claves de payment_type_svg_tag
+      (lista activemerchant/payment_icons). Orden fijo: tarjetas, carteras; sin duplicados.
+    Ningún logo está escrito a mano ni subido como imagen.
+  - En el editor de temas (request.design_mode) se muestra la lista que devuelve Shopify para
+    poder comprobarla. El cliente nunca la ve.
   - No toca {{ form | payment_button }} ni el checkout: es información visual.
   - Sin garantías ni plazos inventados.
 
@@ -25,8 +30,34 @@
   if block.settings.show_payment and block.settings.payment_label != blank
     assign show_payment = true
   endif
+
+  assign shopify_types = shop.enabled_payment_types
+  assign manual_added = ''
+  if block.settings.icons_mode == 'manual'
+    assign verified_keys = 'visa,master,american_express,maestro,unionpay,paypal,shopify_pay,apple_pay,google_pay,bizum' | split: ','
+    assign pay_list = ''
+    for key in verified_keys
+      assign setting_id = 'pay_' | append: key
+      if shopify_types contains key
+        assign pay_list = pay_list | append: key | append: ','
+      elsif block.settings[setting_id]
+        assign pay_list = pay_list | append: key | append: ','
+        assign manual_added = manual_added | append: key | append: ','
+      endif
+    endfor
+    for type in shopify_types
+      unless verified_keys contains type
+        assign pay_list = pay_list | append: type | append: ','
+      endunless
+    endfor
+    assign pay_types = pay_list | split: ','
+    assign manual_added = manual_added | split: ','
+  else
+    assign pay_types = shopify_types
+  endif
+
   assign show_icons = false
-  if block.settings.show_icons and shop.enabled_payment_types.size > 0
+  if block.settings.show_icons and pay_types.size > 0
     assign show_icons = true
   endif
 -%}
@@ -58,17 +89,31 @@
 
     {%- if show_icons -%}
       <ul class="g-pay" role="list" aria-label="{{ block.settings.payment_list_label | default: 'Métodos de pago aceptados' | escape }}">
-        {%- for type in shop.enabled_payment_types -%}
+        {%- for type in pay_types -%}
           <li class="g-pay__item">
             {{ type | payment_type_svg_tag: class: 'icon icon--full-color g-pay__icon' }}
           </li>
         {%- endfor -%}
       </ul>
-    {%- elsif block.settings.show_icons and request.design_mode -%}
-      <p class="g-editor-note" role="note">
-        Shopify no devuelve ningún método de pago habilitado, así que no se muestran iconos. Actívalos en
-        Configuración › Pagos. Aviso visible solo en el editor de temas.
-      </p>
+    {%- endif -%}
+
+    {%- if block.settings.show_icons and request.design_mode -%}
+      <div class="g-editor-note g-pay-debug" role="note">
+        <p>
+          Métodos que Shopify devuelve:
+          {% if shopify_types.size > 0 %}{{ shopify_types | join: ', ' }}{% else %}ninguno{% endif %}
+        </p>
+        {%- if block.settings.icons_mode == 'manual' -%}
+          <p>
+            Añadidos en «Manual verificado»:
+            {% if manual_added.size > 0 %}{{ manual_added | join: ', ' }}{% else %}ninguno{% endif %}
+          </p>
+        {%- endif -%}
+        {%- if pay_types.size == 0 -%}
+          <p>No se muestra ningún icono. Revisa Configuración › Pagos.</p>
+        {%- endif -%}
+        <p>Aviso visible solo en el editor de temas.</p>
+      </div>
     {%- endif -%}
   </div>
 {%- endif -%}

@@ -920,7 +920,7 @@
       "settings": [
         {
           "type": "paragraph",
-          "content": "Colócalo justo debajo de los botones de compra. Los iconos salen de los métodos de pago habilitados en Shopify (Configuración › Pagos): no se puede añadir ni quitar ningún logo a mano."
+          "content": "Colócalo justo debajo de los botones de compra. En automático, los iconos son exactamente los métodos de pago que Shopify devuelve como habilitados (Configuración › Pagos). En el editor verás la lista que devuelve Shopify."
         },
         {
           "type": "checkbox",
@@ -964,6 +964,91 @@
           "id": "payment_list_label",
           "label": "Descripción de los iconos para lectores de pantalla",
           "default": "Métodos de pago aceptados"
+        },
+        {
+          "type": "select",
+          "id": "icons_mode",
+          "label": "Origen de los iconos",
+          "options": [
+            {
+              "value": "auto",
+              "label": "Automático (Shopify)"
+            },
+            {
+              "value": "manual",
+              "label": "Manual verificado"
+            }
+          ],
+          "default": "auto",
+          "info": "Automático: solo lo que devuelve Shopify. Manual verificado: lo que devuelve Shopify más los métodos que marques abajo."
+        },
+        {
+          "type": "header",
+          "content": "Manual verificado"
+        },
+        {
+          "type": "paragraph",
+          "content": "Selecciona únicamente métodos que estén realmente habilitados en Shopify (Configuración › Pagos). Mostrar un método no disponible puede inducir a error al cliente. Estas casillas solo se usan con «Manual verificado»."
+        },
+        {
+          "type": "checkbox",
+          "id": "pay_visa",
+          "label": "Visa",
+          "default": false
+        },
+        {
+          "type": "checkbox",
+          "id": "pay_master",
+          "label": "Mastercard",
+          "default": false
+        },
+        {
+          "type": "checkbox",
+          "id": "pay_american_express",
+          "label": "American Express",
+          "default": false
+        },
+        {
+          "type": "checkbox",
+          "id": "pay_maestro",
+          "label": "Maestro",
+          "default": false
+        },
+        {
+          "type": "checkbox",
+          "id": "pay_unionpay",
+          "label": "UnionPay",
+          "default": false
+        },
+        {
+          "type": "checkbox",
+          "id": "pay_paypal",
+          "label": "PayPal",
+          "default": false
+        },
+        {
+          "type": "checkbox",
+          "id": "pay_shopify_pay",
+          "label": "Shop Pay",
+          "default": false
+        },
+        {
+          "type": "checkbox",
+          "id": "pay_apple_pay",
+          "label": "Apple Pay",
+          "default": false
+        },
+        {
+          "type": "checkbox",
+          "id": "pay_google_pay",
+          "label": "Google Pay",
+          "default": false
+        },
+        {
+          "type": "checkbox",
+          "id": "pay_bizum",
+          "label": "Bizum",
+          "default": false
         }
       ]
     },

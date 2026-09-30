@@ -7,8 +7,11 @@
      product.metafields.reviews.rating / product.metafields.reviews.rating_count.
 
   Sin ninguna de las dos, la sección no pinta nada para el cliente. En el editor de temas
-  muestra un aviso solo para el propietario. No hay reseñas, nombres, estrellas, fechas ni
-  recuentos de ejemplo.
+  muestra un aviso solo para el propietario, con el estado de cada fuente. No hay reseñas,
+  nombres, estrellas, fechas ni recuentos de ejemplo.
+
+  Con un bloque de app, la valoración media propia se oculta por defecto (summary_with_app):
+  casi todas las apps pintan ya su propio resumen y no se muestran dos.
 {%- endcomment -%}
 {%- liquid
   assign review_product = section.settings.product
@@ -24,9 +27,15 @@
 
   assign rating = review_product.metafields.reviews.rating.value
   assign rating_count = review_product.metafields.reviews.rating_count.value | default: 0
+  assign has_rating = false
+  if rating != blank and rating_count > 0
+    assign has_rating = true
+  endif
   assign has_summary = false
-  if section.settings.show_summary and rating != blank and rating_count > 0
-    assign has_summary = true
+  if section.settings.show_summary and has_rating
+    if has_apps == false or section.settings.summary_with_app
+      assign has_summary = true
+    endif
   endif
 -%}
 
@@ -108,11 +117,27 @@
         <p class="g-editor-note__title">
           {{ section.settings.heading | default: 'Opiniones' | escape }} · oculta para los clientes
         </p>
-        <p>Añade aquí el bloque de tu app de reseñas para mostrar opiniones reales.</p>
-        <p>
-          Esta sección no muestra nada en la tienda hasta que tenga un bloque de app de reseñas o una
-          valoración real de Shopify (reviews.rating y reviews.rating_count). Aviso visible solo en el editor de temas.
-        </p>
+        <p>Instala o añade el bloque de una app de reseñas para mostrar opiniones reales.</p>
+        <ul class="g-editor-note__list">
+          <li>Bloque de app de reseñas: ninguno. Añádelo con «Añadir bloque › Apps».</li>
+          <li>
+            {%- if review_product == blank -%}
+              Producto de la valoración media: sin elegir. En la página de inicio, elige el sérum.
+            {%- else -%}
+              Producto de la valoración media: {{ review_product.title | escape }}.
+            {%- endif -%}
+          </li>
+          <li>
+            {%- if review_product == blank -%}
+              Valoración de Shopify (reviews.rating y reviews.rating_count): no se puede leer sin producto.
+            {%- elsif has_rating -%}
+              Valoración de Shopify: existe, pero «Mostrar la valoración media» está desactivado.
+            {%- else -%}
+              Valoración de Shopify (reviews.rating y reviews.rating_count): este producto no la tiene. La rellena la app de reseñas.
+            {%- endif -%}
+          </li>
+        </ul>
+        <p>Mientras no haya datos reales, la sección no se muestra a los clientes. Aviso visible solo en el editor de temas.</p>
       </div>
     </div>
   </div>
@@ -151,6 +176,13 @@
       "label": "Mostrar la valoración media",
       "info": "Solo aparece si una app de reseñas ha rellenado la valoración estándar de Shopify del producto.",
       "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "summary_with_app",
+      "label": "Mostrarla también con un bloque de app",
+      "info": "Desactivado: si hay un bloque de app, se muestra solo el resumen de la app, para no duplicarlo.",
+      "default": false
     },
     {
       "type": "product",

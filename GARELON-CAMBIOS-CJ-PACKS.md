@@ -20,6 +20,10 @@
 | `templates/index.json` | Bloque `payment_trust` tras `buy_buttons`; sección `reviews` entre `how_to` y `faq` |
 | `templates/product.json` | Igual: `payment_trust` tras `buy_buttons`; `reviews` entre `how_to` y `faq` |
 | `assets/garelon.css` | Estilos `.g-buytrust`, `.g-pay`, `.g-reviews`, `.g-editor-note` |
+| `snippets/garelon-payment-trust.liquid` (C17) | Modo de iconos «Automático» (por defecto) / «Manual verificado»; diagnóstico «Métodos que Shopify devuelve» solo en el editor |
+| `sections/featured-product.liquid`, `sections/main-product.liquid` (C17) | Bloque «GARELON Envío y pago»: ajuste «Origen de los iconos» y 10 casillas de métodos verificados |
+| `sections/garelon-reviews.liquid` (C17) | Sin resumen duplicado con un bloque de app (ajuste `summary_with_app`); aviso del editor con el estado de cada fuente |
+| `assets/garelon.css` (C17) | `.g-editor-note__list` (solo el aviso del editor) |
 | `sections/featured-product.liquid`, `sections/main-product.liquid` (C16) | Nombre del bloque `garelon_payment_trust` en el editor: «GARELON Envío gratis y pago seguro» → «GARELON Envío y pago» (límite de Shopify: 25 caracteres). Corrige el 404 de la home al instalar el tema |
 | `locales/es.json` | Solo textos. Bajo el precio: «Los gastos de envío se calculan en la pantalla de pago» → «Consulta nuestra política de envío.». En el carrito (cart drawer y `/cart`): las 8 variantes de «Descuentos y envío calculados en la pantalla de pago» → «Envío gratis según…» (ver C15). Ambas contradecían «Envío gratis» |
 | `docs/garelon/GARELON_MASTER_TEMPLATE.md` (v1.3), `docs/garelon/GARELON_PRODUCT_MIGRATION_CHECKLIST.md`, este documento | Reglas R21-R23, R5 ampliada, secciones 10.15 y 10.16, checklist |
@@ -188,6 +192,44 @@ El cart drawer (`snippets/cart-drawer.liquid`) y la página `/cart` (`sections/m
 
 - **Por ZIP:** sube el ZIP nuevo como tema nuevo.
 - **Por GitHub:** si la home sigue en 404 tras la sincronización, desconecta el tema y vuelve a conectar la rama. La conexión inicial sube todos los archivos; una sincronización normal quizá solo suba los archivos del commit, y `index.json` no ha cambiado.
+
+## C17. Tras publicar en Shopify: solo PayPal en los pagos y no se ven opiniones
+
+Con el tema ya publicado, el dueño vio dos cosas: bajo «Pago seguro» solo aparecía el icono de PayPal, y no había ninguna sección de opiniones. Se diagnosticaron por separado.
+
+**Pagos: por qué solo sale PayPal**
+
+- El bloque usa `shop.enabled_payment_types` + `payment_type_svg_tag`, exactamente igual que el pie de Dawn (`sections/footer.liquid`). Los dos pintan la misma lista, en el mismo orden.
+- Si solo sale PayPal, es que Shopify solo devuelve `paypal` en esa lista. No es un fallo de CSS ni del bloque GARELON: el pie mostraría también solo PayPal.
+- Que el checkout acepte tarjeta no garantiza que Shopify exponga las marcas en esa lista. Depende de cómo esté configurado el proveedor de tarjetas; los foros de Shopify recogen el mismo caso con varios temas. No he podido ver el Admin: la causa exacta se comprueba ahí.
+- **Diagnóstico nuevo (solo en el editor de temas):** debajo de los iconos aparece «Métodos que Shopify devuelve: …» con la lista real (`shop.enabled_payment_types | join`). El cliente no lo ve.
+
+**Pagos: modo «Manual verificado» (opcional)**
+
+- Nuevo ajuste del bloque «GARELON Envío y pago»: **Origen de los iconos** = «Automático (Shopify)» (por defecto) o «Manual verificado».
+- **Automático:** solo lo que devuelve Shopify. Es lo que había; no cambia nada si no se toca.
+- **Manual verificado:** lo que devuelve Shopify **más** los métodos que el dueño marque, después de comprobarlos en Configuración → Pagos. Casillas: Visa, Mastercard, American Express, Maestro, UnionPay, PayPal, Shop Pay, Apple Pay, Google Pay y Bizum. Son claves de `payment_type_svg_tag` comprobadas en la librería de iconos de Shopify (`activemerchant/payment_icons`): `visa`, `master`, `american_express`, `maestro`, `unionpay`, `paypal`, `shopify_pay`, `apple_pay`, `google_pay`, `bizum`.
+- Orden fijo (tarjetas y luego carteras), sin duplicados. Si Shopify devuelve algún método fuera de esa lista (p. ej. `klarna`), se conserva al final.
+- Texto de ayuda en el editor: «Selecciona únicamente métodos que estén realmente habilitados en Shopify (Configuración › Pagos). Mostrar un método no disponible puede inducir a error al cliente.»
+- El pie de Dawn sigue siempre en automático.
+- Ningún logo escrito a mano ni subido: siguen siendo los SVG oficiales de Shopify.
+
+**Opiniones: por qué no se ven**
+
+- La sección `garelon-reviews` está en la home y en la ficha, y admite bloques `@app` con `{% render block %}`. Funciona como se diseñó: sin bloque de app ni valoración real, no se muestra al cliente.
+- **Verificado en el código:** ni `templates/index.json` ni `templates/product.json` tienen un bloque de app en «GARELON Opiniones», y en la home el ajuste «Producto de la valoración media» está vacío.
+- **No verificable desde aquí:** si hay una app de reseñas instalada y si el producto tiene `reviews.rating` / `reviews.rating_count`. Con un bloque de app añadido la sección se vería; sin él, lo más probable es que no haya app.
+- No es un fallo de código.
+
+**Opiniones: cambios**
+
+- **Sin resumen duplicado:** con un bloque de app, la valoración media propia se oculta por defecto (casi todas las apps pintan su resumen). Ajuste nuevo «Mostrarla también con un bloque de app» (desactivado).
+- **Aviso del editor por causas:** «Instala o añade el bloque de una app de reseñas para mostrar opiniones reales.» y el estado de cada fuente: bloque de app (ninguno), producto de la valoración media (sin elegir / nombre) y valoración de Shopify (no se puede leer sin producto / no la tiene / existe pero está desactivada).
+- Sigue oculta para el cliente sin datos reales: nada de «0 opiniones».
+
+**Archivos:** `snippets/garelon-payment-trust.liquid`, `sections/featured-product.liquid` y `sections/main-product.liquid` (schema del bloque), `sections/garelon-reviews.liquid`, `assets/garelon.css` (lista del aviso del editor). Las plantillas JSON no cambian: los ajustes nuevos toman su valor por defecto (automático; resumen oculto con app).
+
+**Pruebas (local, SVG reales de la librería de Shopify):** 62/62. Automático con `[paypal]`, `[visa, master, paypal]`, 10 métodos y 0 métodos; el pie muestra la misma lista; casillas ignoradas en automático; diagnóstico del editor; manual verificado sin duplicados y en orden; 10 logos a 320, 390 y 1440 px sin deformar ni salirse; opiniones sin app, con app simulada, con valoración simulada, home sin y con producto, ficha, una sola sección por página.
 
 ---
 
