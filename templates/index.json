@@ -109,10 +109,6 @@
             "free_shipping_label": "Envío gratis",
             "free_shipping_note": ""
           }
-        },
-        "stock": {
-          "type": "garelon_stock",
-          "settings": {}
         }
       },
       "block_order": [
@@ -122,8 +118,7 @@
         "includes",
         "packs",
         "buy_buttons",
-        "free_shipping",
-        "stock"
+        "free_shipping"
       ],
       "settings": {
         "color_scheme": "scheme-2",

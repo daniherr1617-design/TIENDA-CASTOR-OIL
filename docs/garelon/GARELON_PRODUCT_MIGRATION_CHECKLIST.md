@@ -80,7 +80,7 @@
   - `garelon_gallery` según §18.7;
   - antetítulo y subtítulo nuevos;
   - bloques de Dawn intactos;
-  - `garelon_stock` presente;
+  - sin `garelon_stock` (desde la plantilla 1.8.2 bajo los botones solo va «Envío gratis»; si el producto lo necesita, el stock va sin cifras);
   - `garelon_packs` y `garelon_shipping` presentes si el producto tiene packs (sin `variant_picker` ni `quantity_selector`);
   - `garelon_free_shipping` justo después de `buy_buttons` (solo «Envío gratis», §10.15);
   - la sección va justo después de la portada, con `garelon_mobile_info_first: true`.
@@ -96,7 +96,7 @@
 - [ ] 🅲 El antetítulo (`eyebrow`) y el subtítulo (`subtitle`) son nuevos.
 - [ ] 🅲 Los destacados (`highlights`, `icon-with-text`) son nuevos, con iconos de Dawn adecuados.
 - [ ] 🅲 Las pestañas `tab_ingredientes` y `tab_uso` están adaptadas: título, icono y contenido. `tab_envios` sin cambios.
-- [ ] 🅲 El bloque `inventory` sigue con `inventory_threshold: 0` y `show_inventory_quantity: false`.
+- [ ] 🅲 Sin bloque `inventory` en la compra (plantilla 1.8.2). Si se añade, con `inventory_threshold: 0` y `show_inventory_quantity: false`.
 - [ ] 🅲 Packs (§10.11): si el producto se vende en packs, el bloque `packs` está activo, sin `variant_picker` ni `quantity_selector` en la plantilla; si no, se quita (o muestra el selector estándar).
 - [ ] 🅲 Home: (Color →) «Elige tu pack» y las 3 tarjetas con su ahorro visibles **antes** de «Añadir al carrito», justo tras la portada, **sin** «Oferta limitada» (1.6). El ahorro nunca aparece solo en el carrito.
 - [ ] 🅲 Si el producto tiene colores (Color × Pack): los 3 colores como botones, el ahorro se recalcula frente a 1 unidad **del mismo color**, combinación inexistente = «No disponible», agotada = «Agotado», la compra fija dice «Color · N unidades» y el carrito «Color: X · Pack: N unidades» × 1.
@@ -131,7 +131,7 @@
 - [ ] 🆂 El precio se ve igual en portada, compra, cierre, ficha, carrito y checkout (es el de Shopify).
 - [ ] 🆂 Precio comparado tachado solo si existe en Shopify.
 - [ ] 🆂 Las variantes aparecen con sus nombres reales. Al cambiar de variante se actualizan precio, stock, botón y multimedia (en la ficha).
-- [ ] 🆂 El stock dice «En stock» o «Agotado» según el inventario real, sin cifras.
+- [ ] 🆂 Con una variante agotada en Shopify, el botón (y la compra fija) dice «Agotado» y queda desactivado, y su tarjeta de pack/color aparece «Agotado»; nunca hay cifras de stock.
 - [ ] 🆂 Proveedor: producto importado o conectado; cada variante emparejada con la suya (packs: «1 unidad» → CJ «1 unidad», «2 unidades» → CJ «2 unidades», «3 unidades» → CJ «3 piezas»); SKU correcto; no sobrescribe título, descripción, imágenes, nombres de variante ni precios editados.
 - [ ] 🆂 Color × Pack en Shopify (si hay colores): opciones «Color» y «Pack», **todas** las combinaciones creadas (Taza Fondue: 3 × 3 = 9) y el editor sin el aviso «Faltan combinaciones». Cada combinación emparejada en el proveedor con **N unidades del mismo color**.
 - [ ] 🆂 Packs en Shopify: opción «Pack» con «1 unidad» como primera variante; precio real en cada variante; **precio comparado vacío**; sin descuentos automáticos («Compra X y obtén Y», segunda unidad, packs) que se acumulen.

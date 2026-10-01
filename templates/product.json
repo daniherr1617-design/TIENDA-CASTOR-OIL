@@ -71,14 +71,6 @@
             "free_shipping_note": ""
           }
         },
-        "inventory": {
-          "type": "inventory",
-          "settings": {
-            "text_style": "body",
-            "inventory_threshold": 0,
-            "show_inventory_quantity": false
-          }
-        },
         "description": {
           "type": "description",
           "settings": {}
@@ -117,7 +109,6 @@
         "packs",
         "buy_buttons",
         "free_shipping",
-        "inventory",
         "description",
         "tab_incluye",
         "tab_uso",

@@ -1,4 +1,4 @@
-# GARELON · Migración a la Taza Fondue de Chocolate con Tenedor (v1 · ronda visual v1.1 · ronda PRO v2 · copy v2.1)
+# GARELON · Migración a la Taza Fondue de Chocolate con Tenedor (v1 · ronda visual v1.1 · ronda PRO v2 · copy v2.1 · stock v2.2)
 
 > Rama `claude/fondue-mug`. Primera migración de producto sobre el baseline del sérum (`baseline/garelon-serum`, commit `f08f9bb`). Misma arquitectura: Dawn 16.0.0 + capa GARELON, carrito y checkout de Shopify, opiniones solo reales, sin pagos visuales.
 >
@@ -130,3 +130,11 @@ Ronda solo de texto y jerarquía: no cambian el tema, la paleta, las imágenes, 
 - **CSS:** con 3 características o 3 elementos de confianza, en móvil el último ocupa la fila entera (en horizontal) sin dejar huecos; desde 750 px las características van en una fila.
 - **Archivos:** `templates/index.json`, `product.json`, `page.faq.json`; `snippets/garelon-fallback-image.liquid` (textos alternativos); `sections/main-product.liquid` y `featured-product.liquid` (bloque de plazos sin valores por defecto); `assets/garelon.css`; docs.
 - **Pruebas (render local):** Taza Fondue 111/111 (nuevas: auditoría del HTML completo de home y ficha, solo «Envío gratis» bajo los botones, FAQ de 9 preguntas igual en home, ficha y página de FAQ, pestaña de envíos sin días, «tealight»/«mojar» = 0 en el código); packs 56/56, carrito 62/62, routing 14/14, confianza 47/47, ronda 6 57/57 (adaptadas solo donde se quitan los plazos). Theme Check: 0 errores, los 9 avisos de Dawn. Capturas en `docs/garelon/capturas/fondue-copy/`.
+
+## 9. Sin «En stock» en la compra (v2.2)
+
+Corrección puntual: no cambian el diseño, el copy, Color × Pack, los precios, `quantity=1`, el carrito, el checkout, las opiniones, la compra fija ni la FAQ (la de «¿Qué incluye cada taza?» sigue exactamente igual).
+
+- **Qué se quita:** el bloque `garelon_stock` de la compra en la home y el bloque `inventory` de la ficha (`templates/index.json` y `product.json`). Bajo los botones queda solo «Envío gratis»; en la home, después, el enlace de Dawn «Ver todos los detalles».
+- **Qué no cambia:** la gestión de inventario de Shopify. Variante agotada → botón principal y compra fija desactivados con «Agotado»; tarjeta de pack o color agotado marcada «Agotado»; combinación inexistente → «No disponible»; al cambiar de variante se actualizan precio, botón y URL. `product-info.js` de Dawn solo actualiza `#Inventory-<sección>` si existe. Los bloques siguen en el editor por si se quieren volver a mostrar.
+- **Pruebas (render local):** Taza Fondue 120/120 (nuevas ST1–ST9: sin bloque ni texto de stock en home y ficha, también al cambiar de variante; agotado en la home con Rojo · 2, cambio a Blanco · 2 y añadir al carrito con `quantity=1`; `?variant=` agotada con botón y compra fija «Agotado»; vuelta a una variante disponible). Packs 56/56 (H1 ya no espera «En stock»), carrito 62/62, routing 14/14, confianza 47/47, ronda 6 57/57. Theme Check: 0 errores, los 9 avisos de Dawn. Capturas en `docs/garelon/capturas/fondue-stock/`.
