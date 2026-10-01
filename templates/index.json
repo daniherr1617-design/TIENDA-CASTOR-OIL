@@ -16,19 +16,11 @@
             "icon": "truck",
             "text": "Envío gratis"
           }
-        },
-        "p-130ml": {
-          "type": "point",
-          "settings": {
-            "icon": "measure",
-            "text": "130 ml"
-          }
         }
       },
       "block_order": [
         "p-tenedor",
-        "p-envio",
-        "p-130ml"
+        "p-envio"
       ],
       "settings": {
         "image_position": "right",
@@ -37,7 +29,7 @@
         "eyebrow": "Un pequeño plan que sabe a mucho",
         "heading": "Tu fondue de chocolate, en una taza",
         "use_h1": true,
-        "text": "<p>Taza de cerámica de 130 ml con tenedor de fondue incluido. Para chocolate o queso.</p>",
+        "text": "<p>Taza de cerámica con tenedor de fondue incluido. Para chocolate o queso.</p>",
         "show_price": true,
         "show_colors": true,
         "button_label": "Elegir color y pack",
@@ -72,7 +64,7 @@
         "includes": {
           "type": "text",
           "settings": {
-            "text": "Cada unidad: taza de cerámica de 130 ml + tenedor de fondue. Vela no incluida.",
+            "text": "Tu fondue de chocolate o queso en una taza, con tenedor de fondue incluido.",
             "text_style": "body"
           }
         },
@@ -118,15 +110,6 @@
             "free_shipping_note": ""
           }
         },
-        "shipping": {
-          "type": "garelon_shipping",
-          "settings": {
-            "preparation": "Preparación: 1–3 días · Entrega en España: aprox. 8–18 días.",
-            "delivery": "",
-            "note": "Plazos orientativos.",
-            "link_label": "Política de envío"
-          }
-        },
         "stock": {
           "type": "garelon_stock",
           "settings": {}
@@ -140,7 +123,6 @@
         "packs",
         "buy_buttons",
         "free_shipping",
-        "shipping",
         "stock"
       ],
       "settings": {
@@ -182,7 +164,7 @@
             "icon": "candle",
             "label": "1",
             "title": "Coloca una vela",
-            "text": "Pon una vela tipo tealight en el hueco inferior de la taza."
+            "text": "En el hueco inferior de la taza."
           }
         },
         "paso-2": {
@@ -242,12 +224,12 @@
       "settings": {
         "eyebrow": "Cómo funciona",
         "heading": "Así se prepara tu fondue",
-        "text": "<p>Solo necesitas una vela tipo tealight (no incluida) y lo que te apetezca mojar.</p>",
+        "text": "<p>Solo necesitas una vela, chocolate o queso y tus acompañamientos favoritos.</p>",
         "steps_style": "cards",
         "fallback_image": "none",
         "image_caption": "",
         "show_images": false,
-        "note": "Vela no incluida. Usa la taza sobre una superficie estable y resistente al calor, no dejes la vela encendida sin vigilancia y mantenla fuera del alcance de los niños.",
+        "note": "Usa la taza sobre una superficie estable y no dejes la vela encendida sin vigilancia.",
         "color_scheme": "scheme-1",
         "anchor": "como-funciona",
         "padding_top": 64,
@@ -265,20 +247,12 @@
             "text": "Taza con asa y hueco para vela"
           }
         },
-        "f-capacidad": {
-          "type": "feature",
-          "settings": {
-            "icon": "measure",
-            "title": "130 ml",
-            "text": "Capacidad de la taza"
-          }
-        },
         "f-tenedor": {
           "type": "feature",
           "settings": {
             "icon": "fork",
-            "title": "Tenedor incluido",
-            "text": "Uno por taza, tipo fondue"
+            "title": "Tenedor de fondue",
+            "text": "Incluido, uno por taza"
           }
         },
         "f-colores": {
@@ -334,7 +308,6 @@
       },
       "block_order": [
         "f-ceramica",
-        "f-capacidad",
         "f-tenedor",
         "f-colores",
         "u-chocolate",
@@ -349,7 +322,7 @@
         "heading": "Todo lo que necesitas, en una taza",
         "text": "",
         "fallback_image": "usos",
-        "image_caption": "La vela que aparece en la imagen no está incluida.",
+        "image_caption": "",
         "features_heading": "Características",
         "uses_heading": "Perfecta para",
         "note": "Apta para microondas según la información del proveedor.",
@@ -375,7 +348,7 @@
           "settings": {
             "icon": "moon",
             "title": "Noche en casa",
-            "text": "Una peli, una manta y algo que mojar."
+            "text": "Una peli, una manta y chocolate fundido."
           }
         },
         "b-cita": {
@@ -461,7 +434,7 @@
           "type": "include",
           "settings": {
             "icon": "mug",
-            "text": "1 Taza Fondue de cerámica · 130 ml",
+            "text": "1 Taza Fondue de cerámica",
             "muted": false
           }
         },
@@ -472,14 +445,6 @@
             "text": "1 tenedor tipo fondue",
             "muted": false
           }
-        },
-        "i-vela": {
-          "type": "include",
-          "settings": {
-            "icon": "candle",
-            "text": "Vela no incluida",
-            "muted": true
-          }
         }
       },
       "block_order": [
@@ -487,8 +452,7 @@
         "c-blanco",
         "c-marron",
         "i-taza",
-        "i-tenedor",
-        "i-vela"
+        "i-tenedor"
       ],
       "settings": {
         "eyebrow": "Colores",
@@ -510,16 +474,7 @@
           "settings": {
             "icon": "truck",
             "title": "Envío gratis",
-            "text": "Preparación: 1–3 días",
-            "link": ""
-          }
-        },
-        "t-plazo": {
-          "type": "item",
-          "settings": {
-            "icon": "clock",
-            "title": "Entrega 8–18 días",
-            "text": "Aprox., en España",
+            "text": "Consulta la política de envío",
             "link": "/policies/shipping-policy"
           }
         },
@@ -544,7 +499,6 @@
       },
       "block_order": [
         "t-envio",
-        "t-plazo",
         "t-contacto",
         "t-devoluciones"
       ],
@@ -564,14 +518,14 @@
           "type": "question",
           "settings": {
             "question": "¿Qué incluye cada taza?",
-            "answer": "<p>Una taza de cerámica de 130 ml y un tenedor tipo fondue. La vela no está incluida.</p><p>GARELON es la tienda desde la que lo comercializamos: el producto procede de un fabricante externo, por eso la taza lleva el texto «Chocolat...» y no la marca GARELON.</p>"
+            "answer": "<p>Cada unidad incluye una Taza Fondue de cerámica y un tenedor tipo fondue. La vela no está incluida.</p>"
           }
         },
         "q-como": {
           "type": "question",
           "settings": {
             "question": "¿Cómo se utiliza?",
-            "answer": "<p>Coloca una vela tipo tealight en el hueco inferior, añade chocolate o queso arriba y enciende la vela: el calor ayuda a fundirlo o a mantenerlo caliente. Remueve de vez en cuando y usa el tenedor para tus acompañamientos. No dejes la vela encendida sin vigilancia.</p>"
+            "answer": "<p>Coloca una vela en el hueco inferior, añade chocolate o queso y enciéndela. El calor ayuda a fundirlo o mantenerlo caliente. Remueve de vez en cuando y utiliza el tenedor con tus acompañamientos. No dejes la vela encendida sin vigilancia.</p>"
           }
         },
         "q-queso": {
@@ -609,18 +563,11 @@
             "answer": "<p>1, 2 o 3 tazas del mismo color. Cada taza incluye su tenedor de fondue y no se mezclan colores dentro de un pack. El precio de cada pack es el que ves al elegirlo y, si su precio por unidad es más bajo, verás cuánto ahorras frente a comprar las mismas unidades por separado.</p>"
           }
         },
-        "q-vela": {
-          "type": "question",
-          "settings": {
-            "question": "¿La vela está incluida?",
-            "answer": "<p>No. La taza tiene un hueco inferior para una vela tipo tealight, que no se incluye.</p>"
-          }
-        },
         "q-envio": {
           "type": "question",
           "settings": {
             "question": "¿Cuándo recibiré mi pedido?",
-            "answer": "<p>El envío es gratis. Preparamos tu pedido en un plazo estimado de 1–3 días y la entrega estimada en España es de aproximadamente 8–18 días. Son plazos orientativos: pueden variar según el destino y el transporte. Encontrarás los detalles en nuestra <a href=\"/policies/shipping-policy\" title=\"Política de envío\">política de envío</a>.</p>"
+            "answer": "<p>Puedes consultar los plazos y condiciones de entrega actualizados en nuestra <a href=\"/policies/shipping-policy\" title=\"Política de envío\">política de envío</a>.</p>"
           }
         },
         "q-danada": {
@@ -639,7 +586,6 @@
         "q-capacidad",
         "q-colores",
         "q-packs",
-        "q-vela",
         "q-envio",
         "q-danada"
       ],

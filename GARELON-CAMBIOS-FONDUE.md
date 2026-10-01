@@ -1,10 +1,10 @@
-# GARELON · Migración a la Taza Fondue de Chocolate con Tenedor (v1 · ronda visual v1.1 · ronda PRO v2)
+# GARELON · Migración a la Taza Fondue de Chocolate con Tenedor (v1 · ronda visual v1.1 · ronda PRO v2 · copy v2.1)
 
 > Rama `claude/fondue-mug`. Primera migración de producto sobre el baseline del sérum (`baseline/garelon-serum`, commit `f08f9bb`). Misma arquitectura: Dawn 16.0.0 + capa GARELON, carrito y checkout de Shopify, opiniones solo reales, sin pagos visuales.
 >
 > Todo lo marcado como probado se ha probado en un **render local** (Liquid + el JavaScript real de Dawn, con un producto simulado de 3 colores × 3 packs). Nada de lo que depende de Shopify Admin, de CJ o del checkout real se ha podido comprobar: está en «Pasos manuales».
 
-## 1. Qué ve el cliente (estado actual, ronda PRO)
+## 1. Qué ve el cliente (estado actual, ronda PRO + limpieza de copy)
 
 **Home**
 
@@ -12,16 +12,16 @@
 |---|---|---|---|
 | 1 | Barra superior | Chocolate | «Envío gratis a España» + bandera |
 | 2 | Cabecera | Blanco | [isotipo] GARELON · Inicio · Cómo funciona · Qué incluye · Preguntas · Contacto |
-| 3 | Portada | Blanco | Taza roja sobre disco suave · «Un pequeño plan que sabe a mucho» · **H1** «Tu fondue de chocolate, en una taza» · frase · «A partir de 24,99 €» · Rojo · Blanco · Marrón · «Elegir color y pack» · «Cómo funciona →» · Tenedor incluido · Envío gratis · 130 ml |
-| 4 | Compra (`#comprar`) | Blanco cálido | Galería (roja → tres colores → blanca → marrón; salta al color elegido) · título · precio · «Cada unidad…» · **Color** con foto · **Elige tu pack** (tarjetas) · **Añadir al carrito** · Comprar ahora · Envío gratis · plazos · stock |
+| 3 | Portada | Blanco | Taza roja sobre disco suave · «Un pequeño plan que sabe a mucho» · **H1** «Tu fondue de chocolate, en una taza» · frase · «A partir de 24,99 €» · Rojo · Blanco · Marrón · «Elegir color y pack» · «Cómo funciona →» · Tenedor incluido · Envío gratis |
+| 4 | Compra (`#comprar`) | Blanco cálido | Galería (roja → tres colores → blanca → marrón; salta al color elegido) · título · precio · «Tu fondue de chocolate o queso en una taza, con tenedor de fondue incluido.» · **Color** con foto · **Elige tu pack** (tarjetas) · **Añadir al carrito** · Comprar ahora · **Envío gratis** (nada más) · stock |
 | 5 | Opiniones | Blanco | Solo reales. Sin app: 0 px |
-| 6 | Cómo funciona (`#como-funciona`) | Blanco | 6 pasos con icono + «Vela no incluida» y uso responsable |
-| 7 | Características y usos (`#caracteristicas`) | Blanco cálido | Tres tazas con acompañamientos · Cerámica · 130 ml · Tenedor incluido · 3 colores · Chocolate, Queso, Fresas, Fruta, Pan, Gofres · microondas según el proveedor |
+| 6 | Cómo funciona (`#como-funciona`) | Blanco | 6 pasos con icono + nota de seguridad («Usa la taza sobre una superficie estable y no dejes la vela encendida sin vigilancia.») |
+| 7 | Características y usos (`#caracteristicas`) | Blanco cálido | Tres tazas con acompañamientos · Cerámica · Tenedor de fondue · 3 colores · Chocolate, Queso, Fresas, Fruta, Pan, Gofres · microondas según el proveedor |
 | 8 | Momentos | Blanco | Sobremesa · Noche en casa · Una cita · Un regalo sencillo |
 | 9 | Compartir | Blanco cálido | «Una taza para cada uno» (tres colores) |
-| 10 | Colores + qué incluye (`#que-incluye`) | Blanco | Rojo / Blanco / Marrón con «Elegir» · taza 130 ml · tenedor · vela no incluida |
-| 11 | Confianza | Blanco cálido | Envío gratis · Entrega 8–18 días · ¿Dudas? · Devoluciones |
-| 12 | FAQ | Blanco | 10 preguntas |
+| 10 | Colores + qué incluye (`#que-incluye`) | Blanco | Rojo / Blanco / Marrón con «Elegir» · Cada unidad incluye: 1 Taza Fondue de cerámica · 1 tenedor tipo fondue |
+| 11 | Confianza | Blanco cálido | Envío gratis («Consulta la política de envío», con enlace) · ¿Dudas? · Devoluciones |
+| 12 | FAQ | Blanco | 9 preguntas (única aparición de «La vela no está incluida» y de «130 ml») |
 | 13 | Cierre | Rosado muy suave | «Tu próxima sobremesa puede empezar aquí» · precio · «Elegir mi Taza Fondue» |
 | 14 | Pie | Blanco cálido | Isotipo + GARELON · Ayuda · políticas · sin iconos de pago |
 | — | Compra fija (móvil) | Blanco | Aparece al pasar la compra: foto del color · «Rojo · 1 unidad» · precio · «Añadir» |
@@ -116,3 +116,17 @@ Solo estilo y maquetación: los precios, packs, Color × Pack, `quantity=1`, car
 **Pruebas (render local):** Taza Fondue 100/100 (nuevas: pasos en HTML, características y usos, colores, paleta, tipografía, botones, galería que salta al color, «Elegir» desde Colores, compra fija en la home, galería de la ficha, primera pantalla a 320 × 640), packs 56/56, carrito 62/62, routing 14/14, confianza 47/47, ronda 6 57/57. Theme Check: 0 errores, los 9 avisos de Dawn.
 
 **Pendiente en Shopify (además de la sección 4):** Rojo como primer valor de «Color» y «1 unidad» primero en «Pack» (así la selección inicial es Rojo / 1 unidad); título y meta descripción de la home en Preferencias; subir imagen1–4 a la multimedia del producto con una foto por color si quieres la foto en emails y checkout.
+
+## 8. Limpieza de copy (v2.1)
+
+Ronda solo de texto y jerarquía: no cambian el tema, la paleta, las imágenes, Color × Pack, los precios, `quantity=1`, el carrito, el checkout, las opiniones ni la compra fija.
+
+- **«Vela no incluida»:** fuera de la portada, la compra, el subtítulo de la ficha, «Cómo funciona», el pie de la foto de características, «Cada unidad incluye», las pestañas y los textos alternativos de las imágenes. Queda **solo** en la FAQ «¿Qué incluye cada taza?»: «Cada unidad incluye una Taza Fondue de cerámica y un tenedor tipo fondue. La vela no está incluida.» Se retira la pregunta «¿La vela está incluida?». La precaución de uso se mantiene, separada: «Usa la taza sobre una superficie estable y no dejes la vela encendida sin vigilancia.»
+- **«tealight» y «mojar»:** 0 en la tienda. «Coloca una vela en el hueco inferior»; «Solo necesitas una vela, chocolate o queso y tus acompañamientos favoritos.»; «Una peli, una manta y chocolate fundido.»
+- **130 ml:** la capacidad real no cambia, pero deja de ser argumento de venta. Fuera del antetítulo de la ficha («Taza Fondue · Cerámica»), la frase y los puntos de la portada, las características (quedan Cerámica · Tenedor de fondue · 3 colores) y «Cada unidad incluye». Solo en la FAQ «¿Qué capacidad tiene?» → «130 ml.».
+- **Debajo de «Añadir al carrito»:** solo «Envío gratis». Se quita el bloque «GARELON Plazos de envío» de la compra en la home y en la ficha (sigue disponible en el editor, ahora sin plazos por defecto).
+- **Plazos (1–3 / 8–18 días):** fuera de la home y la ficha. La barra de confianza queda en Envío gratis («Consulta la política de envío», enlazada) · ¿Dudas? · Devoluciones. FAQ «¿Cuándo recibiré mi pedido?» → «Puedes consultar los plazos y condiciones de entrega actualizados en nuestra política de envío.» (enlace a `/policies/shipping-policy`). Pestaña «Envíos y devoluciones» → enlaces a las políticas de envío y devoluciones, sin días.
+- **Política de envío:** el tema no la reescribe. **Pendiente en Admin:** comprobar que la política de envío de Shopify contiene los plazos (preparación 1–3 días, entrega en España aprox. 8–18 días, como estimación); si no, añadirlos allí. Revisar también que la **descripción del producto** en Shopify (sale en la ficha) no repita «130 ml», «vela no incluida», «tealight», «mojar» ni plazos.
+- **CSS:** con 3 características o 3 elementos de confianza, en móvil el último ocupa la fila entera (en horizontal) sin dejar huecos; desde 750 px las características van en una fila.
+- **Archivos:** `templates/index.json`, `product.json`, `page.faq.json`; `snippets/garelon-fallback-image.liquid` (textos alternativos); `sections/main-product.liquid` y `featured-product.liquid` (bloque de plazos sin valores por defecto); `assets/garelon.css`; docs.
+- **Pruebas (render local):** Taza Fondue 111/111 (nuevas: auditoría del HTML completo de home y ficha, solo «Envío gratis» bajo los botones, FAQ de 9 preguntas igual en home, ficha y página de FAQ, pestaña de envíos sin días, «tealight»/«mojar» = 0 en el código); packs 56/56, carrito 62/62, routing 14/14, confianza 47/47, ronda 6 57/57 (adaptadas solo donde se quitan los plazos). Theme Check: 0 errores, los 9 avisos de Dawn. Capturas en `docs/garelon/capturas/fondue-copy/`.

@@ -12,7 +12,7 @@
     real solo lleva «Chocolat...»). Es horizontal: 1080 × 426.
   imagen8 («Cómo funciona») no se usa como imagen: sus tazas dicen «Chocolat» sin los puntos y la
   escena central lleva dos tenedores; la sección se construye en HTML con sus mismos pasos.
-  La vela que aparece encendida no está incluida (se dice en la tienda).
+  La vela que aparece encendida no viene con la taza: se explica solo en la FAQ «¿Qué incluye cada taza?».
 
   Accepts:
   - image: {Object} imagen del image_picker
@@ -29,23 +29,23 @@
   case fallback
     when 'principal'
       assign asset_name = 'garelon-fondue-principal'
-      assign asset_alt = 'Taza Fondue roja de cerámica con el texto «Chocolat...», chocolate fundido, tenedor de fondue en el asa, vela encendida en el hueco inferior y fresas al lado. La vela no está incluida'
+      assign asset_alt = 'Taza Fondue roja de cerámica con el texto «Chocolat...», chocolate fundido, tenedor de fondue en el asa, vela encendida en el hueco inferior y fresas al lado'
     when 'roja'
       assign asset_name = 'garelon-fondue-roja'
-      assign asset_alt = 'Taza Fondue roja de cerámica de cerca, con el texto «Chocolat...», chocolate fundido, tenedor de fondue en el asa y vela encendida en el hueco inferior. La vela no está incluida'
+      assign asset_alt = 'Taza Fondue roja de cerámica de cerca, con el texto «Chocolat...», chocolate fundido, tenedor de fondue en el asa y vela encendida en el hueco inferior'
     when 'colores'
       assign asset_name = 'garelon-fondue-colores'
-      assign asset_alt = 'Las tres Tazas Fondue: roja, blanca y marrón, cada una con su tenedor de fondue, chocolate fundido y vela encendida, junto a fresas y chocolate. La vela no está incluida'
+      assign asset_alt = 'Las tres Tazas Fondue: roja, blanca y marrón, cada una con su tenedor de fondue, chocolate fundido y vela encendida, junto a fresas y chocolate'
     when 'blanco'
       assign asset_name = 'garelon-fondue-blanco'
-      assign asset_alt = 'Taza Fondue blanca con el texto «Chocolat...», chocolate fundido, tenedor de fondue en el asa y vela encendida en el hueco inferior. La vela no está incluida'
+      assign asset_alt = 'Taza Fondue blanca con el texto «Chocolat...», chocolate fundido, tenedor de fondue en el asa y vela encendida en el hueco inferior'
     when 'marron'
       assign asset_name = 'garelon-fondue-marron'
-      assign asset_alt = 'Taza Fondue marrón con el texto «Chocolat...», chocolate fundido, tenedor de fondue en el asa, vela encendida, fresas y chocolate. La vela no está incluida'
+      assign asset_alt = 'Taza Fondue marrón con el texto «Chocolat...», chocolate fundido, tenedor de fondue en el asa, vela encendida, fresas y chocolate'
     when 'usos'
       assign asset_name = 'garelon-fondue-usos'
       assign asset_height = 426
-      assign asset_alt = 'Las tres Tazas Fondue, marrón, blanca y roja, con una fresa bañada en chocolate, rodeadas de fresas, chocolate, gofres, plátano y nubes. La vela no está incluida'
+      assign asset_alt = 'Las tres Tazas Fondue, marrón, blanca y roja, con una fresa bañada en chocolate, rodeadas de fresas, chocolate, gofres, plátano y nubes'
   endcase
 
   assign final_alt = alt

@@ -102,7 +102,8 @@
 - [ ] 🅲 Si el producto tiene colores (Color × Pack): los 3 colores como botones, el ahorro se recalcula frente a 1 unidad **del mismo color**, combinación inexistente = «No disponible», agotada = «Agotado», la compra fija dice «Color · N unidades» y el carrito «Color: X · Pack: N unidades» × 1.
 - [ ] 🅲 Regresión de cantidad: con `quantity_selector` añadido a la vez que los packs, el selector no se pinta y el formulario envía un solo `quantity=1`.
 - [ ] 🅲 La sección de compra de la home tiene el **producto elegido** explícitamente (no «el primero del catálogo»).
-- [ ] 🅲 El bloque `shipping` (plazos) tiene textos de estimación prudentes y los mismos plazos que la pestaña «Envíos y devoluciones» y la FAQ.
+- [ ] 🅲 Plazos de envío: o bien en el bloque opcional `shipping` (estimación prudente, mismos plazos que la pestaña «Envíos y devoluciones», la FAQ y la política), o bien —como la Taza Fondue (1.8.1)— solo en la política de envío, enlazada desde la FAQ, la pestaña y la barra de confianza, sin días en la home ni en la ficha.
+- [ ] 🅲 Datos secundarios (capacidad, lo que no incluye, detalles técnicos) una sola vez, en su pregunta de la FAQ, si el dueño lo decide así (maestra §17.5). Búsqueda global en `sections`, `snippets`, `templates`, `config`, `assets` y `locales` de cada término retirado (incluidos los textos alternativos) con resultado clasificado en el informe.
 - [ ] 🅲 La barra de servicio (`service`: Atención · Envío · Devoluciones) no ha cambiado (sin «Pago seguro» desde la 1.5).
 - [ ] 🅲 `benefits`, `how_to`, `features` y `faq` están actualizados; `sticky` presente (ficha y home).
 - [ ] 🅲 Galería de la ficha (`garelon_gallery` de `main-product`): «Imágenes del tema» mientras la multimedia de Shopify no esté revisada; «Multimedia de Shopify» cuando cada color tenga su foto.
@@ -149,7 +150,7 @@
 - [ ] 🆂 Carrito: imagen, título, variante, cantidad (+/−), eliminar, precio, subtotal y «Finalizar compra».
 - [ ] 🆂 El carrito no añade nada automáticamente (sin seguros, regalos ni upsells).
 - [ ] 🆂 «Finalizar compra» lleva al checkout de Shopify. Los botones de pago dinámico (Shop Pay, PayPal, Apple Pay, Google Pay…) aparecen según la configuración de Pagos.
-- [ ] 🅲 Bajo los botones de compra: solo «Envío gratis»; ningún «Pago seguro», icono de pago ni diagnóstico de métodos (probar con Shopify devolviendo varios métodos). El botón de pago dinámico sigue igual y los plazos de envío siguen debajo.
+- [ ] 🅲 Bajo los botones de compra: solo «Envío gratis»; ningún «Pago seguro», icono de pago ni diagnóstico de métodos (probar con Shopify devolviendo varios métodos). El botón de pago dinámico sigue igual; los plazos solo debajo si el producto usa el bloque opcional de plazos.
 - [ ] 🅲 Sin CSS, JS ni manipulación del DOM del checkout.
 - [ ] 🆂 Estado agotado: el botón se desactiva y la compra fija lo refleja. La tarjeta del pack agotado dice «Agotado» y no se puede elegir.
 - [ ] 🆂 Cada pack llega al carrito como **una línea «Pack: N unidades» × 1** (nunca «N unidades» × N) y la compra fija muestra el pack elegido.
@@ -184,7 +185,7 @@
 - [ ] 🅲 Enlaces legales en orden: Contacto · Envíos · Devoluciones y reembolsos · Privacidad · Cookies (si existe la página) · Términos y condiciones · Aviso legal.
 - [ ] 🆂 La página de **contacto** es la misma de siempre (no se ha creado otra), usa la plantilla `contact` y el formulario envía.
 - [ ] 🆂 Cada política enlazada existe y tiene contenido. Si falta la de cookies, no se enlaza.
-- [ ] 🆂 La política de envío del Admin dice los mismos plazos estimados que la tienda y no nombra al proveedor.
+- [ ] 🆂 La política de envío del Admin contiene los plazos estimados (es el único sitio donde están si la tienda solo la enlaza), coincide con lo que diga la tienda y no nombra al proveedor. El tema no la reescribe.
 - [ ] 🅲/🆂 Preguntas de §19 respondidas (devoluciones, envíos, higiene, seguridad, garantía, edad). Las políticas afectadas están revisadas por el dueño; las demás, intactas.
 - [ ] 🅲 Ningún NIF/CIF, domicilio, teléfono, email ni razón social inventado en el tema.
 

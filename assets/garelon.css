@@ -1225,7 +1225,7 @@ product-info {
   background-color: rgba(var(--color-foreground), 0.04);
 }
 
-/* ---------- Envío gratis + plazos bajo la compra ---------- */
+/* ---------- Envío gratis bajo la compra (y plazos, si se añade el bloque opcional) ---------- */
 .g-buytrust {
   max-width: 48rem;
   margin: 1.4rem 0 0;
@@ -1836,9 +1836,19 @@ product-info {
   height: 2rem;
 }
 
+/* Móvil (2 columnas): con un número impar de características (p. ej. 3), la última ocupa
+   la fila entera, en horizontal, sin dejar un hueco al lado. Desde 750 px, columnas automáticas (con 3, una sola fila). */
+@media screen and (max-width: 749px) {
+  .g-features__item:last-child:nth-child(odd) {
+    grid-column: 1 / -1;
+    flex-direction: row;
+    align-items: center;
+  }
+}
+
 @media screen and (min-width: 750px) {
   .g-features__grid {
-    grid-template-columns: repeat(4, minmax(0, 1fr));
+    grid-template-columns: repeat(auto-fit, minmax(16rem, 1fr));
   }
 }
 
@@ -1851,10 +1861,6 @@ product-info {
     grid-template-columns: 1.6fr 1fr;
     gap: 5rem;
     align-items: start;
-  }
-
-  .g-features__grid {
-    grid-template-columns: repeat(2, minmax(0, 1fr));
   }
 }
 
@@ -2125,7 +2131,7 @@ product-info {
   }
 }
 
-/* ---------- Confianza (envío, plazos, contacto, devoluciones) ---------- */
+/* ---------- Confianza (envío, contacto, devoluciones) ---------- */
 .g-trust__list {
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));
@@ -2148,6 +2154,10 @@ product-info {
   gap: 1rem;
   font-size: 1.4rem;
   line-height: 1.35;
+}
+
+.g-trust__item:last-child:nth-child(odd) {
+  grid-column: 1 / -1;
 }
 
 .g-trust__item .g-icon {
@@ -2187,7 +2197,9 @@ a.g-trust__title {
     padding: 2.4rem 3.2rem;
   }
 
-  .g-trust__item {
+  .g-trust__item,
+  .g-trust__item:last-child:nth-child(odd) {
+    grid-column: auto;
     justify-content: center;
   }
 }

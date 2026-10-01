@@ -14,14 +14,14 @@
           "type": "question",
           "settings": {
             "question": "¿Qué incluye cada taza?",
-            "answer": "<p>Una taza de cerámica de 130 ml y un tenedor tipo fondue. La vela no está incluida.</p><p>GARELON es la tienda desde la que lo comercializamos: el producto procede de un fabricante externo, por eso la taza lleva el texto «Chocolat...» y no la marca GARELON.</p>"
+            "answer": "<p>Cada unidad incluye una Taza Fondue de cerámica y un tenedor tipo fondue. La vela no está incluida.</p>"
           }
         },
         "q-como": {
           "type": "question",
           "settings": {
             "question": "¿Cómo se utiliza?",
-            "answer": "<p>Coloca una vela tipo tealight en el hueco inferior, añade chocolate o queso arriba y enciende la vela: el calor ayuda a fundirlo o a mantenerlo caliente. Remueve de vez en cuando y usa el tenedor para tus acompañamientos. No dejes la vela encendida sin vigilancia.</p>"
+            "answer": "<p>Coloca una vela en el hueco inferior, añade chocolate o queso y enciéndela. El calor ayuda a fundirlo o mantenerlo caliente. Remueve de vez en cuando y utiliza el tenedor con tus acompañamientos. No dejes la vela encendida sin vigilancia.</p>"
           }
         },
         "q-queso": {
@@ -59,18 +59,11 @@
             "answer": "<p>1, 2 o 3 tazas del mismo color. Cada taza incluye su tenedor de fondue y no se mezclan colores dentro de un pack. El precio de cada pack es el que ves al elegirlo y, si su precio por unidad es más bajo, verás cuánto ahorras frente a comprar las mismas unidades por separado.</p>"
           }
         },
-        "q-vela": {
-          "type": "question",
-          "settings": {
-            "question": "¿La vela está incluida?",
-            "answer": "<p>No. La taza tiene un hueco inferior para una vela tipo tealight, que no se incluye.</p>"
-          }
-        },
         "q-envio": {
           "type": "question",
           "settings": {
             "question": "¿Cuándo recibiré mi pedido?",
-            "answer": "<p>El envío es gratis. Preparamos tu pedido en un plazo estimado de 1–3 días y la entrega estimada en España es de aproximadamente 8–18 días. Son plazos orientativos: pueden variar según el destino y el transporte. Encontrarás los detalles en nuestra <a href=\"/policies/shipping-policy\" title=\"Política de envío\">política de envío</a>.</p>"
+            "answer": "<p>Puedes consultar los plazos y condiciones de entrega actualizados en nuestra <a href=\"/policies/shipping-policy\" title=\"Política de envío\">política de envío</a>.</p>"
           }
         },
         "q-danada": {
@@ -89,7 +82,6 @@
         "q-capacidad",
         "q-colores",
         "q-packs",
-        "q-vela",
         "q-envio",
         "q-danada"
       ],
