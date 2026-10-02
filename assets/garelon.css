@@ -414,3 +414,268 @@ body {
   color: var(--g-ink) !important;
   border: 1px solid var(--g-ink) !important;
 }
+
+/* ---------- Compra con tranquilidad (rich-text de Dawn) ---------- */
+[id$='__tranquilidad'] .rich-text.content-container {
+  border: 1px solid var(--g-gold-line);
+  border-radius: var(--g-radius-lg);
+}
+[id$='__tranquilidad'] .rich-text__text {
+  max-width: 60rem;
+  margin-left: auto;
+  margin-right: auto;
+}
+.rich-text__caption {
+  color: var(--g-accent-ink);
+}
+
+/* ---------- Encabezado de sección y opiniones ---------- */
+.g-head {
+  text-align: center;
+  max-width: 64rem;
+  margin: 0 auto 2.8rem;
+}
+.g-head__title {
+  margin: 0;
+}
+.g-head__text {
+  margin: 1.2rem 0 0;
+  color: rgba(var(--color-foreground), 0.8);
+}
+@media screen and (min-width: 750px) {
+  .g-head {
+    margin-bottom: 4rem;
+  }
+}
+.g-reviews__summary {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: center;
+  gap: 0.8rem;
+  margin: -1.2rem 0 2.4rem;
+  font-size: 1.5rem;
+}
+.g-stars {
+  --g-star-off: rgba(42, 38, 34, 0.18);
+  display: inline-block;
+  width: 10rem;
+  height: 2rem;
+  background: linear-gradient(90deg, var(--g-accent) var(--g-rating), var(--g-star-off) var(--g-rating));
+  -webkit-mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 20'%3E%3Cpath d='M10 1l2.6 5.9 6.4.6-4.9 4.3 1.5 6.3L10 14.8 4.4 18.1l1.5-6.3L1 7.5l6.4-.6zM30 1l2.6 5.9 6.4.6-4.9 4.3 1.5 6.3L30 14.8l-5.6 3.3 1.5-6.3L21 7.5l6.4-.6zM50 1l2.6 5.9 6.4.6-4.9 4.3 1.5 6.3L50 14.8l-5.6 3.3 1.5-6.3L41 7.5l6.4-.6zM70 1l2.6 5.9 6.4.6-4.9 4.3 1.5 6.3L70 14.8l-5.6 3.3 1.5-6.3L61 7.5l6.4-.6zM90 1l2.6 5.9 6.4.6-4.9 4.3 1.5 6.3L90 14.8l-5.6 3.3 1.5-6.3L81 7.5l6.4-.6z'/%3E%3C/svg%3E") center / 100% 100% no-repeat;
+  mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 20'%3E%3Cpath d='M10 1l2.6 5.9 6.4.6-4.9 4.3 1.5 6.3L10 14.8 4.4 18.1l1.5-6.3L1 7.5l6.4-.6zM30 1l2.6 5.9 6.4.6-4.9 4.3 1.5 6.3L30 14.8l-5.6 3.3 1.5-6.3L21 7.5l6.4-.6zM50 1l2.6 5.9 6.4.6-4.9 4.3 1.5 6.3L50 14.8l-5.6 3.3 1.5-6.3L41 7.5l6.4-.6zM70 1l2.6 5.9 6.4.6-4.9 4.3 1.5 6.3L70 14.8l-5.6 3.3 1.5-6.3L61 7.5l6.4-.6zM90 1l2.6 5.9 6.4.6-4.9 4.3 1.5 6.3L90 14.8l-5.6 3.3 1.5-6.3L81 7.5l6.4-.6z'/%3E%3C/svg%3E") center / 100% 100% no-repeat;
+}
+.g-reviews__app {
+  max-width: 110rem;
+  margin: 0 auto;
+}
+
+/* ---------- Imagen y texto ---------- */
+.g-split__grid {
+  display: grid;
+  gap: 2.8rem;
+  align-items: center;
+}
+.g-split__media {
+  border-radius: var(--g-radius-lg);
+  overflow: hidden;
+  background: rgba(42, 38, 34, 0.04);
+  max-width: 52rem;
+  width: 100%;
+  margin: 0 auto;
+}
+.g-split__img {
+  display: block;
+  width: 100%;
+  height: auto;
+  aspect-ratio: 1 / 1;
+  object-fit: cover;
+}
+.g-split__title {
+  margin: 0 0 1.4rem;
+}
+.g-split__text {
+  font-size: 1.6rem;
+  line-height: 1.6;
+  color: rgba(var(--color-foreground), 0.82);
+  max-width: 54rem;
+}
+@media screen and (min-width: 750px) {
+  .g-split__grid {
+    grid-template-columns: 1fr 1fr;
+    gap: 6rem;
+  }
+  .g-split--right .g-split__media {
+    order: 2;
+  }
+}
+
+/* ---------- Detalles (lista o etiquetas) ---------- */
+.g-details__grid {
+  display: grid;
+  gap: 2.8rem;
+  align-items: center;
+}
+.g-details__media {
+  border-radius: var(--g-radius-lg);
+  overflow: hidden;
+  max-width: 48rem;
+  width: 100%;
+  margin: 0 auto;
+}
+.g-details__img {
+  display: block;
+  width: 100%;
+  height: auto;
+  aspect-ratio: 1 / 1;
+  object-fit: cover;
+}
+.g-facts {
+  display: grid;
+  gap: 1.2rem;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+.g-fact {
+  display: flex;
+  gap: 1.4rem;
+  align-items: flex-start;
+  padding: 1.4rem 1.6rem;
+  background: rgb(var(--color-background));
+  border: 1px solid var(--g-line);
+  border-radius: var(--g-radius);
+}
+.color-scheme-2 .g-fact {
+  background: #fff;
+}
+.g-fact__icon {
+  flex: 0 0 4.4rem;
+  height: 4.4rem;
+  display: grid;
+  place-items: center;
+  border-radius: 50%;
+  background: var(--g-accent-soft);
+  color: var(--g-accent);
+}
+.g-fact__title {
+  margin: 0.2rem 0 0;
+  font-family: var(--font-body-family);
+  font-size: 1.6rem;
+  font-weight: 600;
+  letter-spacing: 0;
+}
+.g-fact__text {
+  margin: 0.3rem 0 0;
+  font-size: 1.45rem;
+  line-height: 1.5;
+  color: rgba(var(--color-foreground), 0.78);
+}
+.g-details__note {
+  margin: 1.6rem 0 0;
+  font-size: 1.3rem;
+  color: rgba(var(--color-foreground), 0.7);
+}
+.g-chips {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 1rem;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+.g-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.6rem;
+  min-height: 4.4rem;
+  padding: 0.8rem 1.8rem;
+  border: 1px solid var(--g-gold-line);
+  border-radius: 999px;
+  font-size: 1.5rem;
+  background: rgb(var(--color-background));
+}
+.g-details--chips .g-details__note {
+  text-align: center;
+}
+@media screen and (min-width: 750px) {
+  .g-details--media .g-details__grid {
+    grid-template-columns: 1fr 1.1fr;
+    gap: 5rem;
+  }
+}
+
+/* ---------- Preguntas frecuentes ---------- */
+.g-faq__list {
+  max-width: 82rem;
+  margin: 0 auto;
+  border-top: 1px solid var(--g-line);
+}
+.g-faq__item {
+  border-bottom: 1px solid var(--g-line);
+}
+.g-faq__question {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1.6rem;
+  min-height: 5.6rem;
+  padding: 1.2rem 0.4rem;
+  cursor: pointer;
+  list-style: none;
+}
+.g-faq__question::-webkit-details-marker {
+  display: none;
+}
+.g-faq__question:focus-visible {
+  outline: 2px solid rgb(var(--color-foreground));
+  outline-offset: 2px;
+}
+.g-faq__q {
+  margin: 0;
+  font-family: var(--font-body-family);
+  font-size: 1.6rem;
+  font-weight: 600;
+  line-height: 1.4;
+  letter-spacing: 0;
+}
+.g-faq__mark {
+  position: relative;
+  flex: 0 0 2.8rem;
+  height: 2.8rem;
+  border-radius: 50%;
+  background: var(--g-accent-soft);
+}
+.g-faq__mark::before,
+.g-faq__mark::after {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 1.1rem;
+  height: 1.5px;
+  background: var(--g-accent);
+  transform: translate(-50%, -50%);
+  transition: transform 0.2s ease;
+}
+.g-faq__mark::after {
+  transform: translate(-50%, -50%) rotate(90deg);
+}
+.g-faq__item[open] .g-faq__mark::after {
+  transform: translate(-50%, -50%) rotate(0deg);
+}
+.g-faq__answer {
+  padding: 0 0.4rem 1.6rem;
+  font-size: 1.5rem;
+  line-height: 1.6;
+  color: rgba(var(--color-foreground), 0.82);
+}
+.g-faq__answer a {
+  color: var(--g-accent-ink);
+}
+
+/* ---------- Cierre (rich-text de Dawn) ---------- */
+[id$='__cierre'] .rich-text__text {
+  font-size: 1.6rem;
+}

@@ -1,0 +1,213 @@
+{%- comment -%}
+  GARELON · Lista de hechos verificables (con icono) o etiquetas, con imagen opcional y nota.
+  Se usa para «Detalles de la pulsera» (lista + imagen) y «Regalo» (etiquetas de ocasiones).
+{%- endcomment -%}
+{%- liquid
+  assign has_media = false
+  if section.settings.image != blank or section.settings.image_key != 'none'
+    assign has_media = true
+  endif
+-%}
+<section
+  {% if section.settings.anchor != blank %}
+    id="{{ section.settings.anchor | handleize }}"
+  {% endif %}
+  class="g-details g-details--{{ section.settings.layout }} color-{{ section.settings.color_scheme }} gradient g-section g-section--{{ section.id }}{% if has_media %} g-details--media{% endif %}"
+>
+  {%- style -%}
+    .g-section--{{ section.id }} { --g-pt: {{ section.settings.padding_top }}px; --g-pb: {{ section.settings.padding_bottom }}px; }
+  {%- endstyle -%}
+  <div class="page-width">
+    <header class="g-head">
+      {%- if section.settings.eyebrow != blank -%}
+        <p class="g-eyebrow">{{ section.settings.eyebrow | escape }}</p>
+      {%- endif -%}
+      {%- if section.settings.heading != blank -%}
+        <h2 class="h1 g-head__title">{{ section.settings.heading | escape }}</h2>
+      {%- endif -%}
+      {%- if section.settings.text != blank -%}
+        <p class="g-head__text">{{ section.settings.text | escape }}</p>
+      {%- endif -%}
+    </header>
+    <div class="g-details__grid">
+      {%- if has_media -%}
+        <div class="g-details__media">
+          {%- render 'garelon-image',
+            image: section.settings.image,
+            key: section.settings.image_key,
+            alt: section.settings.image_alt,
+            sizes: '(min-width: 990px) 480px, (min-width: 750px) 45vw, 100vw',
+            class: 'g-details__img'
+          -%}
+        </div>
+      {%- endif -%}
+      <div class="g-details__body">
+        {%- if section.settings.layout == 'chips' -%}
+          <ul class="g-chips" role="list">
+            {%- for block in section.blocks -%}
+              <li class="g-chip" {{ block.shopify_attributes }}>
+                {%- render 'garelon-icon', icon: block.settings.icon -%}
+                <span>{{ block.settings.title | escape }}</span>
+              </li>
+            {%- endfor -%}
+          </ul>
+        {%- else -%}
+          <ul class="g-facts" role="list">
+            {%- for block in section.blocks -%}
+              <li class="g-fact" {{ block.shopify_attributes }}>
+                <span class="g-fact__icon">{%- render 'garelon-icon', icon: block.settings.icon -%}</span>
+                <div class="g-fact__body">
+                  <h3 class="g-fact__title">{{ block.settings.title | escape }}</h3>
+                  {%- if block.settings.text != blank -%}
+                    <p class="g-fact__text">{{ block.settings.text | escape }}</p>
+                  {%- endif -%}
+                </div>
+              </li>
+            {%- endfor -%}
+          </ul>
+        {%- endif -%}
+        {%- if section.settings.note != blank -%}
+          <p class="g-details__note">{{ section.settings.note | escape }}</p>
+        {%- endif -%}
+      </div>
+    </div>
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "GARELON Detalles",
+  "tag": "div",
+  "class": "section",
+  "max_blocks": 12,
+  "settings": [
+    {
+      "type": "select",
+      "id": "layout",
+      "label": "Diseño",
+      "options": [
+        { "value": "list", "label": "Lista con icono" },
+        { "value": "chips", "label": "Etiquetas" }
+      ],
+      "default": "list"
+    },
+    {
+      "type": "text",
+      "id": "eyebrow",
+      "label": "Antetítulo"
+    },
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "Título"
+    },
+    {
+      "type": "textarea",
+      "id": "text",
+      "label": "Entradilla"
+    },
+    {
+      "type": "image_picker",
+      "id": "image",
+      "label": "Imagen"
+    },
+    {
+      "type": "select",
+      "id": "image_key",
+      "label": "Imagen del tema",
+      "options": [
+        { "value": "none", "label": "Ninguna" },
+        { "value": "detalle", "label": "Detalle de la medalla" },
+        { "value": "principal", "label": "Pulsera en la muñeca" },
+        { "value": "oracion", "label": "Manos en oración" }
+      ],
+      "default": "none"
+    },
+    {
+      "type": "text",
+      "id": "image_alt",
+      "label": "Texto alternativo de la imagen del tema"
+    },
+    {
+      "type": "text",
+      "id": "note",
+      "label": "Nota (origen de los datos)"
+    },
+    {
+      "type": "color_scheme",
+      "id": "color_scheme",
+      "label": "Esquema de color",
+      "default": "scheme-1"
+    },
+    {
+      "type": "text",
+      "id": "anchor",
+      "label": "Ancla",
+      "info": "Sin #."
+    },
+    {
+      "type": "range",
+      "id": "padding_top",
+      "min": 0,
+      "max": 100,
+      "step": 4,
+      "unit": "px",
+      "label": "Margen superior",
+      "default": 56
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom",
+      "min": 0,
+      "max": 100,
+      "step": 4,
+      "unit": "px",
+      "label": "Margen inferior",
+      "default": 56
+    }
+  ],
+  "blocks": [
+    {
+      "type": "item",
+      "name": "Elemento",
+      "settings": [
+        {
+          "type": "select",
+          "id": "icon",
+          "label": "Icono",
+          "options": [
+            { "value": "none", "label": "Ninguno" },
+            { "value": "material", "label": "Material" },
+            { "value": "medalla", "label": "Medalla" },
+            { "value": "cruz", "label": "Cruz" },
+            { "value": "cuentas", "label": "Cuentas" },
+            { "value": "longitud", "label": "Longitud" },
+            { "value": "ajuste", "label": "Ajuste (aros)" },
+            { "value": "regalo", "label": "Regalo" },
+            { "value": "corazon", "label": "Corazón" },
+            { "value": "envio", "label": "Envío" },
+            { "value": "devolucion", "label": "Devolución" }
+          ],
+          "default": "none"
+        },
+        {
+          "type": "text",
+          "id": "title",
+          "label": "Título",
+          "default": "Elemento"
+        },
+        {
+          "type": "text",
+          "id": "text",
+          "label": "Detalle"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "GARELON Detalles"
+    }
+  ]
+}
+{% endschema %}

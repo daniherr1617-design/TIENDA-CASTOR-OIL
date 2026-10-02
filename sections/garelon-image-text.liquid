@@ -1,0 +1,132 @@
+{%- comment -%}
+  GARELON · Imagen y texto a dos columnas (en móvil, la imagen primero). Sin botón.
+{%- endcomment -%}
+<section
+  {% if section.settings.anchor != blank %}
+    id="{{ section.settings.anchor | handleize }}"
+  {% endif %}
+  class="g-split color-{{ section.settings.color_scheme }} gradient g-section g-section--{{ section.id }}{% if section.settings.image_position == 'right' %} g-split--right{% endif %}"
+>
+  {%- style -%}
+    .g-section--{{ section.id }} { --g-pt: {{ section.settings.padding_top }}px; --g-pb: {{ section.settings.padding_bottom }}px; }
+  {%- endstyle -%}
+  <div class="page-width g-split__grid">
+    {%- if section.settings.image != blank or section.settings.image_key != 'none' -%}
+      <div class="g-split__media">
+        {%- render 'garelon-image',
+          image: section.settings.image,
+          key: section.settings.image_key,
+          alt: section.settings.image_alt,
+          sizes: '(min-width: 990px) 520px, (min-width: 750px) 50vw, 100vw',
+          class: 'g-split__img'
+        -%}
+      </div>
+    {%- endif -%}
+    <div class="g-split__content">
+      {%- if section.settings.eyebrow != blank -%}
+        <p class="g-eyebrow">{{ section.settings.eyebrow | escape }}</p>
+      {%- endif -%}
+      {%- if section.settings.heading != blank -%}
+        <h2 class="h1 g-split__title">{{ section.settings.heading | escape }}</h2>
+      {%- endif -%}
+      {%- if section.settings.text != blank -%}
+        <div class="rte g-split__text">{{ section.settings.text }}</div>
+      {%- endif -%}
+    </div>
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "GARELON Imagen y texto",
+  "tag": "div",
+  "class": "section",
+  "settings": [
+    {
+      "type": "image_picker",
+      "id": "image",
+      "label": "Imagen",
+      "info": "Vacío = imagen del producto incluida en el tema."
+    },
+    {
+      "type": "select",
+      "id": "image_key",
+      "label": "Imagen del tema",
+      "options": [
+        { "value": "oracion", "label": "Manos en oración" },
+        { "value": "principal", "label": "Pulsera en la muñeca" },
+        { "value": "detalle", "label": "Detalle de la medalla" },
+        { "value": "none", "label": "Ninguna" }
+      ],
+      "default": "oracion"
+    },
+    {
+      "type": "text",
+      "id": "image_alt",
+      "label": "Texto alternativo de la imagen del tema"
+    },
+    {
+      "type": "select",
+      "id": "image_position",
+      "label": "Posición de la imagen en escritorio",
+      "options": [
+        { "value": "left", "label": "Izquierda" },
+        { "value": "right", "label": "Derecha" }
+      ],
+      "default": "left"
+    },
+    {
+      "type": "text",
+      "id": "eyebrow",
+      "label": "Antetítulo"
+    },
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "Título"
+    },
+    {
+      "type": "richtext",
+      "id": "text",
+      "label": "Texto"
+    },
+    {
+      "type": "color_scheme",
+      "id": "color_scheme",
+      "label": "Esquema de color",
+      "default": "scheme-1"
+    },
+    {
+      "type": "text",
+      "id": "anchor",
+      "label": "Ancla",
+      "info": "Sin #."
+    },
+    {
+      "type": "range",
+      "id": "padding_top",
+      "min": 0,
+      "max": 100,
+      "step": 4,
+      "unit": "px",
+      "label": "Margen superior",
+      "default": 56
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom",
+      "min": 0,
+      "max": 100,
+      "step": 4,
+      "unit": "px",
+      "label": "Margen inferior",
+      "default": 56
+    }
+  ],
+  "presets": [
+    {
+      "name": "GARELON Imagen y texto"
+    }
+  ]
+}
+{% endschema %}

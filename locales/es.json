@@ -563,6 +563,14 @@
       "per": "por",
       "save": "ahorras {{ amount }}",
       "editor_missing": "Solo en el editor: el producto aún no tiene la opción «Pack» con los valores «1 pulsera», «2 pulseras» y «3 pulseras». Los clientes compran la variante actual con normalidad. Crea las variantes en Productos › (producto) › Variantes."
+    },
+    "reviews": {
+      "stars_label": "{{ rating }} de {{ max }} estrellas",
+      "count": {
+        "one": "{{ count }} opinión",
+        "other": "{{ count }} opiniones"
+      },
+      "editor_empty": "Solo en el editor: «GARELON Opiniones» está oculta para los clientes porque no hay opiniones reales. Añade el bloque de tu app de reseñas (Añadir bloque › Apps) o espera a que la app publique la valoración del producto."
     }
   }
 }

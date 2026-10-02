@@ -1,0 +1,165 @@
+{%- comment -%}
+  GARELON · Opiniones REALES. Fuentes, por prioridad:
+  1) el bloque de app de la app de reseñas (p. ej. Judge.me), que el dueño añade en el editor;
+  2) la valoración estándar de Shopify que rellena la app (metafields reviews.rating y reviews.rating_count).
+  Sin ninguna de las dos, el cliente no ve nada (ni sección, ni estrellas, ni «0 opiniones»).
+  En el editor se muestra un aviso. El tema no contiene ninguna reseña.
+{%- endcomment -%}
+{%- liquid
+  assign rev_product = section.settings.product
+  if rev_product == blank
+    assign rev_product = product
+  endif
+  if rev_product == blank
+    assign rev_product = collections.all.products.first
+  endif
+  assign app_blocks = section.blocks | where: 'type', '@app'
+  assign has_app = false
+  if app_blocks.size > 0
+    assign has_app = true
+  endif
+  assign rating = rev_product.metafields.reviews.rating.value
+  assign rating_count = rev_product.metafields.reviews.rating_count.value | default: 0
+  assign has_summary = false
+  if rating != blank and rating_count > 0
+    assign has_summary = true
+  endif
+  assign show_summary = false
+  if has_summary and section.settings.show_summary
+    if has_app == false or section.settings.summary_with_app
+      assign show_summary = true
+    endif
+  endif
+-%}
+{%- if has_app or has_summary -%}
+  <section
+    {% if section.settings.anchor != blank %}
+      id="{{ section.settings.anchor | handleize }}"
+    {% endif %}
+    class="g-reviews color-{{ section.settings.color_scheme }} gradient g-section g-section--{{ section.id }}"
+  >
+    {%- style -%}
+      .g-section--{{ section.id }} { --g-pt: {{ section.settings.padding_top }}px; --g-pb: {{ section.settings.padding_bottom }}px; }
+    {%- endstyle -%}
+    <div class="page-width g-reviews__inner">
+      <header class="g-head">
+        {%- if section.settings.eyebrow != blank -%}
+          <p class="g-eyebrow">{{ section.settings.eyebrow | escape }}</p>
+        {%- endif -%}
+        {%- if section.settings.heading != blank -%}
+          <h2 class="h1 g-head__title">{{ section.settings.heading | escape }}</h2>
+        {%- endif -%}
+      </header>
+      {%- if show_summary -%}
+        {%- liquid
+          assign scale_max = rating.scale_max | default: 5
+          assign rating_value = rating.rating | round: 1 | append: '' | replace: '.', ','
+        -%}
+        <p class="g-reviews__summary">
+          <span
+            class="g-stars"
+            role="img"
+            aria-label="{{ 'garelon.reviews.stars_label' | t: rating: rating_value, max: scale_max }}"
+            style="--g-rating: {{ rating.rating | times: 100.0 | divided_by: scale_max | round: 1 }}%;"
+          ></span>
+          <span aria-hidden="true">{{ rating_value }}/{{ scale_max }}</span>
+          <span>· {{ 'garelon.reviews.count' | t: count: rating_count }}</span>
+        </p>
+      {%- endif -%}
+      {%- for block in section.blocks -%}
+        {%- if block.type == '@app' -%}
+          <div class="g-reviews__app">{% render block %}</div>
+        {%- endif -%}
+      {%- endfor -%}
+    </div>
+  </section>
+{%- elsif request.design_mode -%}
+  <div class="page-width">
+    <p class="g-editor-note">{{ 'garelon.reviews.editor_empty' | t }}</p>
+  </div>
+{%- endif -%}
+
+{% schema %}
+{
+  "name": "GARELON Opiniones",
+  "tag": "div",
+  "class": "section",
+  "settings": [
+    {
+      "type": "paragraph",
+      "content": "Solo opiniones reales: añade el bloque de tu app de reseñas (Añadir bloque › Apps). Sin opiniones reales la sección no se muestra."
+    },
+    {
+      "type": "text",
+      "id": "eyebrow",
+      "label": "Antetítulo"
+    },
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "Título"
+    },
+    {
+      "type": "product",
+      "id": "product",
+      "label": "Producto de la valoración media",
+      "info": "Vacío = el producto de la ficha o el primero de la tienda."
+    },
+    {
+      "type": "checkbox",
+      "id": "show_summary",
+      "label": "Mostrar la valoración media de Shopify",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "summary_with_app",
+      "label": "Mostrarla también si hay bloque de app",
+      "default": false,
+      "info": "Desactivado: la app ya muestra su propio resumen."
+    },
+    {
+      "type": "color_scheme",
+      "id": "color_scheme",
+      "label": "Esquema de color",
+      "default": "scheme-1"
+    },
+    {
+      "type": "text",
+      "id": "anchor",
+      "label": "Ancla",
+      "default": "opiniones"
+    },
+    {
+      "type": "range",
+      "id": "padding_top",
+      "min": 0,
+      "max": 100,
+      "step": 4,
+      "unit": "px",
+      "label": "Margen superior",
+      "default": 48
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom",
+      "min": 0,
+      "max": 100,
+      "step": 4,
+      "unit": "px",
+      "label": "Margen inferior",
+      "default": 48
+    }
+  ],
+  "blocks": [
+    {
+      "type": "@app"
+    }
+  ],
+  "presets": [
+    {
+      "name": "GARELON Opiniones"
+    }
+  ]
+}
+{% endschema %}

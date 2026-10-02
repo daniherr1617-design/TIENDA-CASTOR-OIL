@@ -88,10 +88,362 @@
         "padding_top": 40,
         "padding_bottom": 48
       }
+    },
+    "tranquilidad": {
+      "type": "rich-text",
+      "blocks": {
+        "subtitulo": {
+          "type": "caption",
+          "settings": {
+            "caption": "14 días para cambiar de opinión",
+            "text_style": "caption-with-letter-spacing",
+            "text_size": "medium"
+          }
+        },
+        "titulo": {
+          "type": "heading",
+          "settings": {
+            "heading": "Compra con tranquilidad",
+            "heading_size": "h1"
+          }
+        },
+        "texto": {
+          "type": "text",
+          "settings": {
+            "text": "<p>En compras online dispones de 14 días naturales desde la recepción del pedido para ejercer tu derecho de desistimiento. Además, tus derechos frente a faltas de conformidad están cubiertos por la garantía legal aplicable.</p>"
+          }
+        },
+        "enlace": {
+          "type": "button",
+          "settings": {
+            "button_label": "Consulta la política de devoluciones",
+            "button_link": "/policies/refund-policy",
+            "button_style_secondary": true,
+            "button_label_2": "",
+            "button_link_2": "",
+            "button_style_secondary_2": false
+          }
+        }
+      },
+      "block_order": [
+        "subtitulo",
+        "titulo",
+        "texto",
+        "enlace"
+      ],
+      "settings": {
+        "desktop_content_position": "center",
+        "content_alignment": "center",
+        "color_scheme": "scheme-2",
+        "full_width": false,
+        "padding_top": 48,
+        "padding_bottom": 48
+      }
+    },
+    "opiniones": {
+      "type": "garelon-reviews",
+      "settings": {
+        "eyebrow": "Opiniones",
+        "heading": "Lo que opinan nuestros clientes",
+        "show_summary": true,
+        "summary_with_app": false,
+        "color_scheme": "scheme-1",
+        "anchor": "opiniones",
+        "padding_top": 48,
+        "padding_bottom": 48
+      }
+    },
+    "significado": {
+      "type": "garelon-image-text",
+      "settings": {
+        "image_key": "oracion",
+        "image_alt": "Mujer con las manos juntas en actitud de oración y la pulsera rosario dorada en la muñeca",
+        "image_position": "left",
+        "eyebrow": "Una joya con significado",
+        "heading": "Una joya que va más allá del detalle",
+        "text": "<p>Su diseño reúne la medalla de la Virgen María, la cruz y las cuentas de rosario tricolor en una pulsera delicada, para llevarla en el día a día o regalarla en un momento importante.</p>",
+        "color_scheme": "scheme-1",
+        "anchor": "significado",
+        "padding_top": 56,
+        "padding_bottom": 56
+      }
+    },
+    "detalles": {
+      "type": "garelon-details",
+      "blocks": {
+        "d1": {
+          "type": "item",
+          "settings": {
+            "icon": "material",
+            "title": "Acero inoxidable",
+            "text": "Con acabado dorado pulido."
+          }
+        },
+        "d2": {
+          "type": "item",
+          "settings": {
+            "icon": "medalla",
+            "title": "Medalla de la Virgen María"
+          }
+        },
+        "d3": {
+          "type": "item",
+          "settings": {
+            "icon": "cruz",
+            "title": "Cruz y cuentas tricolor",
+            "text": "Cuentas en tonos dorado, plateado y rosado."
+          }
+        },
+        "d4": {
+          "type": "item",
+          "settings": {
+            "icon": "longitud",
+            "title": "Longitud",
+            "text": "7,87 pulgadas, unos 20 cm, según el proveedor."
+          }
+        },
+        "d5": {
+          "type": "item",
+          "settings": {
+            "icon": "ajuste",
+            "title": "Ajuste",
+            "text": "3 aros para ajustar la longitud, según la información del proveedor."
+          }
+        }
+      },
+      "block_order": [
+        "d1",
+        "d2",
+        "d3",
+        "d4",
+        "d5"
+      ],
+      "settings": {
+        "layout": "list",
+        "eyebrow": "Detalles",
+        "heading": "Detalles de la pulsera",
+        "image_key": "detalle",
+        "image_alt": "Detalle de la pulsera rosario: medalla ovalada de la Virgen María con borde de pequeñas piedras, cruz y cuentas tricolor",
+        "note": "Datos según la información facilitada por el proveedor. Cada unidad incluye 1 pulsera.",
+        "color_scheme": "scheme-2",
+        "anchor": "detalles",
+        "padding_top": 56,
+        "padding_bottom": 56
+      }
+    },
+    "regalo": {
+      "type": "garelon-details",
+      "blocks": {
+        "o1": {
+          "type": "item",
+          "settings": {
+            "icon": "none",
+            "title": "Bautizo"
+          }
+        },
+        "o2": {
+          "type": "item",
+          "settings": {
+            "icon": "none",
+            "title": "Primera comunión"
+          }
+        },
+        "o3": {
+          "type": "item",
+          "settings": {
+            "icon": "none",
+            "title": "Confirmación"
+          }
+        },
+        "o4": {
+          "type": "item",
+          "settings": {
+            "icon": "none",
+            "title": "Navidad"
+          }
+        },
+        "o5": {
+          "type": "item",
+          "settings": {
+            "icon": "none",
+            "title": "Pascua"
+          }
+        },
+        "o6": {
+          "type": "item",
+          "settings": {
+            "icon": "none",
+            "title": "Otras ocasiones religiosas"
+          }
+        }
+      },
+      "block_order": [
+        "o1",
+        "o2",
+        "o3",
+        "o4",
+        "o5",
+        "o6"
+      ],
+      "settings": {
+        "layout": "chips",
+        "eyebrow": "Para regalar",
+        "heading": "Un detalle para momentos que importan",
+        "text": "Una idea de regalo con significado para celebraciones religiosas y fechas especiales.",
+        "image_key": "none",
+        "color_scheme": "scheme-1",
+        "anchor": "regalo",
+        "padding_top": 56,
+        "padding_bottom": 56
+      }
+    },
+    "preguntas": {
+      "type": "garelon-faq",
+      "blocks": {
+        "p1": {
+          "type": "question",
+          "settings": {
+            "question": "¿De qué material está hecha?",
+            "answer": "<p>Según la información del proveedor, es de acero inoxidable con acabado dorado pulido.</p>"
+          }
+        },
+        "p2": {
+          "type": "question",
+          "settings": {
+            "question": "¿Qué elementos tiene?",
+            "answer": "<p>Una medalla de la Virgen María, una cruz y cuentas de rosario tricolor, con detalles en tonos dorado, plateado y rosado.</p>"
+          }
+        },
+        "p3": {
+          "type": "question",
+          "settings": {
+            "question": "¿Es ajustable?",
+            "answer": "<p>Sí. Según la información del proveedor, tiene 3 aros para ajustar la longitud.</p>"
+          }
+        },
+        "p4": {
+          "type": "question",
+          "settings": {
+            "question": "¿Qué longitud tiene?",
+            "answer": "<p>El proveedor indica una longitud de 7,87 pulgadas, unos 20 cm.</p>"
+          }
+        },
+        "p5": {
+          "type": "question",
+          "settings": {
+            "question": "¿Qué incluye mi pedido?",
+            "answer": "<p>Cada unidad es 1 pulsera. Si eliges el pack de 2 o de 3, recibes ese número de pulseras.</p>"
+          }
+        },
+        "p6": {
+          "type": "question",
+          "settings": {
+            "question": "¿Para qué ocasiones puede ser un buen regalo?",
+            "answer": "<p>Puede ser un detalle con significado para un bautizo, una primera comunión, una confirmación, Navidad, Pascua u otras ocasiones religiosas.</p>"
+          }
+        },
+        "p7": {
+          "type": "question",
+          "settings": {
+            "question": "¿Puedo llevarla a diario?",
+            "answer": "<p>Está pensada para llevarla en el día a día o regalarla en un momento especial.</p>"
+          }
+        },
+        "p8": {
+          "type": "question",
+          "settings": {
+            "question": "¿Cuándo recibiré mi pedido?",
+            "answer": "<p>Consulta los plazos y condiciones de entrega en nuestra <a href=\"/policies/shipping-policy\" title=\"Política de envíos\">política de envíos</a>.</p>"
+          }
+        },
+        "p9": {
+          "type": "question",
+          "settings": {
+            "question": "¿Puedo devolver mi pedido?",
+            "answer": "<p>En compras online dispones de 14 días naturales desde la recepción del pedido para ejercer tu derecho de desistimiento. Consulta las condiciones en nuestra <a href=\"/policies/refund-policy\" title=\"Política de devoluciones\">política de devoluciones y reembolsos</a>.</p>"
+          }
+        },
+        "p10": {
+          "type": "question",
+          "settings": {
+            "question": "¿Qué hago si tengo un problema con mi pedido?",
+            "answer": "<p>Escríbenos desde nuestra <a href=\"/pages/contacto\" title=\"Contacto\">página de contacto</a> indicando tu número de pedido y te ayudaremos. También puedes consultar nuestra <a href=\"/policies/refund-policy\" title=\"Política de devoluciones\">política de devoluciones y reembolsos</a>.</p>"
+          }
+        }
+      },
+      "block_order": [
+        "p1",
+        "p2",
+        "p3",
+        "p4",
+        "p5",
+        "p6",
+        "p7",
+        "p8",
+        "p9",
+        "p10"
+      ],
+      "settings": {
+        "eyebrow": "Dudas",
+        "heading": "Preguntas frecuentes",
+        "color_scheme": "scheme-2",
+        "anchor": "preguntas-frecuentes",
+        "padding_top": 56,
+        "padding_bottom": 56
+      }
+    },
+    "cierre": {
+      "type": "rich-text",
+      "blocks": {
+        "titulo": {
+          "type": "heading",
+          "settings": {
+            "heading": "Una joya con significado",
+            "heading_size": "h1"
+          }
+        },
+        "texto": {
+          "type": "text",
+          "settings": {
+            "text": "<p>Elige tu pack y llévala contigo o regálala en un momento especial.</p>"
+          }
+        },
+        "boton": {
+          "type": "button",
+          "settings": {
+            "button_label": "Elegir mi pulsera",
+            "button_link": "/#comprar",
+            "button_style_secondary": false,
+            "button_label_2": "",
+            "button_link_2": "",
+            "button_style_secondary_2": false
+          }
+        }
+      },
+      "block_order": [
+        "titulo",
+        "texto",
+        "boton"
+      ],
+      "settings": {
+        "desktop_content_position": "center",
+        "content_alignment": "center",
+        "color_scheme": "scheme-5",
+        "full_width": true,
+        "padding_top": 56,
+        "padding_bottom": 64
+      }
     }
   },
   "order": [
     "portada",
-    "compra"
+    "compra",
+    "tranquilidad",
+    "opiniones",
+    "significado",
+    "detalles",
+    "regalo",
+    "preguntas",
+    "cierre"
   ]
 }
