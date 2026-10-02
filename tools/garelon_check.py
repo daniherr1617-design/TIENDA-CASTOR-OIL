@@ -518,6 +518,32 @@ def check_liquid_refs(theme):
                 err(rel, 'más de un schema')
 
 
+def check_image_keys(theme):
+    """Las imágenes del producto que el tema elige por clave (snippets/garelon-image.liquid):
+    cada clave tiene todos sus anchos en assets/ y los selects image_key solo ofrecen claves que existen."""
+    rel = 'snippets/garelon-image.liquid'
+    if not os.path.exists(os.path.join(theme.root, rel)):
+        return
+    src = read(theme.root, rel)
+    keys = {}
+    for key, widths in re.findall(r"when '([\w-]+)'\s*assign widths = '([\d,]+)'", src):
+        keys[key] = widths.split(',')
+        for w in keys[key]:
+            if not os.path.exists(os.path.join(theme.root, 'assets', f'producto-{key}-{w}.webp')):
+                err(rel, f'falta assets/producto-{key}-{w}.webp')
+    if not keys:
+        err(rel, 'no se encontraron claves de imagen')
+    for st_type, sc in theme.sections.items():
+        defs = list(sc.get('settings', [])) if sc else []
+        for b in (sc or {}).get('blocks', []):
+            defs += b.get('settings', [])
+        for d in defs:
+            if d.get('id') == 'image_key':
+                for o in d.get('options', []):
+                    if o['value'] != 'none' and o['value'] not in keys:
+                        err(f'sections/{st_type}.liquid', f'image_key ofrece «{o["value"]}», que no tiene imagen')
+
+
 # ---------------------------------------------------------------- main
 def main(argv):
     args = [a for a in argv if not a.startswith('--')]
@@ -558,6 +584,7 @@ def main(argv):
         if fn.endswith('.json'):
             check_group(theme, f'sections/{fn}')
     check_liquid_refs(theme)
+    check_image_keys(theme)
 
     index = load_json(root, 'templates/index.json')
     if index is not None and not index.get('order'):

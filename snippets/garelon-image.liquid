@@ -1,0 +1,77 @@
+{%- comment -%}
+  GARELON · Imagen responsive: la del editor si existe; si no, una imagen del producto
+  incluida en el tema (assets/producto-<clave>-<ancho>.webp, cuadradas).
+
+  Parámetros:
+  - image: imagen elegida en el editor (image_picker) o blank
+  - key: clave del asset del tema: 'principal' | 'detalle' | 'oracion' | 'none'
+  - alt: texto alternativo (si la imagen del editor tiene alt propio, manda ese)
+  - sizes: atributo sizes
+  - eager: true solo para la imagen principal de la página (LCP)
+  - class: clase CSS
+
+  Uso: {% render 'garelon-image', image: section.settings.image, key: 'principal', alt: 'Pulsera…', sizes: '100vw', eager: true %}
+{%- endcomment -%}
+{%- liquid
+  assign loading = 'lazy'
+  assign priority = 'auto'
+  if eager
+    assign loading = 'eager'
+    assign priority = 'high'
+  endif
+  assign final_alt = alt
+  if image != blank and image.alt != blank
+    assign final_alt = image.alt
+  endif
+  case key
+    when 'principal'
+      assign widths = '480,720,1080'
+    when 'oracion'
+      assign widths = '480,720,1080'
+    when 'detalle'
+      assign widths = '480,600'
+    else
+      assign widths = ''
+  endcase
+-%}
+{%- if image != blank -%}
+  {{
+    image
+    | image_url: width: 1800
+    | image_tag:
+      widths: '360, 480, 720, 960, 1200, 1500, 1800',
+      sizes: sizes,
+      alt: final_alt,
+      class: class,
+      loading: loading,
+      fetchpriority: priority,
+      decoding: 'async'
+  }}
+{%- elsif widths != '' -%}
+  {%- liquid
+    assign list = widths | split: ','
+    assign largest = list | last
+    capture srcset
+      for w in list
+        assign file = 'producto-' | append: key | append: '-' | append: w | append: '.webp'
+        echo file | asset_url | append: ' ' | append: w | append: 'w'
+        unless forloop.last
+          echo ', '
+        endunless
+      endfor
+    endcapture
+    assign src_file = 'producto-' | append: key | append: '-' | append: largest | append: '.webp'
+  -%}
+  <img
+    src="{{ src_file | asset_url }}"
+    srcset="{{ srcset }}"
+    sizes="{{ sizes }}"
+    width="{{ largest }}"
+    height="{{ largest }}"
+    alt="{{ final_alt | escape }}"
+    class="{{ class }}"
+    loading="{{ loading }}"
+    fetchpriority="{{ priority }}"
+    decoding="async"
+  >
+{%- endif -%}

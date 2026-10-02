@@ -154,6 +154,13 @@ def m_image_ref(t):
     raise AssertionError('sin image_picker en la home')
 
 
+def m_missing_image(t):
+    for f in sorted(os.listdir(f'{t}/assets')):
+        if f.startswith('producto-') and f.endswith('.webp'):
+            os.remove(f'{t}/assets/{f}'); return
+    raise AssertionError('sin imágenes de producto')
+
+
 MUTATIONS = [
     ('falta templates/index.json', m_remove('templates/index.json')),
     ('falta layout/theme.liquid', m_remove('layout/theme.liquid')),
@@ -173,6 +180,7 @@ MUTATIONS = [
     ('schema: range con más de 101 pasos', schema_mutation(bad_range)),
     ('asset referenciado que no existe', m_missing_asset),
     ('snippet renderizado que no existe', m_missing_snippet),
+    ('imagen de producto por clave que no existe', m_missing_image),
 ]
 
 
