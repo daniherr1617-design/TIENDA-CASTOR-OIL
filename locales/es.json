@@ -41,7 +41,7 @@
     },
     "cart": {
       "view": "Ver carrito ({{ count }})",
-      "item_added": "Artículo añadido a tu carrito",
+      "item_added": "Artículo agregado a tu carrito",
       "view_empty_cart": "Ver carrito"
     },
     "share": {
@@ -107,7 +107,7 @@
   },
   "products": {
     "product": {
-      "add_to_cart": "Añadir al carrito",
+      "add_to_cart": "Agregar al carrito",
       "description": "Descripción",
       "on_sale": "Oferta",
       "quantity": {
@@ -158,17 +158,17 @@
       },
       "nested_label": "{{ title }} para {{ parent_title }}",
       "view_full_details": "Ver todos los detalles",
-      "shipping_policy_html": " Consulta nuestra <a href=\"{{ link }}\">política de envío</a>.",
+      "shipping_policy_html": "Los <a href=\"{{ link }}\">gastos de envío</a> se calculan en la pantalla de pago.",
       "choose_options": "Seleccionar opciones",
       "choose_product_options": "Elegir opciones para {{ product_name }}",
       "value_unavailable": "{{ option_value }}: no disponible",
       "variant_sold_out_or_unavailable": "Variante agotada o no disponible",
-      "inventory_in_stock": "En stock",
-      "inventory_in_stock_show_count": "{{ quantity }} en stock",
-      "inventory_low_stock": "Pocas unidades",
-      "inventory_low_stock_show_count": "Pocas unidades: quedan {{ quantity }}",
+      "inventory_in_stock": "En existencias",
+      "inventory_in_stock_show_count": "{{ quantity }} en existencias",
+      "inventory_low_stock": "Bajas existencias",
+      "inventory_low_stock_show_count": "Bajas existencias: quedan {{ quantity }}",
       "inventory_out_of_stock": "Agotado",
-      "inventory_out_of_stock_continue_selling": "En stock",
+      "inventory_out_of_stock_continue_selling": "En existencias",
       "sku": "SKU",
       "volume_pricing": {
         "title": "Precios por volumen",
@@ -290,12 +290,12 @@
       "caption": "Artículos en el carrito",
       "remove_title": "Eliminar {{ title }}",
       "note": "Instrucciones especiales del pedido",
-      "checkout": "Finalizar compra",
+      "checkout": "Pagar pedido",
       "empty": "Tu carrito esta vacío",
       "product_disclosure": "Aviso sobre el producto",
       "product_disclosures": "Avisos sobre el producto",
       "cart_error": "Hubo un error al actualizar tu carrito de compra. Inténtalo de nuevo.",
-      "cart_quantity_error_html": "Solo puedes añadir {{ quantity }} de este artículo a tu carrito.",
+      "cart_quantity_error_html": "Solo puedes agregar {{ quantity }} de este artículo a tu carrito.",
       "headings": {
         "product": "Producto",
         "price": "Precio",
@@ -310,14 +310,14 @@
       },
       "estimated_total": "Total estimado",
       "new_estimated_total": "Nuevo total estimado",
-      "duties_and_taxes_included_shipping_at_checkout_with_policy_html": "Aranceles e impuestos incluidos. Envío gratis según las zonas indicadas en nuestra <a href=\"{{ link }}\">política de envío</a>. Descuentos calculados en la pantalla de pago.",
-      "duties_and_taxes_included_shipping_at_checkout_without_policy": "Aranceles e impuestos incluidos. Envío gratis según la zona de entrega; lo verás confirmado al pagar. Descuentos calculados en la pantalla de pago.",
-      "taxes_included_shipping_at_checkout_with_policy_html": "Impuestos incluidos. Envío gratis según las zonas indicadas en nuestra <a href=\"{{ link }}\">política de envío</a>. Descuentos calculados en la pantalla de pago.",
-      "taxes_included_shipping_at_checkout_without_policy": "Impuestos incluidos. Envío gratis según la zona de entrega; lo verás confirmado al pagar. Descuentos calculados en la pantalla de pago.",
-      "duties_included_taxes_at_checkout_shipping_at_checkout_with_policy_html": "Aranceles incluidos. Envío gratis según las zonas indicadas en nuestra <a href=\"{{ link }}\">política de envío</a>. Impuestos y descuentos calculados en la pantalla de pago.",
-      "duties_included_taxes_at_checkout_shipping_at_checkout_without_policy": "Aranceles incluidos. Envío gratis según la zona de entrega; lo verás confirmado al pagar. Impuestos y descuentos calculados en la pantalla de pago.",
-      "taxes_at_checkout_shipping_at_checkout_with_policy_html": "Envío gratis según las zonas indicadas en nuestra <a href=\"{{ link }}\">política de envío</a>. Impuestos y descuentos calculados en la pantalla de pago.",
-      "taxes_at_checkout_shipping_at_checkout_without_policy": "Envío gratis según la zona de entrega; lo verás confirmado al pagar. Impuestos y descuentos calculados en la pantalla de pago."
+      "duties_and_taxes_included_shipping_at_checkout_with_policy_html": "Aranceles e impuestos incluidos. Descuentos y <a href=\"{{ link }}\">envío</a> calculados en la pantalla de pago.",
+      "duties_and_taxes_included_shipping_at_checkout_without_policy": "Aranceles e impuestos incluidos. Descuentos y envío calculados en la pantalla de pago.",
+      "taxes_included_shipping_at_checkout_with_policy_html": "Impuestos incluidos. Descuentos y <a href=\"{{ link }}\">envío</a> calculados en la pantalla de pago.",
+      "taxes_included_shipping_at_checkout_without_policy": "Impuestos incluidos. Descuentos y envío calculados en la pantalla de pago.",
+      "duties_included_taxes_at_checkout_shipping_at_checkout_with_policy_html": "Aranceles incluidos. Impuestos, descuentos y <a href=\"{{ link }}\">envío</a> calculados en la pantalla de pago.",
+      "duties_included_taxes_at_checkout_shipping_at_checkout_without_policy": "Aranceles incluidos. Impuestos, descuentos y envío calculados en la pantalla de pago.",
+      "taxes_at_checkout_shipping_at_checkout_with_policy_html": "Impuestos, descuentos y <a href=\"{{ link }}\">envío</a> calculados en la pantalla de pago.",
+      "taxes_at_checkout_shipping_at_checkout_without_policy": "Impuestos, descuentos y envío calculados en la pantalla de pago."
     },
     "footer": {
       "payment": "Formas de pago"
@@ -369,9 +369,9 @@
       "variant": "Variante",
       "variant_total": "Total de variantes",
       "items_added": {
-        "one": "{{ quantity }} artículo añadido",
-        "other": "{{ quantity }} artículos añadidos",
-        "many": "{{ quantity }} artículos añadidos"
+        "one": "{{ quantity }} artículo agregado",
+        "other": "{{ quantity }} artículos agregados",
+        "many": "{{ quantity }} artículos agregados"
       },
       "items_removed": {
         "one": "{{ quantity }} artículo eliminado",
@@ -386,7 +386,7 @@
       "remove_all_single_item_confirmation": "¿Eliminar 1 artículo de tu carrito?",
       "min_error": "Este artículo tiene un mínimo de {{ min }}.",
       "max_error": "Este artículo tiene un máximo de {{ max }}.",
-      "step_error": "Solo puedes añadir este artículo en incrementos de {{ step }}"
+      "step_error": "Solo puedes agregar este artículo en incrementos de {{ step }}"
     }
   },
   "localization": {

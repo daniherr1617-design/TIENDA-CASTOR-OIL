@@ -92,7 +92,7 @@
                         {%- for link in block.settings.menu.links -%}
                           <li>
                             <a
-                              href="{%- render 'garelon-url', url: link.url -%}"
+                              href="{{ link.url }}"
                               class="link link--text list-menu__item list-menu__item--link{% if link.active %} list-menu__item--active{% endif %}"
                             >
                               {{ link.title | escape }}
@@ -101,36 +101,6 @@
                         {%- endfor -%}
                       </ul>
                     {%- endif -%}
-                  {%- when 'garelon_help' -%}
-                    {%- comment -%} GARELON: bloque de ayuda con enlace a la página de contacto real. {%- endcomment -%}
-                    <div class="footer-block__details-content garelon-help">
-                      {%- if block.settings.text != blank -%}
-                        <div class="rte garelon-help__text">{{ block.settings.text }}</div>
-                      {%- endif -%}
-                      {%- if block.settings.link_label != blank -%}
-                        <a
-                          href="{%- if block.settings.link != blank -%}{%- render 'garelon-url', url: block.settings.link -%}{%- else -%}{%- render 'garelon-url', type: 'contact' -%}{%- endif -%}"
-                          class="link garelon-help__link"
-                        >
-                          <span class="garelon-help__label">{{- block.settings.link_label | escape -}}</span>
-                          <span class="garelon-help__arrow" aria-hidden="true">→</span>
-                        </a>
-                      {%- endif -%}
-                      {%- if block.settings.menu != blank -%}
-                        <ul class="list-unstyled garelon-help__menu">
-                          {%- for link in block.settings.menu.links -%}
-                            <li>
-                              <a
-                                href="{%- render 'garelon-url', url: link.url -%}"
-                                class="link link--text list-menu__item list-menu__item--link{% if link.active %} list-menu__item--active{% endif %}"
-                              >
-                                {{ link.title | escape }}
-                              </a>
-                            </li>
-                          {%- endfor -%}
-                        </ul>
-                      {%- endif -%}
-                    </div>
                   {%- when 'brand_information' -%}
                     <div class="footer-block__brand-info">
                       {%- if settings.brand_image != blank -%}
@@ -151,8 +121,6 @@
                               width: settings.brand_image_width
                           }}
                         </div>
-                      {%- else -%}
-                        {%- render 'garelon-logo-fallback', variant: 'stacked' -%}
                       {%- endif -%}
                       {%- if settings.brand_headline != blank -%}
                         <h2 class="footer-block__heading rte">{{ settings.brand_headline }}</h2>
@@ -336,67 +304,13 @@
         </small>
         <small class="copyright__content">{{ powered_by_link }}</small>
         {%- if section.settings.show_policy -%}
-          {%- comment -%}
-            GARELON: enlaces legales en un orden fijo y con nombres completos. Solo aparecen
-            las políticas que tienen contenido en el Admin (ningún enlace vacío). Contacto y
-            cookies son páginas; el resto, políticas de Shopify.
-          {%- endcomment -%}
-          {%- liquid
-            capture contact_url
-              render 'garelon-url', type: 'contact'
-            endcapture
-            capture cookies_url
-              render 'garelon-url', type: 'cookies'
-            endcapture
-            assign contact_url = contact_url | strip
-            assign cookies_url = cookies_url | strip
-            assign policy_order = 'shipping-policy,refund-policy,privacy-policy,cookies,terms-of-service,legal-notice' | split: ','
-          -%}
           <ul class="policies list-unstyled">
-            <li>
-              <small class="copyright__content"><a href="{{ contact_url }}">Contacto</a></small>
-            </li>
-            {%- for key in policy_order -%}
-              {%- if key == 'cookies' -%}
-                {%- if cookies_url != blank -%}
-                  <li>
-                    <small class="copyright__content"><a href="{{ cookies_url }}">Política de cookies</a></small>
-                  </li>
-                {%- endif -%}
-              {%- else -%}
-                {%- for policy in shop.policies -%}
-                  {%- if policy != blank and policy.url contains key -%}
-                    {%- liquid
-                      case key
-                        when 'shipping-policy'
-                          assign policy_title = 'Política de envíos'
-                        when 'refund-policy'
-                          assign policy_title = 'Política de devoluciones y reembolsos'
-                        when 'terms-of-service'
-                          assign policy_title = 'Términos y condiciones'
-                        else
-                          assign policy_title = policy.title
-                      endcase
-                    -%}
-                    <li>
-                      <small class="copyright__content"><a href="{{ policy.url }}">{{ policy_title | escape }}</a></small>
-                    </li>
-                  {%- endif -%}
-                {%- endfor -%}
-              {%- endif -%}
-            {%- endfor -%}
             {%- for policy in shop.policies -%}
-              {%- liquid
-                assign listed = false
-                for key in policy_order
-                  if policy.url contains key
-                    assign listed = true
-                  endif
-                endfor
-              -%}
-              {%- if policy != blank and listed == false -%}
+              {%- if policy != blank -%}
                 <li>
-                  <small class="copyright__content"><a href="{{ policy.url }}">{{ policy.title | escape }}</a></small>
+                  <small class="copyright__content"
+                    ><a href="{{ policy.url }}">{{ policy.title | escape }}</a></small
+                  >
                 </li>
               {%- endif -%}
             {%- endfor -%}
@@ -429,43 +343,6 @@
           "id": "menu",
           "default": "footer",
           "label": "t:sections.footer.blocks.link_list.settings.menu.label"
-        }
-      ]
-    },
-    {
-      "type": "garelon_help",
-      "name": "GARELON Ayuda",
-      "limit": 1,
-      "settings": [
-        {
-          "type": "inline_richtext",
-          "id": "heading",
-          "label": "Título",
-          "default": "Ayuda"
-        },
-        {
-          "type": "richtext",
-          "id": "text",
-          "label": "Texto",
-          "default": "<p>¿Necesitas ayuda? Estamos aquí para resolver cualquier duda sobre tu pedido, nuestros productos o el proceso de compra.</p>"
-        },
-        {
-          "type": "text",
-          "id": "link_label",
-          "label": "Texto del enlace",
-          "default": "Contacta con nuestro equipo"
-        },
-        {
-          "type": "url",
-          "id": "link",
-          "label": "Enlace",
-          "info": "Vacío = la página de contacto (Configuración del tema → GARELON · Enlaces)."
-        },
-        {
-          "type": "link_list",
-          "id": "menu",
-          "label": "Menú opcional debajo del enlace",
-          "info": "Vacío = sin menú. Revisa que todos sus enlaces lleven a páginas publicadas."
         }
       ]
     },

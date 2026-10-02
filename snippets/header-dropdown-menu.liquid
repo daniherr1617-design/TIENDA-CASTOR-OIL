@@ -8,12 +8,6 @@
 <nav class="header__inline-menu">
   <ul class="list-menu list-menu--inline" role="list">
     {%- for link in section.settings.menu.links -%}
-      {%- comment -%} GARELON: sin enlaces al catálogo ni a colecciones en la navegación pública {%- endcomment -%}
-      {%- if section.settings.hide_catalog_links -%}
-        {%- if link.type == 'catalog_link' or link.type == 'collections_link' or link.type == 'collection_link' or link.url contains '/collections' -%}
-          {%- continue -%}
-        {%- endif -%}
-      {%- endif -%}
       <li>
         {%- if link.links != blank -%}
           <header-menu>
@@ -38,17 +32,11 @@
                 tabindex="-1"
               >
                 {%- for childlink in link.links -%}
-                  {%- comment -%} GARELON: sin enlaces al catálogo ni a colecciones en la navegación pública {%- endcomment -%}
-                  {%- if section.settings.hide_catalog_links -%}
-                    {%- if childlink.type == 'catalog_link' or childlink.type == 'collections_link' or childlink.type == 'collection_link' or childlink.url contains '/collections' -%}
-                      {%- continue -%}
-                    {%- endif -%}
-                  {%- endif -%}
                   <li>
                     {%- if childlink.links == blank -%}
                       <a
                         id="HeaderMenu-{{ link.handle }}-{{ childlink.handle }}"
-                        href="{%- render 'garelon-url', url: childlink.url -%}"
+                        href="{{ childlink.url }}"
                         class="header__menu-item list-menu__item link link--text focus-inset caption-large{% if childlink.current %} list-menu__item--active{% endif %}"
                         {% if childlink.current %}
                           aria-current="page"
@@ -70,16 +58,10 @@
                           class="header__submenu list-menu motion-reduce"
                         >
                           {%- for grandchildlink in childlink.links -%}
-                            {%- comment -%} GARELON: sin enlaces al catálogo ni a colecciones en la navegación pública {%- endcomment -%}
-                            {%- if section.settings.hide_catalog_links -%}
-                              {%- if grandchildlink.type == 'catalog_link' or grandchildlink.type == 'collections_link' or grandchildlink.type == 'collection_link' or grandchildlink.url contains '/collections' -%}
-                                {%- continue -%}
-                              {%- endif -%}
-                            {%- endif -%}
                             <li>
                               <a
                                 id="HeaderMenu-{{ link.handle }}-{{ childlink.handle }}-{{ grandchildlink.handle }}"
-                                href="{%- render 'garelon-url', url: grandchildlink.url -%}"
+                                href="{{ grandchildlink.url }}"
                                 class="header__menu-item list-menu__item link link--text focus-inset caption-large{% if grandchildlink.current %} list-menu__item--active{% endif %}"
                                 {% if grandchildlink.current %}
                                   aria-current="page"
@@ -100,7 +82,7 @@
         {%- else -%}
           <a
             id="HeaderMenu-{{ link.handle }}"
-            href="{%- render 'garelon-url', url: link.url -%}"
+            href="{{ link.url }}"
             class="header__menu-item list-menu__item link link--text focus-inset"
             {% if link.current %}
               aria-current="page"
