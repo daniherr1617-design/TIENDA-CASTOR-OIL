@@ -1,0 +1,218 @@
+{%- comment -%}
+  GARELON · «Elige tu oferta»: tarjetas de pack sobre el selector de variantes de Dawn.
+
+  Cada tarjeta es la etiqueta de un radio de Dawn (mismo <variant-selects>, mismos data-*
+  y mismos ids que product-variant-options), así que al pulsarla Dawn selecciona la variante
+  real, actualiza el formulario, el precio y la URL, y el carrito/cajón y el pago dinámico
+  siguen igual. Todo sale de Shopify: precio, precio comparado, disponibilidad.
+
+  - Precio comparado tachado: solo si esa variante tiene compare_at_price > price.
+  - Ahorro: con precio comparado, frente a él; si no, frente a comprar las unidades sueltas
+    al precio del pack de 1 (solo si es > 0). Nunca se inventa.
+  - Textos que hablan de ahorro («ahorr…») solo se muestran si ese pack ahorra de verdad.
+  - Sin la opción de packs (o con más de una opción), el selector normal de Dawn.
+
+  Parámetros: product, block, product_form_id, check (true = solo escribe «on» si las tarjetas
+  se pueden pintar; lo usa la sección para no duplicar el precio visible).
+{%- endcomment -%}
+{%- liquid
+  assign option_name = block.settings.option_name | default: 'Pack' | downcase | strip
+  assign pack_option = nil
+  for option in product.options_with_values
+    assign n = option.name | downcase | strip
+    if n == option_name
+      assign pack_option = option
+    endif
+  endfor
+
+  assign usable = false
+  if product != blank and product.has_only_default_variant == false and pack_option != nil and product.options.size == 1 and pack_option.values.size > 1
+    assign usable = true
+  endif
+-%}
+{%- if check -%}
+  {%- if usable -%}on{%- endif -%}
+{%- elsif usable -%}
+  {%- liquid
+    assign base_price = nil
+    for value in pack_option.values
+      assign units = value.name | split: ' ' | first | plus: 0
+      if units == 1
+        assign v1 = product.variants | where: 'option1', value.name | first
+        assign base_price = v1.price
+      endif
+    endfor
+    assign unit_name = block.settings.unit_singular | default: 'unidad'
+    assign badge_pack = block.settings.badge_pack | append: ''
+    assign used_pack_basis = false
+  -%}
+  <variant-selects
+    id="variant-selects-{{ section.id }}"
+    class="g-offer"
+    data-section="{{ section.id }}"
+    data-product-handle="{{ product.handle }}"
+    data-product-title="{{ product.title | escape }}"
+    data-product-id="{{ product.id }}"
+    data-currency-code="{{ cart.currency.iso_code }}"
+    {% # theme-check-disable %}
+    data-selected-price-amount="{{ product.selected_or_first_available_variant.price | default: 0 | money_amount | escape }}"
+    {% # theme-check-enable %}
+    {{ block.shopify_attributes }}
+  >
+    {%- if block.settings.show_promo and block.settings.promo_text != blank -%}
+      <p class="g-offer__promo">{{ block.settings.promo_text | escape }}</p>
+    {%- endif -%}
+    <fieldset class="js product-form__input g-offer__fieldset">
+      <legend class="g-offer__legend">
+        {{- block.settings.heading | default: pack_option.name | escape -}}
+      </legend>
+      <div class="g-offer__list">
+        {%- for value in pack_option.values -%}
+          {%- liquid
+            assign v = value.variant
+            if v == blank
+              assign v = product.variants | where: 'option1', value.name | first
+            endif
+            assign units = value.name | split: ' ' | first | plus: 0
+            assign slot = units
+            if slot < 1 or slot > 3
+              assign slot = forloop.index
+            endif
+            assign slot_key = slot | append: ''
+
+            assign compare_saving = 0
+            assign pack_saving = 0
+            assign unit_price = 0
+            if v
+              if v.compare_at_price > v.price
+                assign compare_saving = v.compare_at_price | minus: v.price
+              endif
+              if base_price and units > 1
+                assign reference = base_price | times: units
+                assign pack_saving = reference | minus: v.price
+                if pack_saving > 0
+                  assign unit_price = v.price | times: 1.0 | divided_by: units | round
+                else
+                  assign pack_saving = 0
+                endif
+              endif
+            endif
+            assign saving = compare_saving
+            if saving == 0 and pack_saving > 0
+              assign saving = pack_saving
+              assign used_pack_basis = true
+            endif
+
+            case slot_key
+              when '1'
+                assign sub = block.settings.sub_1
+              when '2'
+                assign sub = block.settings.sub_2
+              when '3'
+                assign sub = block.settings.sub_3
+              else
+                assign sub = ''
+            endcase
+            assign sub_lc = sub | downcase
+            if sub_lc contains 'ahorr' and saving == 0
+              assign sub = ''
+            endif
+
+            assign show_badge = false
+            if badge_pack == slot_key and block.settings.badge_text != blank
+              assign show_badge = true
+            endif
+
+            assign input_id = section.id | append: '-' | append: pack_option.position | append: '-' | append: forloop.index0
+            assign input_name = pack_option.name | append: '-' | append: pack_option.position
+          -%}
+          {%- if v -%}
+            <input
+              type="radio"
+              id="{{ input_id }}"
+              name="{{ input_name | escape }}"
+              value="{{ value | escape }}"
+              form="{{ product_form_id }}"
+              class="g-offer__input{% unless value.available %} disabled{% endunless %}"
+              {% if value.selected %}
+                checked
+              {% endif %}
+              data-product-url="{{ value.product_url }}"
+              data-option-value-id="{{ value.id }}"
+              data-option-name="{{ pack_option.name | escape }}"
+            >
+            <label
+              for="{{ input_id }}"
+              class="g-offer__card{% if show_badge %} g-offer__card--badge{% endif %}{% unless value.available %} g-offer__card--soldout{% endunless %}"
+            >
+              {%- if show_badge -%}
+                <span class="g-offer__badge">{{ block.settings.badge_text | escape }}</span>
+              {%- endif -%}
+              <span class="g-offer__radio" aria-hidden="true"></span>
+              <span class="g-offer__body">
+                <span class="g-offer__name">{{ value | escape }}</span>
+                {%- if sub != blank -%}
+                  <span class="g-offer__sub">{{ sub | escape }}</span>
+                {%- endif -%}
+                {%- if saving > 0 or unit_price > 0 -%}
+                  <span class="g-offer__meta">
+                    {%- if unit_price > 0 and block.settings.show_unit_price -%}
+                      {%- assign unit_money = unit_price | money -%}
+                      <span class="g-offer__unit">
+                        {{- 'garelon.offer.unit_price' | t: price: unit_money, unit: unit_name -}}
+                      </span>
+                    {%- endif -%}
+                    {%- if saving > 0 -%}
+                      {%- assign saving_money = saving | money -%}
+                      <span class="g-offer__save">{{ 'garelon.offer.save' | t: amount: saving_money }}</span>
+                    {%- endif -%}
+                  </span>
+                {%- endif -%}
+                {%- unless value.available -%}
+                  <span class="g-offer__soldout">{{ 'products.product.sold_out' | t }}</span>
+                {%- endunless -%}
+              </span>
+              <span class="g-offer__price">
+                <span class="g-offer__now">{{ v.price | money }}</span>
+                {%- if compare_saving > 0 -%}
+                  <s class="g-offer__was">
+                    <span class="visually-hidden">{{ 'products.product.price.regular_price' | t }}</span>
+                    {{- v.compare_at_price | money -}}
+                  </s>
+                {%- endif -%}
+              </span>
+            </label>
+          {%- endif -%}
+        {%- endfor -%}
+      </div>
+    </fieldset>
+    {%- if used_pack_basis -%}
+      <p class="g-offer__note">{{ 'garelon.offer.saving_note' | t: unit: unit_name }}</p>
+    {%- endif -%}
+    {%- if cart.taxes_included or cart.duties_included or shop.shipping_policy.body != blank -%}
+      <p class="g-offer__tax">
+        {%- if cart.duties_included and cart.taxes_included -%}
+          {{ 'products.product.duties_and_taxes_included' | t }}
+        {%- elsif cart.taxes_included -%}
+          {{ 'products.product.taxes_included' | t }}
+        {%- elsif cart.duties_included -%}
+          {{ 'products.product.duties_included' | t }}
+        {%- endif -%}
+        {%- if shop.shipping_policy.body != blank %}
+          {{ 'products.product.shipping_policy_html' | t: link: shop.shipping_policy.url }}
+        {%- endif -%}
+      </p>
+    {%- endif -%}
+    <script type="application/json" data-selected-variant>
+      {{ product.selected_or_first_available_variant | json }}
+    </script>
+  </variant-selects>
+{%- else -%}
+  {%- comment -%} Sin opción de packs utilizable: el selector normal de Dawn (desplegable), sin romper la compra. {%- endcomment -%}
+  {%- if product != blank -%}
+    {% render 'product-variant-picker', product: product, block: block, product_form_id: product_form_id %}
+  {%- endif -%}
+  {%- if request.design_mode -%}
+    <p class="g-editor-note">{{ 'garelon.offer.editor_missing' | t }}</p>
+  {%- endif -%}
+{%- endif -%}

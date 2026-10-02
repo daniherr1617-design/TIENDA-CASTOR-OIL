@@ -552,13 +552,20 @@
       "save": "you save {{ amount }}",
       "editor_missing": "Editor only: the product does not have the «Pack» option yet. Customers can still buy the current variant."
     },
+    "offer": {
+      "unit_price": "{{ price }} per {{ unit }}",
+      "save": "Save {{ amount }}",
+      "saving_note": "Savings compared with buying each {{ unit }} separately.",
+      "editor_missing": "Editor only: «Choose your offer» shows the standard picker because the product doesn't have a single «Pack» option. Customers can still buy normally. Check the option name in the block or create the variants in Products › (product) › Variants."
+    },
     "reviews": {
       "stars_label": "{{ rating }} out of {{ max }} stars",
       "count": {
         "one": "{{ count }} review",
         "other": "{{ count }} reviews"
       },
-      "editor_empty": "Editor only: «GARELON Opiniones» is hidden for customers because there are no real reviews. Add your review app block (Add block › Apps)."
+      "editor_empty": "Editor only: «GARELON Opiniones» is hidden for customers because there are no real reviews. Add your review app block (Add block › Apps).",
+      "editor_waiting": "Editor only: the reviews widget is hidden from customers because the rating synced to Shopify is 0. It will appear once reviews are published (or turn off «Hide without reviews»)."
     }
   }
 }

@@ -3,7 +3,9 @@
   1) el bloque de app de la app de reseñas (p. ej. Judge.me), que el dueño añade en el editor;
   2) la valoración estándar de Shopify que rellena la app (metafields reviews.rating y reviews.rating_count).
   Sin ninguna de las dos, el cliente no ve nada (ni sección, ni estrellas, ni «0 opiniones»).
-  En el editor se muestra un aviso. El tema no contiene ninguna reseña.
+  Con «Ocultar sin opiniones», el widget de la app tampoco se ve mientras la valoración
+  sincronizada sea 0 (así no aparece un widget vacío). En el editor se muestra un aviso.
+  El tema no contiene ninguna reseña.
 {%- endcomment -%}
 {%- liquid
   assign rev_product = section.settings.product
@@ -24,6 +26,19 @@
   if rating != blank and rating_count > 0
     assign has_summary = true
   endif
+  assign waiting = false
+  if has_app and has_summary == false and section.settings.hide_without_reviews
+    assign waiting = true
+  endif
+  assign show_section = false
+  if has_summary
+    assign show_section = true
+  elsif has_app and waiting == false
+    assign show_section = true
+  endif
+  if waiting and request.design_mode
+    assign show_section = true
+  endif
   assign show_summary = false
   if has_summary and section.settings.show_summary
     if has_app == false or section.settings.summary_with_app
@@ -31,7 +46,7 @@
     endif
   endif
 -%}
-{%- if has_app or has_summary -%}
+{%- if show_section -%}
   <section
     {% if section.settings.anchor != blank %}
       id="{{ section.settings.anchor | handleize }}"
@@ -42,6 +57,9 @@
       .g-section--{{ section.id }} { --g-pt: {{ section.settings.padding_top }}px; --g-pb: {{ section.settings.padding_bottom }}px; }
     {%- endstyle -%}
     <div class="page-width g-reviews__inner">
+      {%- if waiting -%}
+        <p class="g-editor-note">{{ 'garelon.reviews.editor_waiting' | t }}</p>
+      {%- endif -%}
       <header class="g-head">
         {%- if section.settings.eyebrow != blank -%}
           <p class="g-eyebrow">{{ section.settings.eyebrow | escape }}</p>
@@ -55,22 +73,27 @@
           assign scale_max = rating.scale_max | default: 5
           assign rating_value = rating.rating | round: 1 | append: '' | replace: '.', ','
         -%}
-        <p class="g-reviews__summary">
-          <span
-            class="g-stars"
-            role="img"
-            aria-label="{{ 'garelon.reviews.stars_label' | t: rating: rating_value, max: scale_max }}"
-            style="--g-rating: {{ rating.rating | times: 100.0 | divided_by: scale_max | round: 1 }}%;"
-          ></span>
-          <span aria-hidden="true">{{ rating_value }}/{{ scale_max }}</span>
-          <span>· {{ 'garelon.reviews.count' | t: count: rating_count }}</span>
-        </p>
+        <div class="g-reviews__summary">
+          <span class="g-reviews__score" aria-hidden="true">{{ rating_value }}</span>
+          <span class="g-reviews__score-meta">
+            <span
+              class="g-stars"
+              role="img"
+              aria-label="{{ 'garelon.reviews.stars_label' | t: rating: rating_value, max: scale_max }}"
+              style="--g-rating: {{ rating.rating | times: 100.0 | divided_by: scale_max | round: 1 }}%;"
+            ></span>
+            <span class="g-reviews__count">{{ 'garelon.reviews.count' | t: count: rating_count }}</span>
+          </span>
+        </div>
       {%- endif -%}
       {%- for block in section.blocks -%}
         {%- if block.type == '@app' -%}
           <div class="g-reviews__app">{% render block %}</div>
         {%- endif -%}
       {%- endfor -%}
+      {%- if section.settings.note != blank -%}
+        <div class="g-reviews__note rte">{{ section.settings.note }}</div>
+      {%- endif -%}
     </div>
   </section>
 {%- elsif request.design_mode -%}
@@ -117,6 +140,19 @@
       "label": "Mostrarla también si hay bloque de app",
       "default": false,
       "info": "Desactivado: la app ya muestra su propio resumen."
+    },
+    {
+      "type": "checkbox",
+      "id": "hide_without_reviews",
+      "label": "Ocultar sin opiniones",
+      "default": false,
+      "info": "Oculta también el widget de la app mientras la valoración sincronizada con Shopify sea 0. Requiere que la app sincronice la valoración (Judge.me lo hace)."
+    },
+    {
+      "type": "richtext",
+      "id": "note",
+      "label": "Nota sobre el origen de las opiniones",
+      "info": "Por ejemplo, si importas opiniones de otra tienda, indícalo aquí."
     },
     {
       "type": "color_scheme",

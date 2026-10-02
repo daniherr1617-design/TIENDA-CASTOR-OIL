@@ -26,25 +26,34 @@
             "text_style": "body"
           }
         },
-        "frase": {
-          "type": "garelon_quote",
+        "confianza": {
+          "type": "garelon_trust",
           "settings": {
-            "text": "Un símbolo de tu fe, contigo cada día."
+            "phrase": "Un símbolo de tu fe, contigo cada día.",
+            "chip_1_icon": "envio",
+            "chip_1_text": "Envío con seguimiento",
+            "chip_2_icon": "escudo",
+            "chip_2_text": "Compra protegida",
+            "chip_3_icon": "devolucion",
+            "chip_3_text": "14 días para cambiar de opinión",
+            "chip_4_icon": "ubicacion",
+            "chip_4_text": "Envíos a España"
           }
         },
-        "selector_packs": {
-          "type": "variant_picker",
+        "oferta": {
+          "type": "garelon_offer",
           "settings": {
-            "picker_type": "button",
-            "swatch_shape": "none"
-          }
-        },
-        "precio_packs": {
-          "type": "garelon_packs",
-          "settings": {
-            "heading": "Precio de cada pack",
+            "heading": "Elige tu oferta",
             "option_name": "Pack",
-            "unit_singular": "pulsera"
+            "unit_singular": "pulsera",
+            "sub_1": "Ideal para ti",
+            "sub_2": "Perfecto para regalar",
+            "sub_3": "Ahorra más por unidad",
+            "show_unit_price": true,
+            "badge_pack": "2",
+            "badge_text": "Recomendado",
+            "show_promo": false,
+            "promo_text": "Oferta especial de lanzamiento"
           }
         },
         "comprar": {
@@ -72,9 +81,8 @@
         "valoracion",
         "precio",
         "resumen",
-        "frase",
-        "selector_packs",
-        "precio_packs",
+        "confianza",
+        "oferta",
         "comprar",
         "descripcion",
         "envios"
@@ -151,10 +159,11 @@
     "opiniones": {
       "type": "garelon-reviews",
       "settings": {
-        "eyebrow": "Opiniones",
-        "heading": "Lo que opinan nuestros clientes",
+        "eyebrow": "Opiniones reales",
+        "heading": "Lo que opinan quienes ya la llevan",
         "show_summary": true,
         "summary_with_app": false,
+        "hide_without_reviews": true,
         "color_scheme": "scheme-1",
         "anchor": "opiniones",
         "padding_top": 48,
@@ -192,7 +201,7 @@
           "settings": {
             "icon": "longitud",
             "title": "Longitud",
-            "text": "7,87 pulgadas, unos 20 cm, según el proveedor."
+            "text": "Aprox. 20 cm (7,87 pulgadas)."
           }
         },
         "d5": {
@@ -200,7 +209,7 @@
           "settings": {
             "icon": "ajuste",
             "title": "Ajuste",
-            "text": "3 aros para ajustar la longitud, según la información del proveedor."
+            "text": "Ajustable · 3 aros para regular la longitud."
           }
         }
       },
@@ -217,7 +226,6 @@
         "heading": "Detalles de la pulsera",
         "image_key": "detalle",
         "image_alt": "Detalle de la pulsera rosario: medalla ovalada de la Virgen María con borde de pequeñas piedras, cruz y cuentas tricolor",
-        "note": "Datos según la información facilitada por el proveedor. Cada unidad incluye 1 pulsera.",
         "color_scheme": "scheme-2",
         "anchor": "detalles",
         "padding_top": 56,
@@ -244,22 +252,15 @@
         "p3": {
           "type": "question",
           "settings": {
-            "question": "¿Es ajustable?",
-            "answer": "<p>Sí. Según la información del proveedor, tiene 3 aros para ajustar la longitud.</p>"
-          }
-        },
-        "p4": {
-          "type": "question",
-          "settings": {
-            "question": "¿Qué longitud tiene?",
-            "answer": "<p>El proveedor indica una longitud de 7,87 pulgadas, unos 20 cm.</p>"
+            "question": "¿Qué longitud tiene y cómo se ajusta?",
+            "answer": "<p>La pulsera tiene una longitud aproximada de 20 cm y cuenta con 3 aros para ajustar el cierre.</p>"
           }
         },
         "p5": {
           "type": "question",
           "settings": {
             "question": "¿Qué incluye mi pedido?",
-            "answer": "<p>Cada unidad es 1 pulsera. Si eliges el pack de 2 o de 3, recibes ese número de pulseras.</p>"
+            "answer": "<p>Recibirás el número de pulseras correspondiente al pack que elijas: 1, 2 o 3 unidades.</p>"
           }
         },
         "p6": {
@@ -302,7 +303,6 @@
         "p1",
         "p2",
         "p3",
-        "p4",
         "p5",
         "p6",
         "p7",

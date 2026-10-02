@@ -415,6 +415,274 @@ body {
   border: 1px solid var(--g-ink) !important;
 }
 
+/* ---------- Zona de confianza (frase + garantías) ---------- */
+.g-trust {
+  margin: 1.6rem 0 0.4rem;
+}
+.g-trust__phrase {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0 0 1rem;
+  padding: 0.9rem 1.6rem;
+  border: 1px solid var(--g-gold-line);
+  border-radius: 999px;
+  background: #fbf7ef;
+  font-family: var(--font-heading-family);
+  font-style: italic;
+  font-size: 1.55rem;
+  line-height: 1.35;
+  text-align: center;
+  color: var(--g-ink);
+}
+.g-trust__grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 0.8rem;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+.g-trust__chip {
+  display: flex;
+  align-items: center;
+  gap: 0.8rem;
+  min-height: 4.8rem;
+  padding: 0.8rem 1rem;
+  border: 1px solid var(--g-line);
+  border-radius: var(--g-radius);
+  background: #fff;
+  font-size: 1.3rem;
+  line-height: 1.3;
+  color: var(--g-ink);
+}
+.g-trust__chip .g-icon {
+  flex: 0 0 auto;
+  width: 2.2rem;
+  height: 2.2rem;
+  color: var(--g-accent);
+}
+@media screen and (max-width: 359px) {
+  .g-trust__phrase {
+    font-size: 1.4rem;
+    padding: 0.8rem 1.2rem;
+  }
+  .g-trust__chip {
+    gap: 0.6rem;
+    padding: 0.7rem 0.8rem;
+    font-size: 1.2rem;
+  }
+}
+
+/* ---------- «Elige tu oferta»: tarjetas sobre los radios de Dawn ---------- */
+.g-offer {
+  margin: 2rem 0 0.8rem;
+}
+.g-offer__promo {
+  display: table;
+  margin: 0 auto 1.2rem;
+  padding: 0.4rem 1.2rem;
+  border: 1px solid var(--g-accent);
+  border-radius: 999px;
+  font-size: 1.2rem;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--g-accent-ink);
+  background: #fff;
+}
+.g-offer .g-offer__fieldset {
+  max-width: none;
+  min-width: 0;
+  margin: 0;
+  padding: 0;
+  border: 0;
+}
+.g-offer__legend {
+  display: flex;
+  align-items: center;
+  gap: 1.2rem;
+  width: 100%;
+  margin: 0 0 1.4rem;
+  padding: 0;
+  font-size: 1.25rem;
+  font-weight: 600;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--g-accent-ink);
+}
+.g-offer__legend::before,
+.g-offer__legend::after {
+  content: '';
+  flex: 1 1 0;
+  height: 1px;
+  background: var(--g-gold-line);
+}
+.g-offer__list {
+  display: grid;
+  gap: 1.2rem;
+}
+.g-offer__card {
+  position: relative;
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr) auto;
+  align-items: center;
+  gap: 1.2rem;
+  min-height: 7.2rem;
+  padding: 1.4rem 1.6rem;
+  border: 1px solid var(--g-line);
+  border-radius: 14px;
+  background: #fff;
+  color: var(--g-ink);
+  cursor: pointer;
+  transition: border-color 0.15s ease, box-shadow 0.15s ease, background-color 0.15s ease;
+  -webkit-tap-highlight-color: transparent;
+}
+.g-offer__card:hover {
+  border-color: var(--g-gold-line);
+}
+.g-offer__card--badge {
+  margin-top: 0.6rem;
+}
+.g-offer__radio {
+  position: relative;
+  width: 2.2rem;
+  height: 2.2rem;
+  border: 1.5px solid rgba(42, 38, 34, 0.35);
+  border-radius: 50%;
+  background: #fff;
+  transition: border-color 0.15s ease;
+}
+.g-offer__radio::after {
+  content: '';
+  position: absolute;
+  inset: 0.4rem;
+  border-radius: 50%;
+  background: var(--g-accent);
+  transform: scale(0);
+  transition: transform 0.15s ease;
+}
+.g-offer__body {
+  display: flex;
+  flex-direction: column;
+  gap: 0.3rem;
+  min-width: 0;
+}
+.g-offer__name {
+  font-size: 1.6rem;
+  font-weight: 600;
+  line-height: 1.25;
+}
+.g-offer__sub {
+  font-size: 1.3rem;
+  line-height: 1.3;
+  color: rgba(42, 38, 34, 0.72);
+}
+.g-offer__meta {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.4rem 0.8rem;
+  margin-top: 0.2rem;
+  font-size: 1.25rem;
+  line-height: 1.3;
+  color: var(--g-accent-ink);
+}
+.g-offer__save {
+  padding: 0.2rem 0.8rem;
+  border-radius: 999px;
+  background: var(--g-accent-soft);
+  font-weight: 600;
+  color: var(--g-accent-ink);
+}
+.g-offer__soldout {
+  font-size: 1.25rem;
+  font-weight: 600;
+  color: rgba(42, 38, 34, 0.72);
+}
+.g-offer__price {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 0.2rem;
+  text-align: right;
+  white-space: nowrap;
+}
+.g-offer__now {
+  font-size: 1.8rem;
+  font-weight: 600;
+  line-height: 1.2;
+}
+.g-offer__was {
+  font-size: 1.3rem;
+  color: rgba(42, 38, 34, 0.6);
+}
+.g-offer__badge {
+  position: absolute;
+  top: 0;
+  right: 1.4rem;
+  transform: translateY(-50%);
+  padding: 0.3rem 1rem;
+  border-radius: 999px;
+  background: var(--g-accent);
+  color: #fff;
+  font-size: 1.1rem;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  line-height: 1.4;
+  text-transform: uppercase;
+  white-space: nowrap;
+}
+/* Seleccionada: borde dorado, fondo champán y punto en el radio (sin mover el contenido). */
+.g-offer__input:checked + .g-offer__card {
+  border-color: var(--g-accent);
+  box-shadow: 0 0 0 1px var(--g-accent), 0 6px 18px rgba(134, 103, 47, 0.12);
+  background: #fbf6ec;
+}
+.g-offer__input:checked + .g-offer__card .g-offer__radio {
+  border-color: var(--g-accent);
+}
+.g-offer__input:checked + .g-offer__card .g-offer__radio::after {
+  transform: scale(1);
+}
+.g-offer__input:focus-visible + .g-offer__card {
+  outline: 2px solid var(--g-ink);
+  outline-offset: 3px;
+}
+.g-offer__card--soldout .g-offer__name,
+.g-offer__card--soldout .g-offer__price {
+  opacity: 0.55;
+}
+.g-offer__card--soldout .g-offer__now {
+  text-decoration: line-through;
+}
+.g-offer__note,
+.g-offer__tax {
+  margin: 1rem 0 0;
+  font-size: 1.2rem;
+  line-height: 1.4;
+  text-align: center;
+  color: rgba(42, 38, 34, 0.7);
+}
+.g-offer__note + .g-offer__tax {
+  margin-top: 0.2rem;
+}
+.g-offer__tax a {
+  color: inherit;
+}
+@media screen and (max-width: 359px) {
+  .g-offer__card {
+    gap: 0.9rem;
+    padding: 1.2rem;
+  }
+  .g-offer__name {
+    font-size: 1.5rem;
+  }
+  .g-offer__now {
+    font-size: 1.6rem;
+  }
+}
+
 /* ---------- Compra con tranquilidad (rich-text de Dawn) ---------- */
 [id$='__tranquilidad'] .rich-text.content-container {
   border: 1px solid var(--g-gold-line);
@@ -447,15 +715,6 @@ body {
     margin-bottom: 4rem;
   }
 }
-.g-reviews__summary {
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: center;
-  align-items: center;
-  gap: 0.8rem;
-  margin: -1.2rem 0 2.4rem;
-  font-size: 1.5rem;
-}
 .g-stars {
   --g-star-off: rgba(42, 38, 34, 0.18);
   display: inline-block;
@@ -465,9 +724,80 @@ body {
   -webkit-mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 20'%3E%3Cpath d='M10 1l2.6 5.9 6.4.6-4.9 4.3 1.5 6.3L10 14.8 4.4 18.1l1.5-6.3L1 7.5l6.4-.6zM30 1l2.6 5.9 6.4.6-4.9 4.3 1.5 6.3L30 14.8l-5.6 3.3 1.5-6.3L21 7.5l6.4-.6zM50 1l2.6 5.9 6.4.6-4.9 4.3 1.5 6.3L50 14.8l-5.6 3.3 1.5-6.3L41 7.5l6.4-.6zM70 1l2.6 5.9 6.4.6-4.9 4.3 1.5 6.3L70 14.8l-5.6 3.3 1.5-6.3L61 7.5l6.4-.6zM90 1l2.6 5.9 6.4.6-4.9 4.3 1.5 6.3L90 14.8l-5.6 3.3 1.5-6.3L81 7.5l6.4-.6z'/%3E%3C/svg%3E") center / 100% 100% no-repeat;
   mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 20'%3E%3Cpath d='M10 1l2.6 5.9 6.4.6-4.9 4.3 1.5 6.3L10 14.8 4.4 18.1l1.5-6.3L1 7.5l6.4-.6zM30 1l2.6 5.9 6.4.6-4.9 4.3 1.5 6.3L30 14.8l-5.6 3.3 1.5-6.3L21 7.5l6.4-.6zM50 1l2.6 5.9 6.4.6-4.9 4.3 1.5 6.3L50 14.8l-5.6 3.3 1.5-6.3L41 7.5l6.4-.6zM70 1l2.6 5.9 6.4.6-4.9 4.3 1.5 6.3L70 14.8l-5.6 3.3 1.5-6.3L61 7.5l6.4-.6zM90 1l2.6 5.9 6.4.6-4.9 4.3 1.5 6.3L90 14.8l-5.6 3.3 1.5-6.3L81 7.5l6.4-.6z'/%3E%3C/svg%3E") center / 100% 100% no-repeat;
 }
+.g-reviews__summary {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 1.2rem;
+  margin: -1.2rem auto 2.8rem;
+}
+.g-reviews__score {
+  font-family: var(--font-heading-family);
+  font-size: 4.4rem;
+  line-height: 1;
+  color: var(--g-ink);
+}
+.g-reviews__score-meta {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 0.4rem;
+}
+.g-reviews__count {
+  font-size: 1.4rem;
+  color: rgba(42, 38, 34, 0.72);
+}
 .g-reviews__app {
-  max-width: 110rem;
+  max-width: 96rem;
   margin: 0 auto;
+  padding: 2rem 1.6rem;
+  border: 1px solid var(--g-gold-line);
+  border-radius: var(--g-radius-lg);
+  background: #fff;
+}
+@media screen and (min-width: 750px) {
+  .g-reviews__app {
+    padding: 3.2rem 4rem;
+  }
+}
+.g-reviews__note {
+  max-width: 64rem;
+  margin: 1.6rem auto 0;
+  font-size: 1.3rem;
+  text-align: center;
+  color: rgba(42, 38, 34, 0.72);
+}
+/* Widget de Judge.me con la identidad GARELON (solo apariencia; el contenido es de la app). */
+.g-reviews .jdgm-widget,
+.g-reviews .jdgm-rev-widg {
+  font-family: var(--font-body-family);
+  color: var(--g-ink);
+}
+.g-reviews .jdgm-rev-widg__title {
+  display: none;
+}
+.g-reviews .jdgm-star,
+.product .jdgm-star {
+  color: var(--g-accent) !important;
+}
+.g-reviews .jdgm-write-rev-link,
+.g-reviews .jdgm-ask-question-btn,
+.g-reviews .jdgm-paginate__load-more {
+  border: 1px solid var(--g-ink) !important;
+  border-radius: 40px !important;
+  background: transparent !important;
+  color: var(--g-ink) !important;
+  padding: 1rem 2.4rem !important;
+  text-decoration: none !important;
+}
+.g-reviews .jdgm-rev__title {
+  font-family: var(--font-heading-family);
+}
+.g-reviews .jdgm-rev {
+  border-top-color: var(--g-line) !important;
+}
+.product .rating-star {
+  --color-rating-star: var(--g-accent);
 }
 
 /* ---------- Imagen y texto ---------- */

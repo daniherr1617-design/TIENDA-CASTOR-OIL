@@ -90,6 +90,14 @@ Además, antes de entregar:
 - Theme Check (`@shopify/theme-check-node`): 0 errores; los 9 avisos son los de serie de Dawn 16.0.0.
 - Liquid (Ruby) estricto.
 
-## 7. Regla nueva
+## 7. Mejora de CRO honesto
+
+Ver `GARELON-CRO-OFERTA-CONFIANZA.md`.
+- Bloques `garelon_trust` (frase + garantías) y `garelon_offer` (tarjetas «Elige tu oferta» dentro del `<variant-selects>` de Dawn) en `featured-product` y `main-product`.
+- Snippets `garelon-trust` y `garelon-offer`.
+- Con tarjetas, el bloque «Precio» de Dawn queda solo para lectores de pantalla y la nota de impuestos va debajo de las tarjetas.
+- `garelon-reviews` con «Ocultar sin opiniones» y nota sobre el origen de las opiniones.
+
+## 8. Regla nueva
 
 - **R31 · Instalabilidad primero.** No se entrega ningún ZIP que no salga de `tools/build_zip.py`. `templates/index.json` usa solo secciones del tema y valores válidos, sin apps, imágenes de Files ni recursos de la tienda. Se construye de menos a más, validando cada fase, y no se sigue sobre un fallo.

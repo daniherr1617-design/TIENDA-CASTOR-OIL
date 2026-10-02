@@ -564,13 +564,20 @@
       "save": "ahorras {{ amount }}",
       "editor_missing": "Solo en el editor: el producto aún no tiene la opción «Pack» con los valores «1 pulsera», «2 pulseras» y «3 pulseras». Los clientes compran la variante actual con normalidad. Crea las variantes en Productos › (producto) › Variantes."
     },
+    "offer": {
+      "unit_price": "{{ price }} por {{ unit }}",
+      "save": "Ahorras {{ amount }}",
+      "saving_note": "Ahorro calculado frente a comprar cada {{ unit }} por separado.",
+      "editor_missing": "Solo en el editor: «Elige tu oferta» muestra el selector normal porque el producto no tiene una única opción «Pack» (p. ej. «1 pulsera», «2 pulseras», «3 pulseras»). Los clientes compran con normalidad. Revisa el nombre de la opción en el bloque o crea las variantes en Productos › (producto) › Variantes."
+    },
     "reviews": {
       "stars_label": "{{ rating }} de {{ max }} estrellas",
       "count": {
         "one": "{{ count }} opinión",
         "other": "{{ count }} opiniones"
       },
-      "editor_empty": "Solo en el editor: «GARELON Opiniones» está oculta para los clientes porque no hay opiniones reales. Añade el bloque de tu app de reseñas (Añadir bloque › Apps) o espera a que la app publique la valoración del producto."
+      "editor_empty": "Solo en el editor: «GARELON Opiniones» está oculta para los clientes porque no hay opiniones reales. Añade el bloque de tu app de reseñas (Añadir bloque › Apps) o espera a que la app publique la valoración del producto.",
+      "editor_waiting": "Solo en el editor: el widget de opiniones está oculto para los clientes porque la valoración sincronizada con Shopify es 0. Aparecerá cuando haya opiniones publicadas (o desactiva «Ocultar sin opiniones»)."
     }
   }
 }

@@ -1,0 +1,40 @@
+{%- comment -%}
+  GARELON · Zona de confianza encima de «Elige tu oferta»: frase principal en una banda
+  y hasta 4 garantías cortas con icono. Todo editable; un texto vacío no se pinta.
+  Solo textos verdaderos: «Envío gratis» o «Envíos internacionales» únicamente si se ofrecen.
+
+  Parámetros: block
+{%- endcomment -%}
+{%- liquid
+  assign chips = 0
+  for i in (1..4)
+    assign key = 'chip_' | append: i | append: '_text'
+    if block.settings[key] != blank
+      assign chips = chips | plus: 1
+    endif
+  endfor
+-%}
+{%- if block.settings.phrase != blank or chips > 0 -%}
+  <div class="g-trust" {{ block.shopify_attributes }}>
+    {%- if block.settings.phrase != blank -%}
+      <p class="g-trust__phrase">{{ block.settings.phrase | escape }}</p>
+    {%- endif -%}
+    {%- if chips > 0 -%}
+      <ul class="g-trust__grid" role="list">
+        {%- for i in (1..4) -%}
+          {%- liquid
+            assign key = 'chip_' | append: i | append: '_text'
+            assign icon_key = 'chip_' | append: i | append: '_icon'
+            assign chip_text = block.settings[key]
+          -%}
+          {%- if chip_text != blank -%}
+            <li class="g-trust__chip">
+              {%- render 'garelon-icon', icon: block.settings[icon_key] -%}
+              <span>{{ chip_text | escape }}</span>
+            </li>
+          {%- endif -%}
+        {%- endfor -%}
+      </ul>
+    {%- endif -%}
+  </div>
+{%- endif -%}
