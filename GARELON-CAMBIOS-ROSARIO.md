@@ -213,14 +213,14 @@ Nueva pregunta «¿Puedo devolver mi pedido?» (ver sección 5) y «Qué incluye
 - **Si el 404 aparece en `/`:** solo pasa si el tema instalado no tiene `templates/index.json`. Por ejemplo, porque Shopify rechazó al subirlo una sección que la home usa, como en `530cff7`. Shopify muestra entonces la lista de errores de la subida.
 - **Si aparece en otra URL:** es una ruta que no existe en la tienda. Puede ser un handle antiguo de la fondue, un producto sin publicar en Tienda online, o una página o política sin crear. Se arregla en el Admin (producto, página, política o redirección), no en el tema.
 
-### 10.3 Cambio en el tema (diagnóstico, solo editor)
+### 10.3 Cambio en el tema (diagnóstico, solo editor) · **retirado en v1.3 (§11): era engañoso**
 
 `sections/main-404.liquid` muestra un aviso **solo en el editor de temas** (`request.design_mode`). Los clientes no lo ven.
 
 - **En la raíz:** «La home no tiene plantilla instalada…» (falta `templates/index.json`).
 - **En otra URL:** «Esta URL no existe en la tienda: /ruta…», con las causas posibles y la redirección.
 
-No cambian diseño, copy, packs, opiniones, carrito ni `templates/404.json`. Capturas: `docs/garelon/capturas/rosary-v1.2/`.
+No cambian diseño, copy, packs, opiniones, carrito ni `templates/404.json`. (Capturas retiradas en v1.3.)
 
 ### 10.4 Pruebas nuevas · Shopify Routing / Home 404 (30/30)
 
@@ -244,3 +244,79 @@ El render local ahora imita el routing de Shopify:
 La batería anterior sigue en **146/146**: la prueba Z acepta solo el 404 intencionado de `/pagina-que-no-existe`.
 
 **No probado:** Shopify real. No hay acceso a ninguna tienda ni Shopify CLI con sesión. No se publica nada.
+
+## 11. v1.3 · El 404 sigue en Shopify publicado: corrección del diagnóstico y 404 limpia
+
+**Evidencia nueva (Shopify real, tema v1.2 publicado):**
+- `https://8ndnek-0x.myshopify.com/` muestra la plantilla 404.
+- En Personalizar › Página de inicio también sale la 404.
+- El aviso del editor dice «Esta URL no existe en la tienda: /404».
+
+### 11.1 Qué significa «/404» (demostrado)
+
+En Shopify, **dentro de la plantilla 404, `request.path` vale siempre `/404`**, sea cual sea la URL pedida. Es una limitación conocida: [Shopify/liquid#1714](https://github.com/Shopify/liquid/issues/1714).
+
+Por eso el aviso de v1.2 (§10.3) caía siempre en la rama «otra URL» y nunca podía decir «falta la home». Era un error del diagnóstico, no una pista.
+
+- **Reproducción local:** el render local ahora imita esa regla.
+- **Resultado:** con el tema v1.2 y `templates/index.json` ausente, `GET /` da HTTP 404 y el editor muestra exactamente «Esta URL no existe en la tienda: /404», el mismo texto que en Shopify. Una URL inexistente cualquiera muestra el mismo texto.
+
+Lo que sí demuestra la evidencia: Shopify eligió la plantilla 404 para la petición de la home, en la tienda y en el editor (que carga `/`).
+
+- **Única causa del tema que produce esto:** que el tema publicado no tenga una plantilla `index` utilizable (R30).
+- **No es una redirección JS:** el tema no tiene ninguna. RT11c lo comprueba ejecutando todo el JS: `/` se queda en `/`.
+- **Confirmación en la tienda:** si la barra de direcciones muestra `/` (no `/404`), la causa es la plantilla que falta y no una redirección.
+
+### 11.2 El repositorio no es la causa (repetido sobre `0ceb358`, con herramientas nuevas)
+
+| Comprobación | Resultado |
+|---|---|
+| Theme Check **3.30.1** (última), configuración `theme-check:all` | 0 errores de schema, JSON o Liquid. Solo los avisos de rendimiento de serie de Dawn (`AssetSizeJavaScript`, etc.). |
+| Claves JSON duplicadas (templates, groups, config, locales, schemas) | 0. Shopify las rechaza; el JSON de Python no. |
+| Claves `t:` de los schemas | Todas existen en `locales/en.default.schema.json`. |
+| Nombres de sección, bloque y preset | ≤ 25 **bytes**, no solo caracteres; el máximo es 25. |
+| Defaults no permitidos (`url`, recursos) | Ninguno. |
+| Validación estricta de valores contra schemas | 0 errores. |
+| Liquid (Ruby) estricto | 0 errores. |
+| `layout/theme.liquid` | `{{ content_for_layout }}` sin condiciones. |
+| `/404`, `return_to`, `continue_url` o `redirect` en el tema | Nada. |
+| Fondue (instalada sin 404) vs rosario | `index.json` con la misma forma (mismas etiquetas HTML y URLs `/#…`). Nuevo: `garelon-assurance`, `garelon_quote` y `garelon_rating`, todos válidos. |
+
+**Conclusión:** la diferencia está entre el ZIP (que contiene un `templates/index.json` válido) y el tema publicado en Shopify (que responde a `/` como si no lo tuviera). Es el caso **B · repositorio ≠ tema publicado**.
+
+**No demostrado:** por qué Shopify no tiene esa plantilla.
+- **Causa más probable:** la subida la rechazó o la dejó incompleta. Shopify lo indica en el aviso de errores de la subida, y al guardar el archivo en Editar código.
+- **Comprobación pendiente:** sin acceso a la tienda, este entorno no puede ver ese mensaje. Las peticiones a `8ndnek-0x.myshopify.com`, `cdn.shopify.com`, `shopify.dev` y `community.shopify.com` las bloquea la política de red.
+
+### 11.3 Cambio en el tema (v1.3)
+
+- `sections/main-404.liquid` vuelve a la 404 limpia de v1.1 (Dawn + copy GARELON). Se retira el aviso del editor de v1.2 porque daba información falsa.
+- `templates/404.json` no cambia.
+- No hay ningún «si 404 → home».
+- Se borran las capturas de `docs/garelon/capturas/rosary-v1.2/`, que mostraban ese aviso.
+
+### 11.4 Pruebas (render local · **no es Shopify**)
+
+| Prueba | Resultado |
+|---|---|
+| Routing | 31/31. Nuevas: RT16 (sin `index.json` → 404 limpia), RT16b (sin diagnóstico de ruta) y RT16c (`main-404` no usa `request.path`). El render local pone `request.path = /404` en la 404, como Shopify. |
+| Regresión | 146/146. |
+| Theme Check | 0 errores / 9 avisos de Dawn. |
+| Validación estricta y Liquid (Ruby) | 0 errores. |
+| JSON | 68 archivos válidos. |
+| Responsive | Sin desbordamiento a 320, 390, 768 y 1440 px. |
+
+**No probado:** Shopify preview ni Shopify publicado (sin acceso).
+
+### 11.5 Qué falta en Shopify (orden de probabilidad)
+
+1. Tienda online › Temas › tema publicado › ⋯ › **Editar código** › carpeta `templates`: ¿aparece `index.json`?
+   - **Si NO:** subir el ZIP v1.3 como tema nuevo y copiar literalmente el aviso de errores que muestre Shopify antes de publicar.
+   - **Si SÍ:** abrirlo, pulsar **Guardar** y copiar el error que muestre Shopify (valida el archivo al guardar).
+2. Al entrar en la tienda, ¿la barra de direcciones muestra `/` o `/404`?
+   - **`/`:** la causa es la plantilla (punto 1).
+   - **`/404`:** algo redirige; revisar Personalizar › Configuración del tema › Inserciones de apps.
+3. Control con Dawn: Temas › Agregar tema › Dawn › Vista previa.
+   - **Si Dawn muestra la home:** la tienda funciona y el problema es la instalación de GARELON.
+   - **Si Dawn también da 404:** el problema es de la tienda; contactar con el soporte de Shopify.
+

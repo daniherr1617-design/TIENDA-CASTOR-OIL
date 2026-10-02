@@ -4,7 +4,7 @@
 > - Cada punto dice **cómo comprobarlo**.
 > - Marca 🅲 = lo comprueba Claude Code en el repositorio o en un render local; 🆂 = solo se puede comprobar en Shopify real (Vista previa, Admin, app del proveedor —hoy CJ Dropshipping—).
 > - Las referencias «§» apuntan a secciones de `GARELON_MASTER_TEMPLATE.md`.
-> - Última ejecución: Pulsera Rosario Virgen María (1.9, rama `claude/rosary-bracelet`): sin envío gratis verificado; ver los puntos marcados «(1.9)». Ronda v1.1 (Master 1.10): packs 1/2/3 pulseras, frase de fe, «Compra con tranquilidad» y opiniones reales; ver los puntos «(1.10)». Diagnóstico del 404 (Master 1.11): puntos «(1.11)».
+> - Última ejecución: Pulsera Rosario Virgen María (1.9, rama `claude/rosary-bracelet`): sin envío gratis verificado; ver los puntos marcados «(1.9)». Ronda v1.1 (Master 1.10): packs 1/2/3 pulseras, frase de fe, «Compra con tranquilidad» y opiniones reales; ver los puntos «(1.10)». Diagnóstico del 404 (Master 1.11-1.12): puntos «(1.11)» y «(1.12)».
 > - Producto nuevo: ______________________ · Producto anterior: ______________________ · Rama: __________ · Fecha: ______
 
 ---
@@ -290,4 +290,5 @@
 - [ ] 🅲 (1.10) Frase emocional/de fe (R29): una vez por página, junto a la compra, sin promesas espirituales; compacta en móvil (una línea a 320 px).
 - [ ] 🅲 (1.10) Opiniones: sin reseñas reales no se ve ni la sección ni el resumen junto al precio (nunca «0 opiniones»); con la app, la sección aparece justo después de «Compra con tranquilidad» y el resumen solo con `reviews.rating` y `reviews.rating_count` > 0.
 - [ ] 🆂 (1.11) Routing (R30): `GET /` → 200 con la plantilla index, con y sin producto publicado; una URL inexistente → plantilla 404 con estado 404; tras subir el ZIP, Shopify no lista errores y `templates/index.json` aparece en Editar código.
+- [ ] 🆂 (1.12) Tras publicar: abre la home y Personalizar › Página de inicio. Si sale la 404, ve a Editar código › `templates/index.json`: si falta, vuelve a subir el ZIP y copia los errores; si está, guárdalo para que Shopify muestre el error. No uses `request.path` en la 404 para diagnosticar (vale siempre `/404`).
 - [ ] 🅲 (1.11) Si se cambia de producto, redirigir el handle anterior (`/products/<handle-anterior>` → `/`) en Navegación › Redirecciones de URL.
