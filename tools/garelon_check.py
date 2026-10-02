@@ -421,8 +421,14 @@ def check_template(theme, rel):
     if 'layout' in data and data['layout'] is not False and not os.path.exists(
             os.path.join(theme.root, 'layout', f'{data["layout"]}.liquid')):
         err(rel, f'layout inexistente {data["layout"]!r}')
+    per_type = {}
     for sid, sec in sections.items():
         check_section_instance(theme, rel, sid, sec, 'templates', name)
+        per_type[sec.get('type')] = per_type.get(sec.get('type'), 0) + 1
+    for st, n in per_type.items():
+        limit = (theme.sections.get(st) or {}).get('limit')
+        if limit and n > limit:
+            err(rel, f'{n} secciones {st}: su schema limita a {limit} por plantilla')
     return data
 
 
