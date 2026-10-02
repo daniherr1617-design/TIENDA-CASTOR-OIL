@@ -3,13 +3,13 @@
   - <garelon-sticky-atc>: barra fija de compra en móvil (ficha y home). No crea su propio
     formulario: pulsa el botón real del formulario de Dawn, así el carrito (drawer/AJAX), las
     apps y los eventos de Shopify siguen funcionando igual. Muestra la variante elegida
-    (p. ej. «Color · 2 unidades»), su precio real y la foto del color.
-  - Color × Pack (snippets/garelon-packs.liquid) no necesita JS propio: son variantes reales
+    (p. ej. «2 pulseras»), su precio real y la foto de la variante si existe.
+  - Packs (snippets/garelon-packs.liquid) no necesitan JS propio: son variantes reales
     dentro del <variant-selects> de Dawn.
-  - Galería del tema (snippets/garelon-gallery.liquid): al elegir un color, el carrusel se
-    desliza hasta la foto de ese color.
-  - [data-g-pick-color]: botones «Elegir este color» (sección GARELON Colores): marcan ese color
-    en el selector de la compra y llevan hasta ella. Sin selector en la página, siguen su enlace.
+  - Galería del tema (snippets/garelon-gallery.liquid): si el producto tiene otra opción con
+    fotos (garelon-choice), el carrusel se desliza hasta la foto de ese valor.
+  - [data-g-pick-color]: botones de la sección GARELON Colores (no se usa en la pulsera): marcan
+    ese valor en el selector de la compra y llevan hasta ella.
 */
 
 if (!customElements.get('garelon-sticky-atc')) {
@@ -96,7 +96,7 @@ if (!customElements.get('garelon-sticky-atc')) {
         }
 
         if (this.variantTarget) {
-          // Color y pack elegidos (garelon-packs: «Color · 2 unidades») o, si no hay packs, el nombre
+          // Opciones elegidas (garelon-packs: «2 pulseras») o, si no hay packs, el nombre
           // de la variante. Las opciones fijas ocultas no llevan etiqueta. Al cambiar de variante
           // Dawn deja 500 ms el selector anterior oculto y con el mismo id: se lee solo el visible.
           const selects = Array.from(document.querySelectorAll(`#variant-selects-${this.sectionId}`)).find(
@@ -111,7 +111,7 @@ if (!customElements.get('garelon-sticky-atc')) {
           const label = labels.join(' · ') || (variant && variant.title);
           if (label) this.variantTarget.textContent = label;
 
-          // Sin foto de variante en Shopify: la foto del color elegido (miniatura del selector).
+          // Sin foto de variante en Shopify: la miniatura del valor elegido en garelon-choice.
           const colorThumb = selects && selects.querySelector('.g-choice__input:checked + label .g-choice__thumb');
           if (colorThumb && this.thumb && !(variant && variant.featured_media)) {
             this.thumb.src = colorThumb.currentSrc || colorThumb.src;
@@ -150,7 +150,7 @@ if (!customElements.get('garelon-sticky-atc')) {
       .replace(/[^a-z0-9]+/g, '-')
       .replace(/^-|-$/g, '');
 
-  // Desliza la galería del tema (si la hay en la misma sección) hasta la foto del color.
+  // Desliza la galería del tema (si la hay en la misma sección) hasta la foto del valor elegido.
   function showColor(scope, key) {
     const gallery = (scope && scope.querySelector('.g-gallery')) || document.querySelector('.g-gallery');
     if (!gallery) return;
@@ -175,7 +175,7 @@ if (!customElements.get('garelon-sticky-atc')) {
     const input = Array.from(document.querySelectorAll('.g-choice__input')).find(
       (element) => garelonKey(element.dataset.choiceLabel || element.value) === key && element.offsetParent !== null
     );
-    if (!input) return; // Sin selector en esta página: el enlace lleva a la ficha con ese color.
+    if (!input) return; // Sin selector en esta página: el enlace lleva a la ficha.
     event.preventDefault();
     const target = input.closest('.g-anchor, product-info, .shopify-section') || input;
     if (!input.checked) input.click();

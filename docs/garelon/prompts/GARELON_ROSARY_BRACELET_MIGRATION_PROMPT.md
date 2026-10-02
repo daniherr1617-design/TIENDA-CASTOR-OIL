@@ -106,3 +106,18 @@ Sin restos de la taza en el storefront; borrar assets `garelon-fondue-*`; la doc
 ## 68-69. PR y ZIP
 
 → Ejecutado: push a `claude/rosary-bracelet`, Draft PR nueva (sin merge) y `GARELON-SHOPIFY-THEME-PULSERA-ROSARIO-v1.zip` (solo `assets config layout locales sections snippets templates`), validado descomprimido.
+
+---
+
+## Ronda adicional v1.1 · Confianza + fe + reviews + packs (prompt del dueño, 02/10/2026)
+
+Resumen del pedido: trabajar sobre el HEAD real de `claude/rosary-bracelet` (sin reiniciar, sin tocar `main`, `claude/fondue-mug` ni la PR #2, sin merge) y añadir:
+
+1. Frase propia «Un símbolo de tu fe, contigo cada día.» justo antes del selector de packs (home y ficha), en una franja limpia marfil/champán con borde fino; sin promesas espirituales.
+2. Packs 1 / 2 / 3 pulseras como **variantes reales** de la opción «Pack», cada uno con **quantity=1**; precios de Shopify; ahorro, precio/unidad y «Mejor precio/unidad» solo si son matemáticamente ciertos; reutilizar `garelon-packs` sin la lógica de colores de la taza; diagnóstico solo en el editor.
+3. Fulfillment AliExpress sin inventar mappings: MANUAL TODO 1→1, 2→2, 3→3 unidades del mismo SKU y pedido de prueba de cada pack.
+4. Opiniones reales bastante arriba (compra → tranquilidad → opiniones → storytelling) con `garelon-reviews`; resumen «★ · nota/5 · N opiniones» junto al precio solo con datos reales; nunca «0 opiniones».
+5. Bloque «Compra con tranquilidad»: 14 días de **desistimiento** (no «garantía de 14 días»), garantía legal genérica, enlace a `/policies/refund-policy`; sin copiar condiciones del competidor (sin usar, embalaje original, WhatsApp).
+6. FAQ «¿Puedo devolver mi pedido?»; responsive 320-1440; tests de packs, reseñas y confianza; documentación (regla reutilizable sobre derechos legales); commit, push, Draft PR actualizada y ZIP v1.1.
+
+→ Ejecutado: todo, con el detalle en `GARELON-CAMBIOS-ROSARIO.md` §9 y la regla R28-R29 del Master (1.10). Desvíos: la frase va después del precio y de la descripción breve (Dawn actualiza el precio al cambiar de pack); no hay versión compacta de los 14 días junto al botón; la barra de confianza sale de home y ficha para no duplicar devoluciones. Packs aún **no creados en Shopify**: probados con variantes simuladas.

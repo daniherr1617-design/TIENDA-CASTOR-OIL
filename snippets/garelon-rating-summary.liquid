@@ -1,0 +1,63 @@
+{%- comment -%}
+  GARELON · Resumen de valoración junto al título y el precio (bloque garelon_rating).
+  «★★★★★ · 4,8/5 · 37 opiniones», todo leído de la valoración REAL de Shopify que rellenan
+  las apps de reseñas (product.metafields.reviews.rating / rating_count). Sin valoración o
+  con 0 opiniones no pinta nada: nunca «0 opiniones», nunca datos de ejemplo.
+
+  Accepts:
+  - product: {Object}
+  - block: {Object} bloque garelon_rating (settings.anchor)
+
+  Usage:
+  {% render 'garelon-rating-summary', product: product, block: block %}
+{%- endcomment -%}
+{%- liquid
+  assign rating = product.metafields.reviews.rating.value
+  assign rating_count = product.metafields.reviews.rating_count.value | default: 0
+-%}
+{%- if rating != blank and rating_count > 0 -%}
+  {%- liquid
+    assign rating_value = rating.rating | round: 1
+    assign rating_max = rating.scale_max | round
+    assign rating_label = rating_value | append: '' | replace: '.', ','
+    assign rating_decimal = 0
+    assign decimal = rating.rating | modulo: 1
+    if decimal >= 0.3 and decimal <= 0.7
+      assign rating_decimal = 0.5
+    elsif decimal > 0.7
+      assign rating_decimal = 1
+    endif
+    if rating_count == 1
+      assign count_label = rating_count | append: ' opinión'
+    else
+      assign count_label = rating_count | append: ' opiniones'
+    endif
+  -%}
+  {{ 'component-rating.css' | asset_url | stylesheet_tag }}
+  {%- capture rating_inner -%}
+    <span
+      class="rating"
+      role="img"
+      aria-label="{{ 'accessibility.star_reviews_info' | t: rating_value: rating_label, rating_max: rating_max }}"
+    >
+      <span
+        aria-hidden="true"
+        class="rating-star"
+        style="--rating: {{ rating.rating | floor }}; --rating-max: {{ rating_max }}; --rating-decimal: {{ rating_decimal }};"
+      ></span>
+    </span>
+    <span class="g-rating__text">
+      <span aria-hidden="true">·</span>
+      <span class="g-rating__value">{{ rating_label }}/{{ rating_max }}</span>
+      <span aria-hidden="true">·</span>
+      <span class="g-rating__count">{{ count_label }}</span>
+    </span>
+  {%- endcapture -%}
+  <div class="g-rating" {{ block.shopify_attributes }}>
+    {%- if block.settings.anchor != blank -%}
+      <a class="g-rating__link" href="#{{ block.settings.anchor | handleize }}">{{ rating_inner }}</a>
+    {%- else -%}
+      <p class="g-rating__link">{{ rating_inner }}</p>
+    {%- endif -%}
+  </div>
+{%- endif -%}

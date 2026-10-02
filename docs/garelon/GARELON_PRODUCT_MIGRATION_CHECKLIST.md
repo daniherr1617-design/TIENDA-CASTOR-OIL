@@ -4,7 +4,7 @@
 > - Cada punto dice **cómo comprobarlo**.
 > - Marca 🅲 = lo comprueba Claude Code en el repositorio o en un render local; 🆂 = solo se puede comprobar en Shopify real (Vista previa, Admin, app del proveedor —hoy CJ Dropshipping—).
 > - Las referencias «§» apuntan a secciones de `GARELON_MASTER_TEMPLATE.md`.
-> - Última ejecución: Pulsera Rosario Virgen María (1.9, rama `claude/rosary-bracelet`): producto sin packs y sin envío gratis verificado; ver los puntos marcados «(1.9)».
+> - Última ejecución: Pulsera Rosario Virgen María (1.9, rama `claude/rosary-bracelet`): sin envío gratis verificado; ver los puntos marcados «(1.9)». Ronda v1.1 (Master 1.10): packs 1/2/3 pulseras, frase de fe, «Compra con tranquilidad» y opiniones reales; ver los puntos «(1.10)».
 > - Producto nuevo: ______________________ · Producto anterior: ______________________ · Rama: __________ · Fecha: ______
 
 ---
@@ -277,3 +277,15 @@
 - [ ] Respuestas de políticas (§19).
 - [ ] Tareas del Admin para el dueño.
 - [ ] Riesgos pendientes.
+
+
+## Añadidos de la ronda de confianza (Master 1.10)
+
+- [ ] 🅲 (1.10) Packs: cada pack es UNA variante de la opción «Pack» con su precio en Shopify y se añade con `quantity=1` (probado en el carrito: «2 pulseras» × 1). Ningún precio, compare-at, ahorro, porcentaje, SKU ni ID escrito en el tema.
+- [ ] 🅲 (1.10) Ahorro, precio por unidad e insignia «Mejor precio/unidad» solo aparecen si los precios reales los justifican (probar con precios iguales por unidad: no sale nada). Etiquetas editoriales sin datos de ventas («Individual», «Pack de 2»…), nunca «Más vendido», «Favorito», «Oferta limitada», «Solo hoy», «Quedan X».
+- [ ] 🅲 (1.10) Si Shopify aún no tiene los packs, la tienda sigue vendiendo la variante única y el aviso sale **solo** en el editor (ni texto ni comentario HTML para el cliente).
+- [ ] 🅲 (1.10) Fulfillment de packs: el mapping con el proveedor (1→1, 2→2, 3→3 unidades del mismo SKU) se valida con la integración real y con **un pedido de prueba por pack**. El tema no lo resuelve.
+- [ ] 🅲 (1.10) Derechos legales (R28): «derecho de desistimiento» / «14 días para cambiar de opinión», nunca «garantía de 14 días» ni «sin riesgos»; «garantía legal aplicable» (la duración solo tras revisar el Admin). Búsqueda en el storefront: 0 «garantía de 14 días», «sin riesgos», «sin usar», «embalaje original», WhatsApp. Comprobar que la categoría no está exceptuada del desistimiento antes de usar el bloque.
+- [ ] 🅲 (1.10) El enlace a `/policies/refund-policy` funciona y ningún texto del tema contradice la política (revisarla en Shopify Admin).
+- [ ] 🅲 (1.10) Frase emocional/de fe (R29): una vez por página, junto a la compra, sin promesas espirituales; compacta en móvil (una línea a 320 px).
+- [ ] 🅲 (1.10) Opiniones: sin reseñas reales no se ve ni la sección ni el resumen junto al precio (nunca «0 opiniones»); con la app, la sección aparece justo después de «Compra con tranquilidad» y el resumen solo con `reviews.rating` y `reviews.rating_count` > 0.

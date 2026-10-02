@@ -1,13 +1,12 @@
 {%- comment -%}
   GARELON · Opciones del producto que no son el pack, dentro del <variant-selects> de
-  garelon-packs: con varios valores (p. ej. Color: valor A / valor B) se muestran como
-  botones con muestra; con un solo valor (p. ej. «Color: Único» importado del proveedor) van ocultas y marcadas.
+  garelon-packs. Con varios valores se muestran como botones (con la foto de la variante si
+  Shopify la tiene, o la muestra de Shopify); con un solo valor (p. ej. importado del proveedor)
+  van ocultas y marcadas. La Pulsera Rosario solo tiene la opción Pack: aquí no se pinta nada.
 
   Radios compatibles con Dawn (form, data-option-value-id, data-product-url, data-option-name):
-  al elegir un color, product-info.js pide la sección y los packs se recalculan con los
-  precios de ese color. data-choice-label = texto para la compra fija («Valor · 2 unidades»).
-  Muestra: imagen de la variante si Shopify la tiene; si no, el color de Shopify (swatch) o
-  un tono neutro (clase g-choice__dot--<valor>).
+  al elegir un valor, product-info.js pide la sección y los packs se recalculan con los precios
+  reales. data-choice-label = texto para la compra fija («Valor · 2 pulseras»).
 
   Accepts:
   - product: {Object}
@@ -20,7 +19,7 @@
     {%- continue -%}
   {%- endif -%}
   {%- if option.values.size == 1 -%}
-    {%- comment -%} Opción de un solo valor (p. ej. importada del proveedor): va marcada y oculta. {%- endcomment -%}
+    {%- comment -%} Opción de un solo valor: va marcada y oculta. {%- endcomment -%}
     <fieldset class="g-packs__fixed" hidden>
       <legend>{{ option.name | escape }}</legend>
       {%- assign fixed_value = option.values.first -%}

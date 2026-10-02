@@ -246,6 +246,10 @@
                       </div>
                     </details>
                   </div>
+                {%- when 'garelon_quote' -%}
+                  {%- render 'garelon-quote', block: block -%}
+                {%- when 'garelon_rating' -%}
+                  {%- render 'garelon-rating-summary', product: product, block: block -%}
                 {%- when 'garelon_packs' -%}
                   {%- comment -%}
                     GARELON: packs = variantes reales. Sustituye al selector de variantes y al de
@@ -916,13 +920,48 @@
       ]
     },
     {
+      "type": "garelon_quote",
+      "name": "GARELON Frase destacada",
+      "limit": 1,
+      "settings": [
+        {
+          "type": "paragraph",
+          "content": "Franja corta y elegante, pensada para ir justo antes de «Elige tu pack». Conexión emocional y simbólica: sin promesas espirituales ni sobrenaturales."
+        },
+        {
+          "type": "text",
+          "id": "text",
+          "label": "Frase",
+          "info": "Una línea breve. Vacío = el bloque no se muestra."
+        }
+      ]
+    },
+    {
+      "type": "garelon_rating",
+      "name": "GARELON Valoración",
+      "limit": 1,
+      "settings": [
+        {
+          "type": "paragraph",
+          "content": "Estrellas · nota/5 · número de opiniones, leídos de la valoración REAL de Shopify (product.metafields.reviews.rating y rating_count, que rellenan las apps de reseñas). Sin valoración o con 0 opiniones no se muestra nada. Nunca escribas notas ni recuentos a mano."
+        },
+        {
+          "type": "text",
+          "id": "anchor",
+          "label": "Enlace a la sección de opiniones",
+          "info": "ID de ancla de la sección «GARELON Opiniones» de la misma página. Vacío = sin enlace.",
+          "default": "opiniones"
+        }
+      ]
+    },
+    {
       "type": "garelon_packs",
       "name": "GARELON Packs (variantes)",
       "limit": 1,
       "settings": [
         {
           "type": "paragraph",
-          "content": "Color × Pack sobre las VARIANTES REALES del producto (p. ej. Color y Pack: «1 unidad», «2 unidades», «3 unidades»). Úsalo solo si el producto tiene packs reales en Shopify; sin packs, quita este bloque y usa «Selector de variantes». Cada combinación es una variante con cantidad 1, así que un pack siempre es del mismo color. Este bloque sustituye al selector de variantes y al de cantidad. Precio, ahorro y precio por unidad salen de los precios de Shopify del color elegido. Si el producto no cumple las condiciones, se usa el selector estándar y el editor muestra el motivo."
+          "content": "Packs sobre las VARIANTES REALES del producto: opción «Pack» con valores como «1 pulsera», «2 pulseras», «3 pulseras», cada uno con su precio en Shopify. Cada pack es UNA variante y se compra con cantidad 1 («2 pulseras» × 1, nunca «1 pulsera» × 2). Este bloque sustituye al selector de variantes y al de cantidad. Precio, ahorro y precio por unidad salen de los precios reales de Shopify; nada se escribe a mano. Si el producto aún no tiene los packs (p. ej. una sola variante), se usa el selector estándar y el editor muestra el motivo."
         },
         {
           "type": "text",
@@ -940,23 +979,22 @@
           "type": "text",
           "id": "intro",
           "label": "Introducción",
-          "info": "Vacío = sin introducción.",
-          "default": "Cuantas más unidades incluye tu pack, menos pagas por cada una."
+          "info": "Vacío = sin introducción (recomendado). No prometas ahorros que los precios reales no confirmen."
         },
         {
           "type": "header",
-          "content": "Color"
+          "content": "Otras opciones (si existen)"
         },
         {
           "type": "text",
           "id": "style_heading",
-          "label": "Título del color",
-          "info": "Para la opción que no es el pack (p. ej. «Color»). Vacío = nombre de la opción en Shopify."
+          "label": "Título de la otra opción",
+          "info": "Solo si el producto tiene otra opción con varios valores además del pack. Vacío = nombre de la opción en Shopify."
         },
         {
           "type": "text",
           "id": "style_intro",
-          "label": "Texto bajo el color",
+          "label": "Texto bajo la otra opción",
           "info": "Vacío = sin texto."
         },
         {
@@ -967,7 +1005,7 @@
           "type": "text",
           "id": "option_name",
           "label": "Nombre de la opción de Shopify (opcional)",
-          "info": "Vacío = se detecta sola (opción «Pack», «Cantidad» o la única cuyos valores llevan número). Cada valor debe incluir su número de unidades: «1 unidad», «2 unidades», «3 unidades». Tiene que existir el pack de 1 unidad."
+          "info": "Vacío = se detecta sola (opción «Pack», «Cantidad» o la única cuyos valores llevan número). Cada valor debe incluir su número de unidades: «1 pulsera», «2 pulseras», «3 pulseras». Tiene que existir el pack de 1."
         },
         {
           "type": "text",
@@ -999,9 +1037,16 @@
         },
         {
           "type": "checkbox",
+          "id": "unit_price_only_savings",
+          "label": "Precio por unidad solo si algún pack tiene ahorro real",
+          "info": "Recomendado: si todos los packs cuestan lo mismo por unidad, no se muestra.",
+          "default": true
+        },
+        {
+          "type": "checkbox",
           "id": "show_savings",
           "label": "Mostrar ahorro («Ahorra 4,98 €»)",
-          "info": "Se calcula frente al precio real de la variante de 1 unidad del mismo color × unidades del pack. No usa el precio comparado.",
+          "info": "Se calcula frente al precio real de la variante de 1 × unidades del pack. Solo aparece si es mayor que 0. No usa el precio comparado.",
           "default": true
         },
         {
@@ -1014,7 +1059,7 @@
           "type": "checkbox",
           "id": "show_reference",
           "label": "Mostrar precio comprando por separado",
-          "info": "«Comprando por separado: 39,98 €» = precio de 1 unidad × unidades. No es un precio tachado.",
+          "info": "«Comprando por separado: …» = precio real del pack de 1 × unidades. No es un precio tachado.",
           "default": true
         },
         {
@@ -1026,14 +1071,13 @@
         {
           "type": "text",
           "id": "single_note",
-          "label": "Texto del pack de 1 unidad",
-          "info": "Se muestra en el pack de 1 unidad cuando otros packs tienen ahorro. Vacío = sin texto.",
-          "default": "Sin descuento"
+          "label": "Texto del pack de 1",
+          "info": "Se muestra en el pack de 1 cuando otros packs tienen ahorro real. Vacío = sin texto."
         },
         {
           "type": "text",
           "id": "tag_1",
-          "label": "Etiqueta del pack de 1 unidad",
+          "label": "Etiqueta del pack de 1",
           "info": "Texto editorial bajo el nombre del pack (p. ej. «Individual»). Vacío = sin etiqueta."
         },
         {

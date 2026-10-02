@@ -15,8 +15,10 @@
           "settings": {}
         },
         "rating": {
-          "type": "rating",
-          "settings": {}
+          "type": "garelon_rating",
+          "settings": {
+            "anchor": "opiniones"
+          }
         },
         "price": {
           "type": "price",
@@ -29,9 +31,36 @@
             "text_style": "subtitle"
           }
         },
-        "variant_picker": {
-          "type": "variant_picker",
+        "quote": {
+          "type": "garelon_quote",
           "settings": {
+            "text": "Un símbolo de tu fe, contigo cada día."
+          }
+        },
+        "packs": {
+          "type": "garelon_packs",
+          "settings": {
+            "offer_label": "",
+            "heading": "Elige tu pack",
+            "intro": "",
+            "style_heading": "",
+            "style_intro": "",
+            "option_name": "",
+            "pack_units": "",
+            "unit_singular": "pulsera",
+            "unit_plural": "pulseras",
+            "show_unit_price": true,
+            "unit_price_only_savings": true,
+            "show_savings": true,
+            "show_percent": false,
+            "show_reference": false,
+            "reference_label": "Comprando por separado:",
+            "single_note": "",
+            "tag_1": "Individual",
+            "tag_2": "Pack de 2",
+            "tag_3": "Pack de 3",
+            "badge_text": "Mejor precio/unidad",
+            "savings_note": "Ahorro calculado frente a comprar las pulseras por separado.",
             "picker_type": "button",
             "swatch_shape": "none"
           }
@@ -68,7 +97,7 @@
           "settings": {
             "heading": "Qué incluye",
             "icon": "box",
-            "content": "<p>Una Pulsera Rosario Virgen María.</p>"
+            "content": "<p>Las pulseras del pack que elijas: 1, 2 o 3 Pulseras Rosario Virgen María.</p>"
           }
         },
         "tab_envios": {
@@ -86,7 +115,8 @@
         "rating",
         "price",
         "subtitle",
-        "variant_picker",
+        "quote",
+        "packs",
         "buy_buttons",
         "free_shipping",
         "description",
@@ -109,6 +139,21 @@
         "padding_top": 16,
         "padding_bottom": 36,
         "garelon_gallery": "always"
+      }
+    },
+    "tranquilidad": {
+      "type": "garelon-assurance",
+      "settings": {
+        "icon": "shield",
+        "eyebrow": "14 días para cambiar de opinión",
+        "heading": "Compra con tranquilidad",
+        "text": "<p>En compras online dispones de 14 días naturales desde la recepción del pedido para ejercer tu derecho de desistimiento. Además, tus derechos frente a faltas de conformidad están cubiertos por la garantía legal aplicable.</p>",
+        "link_label": "Consulta la política de devoluciones",
+        "show_card": true,
+        "color_scheme": "scheme-1",
+        "anchor": "tranquilidad",
+        "padding_top": 48,
+        "padding_bottom": 48
       }
     },
     "reviews": {
@@ -182,51 +227,6 @@
         "padding_bottom": 64
       }
     },
-    "service": {
-      "type": "garelon-trust-bar",
-      "blocks": {
-        "t-contacto": {
-          "type": "item",
-          "settings": {
-            "icon": "chat",
-            "title": "¿Dudas?",
-            "text": "Escríbenos",
-            "link": "/pages/contacto"
-          }
-        },
-        "t-envio": {
-          "type": "item",
-          "settings": {
-            "icon": "truck",
-            "title": "Envíos",
-            "text": "Consulta la política de envío",
-            "link": "/policies/shipping-policy"
-          }
-        },
-        "t-devoluciones": {
-          "type": "item",
-          "settings": {
-            "icon": "return",
-            "title": "Devoluciones",
-            "text": "Consulta las condiciones",
-            "link": "/policies/refund-policy"
-          }
-        }
-      },
-      "block_order": [
-        "t-contacto",
-        "t-envio",
-        "t-devoluciones"
-      ],
-      "settings": {
-        "heading": "Compra con confianza",
-        "show_borders": true,
-        "color_scheme": "scheme-1",
-        "anchor": "",
-        "padding_top": 40,
-        "padding_bottom": 40
-      }
-    },
     "faq": {
       "type": "garelon-faq",
       "blocks": {
@@ -262,7 +262,7 @@
           "type": "question",
           "settings": {
             "question": "¿Qué incluye mi pedido?",
-            "answer": "<p>Una Pulsera Rosario Virgen María.</p>"
+            "answer": "<p>Las pulseras del pack que elijas: 1, 2 o 3 Pulseras Rosario Virgen María.</p>"
           }
         },
         "q-regalo": {
@@ -286,6 +286,13 @@
             "answer": "<p>Consulta los plazos y condiciones de entrega actualizados en nuestra <a href=\"/policies/shipping-policy\" title=\"Política de envío\">política de envío</a>.</p>"
           }
         },
+        "q-devolver": {
+          "type": "question",
+          "settings": {
+            "question": "¿Puedo devolver mi pedido?",
+            "answer": "<p>En compras online dispones, con carácter general, de 14 días naturales desde la recepción para ejercer tu derecho de desistimiento. Consulta las condiciones y posibles excepciones en nuestra <a href=\"/policies/refund-policy\" title=\"Política de devoluciones\">política de devoluciones</a>.</p>"
+          }
+        },
         "q-problema": {
           "type": "question",
           "settings": {
@@ -303,6 +310,7 @@
         "q-regalo",
         "q-diario",
         "q-envio",
+        "q-devolver",
         "q-problema"
       ],
       "settings": {
@@ -327,9 +335,9 @@
   },
   "order": [
     "main",
+    "tranquilidad",
     "reviews",
     "detalles",
-    "service",
     "faq",
     "sticky"
   ]

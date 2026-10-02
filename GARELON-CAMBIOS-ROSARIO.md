@@ -1,4 +1,6 @@
-# GARELON · Migración a la Pulsera Rosario Virgen María (v1)
+# GARELON · Migración a la Pulsera Rosario Virgen María (v1 + v1.1)
+
+> **v1.1 (02/10/2026): confianza + fe + opiniones + packs.** Frase de fe antes de los packs, packs 1/2/3 pulseras como variantes reales (cantidad 1), bloque «Compra con tranquilidad» (14 días de desistimiento), resumen de valoración real junto al precio y FAQ de devoluciones. Detalle en la **sección 9**; las secciones 1-8 están actualizadas donde la v1.1 cambia algo.
 
 Rama `claude/rosary-bracelet`, creada desde `b45d132` (última versión de la Taza Fondue, la que está subida a Shopify). La Taza Fondue queda congelada en `baseline/garelon-fondue` (`b45d132`). `main`, `claude/fondue-mug` y la PR #2 no se han tocado.
 
@@ -16,8 +18,8 @@ Todo lo de este documento está **probado en un render local que imita Shopify**
 | Paleta | Blanco `#FFFFFF` y marfil `#FAF7F2` dominantes; champán `#F3ECDF` (barra superior) y crema `#F7F1E6` (cierre); dorado de acción `#86672F` (blanco encima 5,3:1); dorado de texto `#7A5A24` (≥ 5,4:1 en todos los fondos); carbón `#2A2622` | Joyería luminosa; el dorado solo como acento y siempre AA. Es una decisión **de este producto**, no una regla GARELON |
 | Tipografía | **Lora + Inter, sin cambios** | Funcionan en móvil, son de la biblioteca de Shopify (sin fuentes externas) y Lora acompaña bien a las letras clásicas del logo |
 | Logo | Símbolo dorado aprobado (`Logo.png`) + letras GARELON del logo completo (`Logo y marca.png`) | Cabecera: símbolo + «GARELON» dorado en horizontal (el logo apilado no se lee a 56 px de alto). Pie: logo completo apilado. Cierre: símbolo. Favicon: **derivación técnica plana** del mismo símbolo (dorado sólido `#8C6A2C`): el acabado metálico se perdía a 32 px. Ningún logo sobre la pulsera |
-| Packs | **Desactivados** (`garelon_packs` fuera de las plantillas; el componente sigue en el código) | Packs no confirmados |
-| Variantes | Bloque estándar «Selector de variantes» de Dawn en home y ficha | Con una sola variante no se ve nada; si Shopify tiene variantes reales, aparecen solas |
+| Packs | v1: desactivados. **v1.1: activos** (`garelon_packs` en home y ficha): opción «Pack» = 1 pulsera / 2 pulseras / 3 pulseras, cada uno UNA variante real con cantidad 1 | Pedido del dueño (v1.1). Precios, IDs y SKU salen de Shopify |
+| Variantes | v1.1: el bloque de packs sustituye al selector de variantes y al de cantidad. Mientras Shopify tenga una sola variante, la tienda vende esa variante con el formulario estándar y el aviso sale solo en el editor | No romper el storefront antes de configurar los packs |
 | Envío gratis | Bloque presente pero **desactivado** (`show_free_shipping: false`, también por defecto en el schema). En el editor sale un aviso | Tarifa 0 € no verificada |
 | Barra superior | «Una joya para llevar contigo o regalar», sin bandera | Era «Envío gratis a España» (no verificado). Cabe en una línea a 320 px |
 | Notas del carrito | Vuelven los textos de Dawn: «Impuestos incluidos. Descuentos y envío calculados en la pantalla de pago.» | Decían «Envío gratis según las zonas…» |
@@ -44,19 +46,21 @@ Assets (WebP calidad 82, sin filtros; el producto no se ha tocado): `garelon-ros
 
 1. Barra superior · 2. Cabecera (Inicio · La pulsera · Detalles · Regalo · Preguntas · Contacto)
 3. **Portada**: «Joyería con significado» · **H1 Pulsera Rosario Virgen María** · «Una pieza delicada de acero inoxidable con acabado dorado, medalla de la Virgen María, cruz y cuentas tricolor.» · precio de Shopify · «Elegir mi pulsera» → `/#comprar` · «Ver los detalles →». En móvil la foto se encuadra en horizontal (CSS, ajuste nuevo `mobile_crop`) para que la pulsera se vea grande con H1, precio y botón en la primera pantalla desde 320 × 640
-4. **Compra** (`#comprar`): «Pulsera Rosario» · título · precio · «Una joya delicada para llevar a diario o regalar en un momento especial.» · (variantes si existen) · «Añadir al carrito» + pago dinámico. Nada debajo (sin envío gratis ni stock). Galería: detalle → principal → oración
-5. Opiniones (solo reales; sin app, 0 px)
-6. **Una joya que va más allá del detalle** (`#significado`, imagen de oración)
-7. **Detalles de la pulsera** (`#detalles`): Acero inoxidable (acabado dorado pulido) · Medalla de la Virgen María · Cruz y cuentas tricolor · Diseño ajustable + nota de origen y longitud
-8. **Un detalle para momentos que importan** (`#regalo`): Bautizo · Primera comunión · Confirmación · Navidad · Pascua · Otras ocasiones religiosas
-9. Confianza: ¿Dudas? · Envíos · Devoluciones (sin «Envío gratis» ni «Pago seguro»)
-10. FAQ (9 preguntas) · 11. Cierre: «Una joya con significado» + precio + «Elegir mi pulsera» · 12. Compra fija (móvil)
+4. **Compra** (`#comprar`): «Pulsera Rosario» · título · (valoración real, si existe) · precio · «Una joya delicada para llevar a diario o regalar en un momento especial.» · **«Un símbolo de tu fe, contigo cada día.»** · **Elige tu pack** (1 / 2 / 3 pulseras) · «Añadir al carrito» + pago dinámico. Nada debajo (sin envío gratis ni stock). Galería: detalle → principal → oración
+5. **Compra con tranquilidad** (`#tranquilidad`, v1.1): 14 días de desistimiento + garantía legal aplicable + enlace a la política de devoluciones
+6. Opiniones (solo reales; sin reseñas, 0 px)
+7. **Una joya que va más allá del detalle** (`#significado`, imagen de oración; hace también de lifestyle)
+8. **Detalles de la pulsera** (`#detalles`): Acero inoxidable (acabado dorado pulido) · Medalla de la Virgen María · Cruz y cuentas tricolor · Diseño ajustable + nota de origen y longitud
+9. **Un detalle para momentos que importan** (`#regalo`): Bautizo · Primera comunión · Confirmación · Navidad · Pascua · Otras ocasiones religiosas
+10. FAQ (10 preguntas) · 11. Cierre: «Una joya con significado» + precio + «Elegir mi pulsera» · 12. Compra fija (móvil)
+
+v1.1: la barra de confianza (¿Dudas? · Envíos · Devoluciones) sale de la home y de la ficha: «Compra con tranquilidad» cubre las devoluciones, el envío está en la FAQ y en la pestaña de la ficha, y el contacto en la cabecera, la FAQ y el pie. La sección sigue en el tema.
 
 Se retiraron: cómo funciona, momentos, compartir y colores (eran de la taza). El «lifestyle» va fusionado con «significado» (solo hay dos fotos fieles y no se repiten en el cuerpo de la home).
 
 ## 4. Ficha
 
-Galería del tema (principal → detalle → oración) · antetítulo «Joyería con significado» · H1 título de Shopify · valoración (solo si hay app) · precio · «Acero inoxidable con acabado dorado, medalla de la Virgen María, cruz y cuentas tricolor.» · variantes (si existen) · botones · descripción de Shopify · pestañas **Detalles** (material, elementos, longitud, nota de origen) · **Qué incluye** («Una Pulsera Rosario Virgen María.») · **Envíos y devoluciones** (políticas) · después: opiniones → detalles → servicio → FAQ → compra fija.
+Galería del tema (principal → detalle → oración) · antetítulo «Joyería con significado» · H1 título de Shopify · valoración real (bloque GARELON, solo con datos) · precio · «Acero inoxidable con acabado dorado, medalla de la Virgen María, cruz y cuentas tricolor.» · **«Un símbolo de tu fe, contigo cada día.»** · **Elige tu pack** · botones · descripción de Shopify · pestañas **Detalles** (material, elementos, longitud, nota de origen) · **Qué incluye** («Las pulseras del pack que elijas: 1, 2 o 3 Pulseras Rosario Virgen María.») · **Envíos y devoluciones** (políticas) · después: **Compra con tranquilidad** → opiniones → detalles → FAQ → compra fija.
 
 ## 5. FAQ (home, ficha y página de preguntas frecuentes, idéntica)
 
@@ -64,11 +68,12 @@ Galería del tema (principal → detalle → oración) · antetítulo «Joyería
 2. ¿Qué elementos tiene? — La pulsera incorpora una medalla de la Virgen María, una cruz y cuentas de rosario tricolor.
 3. ¿Es ajustable? — La imagen del proveedor muestra tres aros destinados al ajuste de la longitud.
 4. ¿Qué longitud tiene? — La imagen del proveedor indica una longitud de 7,87 pulgadas, que equivalen a unos 20 cm. (7,87 × 2,54 = 19,99 cm)
-5. ¿Qué incluye mi pedido? — Una Pulsera Rosario Virgen María.
+5. ¿Qué incluye mi pedido? — Las pulseras del pack que elijas: 1, 2 o 3 Pulseras Rosario Virgen María. (v1.1)
 6. ¿Para qué ocasiones puede ser un buen regalo? — Puede ser un detalle con significado para bautizos, primeras comuniones, confirmaciones, Navidad, Pascua u otras ocasiones religiosas.
 7. ¿Puedo llevarla a diario? — El proveedor la presenta como una pieza diseñada para lucir a diario.
 8. ¿Cuándo recibiré mi pedido? — Consulta los plazos y condiciones de entrega actualizados en nuestra política de envío (enlace).
-9. ¿Qué hago si tengo un problema con mi pedido? — Contacto + política de devoluciones (enlaces).
+9. **¿Puedo devolver mi pedido?** (v1.1) — En compras online dispones, con carácter general, de 14 días naturales desde la recepción para ejercer tu derecho de desistimiento. Consulta las condiciones y posibles excepciones en nuestra política de devoluciones (enlace a `/policies/refund-policy`).
+10. ¿Qué hago si tengo un problema con mi pedido? — Contacto + política de devoluciones (enlaces).
 
 Sin pregunta de cuidados (dato NO DISPONIBLE). 404: «Esta página no está disponible» · «Vuelve a GARELON y descubre nuestra Pulsera Rosario Virgen María.» · «Ver la pulsera» → `/#comprar`.
 
@@ -91,7 +96,8 @@ Sin pregunta de cuidados (dato NO DISPONIBLE). 404: «Esta página no está disp
 
 ## 7. Pruebas (render local)
 
-- Batería de la pulsera: **101/101** (contenido, limpieza, claims, compra de una variante, variantes reales, agotado, «No disponible», carrito, compra fija, FAQ con teclado, navegación, 404, SEO, contraste, responsive a 320–1440 px, primera pantalla a 320×640, 360×800, 375×667, 390×844 y 430×932, y regresión del componente de packs).
+- v1.1: batería ampliada a **146/146** (sección 9.6).
+- v1: batería de la pulsera: **101/101** (contenido, limpieza, claims, compra de una variante, variantes reales, agotado, «No disponible», carrito, compra fija, FAQ con teclado, navegación, 404, SEO, contraste, responsive a 320–1440 px, primera pantalla a 320×640, 360×800, 375×667, 390×844 y 430×932, y regresión del componente de packs).
 - Theme Check: **0 errores**, los 9 avisos de siempre de Dawn 16. Validador de plantillas y assets: OK. JSON válidos.
 - Capturas: `docs/garelon/capturas/rosary-v1/` (precio **simulado** 19,99 €).
 
@@ -101,23 +107,82 @@ Sin pregunta de cuidados (dato NO DISPONIBLE). 404: «Esta página no está disp
 
 **Shopify Admin**
 1. Importar o conectar el producto de AliExpress y confirmar el método (AutoDS, DSers, app, manual u otro): **no se ha asumido ninguno**.
+1b. (v1.1) **Crear los packs**: opción «Pack» con los valores «1 pulsera», «2 pulseras», «3 pulseras» (en ese orden), un precio real por variante (los ahorros solo aparecen si los precios los justifican), SKU y stock de cada una. Hasta entonces el editor muestra el aviso en la zona de compra.
 2. Crear o revisar el producto: título «Pulsera Rosario Virgen María»; descripción limpia (brief §7, sin 14K ni claims de AliExpress).
 3. Precio. Precio comparado solo si existe de verdad.
-4. Variantes reales (si las hay), SKU y stock.
+4. SKU y stock de cada variante (packs incluidos).
 5. Multimedia: subir las fotos elegidas y comprobar que el importador no añade la infografía con «14K» ni otras con texto o packaging.
 6. Elegir el producto en el editor (Portada, Compra, Llamada final, Opiniones y Compra fija de la home) o retirar la Taza Fondue del canal Tienda online: si no, las secciones pueden mostrar la taza.
 7. Envío real (zonas, tarifas, plazos). Si hay tarifa 0 €, activar «Envío gratis» en el bloque de la compra (home y ficha) y, si quieres, en la barra superior.
-8. Revisar la política de envío y la de devoluciones (joyería: higiene, plazos, dirección): no se han reescrito.
+8. Revisar la política de envío y la de devoluciones (joyería: higiene, plazos, dirección): no se han reescrito. (v1.1) **La política de devoluciones debe reflejar correctamente el derecho de desistimiento aplicable** (14 días naturales desde la recepción, cómo ejercerlo, costes, excepciones) y no contradecir «Compra con tranquilidad» ni la FAQ. **Garantía legal:** comprobar que GARELON vende como comerciante a consumidores en España y que la política es coherente; solo entonces se puede cambiar «garantía legal aplicable» por «3 años de garantía legal».
 9. SEO del producto (título y meta del brief §7), handle, y SEO + imagen para redes de la home (Preferencias).
 10. Redirección de la URL de la Taza Fondue → `/`.
-11. Reseñas: solo una app real con su bloque.
+11. Reseñas: solo una app real con su bloque en «GARELON Opiniones» (home y ficha); si importa opiniones, que sean del mismo producto y reales. El resumen junto al precio aparece solo cuando la app rellena `reviews.rating` y `reviews.rating_count`.
 12. Duplicar el tema publicado antes de subir este.
 
 **AliExpress / fulfillment**
 13. Validar el proveedor y el producto exacto (cruz colgante o intercalada, número de cuentas, aros).
 14. Confirmar 14K solo con una fuente fiable del mismo producto (y aun así, documentarlo antes de publicarlo).
 15. Validar SKU, variantes, stock, plazos y método de envío.
+15b. (v1.1) **Mapping de los packs.** La ficha de AliExpress es de UNA pulsera; el tema no le dice nada al proveedor. Según la integración elegida (DSers, AutoDS, app de AliExpress, bundle, manual…), comprobar: «1 pulsera» → 1 unidad del proveedor; «2 pulseras» → **2 unidades del mismo SKU**; «3 pulseras» → **3 unidades del mismo SKU**. No se ha configurado ningún mapping.
 16. Subir al repositorio las 6 imágenes originales del proveedor.
 
 **Pedido de prueba**
-17. Pedido de prueba completo (carrito → checkout → pago de prueba → pedido en AliExpress/app) con dirección española; comprobar variante, cantidad 1, plazos y seguimiento antes de lanzar anuncios.
+17. Pedido de prueba completo (carrito → checkout → pago de prueba → pedido en AliExpress/app) con dirección española; comprobar variante, cantidad 1, plazos y seguimiento antes de lanzar anuncios. (v1.1) **Un pedido de prueba por pack: 1, 2 y 3 pulseras**, comprobando que el proveedor recibe 1, 2 y 3 unidades.
+
+---
+
+## 9. Ronda v1.1 · confianza + fe + opiniones + packs
+
+Sobre el HEAD `fa741e8` de `claude/rosary-bracelet` (sin reiniciar la migración, sin tocar `main`, `claude/fondue-mug` ni la PR #2).
+
+### 9.1 Frase de fe
+
+- **Copy:** «Un símbolo de tu fe, contigo cada día.» (la preferida del dueño, sin cambios).
+- **Dónde:** zona de compra de la home y ficha, **inmediatamente antes de «Elige tu pack»** (después de título, valoración, precio y descripción breve: el precio se queda arriba porque Dawn lo actualiza al cambiar de pack). Una vez por página; no aparece en ningún otro sitio.
+- **Diseño:** bloque nuevo `garelon_quote` (`snippets/garelon-quote.liquid`): franja centrada, fondo champán muy claro `#FBF7EF`, borde dorado fino de 1 px, radio 12 px, Lora cursiva 16,5 px (17,5 px en escritorio, 14,5 px por debajo de 360 px), sin iconos ni sombras. Una línea de 320 a 1440 px (dos como mucho en la columna estrecha de 768 px), ≤ 72 px de alto.
+- Sin promesas espirituales (protección, milagros, suerte, bendiciones).
+
+### 9.2 Packs 1 / 2 / 3 pulseras
+
+- **Arquitectura Shopify:** opción «Pack» → «1 pulsera», «2 pulseras», «3 pulseras». Cada valor es **UNA variante real** y se añade con **quantity=1** («2 pulseras» × 1, nunca «1 pulsera» × 2). Probado: el carrito recibe la variante del pack con `quantity=1`, sin selector de cantidad.
+- **Componente:** se reutiliza `garelon-packs` (genérico, probado con la taza) sin la lógica de colores: con una sola opción no pinta botones; los comentarios, avisos y textos de ayuda ya no hablan de Color × Pack ni de «unidades».
+- **Copy:** título «Elige tu pack»; tarjetas «1 pulsera · Individual», «2 pulseras · Pack de 2», «3 pulseras · Pack de 3», con el precio real de cada variante. Sin «Más vendido», «Favorito», «Oferta limitada», «Solo hoy», «Quedan X» ni «viral».
+- **Ahorro y precio por unidad: solo si es verdad.** Con precios iguales por unidad no se muestra nada más que el precio. Si los precios reales lo justifican, aparecen solos: precio/unidad, «Ahorra X €» (= precio de «1 pulsera» × N − precio del pack) y la insignia «Mejor precio/unidad» en el único pack con el precio por unidad más bajo. Ajuste nuevo `unit_price_only_savings` (activo). Sin «Sin descuento», sin porcentaje, sin precio tachado.
+- **Nada escrito a mano:** ni precios, ni compare-at, ni descuentos, ni porcentajes, ni SKU, ni IDs. Probado en las plantillas.
+- **Shopify todavía sin packs:** la tienda sigue vendiendo la variante única con el formulario estándar; en el **editor** sale «Configuración de Shopify pendiente o incorrecta para packs» con los pasos («1 pulsera», «2 pulseras», «3 pulseras»). El cliente no ve ningún aviso (tampoco el comentario HTML, que ahora sale solo en el editor).
+- **Fulfillment:** ver MANUAL TODO 15b y 17. El tema no sabe nada del proveedor.
+
+### 9.3 Compra con tranquilidad (14 días)
+
+- Sección nueva reutilizable `sections/garelon-assurance.liquid` («GARELON Compra tranquila»).
+- **Copy:** escudo lineal dorado · «14 días para cambiar de opinión» · **«Compra con tranquilidad»** · «En compras online dispones de 14 días naturales desde la recepción del pedido para ejercer tu derecho de desistimiento. Además, tus derechos frente a faltas de conformidad están cubiertos por la garantía legal aplicable.» · «Consulta la política de devoluciones» → `/policies/refund-policy` (resuelto por `garelon-url`).
+- **Terminología:** «desistimiento» / «14 días para cambiar de opinión». Nunca «garantía de 14 días» ni «sin riesgos». Sin «sin usar», «embalaje original», WhatsApp, teléfonos ni emails: las condiciones viven en la política.
+- **Garantía legal:** texto genérico «garantía legal aplicable». No se pone «3 años» porque no se ha podido comprobar en Shopify Admin (MANUAL TODO 8).
+- **Dónde:** home justo después de la compra; ficha justo después de la zona de producto. Sin versión compacta junto al botón (no ensuciar la compra).
+- **Diseño:** tarjeta marfil `#FAF7F2` ancha (88 rem) sobre blanco, borde dorado fino, radio 20 px, icono en círculo blanco, H2 serif, párrafo centrado ≤ 60 rem, enlace discreto ≥ 44 px. Ajuste `show_card`.
+- Si la política de devoluciones está vacía, el editor lo avisa.
+
+### 9.4 Opiniones
+
+- `sections/garelon-reviews.liquid` se mantiene (bloque `@app` o `product.metafields.reviews.rating` / `rating_count`). Nuevo: en páginas que no son la ficha, si la sección no tiene producto elegido usa el primero del catálogo (tienda de un producto), como la portada y la compra.
+- **Orden:** compra → tranquilidad → **opiniones** → significado (home); producto → tranquilidad → opiniones (ficha).
+- **Resumen junto al precio:** bloque nuevo `garelon_rating` (`snippets/garelon-rating-summary.liquid`): «★★★★★ · 4,6/5 · 12 opiniones» (ejemplo con datos **simulados** del harness), enlazado a `#opiniones`, todo leído de los metafields. Sin valoración o con 0 opiniones no pinta nada. Sustituye en la ficha al bloque «Valoración» de Dawn.
+- **Sin reseñas reales:** ni sección, ni estrellas, ni «0 opiniones»; en el editor, el aviso «oculta para los clientes». Ningún dato de reseñas creado en el tema.
+
+### 9.5 FAQ
+
+Nueva pregunta «¿Puedo devolver mi pedido?» (ver sección 5) y «Qué incluye» adaptada a los packs. 10 preguntas, iguales en home, ficha y página de preguntas frecuentes.
+
+### 9.6 Pruebas
+
+- Batería **146/146** (`rtest.js`, render local con el JS real de Dawn y **variantes simuladas**):
+  - **Packs (K1-K17):** reconoce «Pack»; 1/2/3 pulseras con su precio; sin ahorro inventado; un único `quantity` oculto = 1; frase justo antes de los packs; cambio de variante y precio; carrito con 4102 × 1 y 4103 × 1 («Pack: 2 pulseras» en el cart drawer); `?variant=`; compra fija; agotado; «No disponible»; ahorro y precio/unidad calculados (4,99 € y 11,98 € con precios simulados 19,99 / 34,99 / 47,99); insignia solo en el mejor; aviso solo en el editor; sin restos de Color × Pack.
+  - **Opiniones (R1-R5):** sin reseñas invisible; con metafields simulados, resumen «4,6/5 · 12 opiniones» bajo el título y en la sección; con `@app`, la sección se pinta en su sitio; aviso en el editor.
+  - **Confianza (T1-T4):** copy y enlace; «14 días» solo en tranquilidad y FAQ; 0 «garantía de 14 días», «sin riesgos», «sin usar», «embalaje original», WhatsApp.
+  - **Responsive (W2):** 320, 360, 375, 390, 430, 768, 1024 y 1440 px en home y ficha: sin scroll horizontal, tarjetas ≥ 44 px, frase compacta, resumen ≥ 44 px.
+  - Todo lo anterior de la v1 sigue pasando (ajustado al nuevo orden y a la FAQ de 10).
+- Theme Check: **0 errores** (los 9 avisos de siempre de Dawn). Validador y JSON: OK.
+- Capturas: `docs/garelon/capturas/rosary-v1.1/` (precios **simulados**).
+
+**No probado:** Shopify real (variantes reales, editor, apps de reseñas), checkout, AliExpress, mapping de packs ni pedidos.

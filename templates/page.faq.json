@@ -42,7 +42,7 @@
           "type": "question",
           "settings": {
             "question": "¿Qué incluye mi pedido?",
-            "answer": "<p>Una Pulsera Rosario Virgen María.</p>"
+            "answer": "<p>Las pulseras del pack que elijas: 1, 2 o 3 Pulseras Rosario Virgen María.</p>"
           }
         },
         "q-regalo": {
@@ -66,6 +66,13 @@
             "answer": "<p>Consulta los plazos y condiciones de entrega actualizados en nuestra <a href=\"/policies/shipping-policy\" title=\"Política de envío\">política de envío</a>.</p>"
           }
         },
+        "q-devolver": {
+          "type": "question",
+          "settings": {
+            "question": "¿Puedo devolver mi pedido?",
+            "answer": "<p>En compras online dispones, con carácter general, de 14 días naturales desde la recepción para ejercer tu derecho de desistimiento. Consulta las condiciones y posibles excepciones en nuestra <a href=\"/policies/refund-policy\" title=\"Política de devoluciones\">política de devoluciones</a>.</p>"
+          }
+        },
         "q-problema": {
           "type": "question",
           "settings": {
@@ -83,6 +90,7 @@
         "q-regalo",
         "q-diario",
         "q-envio",
+        "q-devolver",
         "q-problema"
       ],
       "settings": {

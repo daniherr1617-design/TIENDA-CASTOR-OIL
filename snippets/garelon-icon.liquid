@@ -4,7 +4,7 @@
   Accepts:
   - icon: {String} medal | cross | beads | chain | rings | gem | material | measure | heart | gift | star
            | calendar | drop | leaf | sparkle | box | colors | users | home | moon | steps | clock | lock
-           | chat | truck | return | check | none
+           | chat | truck | return | check | shield | none
     Joyería (Pulsera Rosario): medal, cross, beads, chain, rings, gem, material. El resto son genéricos.
 
   Usage:
@@ -77,6 +77,8 @@
         <path d="M19 14.5A7.5 7.5 0 0 1 9.5 5a7.5 7.5 0 1 0 9.5 9.5Z"/>
       {%- when 'users' -%}
         <circle cx="9" cy="8.5" r="3"/><path d="M3.5 19.5a5.5 5.5 0 0 1 11 0"/><circle cx="16.5" cy="9.5" r="2.5"/><path d="M15.8 14.1a4.6 4.6 0 0 1 4.7 5.4"/>
+      {%- when 'shield' -%}
+        <path d="M12 3.2 5 5.8v5.6c0 4.3 2.9 7.8 7 9.3 4.1-1.5 7-5 7-9.3V5.8z"/><path d="m8.9 12.1 2.2 2.2 4.1-4.2"/>
       {%- when 'check' -%}
         <circle cx="12" cy="12" r="8.5"/><path d="m8.3 12.2 2.4 2.4 5-5"/>
     {%- endcase -%}

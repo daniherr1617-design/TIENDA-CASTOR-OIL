@@ -791,7 +791,7 @@ product-info {
   color: inherit;
 }
 
-/* ---------- Color × Pack (snippets/garelon-packs.liquid + garelon-choice.liquid) ---------- */
+/* ---------- Packs (snippets/garelon-packs.liquid + garelon-choice.liquid) ---------- */
 .g-packs {
   display: block;
   max-width: 48rem;
@@ -2562,4 +2562,165 @@ a.g-trust__title {
   .garelon-help__link:focus-visible .garelon-help__arrow {
     transform: none;
   }
+}
+
+/* ---------- Frase destacada de la compra (snippets/garelon-quote.liquid) ----------
+   Franja compacta justo antes de «Elige tu pack»: champán muy claro, borde dorado fino, serif. */
+.g-quote {
+  margin: 0.4rem 0 1.4rem;
+  padding: 1rem 1.6rem;
+  border: 1px solid var(--g-gold-line);
+  border-radius: 12px;
+  background: #fbf7ef;
+  text-align: center;
+}
+
+.g-quote__text {
+  margin: 0;
+  font-family: var(--font-heading-family);
+  font-style: italic;
+  font-size: 1.65rem;
+  line-height: 1.4;
+  letter-spacing: 0.005em;
+  color: var(--g-ink);
+}
+
+@media screen and (max-width: 359px) {
+  .g-quote {
+    padding: 0.9rem 1rem;
+  }
+
+  .g-quote__text {
+    font-size: 1.45rem;
+  }
+}
+
+@media screen and (min-width: 990px) {
+  .g-quote__text {
+    font-size: 1.75rem;
+  }
+}
+
+/* Etiquetas editoriales de los packs («Individual», «Pack de 2»): tono champán. */
+.g-pack__tag {
+  background: var(--g-accent-soft);
+  color: var(--g-accent-ink);
+}
+
+/* ---------- Resumen de valoración real (snippets/garelon-rating-summary.liquid) ---------- */
+.g-rating {
+  margin: -0.4rem 0 0.8rem;
+}
+
+.g-rating__link {
+  display: inline-flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.6rem;
+  min-height: 4.4rem;
+  margin: 0;
+  font-size: 1.35rem;
+  color: rgb(var(--color-foreground));
+  text-decoration: none;
+}
+
+a.g-rating__link:hover .g-rating__count {
+  text-decoration: underline;
+}
+
+.g-rating .rating {
+  display: inline-block;
+  margin: 0;
+}
+
+.g-rating .rating .rating-star {
+  --color-rating-star: var(--g-accent);
+  --font-size: 1.6;
+  --letter-spacing: 0.6;
+}
+
+.g-rating__text {
+  display: inline-flex;
+  gap: 0.6rem;
+}
+
+.g-rating__value {
+  font-weight: 600;
+}
+
+/* ---------- Compra con tranquilidad (sections/garelon-assurance.liquid) ---------- */
+.g-assurance__inner {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  max-width: 64rem;
+  margin: 0 auto;
+  text-align: center;
+}
+
+.g-assurance__inner--card {
+  max-width: 88rem;
+  padding: 4rem 2rem 3.2rem;
+  border: 1px solid var(--g-gold-line);
+  border-radius: 20px;
+  background: #faf7f2;
+}
+
+.g-assurance__inner--card > :not(.g-assurance__icon) {
+  max-width: 60rem;
+}
+
+@media screen and (min-width: 750px) {
+  .g-assurance__inner--card {
+    padding: 5.6rem 4.8rem 4.4rem;
+  }
+}
+
+.g-assurance__icon {
+  display: grid;
+  place-items: center;
+  width: 5.6rem;
+  height: 5.6rem;
+  margin-bottom: 1.6rem;
+  border: 1px solid var(--g-gold-line);
+  border-radius: 50%;
+  background: #fff;
+  color: var(--g-accent-ink);
+}
+
+.g-assurance__icon .g-icon {
+  width: 2.8rem;
+  height: 2.8rem;
+}
+
+.g-assurance__eyebrow::before {
+  display: none;
+}
+
+.g-assurance__heading {
+  margin-bottom: 1.4rem;
+}
+
+.g-assurance__text {
+  font-size: 1.6rem;
+  line-height: 1.65;
+  color: rgba(var(--color-foreground), 0.82);
+}
+
+.g-assurance__text p {
+  margin: 0 0 1rem;
+}
+
+.g-assurance__link {
+  display: inline-flex;
+  align-items: center;
+  min-height: 4.4rem;
+  margin-top: 0.4rem;
+  font-size: 1.5rem;
+  color: var(--g-accent-ink);
+  text-underline-offset: 0.3rem;
+}
+
+.g-assurance .g-editor-note {
+  margin-top: 1.6rem;
 }

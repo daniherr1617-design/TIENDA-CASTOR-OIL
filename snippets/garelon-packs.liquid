@@ -1,49 +1,43 @@
 {%- comment -%}
-  GARELON · Color × Pack sobre VARIANTES REALES de Shopify.
+  GARELON · Packs sobre VARIANTES REALES de Shopify.
 
-  Producto con dos opciones, por ejemplo:
-    Color: A / B / C
-    Pack:  1 unidad / 2 unidades / 3 unidades
-  = 9 variantes reales, cada una con su precio en Shopify. Un pack siempre es del MISMO
-  color (2 del color A, 3 del color B…): lo garantiza la propia variante, nunca se mezclan colores.
+  Caso base (Pulsera Rosario): una sola opción
+    Pack: 1 pulsera / 2 pulseras / 3 pulseras
+  = 3 variantes reales, cada una con su precio en Shopify. Si el producto tuviera además otra
+  opción real con varios valores, se muestra como botones (garelon-choice) y cada pack se
+  combina con ese valor; las opciones de UN solo valor (p. ej. «Title: Único» importado del
+  proveedor) van ocultas y marcadas.
 
-  Qué ve el cliente ANTES de añadir al carrito:
-    Color (botones con la foto de ese color) → Elige tu pack (tarjetas con precio del pack,
-    precio por unidad, «Ahorra X € (-N %)», referencia «Comprando por separado: Y €» visible u
-    oculta según el ajuste, e insignia «Mejor precio/unidad» si de verdad es el pack con el
-    precio por unidad más bajo).
-  Sin opción de color, funciona igual que antes (solo packs).
+  Cada pack es UNA variante y la cantidad es siempre 1: «2 pulseras» llega al carrito (y al
+  proveedor) como esa variante × 1, nunca «1 pulsera» × 2. Este bloque sustituye al selector
+  de variantes Y al de cantidad (las secciones no pintan «Selector de cantidad» si existe
+  este bloque) y añade quantity=1 al formulario.
 
-  Cada combinación es UNA variante y la cantidad es siempre 1: «A / 2 unidades» llega al
-  carrito (y al proveedor) como esa variante × 1, nunca «1 unidad» × 2. Este bloque sustituye
-  al selector de variantes Y al de cantidad (las secciones no pintan «Selector de cantidad»
-  si existe este bloque) y añade quantity=1 al formulario.
+  Qué ve el cliente ANTES de añadir al carrito: «Elige tu pack» y una tarjeta por pack con su
+  etiqueta editorial (p. ej. «Individual», «Pack de 2») y el precio real de la variante.
+  Solo si los precios reales lo justifican (calculado, nada escrito a mano):
+    - «Ahorra X €»: precio de la variante de 1 × unidades − precio del pack (si es > 0).
+    - precio por unidad: precio del pack ÷ unidades (ajuste: siempre o solo con ahorro real).
+    - insignia «Mejor precio/unidad»: solo en el pack con el precio por unidad más bajo, si es
+      el único con ese precio y tiene más de 1 unidad.
+  No se usa compare_at_price.
 
   Cómo funciona:
   - Pinta el <variant-selects> de Dawn con radios compatibles (form, data-option-value-id,
     data-product-url, data-option-name). Dawn hace el resto sin JS propio: product-info.js
     pide la sección a Shopify con los valores elegidos, actualiza precio, stock, botón, id
     de la variante y URL (?variant=) y vuelve a pintar el bloque con los datos reales.
-  - Los precios de cada tarjeta son los de la variante del pack EN EL COLOR ELEGIDO
-    (value.variant = ese pack combinado con el color seleccionado). Todo sale de
-    variant.price (nada escrito a mano):
-      referencia  = precio de «1 unidad» del mismo color × unidades del pack
-      ahorro      = referencia − precio del pack (solo si es > 0)
-      por unidad  = precio del pack ÷ unidades
-    No se usa compare_at_price.
   - Opción de packs: la indicada en «Nombre de la opción», la única opción con varios
     valores, una opción llamada «Pack»/«Packs»/«Cantidad», o la única cuyos valores llevan
-    todos un número. El resto de opciones con varios valores (p. ej. «Color») se muestran
-    como botones; las de UN solo valor (p. ej. «Color: Único» importado del proveedor) van ocultas y marcadas.
-  - Unidades: el primer número del valor («2 unidades», «Pack 2», «2PCS», «x2» → 2) o el
-    ajuste «Unidades de cada pack» (1,2,3). Debe existir un pack de 1 unidad (es la
-    referencia del ahorro).
+    todos un número.
+  - Unidades: el primer número del valor («2 pulseras», «Pack 2», «2PCS», «x2» → 2) o el
+    ajuste «Unidades de cada pack» (1,2,3). Debe existir el pack de 1 (referencia del ahorro).
   - Selección inicial: la de Shopify (?variant= o la primera variante disponible).
-  - Combinación agotada o inexistente: tarjeta desactivada con «Agotado» / «No disponible»,
-    sin cifras de stock. Un color sin stock en el pack elegido se marca «Agotado».
-  - Si el producto no cumple las condiciones: selector estándar de Dawn y, SOLO en el
-    editor de temas, un aviso «Configuración de Shopify pendiente o incorrecta para packs»
-    con el motivo exacto. El cliente nunca ve el aviso.
+  - Pack agotado o inexistente: tarjeta desactivada con «Agotado» / «No disponible», sin
+    cifras de stock.
+  - Si el producto no cumple las condiciones (p. ej. aún tiene una sola variante): selector
+    estándar de Dawn y, SOLO en el editor de temas, un aviso con el motivo exacto. El cliente
+    nunca ve el aviso y la tienda sigue vendiendo la variante única.
 
   Accepts:
   - product: {Object}
@@ -117,7 +111,7 @@
     assign pack_option = null
   endif
 
-  # Primera pasada: unidades de cada valor y la variante de ese pack en el color elegido.
+  # Primera pasada: unidades de cada valor y la variante de ese pack con el resto de opciones elegidas.
   # Se guardan en listas (mismo orden que los valores) para las pasadas siguientes.
   assign units_list = ''
   assign variant_ids = ''
@@ -205,7 +199,7 @@
     assign pack_mode = true
   endif
 
-  # Segunda pasada: precio de «1 unidad» del color elegido, mejor precio por unidad y ahorro.
+  # Segunda pasada: precio del pack de 1, mejor precio por unidad y ahorro.
   assign base_price = null
   assign best_unit_price = 999999999
   assign best_count = 0
@@ -299,7 +293,7 @@
     {% # theme-check-enable %}
     {{ block.shopify_attributes }}
   >
-    {%- comment -%} 1) Opciones que no son el pack: color (botones) u opciones fijas (ocultas). {%- endcomment -%}
+    {%- comment -%} 1) Opciones que no son el pack: botones (varios valores) u opciones fijas (ocultas). {%- endcomment -%}
     {%- render 'garelon-choice',
       product: product,
       block: block,
@@ -307,7 +301,7 @@
       product_form_id: product_form_id
     -%}
 
-    {%- comment -%} 2) Packs del color elegido. {%- endcomment -%}
+    {%- comment -%} 2) Packs. {%- endcomment -%}
     {%- if any_savings and block.settings.offer_label != blank -%}
       <p class="g-packs__offer">{{ block.settings.offer_label | escape }}</p>
     {%- endif -%}
@@ -423,7 +417,15 @@
                     <span class="g-pack__price">{{ pack_variant.price | money }}</span>
                   {%- endif -%}
                 </span>
-                {%- if block.settings.show_unit_price and pack_variant -%}
+                {%- liquid
+                  assign card_unit_price = false
+                  if block.settings.show_unit_price and pack_variant
+                    if block.settings.unit_price_only_savings == false or any_savings
+                      assign card_unit_price = true
+                    endif
+                  endif
+                -%}
+                {%- if card_unit_price -%}
                   <span class="g-pack__unit">
                     {{- unit_price | money -}}
                     <span aria-hidden="true">/{{ unit_name | escape }}</span>
@@ -469,7 +471,9 @@
     </script>
   </variant-selects>
 {%- else -%}
-  <!-- GARELON packs: selector estándar (motivo: {{ pack_issue }}) -->
+  {%- if request.design_mode -%}
+    <!-- GARELON packs: selector estándar (motivo: {{ pack_issue }}) -->
+  {%- endif -%}
   {%- render 'product-variant-picker', product: product, block: block, product_form_id: product_form_id -%}
 {%- endif -%}
 {%- comment -%}
