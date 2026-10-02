@@ -107,7 +107,7 @@
   },
   "products": {
     "product": {
-      "add_to_cart": "Agregar al carrito",
+      "add_to_cart": "Añadir al carrito",
       "description": "Descripción",
       "on_sale": "Oferta",
       "quantity": {
@@ -295,7 +295,7 @@
       "product_disclosure": "Aviso sobre el producto",
       "product_disclosures": "Avisos sobre el producto",
       "cart_error": "Hubo un error al actualizar tu carrito de compra. Inténtalo de nuevo.",
-      "cart_quantity_error_html": "Solo puedes agregar {{ quantity }} de este artículo a tu carrito.",
+      "cart_quantity_error_html": "Solo puedes añadir {{ quantity }} de este artículo a tu carrito.",
       "headings": {
         "product": "Producto",
         "price": "Precio",
@@ -386,7 +386,7 @@
       "remove_all_single_item_confirmation": "¿Eliminar 1 artículo de tu carrito?",
       "min_error": "Este artículo tiene un mínimo de {{ min }}.",
       "max_error": "Este artículo tiene un máximo de {{ max }}.",
-      "step_error": "Solo puedes agregar este artículo en incrementos de {{ step }}"
+      "step_error": "Solo puedes añadir este artículo en incrementos de {{ step }}"
     }
   },
   "localization": {
@@ -552,6 +552,17 @@
     },
     "header": {
       "account": "Iniciar sesión"
+    },
+    "gallery": {
+      "label": "Galería de imágenes de la pulsera",
+      "alt_principal": "Pulsera rosario de acabado dorado en la muñeca, con medalla ovalada de la Virgen María, cruz colgante y cuentas en tonos dorado, plateado y rosado",
+      "alt_detalle": "Detalle de la pulsera rosario: medalla ovalada de la Virgen María con borde de pequeñas piedras, cruz y cuentas tricolor",
+      "alt_oracion": "Mujer con las manos juntas en actitud de oración y la pulsera rosario dorada en la muñeca"
+    },
+    "packs": {
+      "per": "por",
+      "save": "ahorras {{ amount }}",
+      "editor_missing": "Solo en el editor: el producto aún no tiene la opción «Pack» con los valores «1 pulsera», «2 pulseras» y «3 pulseras». Los clientes compran la variante actual con normalidad. Crea las variantes en Productos › (producto) › Variantes."
     }
   }
 }

@@ -542,6 +542,23 @@ def check_image_keys(theme):
                 for o in d.get('options', []):
                     if o['value'] != 'none' and o['value'] not in keys:
                         err(f'sections/{st_type}.liquid', f'image_key ofrece «{o["value"]}», que no tiene imagen')
+            if d.get('id', '').endswith('gallery_keys') and 'default' in d:
+                for k in d['default'].split(','):
+                    if k.strip() not in keys:
+                        err(f'sections/{st_type}.liquid', f'{d["id"]}: clave de imagen «{k.strip()}» sin imagen')
+    # Valores guardados en plantillas y grupos.
+    for dp, _, fns in os.walk(os.path.join(theme.root, 'templates')):
+        for fn in fns:
+            if not fn.endswith('.json'):
+                continue
+            relp = os.path.relpath(os.path.join(dp, fn), theme.root)
+            data = load_json(theme.root, relp) or {}
+            for sid, sec in (data.get('sections') or {}).items():
+                for k, v in (sec.get('settings') or {}).items():
+                    if k.endswith('gallery_keys') and isinstance(v, str):
+                        for key in v.split(','):
+                            if key.strip() not in keys:
+                                err(f'{relp} › {sid}', f'{k}: clave de imagen «{key.strip()}» sin imagen')
 
 
 # ---------------------------------------------------------------- main

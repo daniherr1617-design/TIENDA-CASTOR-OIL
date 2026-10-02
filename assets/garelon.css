@@ -244,3 +244,173 @@ body {
     min-width: 24rem;
   }
 }
+
+/* ---------- Compra (featured-product de Dawn) ---------- */
+.g-gallery {
+  outline-offset: 0.4rem;
+}
+.g-gallery__track {
+  display: flex;
+  gap: 1rem;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  overflow-x: auto;
+  scroll-snap-type: x mandatory;
+  scrollbar-width: none;
+  -webkit-overflow-scrolling: touch;
+}
+.g-gallery__track::-webkit-scrollbar {
+  display: none;
+}
+.g-gallery__slide {
+  flex: 0 0 86%;
+  scroll-snap-align: start;
+  border-radius: var(--g-radius);
+  overflow: hidden;
+  background: rgba(42, 38, 34, 0.04);
+}
+.g-gallery__img {
+  display: block;
+  width: 100%;
+  height: auto;
+  aspect-ratio: 1 / 1;
+  object-fit: cover;
+}
+@media screen and (min-width: 750px) {
+  .g-gallery__track {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    overflow: visible;
+  }
+  .g-gallery__slide:first-child {
+    grid-column: 1 / -1;
+  }
+}
+.featured-product .product__title {
+  margin-bottom: 0.4rem;
+}
+.g-quote {
+  margin: 1.6rem 0 0.4rem;
+  padding: 1.2rem 1.6rem;
+  border: 1px solid var(--g-gold-line);
+  border-radius: var(--g-radius);
+  background: #fbf7ef;
+  font-family: var(--font-heading-family);
+  font-style: italic;
+  font-size: 1.65rem;
+  line-height: 1.4;
+  text-align: center;
+  color: rgb(var(--color-foreground));
+}
+@media screen and (max-width: 359px) {
+  .g-quote {
+    font-size: 1.45rem;
+    padding: 1rem 1.2rem;
+  }
+}
+.product-form__input--pill input[type='radio'] + label {
+  min-height: 4.4rem;
+  display: inline-flex;
+  align-items: center;
+  padding: 1rem 2rem;
+  font-size: 1.5rem;
+}
+.g-packs {
+  margin: 0.4rem 0 1.6rem;
+}
+.g-packs__heading {
+  margin: 0 0 0.6rem;
+  font-size: 1.3rem;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: rgba(var(--color-foreground), 0.75);
+}
+.g-packs__list {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  border-top: 1px solid var(--g-line);
+}
+.g-packs__row {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 0.2rem 1rem;
+  padding: 0.8rem 0;
+  border-bottom: 1px solid var(--g-line);
+  font-size: 1.45rem;
+}
+.g-packs__price {
+  font-weight: 600;
+}
+.g-packs__save {
+  flex-basis: 100%;
+  font-size: 1.3rem;
+  color: var(--g-accent-ink);
+}
+.g-packs__soldout {
+  flex-basis: 100%;
+  font-size: 1.3rem;
+  color: rgba(var(--color-foreground), 0.7);
+}
+.g-packs__row--soldout .g-packs__name,
+.g-packs__row--soldout .g-packs__price {
+  text-decoration: line-through;
+  opacity: 0.6;
+}
+.g-editor-note {
+  margin: 1rem 0;
+  padding: 1rem 1.2rem;
+  border: 1px dashed #b3261e;
+  border-radius: 8px;
+  font-size: 1.3rem;
+  color: #8a1c15;
+  background: #fff6f5;
+}
+.featured-product .product-form__submit {
+  min-height: 5.2rem;
+  font-size: 1.6rem;
+}
+/* Packs: los botones de variante de Dawn en una fila, con objetivo táctil ≥ 44 px. */
+.product-form__input--pill {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(8.6rem, 1fr));
+  gap: 0.8rem;
+}
+.product-form__input--pill .form__label {
+  grid-column: 1 / -1;
+  margin-bottom: 0;
+}
+.product-form__input--pill input[type='radio'] + label {
+  justify-content: center;
+  width: 100%;
+  margin: 0;
+  padding: 1rem 0.4rem;
+  text-align: center;
+  font-size: 1.4rem;
+  letter-spacing: 0;
+  white-space: nowrap;
+}
+/* «Añadir al carrito» como acción principal (Dawn lo pinta con contorno si hay pago dinámico);
+   «Comprar ahora» sin marca, con contorno. Solo el tema: el checkout no se toca. */
+.product-form__submit.button--secondary {
+  --color-button: var(--color-base-accent-1, 134, 103, 47);
+  background-color: var(--g-accent);
+  color: #fff;
+}
+.product-form__submit.button--secondary::after {
+  box-shadow: none;
+}
+.product-form__submit.button--secondary:hover:not([disabled]) {
+  background-color: var(--g-accent-dark);
+}
+.product-form__submit.button--secondary[disabled] {
+  background-color: rgba(42, 38, 34, 0.35);
+}
+.shopify-payment-button__button--unbranded {
+  background-color: transparent !important;
+  color: var(--g-ink) !important;
+  border: 1px solid var(--g-ink) !important;
+}

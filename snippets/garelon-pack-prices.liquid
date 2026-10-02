@@ -1,0 +1,80 @@
+{%- comment -%}
+  GARELON · Precio de cada pack, leído de las variantes reales de Shopify.
+
+  Un pack es UNA variante de la opción «Pack» (p. ej. «1 pulsera», «2 pulseras», «3 pulseras»)
+  y se añade al carrito con cantidad 1 (el selector es el de Dawn). Aquí solo se informa:
+  precio de cada pack y, SOLO si los precios reales lo justifican, precio por unidad y ahorro
+  frente a comprar las mismas unidades por separado. Nada escrito a mano.
+
+  Si el producto no tiene la opción «Pack», el cliente no ve nada; en el editor sale un aviso.
+
+  Parámetros: product, block (ajustes: heading, option_name, unit_singular)
+{%- endcomment -%}
+{%- liquid
+  assign option_name = block.settings.option_name | default: 'Pack' | downcase
+  assign pack_option = nil
+  for option in product.options_with_values
+    assign n = option.name | downcase
+    if n == option_name
+      assign pack_option = option
+    endif
+  endfor
+
+  assign usable = false
+  if pack_option != nil and product.options.size == 1 and pack_option.values.size > 1
+    assign usable = true
+  endif
+
+  assign base_price = nil
+  if usable
+    for value in pack_option.values
+      assign units = value.name | split: ' ' | first | plus: 0
+      if units == 1
+        assign v = product.variants | where: 'option1', value.name | first
+        assign base_price = v.price
+      endif
+    endfor
+  endif
+-%}
+{%- if usable -%}
+  <div class="g-packs" {{ block.shopify_attributes }}>
+    {%- if block.settings.heading != blank -%}
+      <p class="g-packs__heading">{{ block.settings.heading | escape }}</p>
+    {%- endif -%}
+    <ul class="g-packs__list" role="list">
+      {%- for value in pack_option.values -%}
+        {%- liquid
+          assign v = product.variants | where: 'option1', value.name | first
+          assign units = value.name | split: ' ' | first | plus: 0
+          assign savings = 0
+          assign unit_price = 0
+          if base_price and units > 1 and v
+            assign reference = base_price | times: units
+            assign savings = reference | minus: v.price
+            assign unit_price = v.price | times: 1.0 | divided_by: units | round
+          endif
+        -%}
+        {%- if v -%}
+          <li class="g-packs__row{% if v.available == false %} g-packs__row--soldout{% endif %}">
+            <span class="g-packs__name">{{ value.name | escape }}</span>
+            <span class="g-packs__price">{{ v.price | money }}</span>
+            {%- if savings > 0 -%}
+              {%- assign savings_money = savings | money -%}
+              <span class="g-packs__save">
+                {{- unit_price | money }} {{ 'garelon.packs.per' | t }} {{ block.settings.unit_singular | escape }} ·
+                {{ 'garelon.packs.save' | t: amount: savings_money -}}
+              </span>
+            {%- endif -%}
+            {%- unless v.available -%}
+              <span class="g-packs__soldout">{{ 'products.product.sold_out' | t }}</span>
+            {%- endunless -%}
+          </li>
+        {%- endif -%}
+      {%- endfor -%}
+    </ul>
+  </div>
+{%- elsif request.design_mode -%}
+  <p class="g-editor-note" {{ block.shopify_attributes }}>
+    {{ 'garelon.packs.editor_missing' | t }}
+  </p>
+{%- endif -%}

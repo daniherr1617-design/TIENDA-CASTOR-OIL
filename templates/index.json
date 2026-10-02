@@ -18,9 +18,80 @@
         "padding_top": 16,
         "padding_bottom": 40
       }
+    },
+    "compra": {
+      "type": "featured-product",
+      "blocks": {
+        "titulo": {
+          "type": "title",
+          "settings": {
+            "heading_size": "h1"
+          }
+        },
+        "valoracion": {
+          "type": "rating"
+        },
+        "precio": {
+          "type": "price"
+        },
+        "frase": {
+          "type": "garelon_quote",
+          "settings": {
+            "text": "Un símbolo de tu fe, contigo cada día."
+          }
+        },
+        "selector_packs": {
+          "type": "variant_picker",
+          "settings": {
+            "picker_type": "button",
+            "swatch_shape": "none"
+          }
+        },
+        "precio_packs": {
+          "type": "garelon_packs",
+          "settings": {
+            "heading": "Precio de cada pack",
+            "option_name": "Pack",
+            "unit_singular": "pulsera"
+          }
+        },
+        "comprar": {
+          "type": "buy_buttons",
+          "settings": {
+            "show_dynamic_checkout": true,
+            "show_gift_card_recipient": false
+          }
+        }
+      },
+      "block_order": [
+        "titulo",
+        "valoracion",
+        "precio",
+        "frase",
+        "selector_packs",
+        "precio_packs",
+        "comprar"
+      ],
+      "settings": {
+        "garelon_anchor": "comprar",
+        "garelon_media": "theme",
+        "garelon_gallery_keys": "detalle,principal,oracion",
+        "color_scheme": "scheme-2",
+        "secondary_background": false,
+        "media_size": "medium",
+        "constrain_to_viewport": true,
+        "media_fit": "contain",
+        "media_position": "left",
+        "image_zoom": "none",
+        "hide_variants": false,
+        "enable_video_looping": false,
+        "padding_top": 40,
+        "padding_bottom": 48
+      }
     }
   },
   "order": [
-    "portada"
+    "portada",
+    "compra"
   ]
 }

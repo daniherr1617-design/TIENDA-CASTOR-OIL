@@ -1,0 +1,47 @@
+{%- comment -%}
+  GARELON · Galería con las imágenes fieles del producto incluidas en el tema.
+  Sustituye a la multimedia de Shopify mientras esta no esté revisada (la que importa el
+  proveedor puede traer imágenes con claims no verificados). Sin JS: deslizable en móvil
+  (scroll-snap) y en rejilla desde 750 px.
+
+  Parámetros:
+  - keys: claves separadas por comas, en el orden de la historia (p. ej. 'detalle,principal,oracion')
+  - eager: true si es la imagen principal de la página (ficha de producto)
+
+  Uso: {% render 'garelon-gallery', keys: 'principal,detalle,oracion', eager: true %}
+{%- endcomment -%}
+{%- assign list = keys | default: 'principal' | split: ',' -%}
+<div class="g-gallery" role="region" aria-label="{{ 'garelon.gallery.label' | t }}" tabindex="0">
+  <ul class="g-gallery__track" role="list">
+    {%- for raw in list -%}
+      {%- liquid
+        assign key = raw | strip
+        case key
+          when 'principal'
+            assign alt = 'garelon.gallery.alt_principal' | t
+          when 'detalle'
+            assign alt = 'garelon.gallery.alt_detalle' | t
+          when 'oracion'
+            assign alt = 'garelon.gallery.alt_oracion' | t
+          else
+            assign alt = ''
+        endcase
+        assign first_eager = false
+        if eager and forloop.first
+          assign first_eager = true
+        endif
+      -%}
+      {%- if alt != '' -%}
+        <li class="g-gallery__slide">
+          {%- render 'garelon-image',
+            key: key,
+            alt: alt,
+            sizes: '(min-width: 990px) 560px, (min-width: 750px) 50vw, 86vw',
+            eager: first_eager,
+            class: 'g-gallery__img'
+          -%}
+        </li>
+      {%- endif -%}
+    {%- endfor -%}
+  </ul>
+</div>
