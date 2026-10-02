@@ -186,3 +186,61 @@ Nueva pregunta «¿Puedo devolver mi pedido?» (ver sección 5) y «Qué incluye
 - Capturas: `docs/garelon/capturas/rosary-v1.1/` (precios **simulados**).
 
 **No probado:** Shopify real (variantes reales, editor, apps de reseñas), checkout, AliExpress, mapping de packs ni pedidos.
+
+## 10. v1.2 · Diagnóstico del 404 al subir el ZIP v1.1
+
+**Síntoma comunicado:** tras subir `GARELON-SHOPIFY-THEME-PULSERA-ROSARIO-v1.1.zip`, «al entrar en la tienda aparece un ERROR 404». Sin URL exacta, captura ni acceso a la tienda.
+
+### 10.1 Qué se auditó y resultado
+
+| Comprobación | Resultado |
+|---|---|
+| ZIP v1.1 | 7 carpetas en la raíz, sin carpeta contenedora. Contiene `layout/theme.liquid`, `templates/index.json`, `templates/404.json` y `config/settings_*.json`. Descomprimido es **idéntico byte a byte** al árbol de `05ddf50`. Mismo formato que los ZIP de la fondue que sí se instalaron. |
+| `templates/index.json` | JSON válido. Las 10 secciones de `order` existen en `sections/`, sin IDs duplicadas. Cada ajuste y bloque existe en su schema y cada valor es válido (rango y paso, opción de select, booleano, URL, esquema de color, richtext). |
+| Schemas (todas las secciones) | Nombres de sección, bloque y preset ≤ 25 caracteres (la causa del 404 anterior, `530cff7`). Sin defaults vacíos y sin default de tipo `url`. Traducciones `t:` presentes. Theme Check: **0 errores** con ValidSchema y JSON Schema de Shopify. |
+| Liquid | Todos los `.liquid` parsean con el **motor Ruby oficial de Liquid 5.14 en modo estricto**, el mismo lenguaje que usa Shopify. 0 errores en `b45d132`, `fa741e8` y `05ddf50`. |
+| `layout/theme.liquid` | Imprime `content_for_layout` y carga `header-group` y `footer-group`. No tiene redirecciones, `meta refresh`, `<base>` ni lógica que capture la home. |
+| JS (`assets/`) | Solo hay una redirección: la de Dawn a `/cart` tras añadir al carrito si no hay drawer. `featured-product` no reescribe la URL (`data-update-url="false"`). |
+| URLs | No hay handles hardcodeados (`/products/…`, fondue, taza). CTAs de la home → `/#comprar` y `/#detalles`; logo e Inicio → `routes.root_url`. |
+| Sin producto publicado | `/` sigue en 200 (index), sin errores y sin enlaces a `/products/…`. |
+| Sin contacto ni políticas | `/` sigue en 200. Solo esas rutas dan 404, y es ADMIN TODO. |
+| Bisección (render local) | `/` → 200 index en `b45d132`, `fa741e8` y `05ddf50`. |
+
+### 10.2 Conclusión
+
+**No se ha podido reproducir el 404 en `/` desde el tema** y no se ha encontrado ningún archivo que Shopify pueda rechazar. No se inventa una causa.
+
+- **Si el 404 aparece en `/`:** solo pasa si el tema instalado no tiene `templates/index.json`. Por ejemplo, porque Shopify rechazó al subirlo una sección que la home usa, como en `530cff7`. Shopify muestra entonces la lista de errores de la subida.
+- **Si aparece en otra URL:** es una ruta que no existe en la tienda. Puede ser un handle antiguo de la fondue, un producto sin publicar en Tienda online, o una página o política sin crear. Se arregla en el Admin (producto, página, política o redirección), no en el tema.
+
+### 10.3 Cambio en el tema (diagnóstico, solo editor)
+
+`sections/main-404.liquid` muestra un aviso **solo en el editor de temas** (`request.design_mode`). Los clientes no lo ven.
+
+- **En la raíz:** «La home no tiene plantilla instalada…» (falta `templates/index.json`).
+- **En otra URL:** «Esta URL no existe en la tienda: /ruta…», con las causas posibles y la redirección.
+
+No cambian diseño, copy, packs, opiniones, carrito ni `templates/404.json`. Capturas: `docs/garelon/capturas/rosary-v1.2/`.
+
+### 10.4 Pruebas nuevas · Shopify Routing / Home 404 (30/30)
+
+El render local ahora imita el routing de Shopify:
+
+- `/` → index (200).
+- `/products/<handle>` solo si el producto existe y está publicado.
+- `/pages/<handle>` y `/policies/<x>` solo si existen; el resto, plantilla 404 con **HTTP 404**.
+- Modos de prueba: sin producto, sin contacto, sin políticas y «tema sin index».
+
+| Grupo | Pruebas |
+|---|---|
+| Home | `/` y `/?preview_theme_id=…` → 200 index. Las anclas `#comprar`, `#detalles`, `#regalo` y `#preguntas-frecuentes` existen. Clic en el menú desde la home (scroll) y desde otra página (vuelve a `/#…`). |
+| Enlaces | Logo e Inicio → `/`. CTAs de la portada y del cierre válidos. |
+| 404 legítima | `/pagina-inexistente-de-prueba` y `/products/taza-fondue-chocolate` → 404. |
+| Redirecciones | Ninguna redirección JS. En el navegador, `/` se queda en `/`. Sin handles hardcodeados. |
+| Producto | La ficha solo existe con producto publicado. Sin producto, la home sigue en 200. |
+| Contacto y políticas | Sin crear, no rompen la home. |
+| Aviso del editor | Sale en los dos casos y no lo ven los clientes. |
+
+La batería anterior sigue en **146/146**: la prueba Z acepta solo el 404 intencionado de `/pagina-que-no-existe`.
+
+**No probado:** Shopify real. No hay acceso a ninguna tienda ni Shopify CLI con sesión. No se publica nada.

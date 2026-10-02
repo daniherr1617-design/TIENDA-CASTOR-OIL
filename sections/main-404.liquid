@@ -20,4 +20,27 @@
   <a href="{{ routes.root_url }}" class="button">
     {{ 'general.continue_shopping' | t }}
   </a>
+  {%- comment -%}
+    GARELON · Diagnóstico solo para el editor de temas (los clientes no lo ven).
+    Shopify solo responde a la raíz con la plantilla 404 si templates/index.json no está instalado
+    (p. ej. porque la subida rechazó una sección que usa). En cualquier otra ruta, la URL no existe.
+  {%- endcomment -%}
+  {%- if request.design_mode -%}
+    <div class="g-editor-note g-editor-note--center" role="note">
+      {%- if request.path == routes.root_url or request.path == '/' -%}
+        <p class="g-editor-note__title">La home no tiene plantilla instalada</p>
+        <p>
+          Shopify muestra la 404 en la raíz ({{ request.path }}) porque falta templates/index.json en este tema. Revisa los
+          errores que mostró Shopify al subir el ZIP (Editar código › templates) y vuelve a subir el tema.
+        </p>
+      {%- else -%}
+        <p class="g-editor-note__title">Esta URL no existe en la tienda: {{ request.path }}</p>
+        <p>
+          Puede ser un producto no publicado en Tienda online, un identificador (handle) antiguo, o una página o política
+          sin crear. La home está en {{ routes.root_url }}. Para URLs antiguas, crea una redirección en Navegación ›
+          Redirecciones de URL.
+        </p>
+      {%- endif -%}
+    </div>
+  {%- endif -%}
 </div>
