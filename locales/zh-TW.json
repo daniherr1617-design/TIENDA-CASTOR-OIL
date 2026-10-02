@@ -527,5 +527,38 @@
       "expanded": "禮品卡收件人表單已展開",
       "collapsed": "禮品卡收件人表單已收合"
     }
+  },
+  "garelon": {
+    "legal": {
+      "contact": "Contact",
+      "shipping_policy": "Shipping",
+      "refund_policy": "Returns and refunds",
+      "privacy_policy": "Privacy",
+      "cookies": "Cookies",
+      "terms_of_service": "Terms and conditions",
+      "legal_notice": "Legal notice"
+    },
+    "header": {
+      "account": "Log in"
+    },
+    "gallery": {
+      "label": "Bracelet image gallery",
+      "alt_principal": "Gold-tone rosary bracelet on a wrist, with an oval Virgin Mary medal, hanging cross and beads in gold, silver and rose tones",
+      "alt_detalle": "Close-up of the rosary bracelet: oval Virgin Mary medal with a border of small stones, cross and tricolour beads",
+      "alt_oracion": "Woman with her hands together in prayer wearing the gold-tone rosary bracelet"
+    },
+    "packs": {
+      "per": "per",
+      "save": "you save {{ amount }}",
+      "editor_missing": "Editor only: the product does not have the «Pack» option yet. Customers can still buy the current variant."
+    },
+    "reviews": {
+      "stars_label": "{{ rating }} out of {{ max }} stars",
+      "count": {
+        "one": "{{ count }} review",
+        "other": "{{ count }} reviews"
+      },
+      "editor_empty": "Editor only: «GARELON Opiniones» is hidden for customers because there are no real reviews. Add your review app block (Add block › Apps)."
+    }
   }
 }

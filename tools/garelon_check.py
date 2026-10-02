@@ -567,6 +567,35 @@ def check_image_keys(theme):
                                 err(f'{relp} › {sid}', f'{k}: clave de imagen «{key.strip()}» sin imagen')
 
 
+PLURAL_KEYS = {'zero', 'one', 'two', 'few', 'many', 'other'}
+
+
+def flat_keys(d, prefix=''):
+    keys = set()
+    for k, v in d.items():
+        path = f'{prefix}.{k}' if prefix else k
+        if isinstance(v, dict) and not (set(v) and set(v) <= PLURAL_KEYS):
+            keys |= flat_keys(v, path)
+        else:
+            keys.add(path)
+    return keys
+
+
+def check_locales(theme):
+    """Cada traducción del idioma por defecto existe en los demás idiomas del tema
+    (equivale a MatchingTranslations de Theme Check; si falta, Shopify muestra
+    «translation missing» a los clientes de ese idioma)."""
+    base = load_json(theme.root, 'locales/en.default.json') or {}
+    want = flat_keys(base)
+    for fn in sorted(os.listdir(os.path.join(theme.root, 'locales'))):
+        if not fn.endswith('.json') or fn.endswith('.schema.json') or fn == 'en.default.json':
+            continue
+        data = load_json(theme.root, f'locales/{fn}') or {}
+        missing = sorted(want - flat_keys(data))
+        if missing:
+            err(f'locales/{fn}', f'faltan {len(missing)} traducciones (p. ej. {missing[0]})')
+
+
 # ---------------------------------------------------------------- main
 def main(argv):
     args = [a for a in argv if not a.startswith('--')]
@@ -608,6 +637,7 @@ def main(argv):
             check_group(theme, f'sections/{fn}')
     check_liquid_refs(theme)
     check_image_keys(theme)
+    check_locales(theme)
 
     index = load_json(root, 'templates/index.json')
     if index is not None and not index.get('order'):

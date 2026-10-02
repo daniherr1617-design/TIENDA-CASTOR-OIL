@@ -161,6 +161,13 @@ def m_missing_image(t):
     raise AssertionError('sin imágenes de producto')
 
 
+def m_missing_translation(t):
+    p = f'{t}/locales/fr.json'
+    d = jload(p)
+    d.setdefault('garelon', {}).pop('legal', None)
+    jsave(p, d)
+
+
 MUTATIONS = [
     ('falta templates/index.json', m_remove('templates/index.json')),
     ('falta layout/theme.liquid', m_remove('layout/theme.liquid')),
@@ -181,6 +188,7 @@ MUTATIONS = [
     ('asset referenciado que no existe', m_missing_asset),
     ('snippet renderizado que no existe', m_missing_snippet),
     ('imagen de producto por clave que no existe', m_missing_image),
+    ('traducción que falta en un idioma', m_missing_translation),
 ]
 
 
