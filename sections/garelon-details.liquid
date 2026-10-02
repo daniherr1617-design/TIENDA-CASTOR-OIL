@@ -7,12 +7,16 @@
   if section.settings.image != blank or section.settings.image_key != 'none'
     assign has_media = true
   endif
+  assign media_text = false
+  if section.settings.image == blank and section.settings.image_key == 'infografia'
+    assign media_text = true
+  endif
 -%}
 <section
   {% if section.settings.anchor != blank %}
     id="{{ section.settings.anchor | handleize }}"
   {% endif %}
-  class="g-details g-details--{{ section.settings.layout }} color-{{ section.settings.color_scheme }} gradient g-section g-section--{{ section.id }}{% if has_media %} g-details--media{% endif %}"
+  class="g-details g-details--{{ section.settings.layout }} color-{{ section.settings.color_scheme }} gradient g-section g-section--{{ section.id }}{% if has_media %} g-details--media{% endif %}{% if media_text %} g-details--media-text{% endif %}"
 >
   {%- style -%}
     .g-section--{{ section.id }} { --g-pt: {{ section.settings.padding_top }}px; --g-pb: {{ section.settings.padding_bottom }}px; }
@@ -117,7 +121,9 @@
       "label": "Imagen del tema",
       "options": [
         { "value": "none", "label": "Ninguna" },
+        { "value": "completa", "label": "Pulsera completa (vista general)" },
         { "value": "detalle", "label": "Detalle de la medalla" },
+        { "value": "infografia", "label": "Infografía de detalles (con texto)" },
         { "value": "principal", "label": "Pulsera en la muñeca" },
         { "value": "oracion", "label": "Manos en oración" }
       ],

@@ -556,8 +556,12 @@
     "gallery": {
       "label": "Galería de imágenes de la pulsera",
       "alt_principal": "Pulsera rosario de acabado dorado en la muñeca, con medalla ovalada de la Virgen María, cruz colgante y cuentas en tonos dorado, plateado y rosado",
+      "alt_completa": "Vista completa de la Pulsera Rosario Virgen María Dorada sobre fondo marfil: cierre de mosquetón, cuentas tricolor en dorado, plateado y rosado, cruz con Cristo y medalla ovalada de la Virgen María con borde de pequeñas piedras",
       "alt_detalle": "Detalle de la pulsera rosario: medalla ovalada de la Virgen María con borde de pequeñas piedras, cruz y cuentas tricolor",
-      "alt_oracion": "Mujer con las manos juntas en actitud de oración y la pulsera rosario dorada en la muñeca"
+      "alt_infografia": "Infografía «Detalles de la pulsera» de la Pulsera Rosario Virgen María Dorada: medalla de la Virgen María, cruz de Jesús, cuentas de rosario tricolor, cierre de acabado dorado pulido, largo ajustable con anillas, aprox. 20 cm / 7,87 in, y regalo religioso especial",
+      "alt_oracion": "Mujer con las manos juntas en actitud de oración y la pulsera rosario dorada en la muñeca",
+      "zoom": "Ampliar",
+      "zoom_label": "Ver ampliada (se abre en una pestaña nueva)"
     },
     "packs": {
       "per": "por",

@@ -5,7 +5,7 @@
   (scroll-snap) y en rejilla desde 750 px.
 
   Parámetros:
-  - keys: claves separadas por comas, en el orden de la historia (p. ej. 'detalle,principal,oracion')
+  - keys: claves separadas por comas, en el orden de la historia (p. ej. 'principal,completa,detalle,infografia,oracion')
   - eager: true si es la imagen principal de la página (ficha de producto)
 
   Uso: {% render 'garelon-gallery', keys: 'principal,detalle,oracion', eager: true %}
@@ -19,8 +19,12 @@
         case key
           when 'principal'
             assign alt = 'garelon.gallery.alt_principal' | t
+          when 'completa'
+            assign alt = 'garelon.gallery.alt_completa' | t
           when 'detalle'
             assign alt = 'garelon.gallery.alt_detalle' | t
+          when 'infografia'
+            assign alt = 'garelon.gallery.alt_infografia' | t
           when 'oracion'
             assign alt = 'garelon.gallery.alt_oracion' | t
           else
@@ -32,7 +36,7 @@
         endif
       -%}
       {%- if alt != '' -%}
-        <li class="g-gallery__slide">
+        <li class="g-gallery__slide{% if key == 'infografia' %} g-gallery__slide--wide{% endif %}">
           {%- render 'garelon-image',
             key: key,
             alt: alt,

@@ -90,7 +90,7 @@
       "settings": {
         "enable_sticky_info": true,
         "garelon_media": "theme",
-        "garelon_gallery_keys": "principal,detalle,oracion",
+        "garelon_gallery_keys": "principal,completa,detalle,infografia,oracion",
         "color_scheme": "scheme-1",
         "media_size": "large",
         "constrain_to_viewport": true,

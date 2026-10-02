@@ -33,12 +33,12 @@ Las **6 imágenes originales del proveedor no están en el repositorio** (ni adj
 | `imagen 3.png` | Muñeca, primer plano | Mejorada (de ORIGINAL 5, por la composición) | Alta entre las disponibles | **Usada** | Principal: portada, galería, 404, miniaturas de respaldo | Pulsera protagonista; medalla, cruz y cuentas bien visibles; cruz colgante (coherente con «Cross Charm» del proveedor y con `imagen 2`) |
 | `imagen 3.png` (recorte) | Detalle | La misma | Alta | **Usada** | «Detalles de la pulsera» y galería | Recorte de 600 × 600 px (sin ampliar) en medalla, cruz y cuentas |
 | `imagen 2.png` | Lifestyle, oración | Mejorada (de ORIGINAL 4, sin el texto en inglés) | Media-alta (pulsera pequeña) | **Usada** | «Una joya que va más allá del detalle» y galería | Emocional y sereno; la pulsera coincide con `imagen 3` |
-| `imagen 4.png` | Pulsera completa, fondo marfil | Generada | **Discrepancia** | **Descartada (pendiente)** | — | La cruz va intercalada en la cadena, no colgante; no se ven los aros de ajuste. Si el original confirma la cruz intercalada, sería la mejor imagen principal |
-| `Imagen 1.png` | Infografía en español | Generada | Discrepancia + packaging | **Descartada** | — | Misma cruz intercalada; muestra una **caja de regalo** no confirmada; texto incrustado. Sus datos están en HTML |
+| `imagen 4.png` | Pulsera completa, fondo marfil | — | **Verificada por el propietario** | **Usada** | Galerías (`producto-completa`) | Corresponde al producto real (ver nota) |
+| `Imagen 1.png` | Infografía en español | — | **Verificada por el propietario** | **Usada** | «Detalles de la pulsera» (home) y galerías (`producto-infografia`) | Corresponde al producto real (ver nota) |
 | `Logo.png` | Símbolo | Logo aprobado | — | **Usado** | Isotipo, favicon, iOS | — |
 | `Logo y marca.png` | Símbolo + GARELON | Logo aprobado | — | **Usado** | Pie (completo) y letras de la cabecera | — |
 
-**Discrepancia física encontrada:** cruz intercalada (`imagen 4`, `Imagen 1`) frente a cruz colgante (`imagen 2`, `imagen 3`). Una de las dos versiones no es el producto real. Se ha elegido la colgante por coherencia con «Cross **Charm**» del proveedor; **confírmalo con las fotos originales antes de publicar**.
+**Verificación del propietario:** `Imagen 1.png` e `imagen 4.png` corresponden al producto real y están aprobadas para uso en la tienda. La «discrepancia física» que se anotó aquí (cruz intercalada frente a colgante) quedó **anulada** por esa verificación; no debe usarse para descartarlas. Ver `GARELON-RECONSTRUCCION-LIMPIA.md`, apartado 3.
 
 Assets (WebP calidad 82, sin filtros; el producto no se ha tocado): `garelon-rosario-principal-{480,720,1080}` (15/28/60 KB), `garelon-rosario-detalle-{480,600}` (21/30 KB), `garelon-rosario-oracion-{480,720,1080}` (26/45/81 KB), `garelon-rosario-isotipo-{96,192}`, `garelon-rosario-logo-{240,480}`, `garelon-rosario-wordmark-{240,480}`, `garelon-rosario-favicon-32.png`, `garelon-rosario-apple-touch-180.png`. A los logos solo se les ha quitado el margen transparente y el polvo de píxeles casi invisibles (alfa < 24).
 
@@ -121,7 +121,7 @@ Sin pregunta de cuidados (dato NO DISPONIBLE). 404: «Esta página no está disp
 12. Duplicar el tema publicado antes de subir este.
 
 **AliExpress / fulfillment**
-13. Validar el proveedor y el producto exacto (cruz colgante o intercalada, número de cuentas, aros).
+13. Validar el proveedor y el producto exacto (número de cuentas, aros). Las imágenes `Imagen 1.png` e `imagen 4.png` ya están verificadas por el propietario.
 14. Confirmar 14K solo con una fuente fiable del mismo producto (y aun así, documentarlo antes de publicarlo).
 15. Validar SKU, variantes, stock, plazos y método de envío.
 15b. (v1.1) **Mapping de los packs.** La ficha de AliExpress es de UNA pulsera; el tema no le dice nada al proveedor. Según la integración elegida (DSers, AutoDS, app de AliExpress, bundle, manual…), comprobar: «1 pulsera» → 1 unidad del proveedor; «2 pulseras» → **2 unidades del mismo SKU**; «3 pulseras» → **3 unidades del mismo SKU**. No se ha configurado ningún mapping.

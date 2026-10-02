@@ -244,6 +244,7 @@ body {
   padding: 0;
   list-style: none;
   overflow-x: auto;
+  align-items: flex-start;
   scroll-snap-type: x mandatory;
   scrollbar-width: none;
   -webkit-overflow-scrolling: touch;
@@ -257,6 +258,10 @@ body {
   border-radius: var(--g-radius);
   overflow: hidden;
   background: rgba(42, 38, 34, 0.04);
+}
+.g-gallery__slide--wide {
+  /* La infografía lleva texto: en móvil ocupa todo el ancho para poder leerse. */
+  flex-basis: 100%;
 }
 .g-gallery__img {
   display: block;
@@ -274,6 +279,31 @@ body {
   .g-gallery__slide:first-child {
     grid-column: 1 / -1;
   }
+}
+/* Infografía con texto: enlace a la versión grande (1254 px) para leerla ampliada. */
+.g-zoom {
+  position: relative;
+  display: block;
+  color: inherit;
+}
+.g-zoom__hint {
+  /* Solo icono, en la esquina superior derecha (flores): no tapa el texto de la infografía. */
+  position: absolute;
+  top: 0.6rem;
+  right: 0.6rem;
+  display: grid;
+  place-items: center;
+  width: 3.2rem;
+  height: 3.2rem;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.92);
+  border: 1px solid var(--g-gold-line);
+  color: var(--g-ink);
+  pointer-events: none;
+}
+.g-zoom:focus-visible {
+  outline: 2px solid var(--g-accent);
+  outline-offset: -2px;
 }
 .featured-product .product__title {
   margin-bottom: 0.4rem;
@@ -956,6 +986,13 @@ body {
   .g-details--media .g-details__grid {
     grid-template-columns: 1fr 1.1fr;
     gap: 5rem;
+  }
+}
+/* Con la infografía (imagen con texto), una sola columna hasta 990 px para que se lea. */
+@media screen and (min-width: 750px) and (max-width: 989px) {
+  .g-details--media-text .g-details__grid {
+    grid-template-columns: 1fr;
+    gap: 3.2rem;
   }
 }
 

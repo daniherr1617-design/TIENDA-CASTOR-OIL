@@ -4,7 +4,8 @@
 
   Parámetros:
   - image: imagen elegida en el editor (image_picker) o blank
-  - key: clave del asset del tema: 'principal' | 'detalle' | 'oracion' | 'none'
+  - key: clave del asset del tema: 'principal' | 'completa' | 'detalle' | 'infografia' | 'oracion' | 'none'
+    ('infografia' lleva texto: se envuelve en un enlace a la versión grande para poder ampliarla)
   - alt: texto alternativo (si la imagen del editor tiene alt propio, manda ese)
   - sizes: atributo sizes
   - eager: true solo para la imagen principal de la página (LCP)
@@ -28,6 +29,10 @@
       assign widths = '480,720,1080'
     when 'oracion'
       assign widths = '480,720,1080'
+    when 'completa'
+      assign widths = '480,720,1080'
+    when 'infografia'
+      assign widths = '480,720,1080,1254'
     when 'detalle'
       assign widths = '480,600'
     else
@@ -62,6 +67,15 @@
     endcapture
     assign src_file = 'producto-' | append: key | append: '-' | append: largest | append: '.webp'
   -%}
+  {%- if key == 'infografia' -%}
+    <a
+      class="g-zoom"
+      href="{{ src_file | asset_url }}"
+      target="_blank"
+      rel="noopener"
+      title="{{ 'garelon.gallery.zoom' | t | escape }}"
+    >
+  {%- endif -%}
   <img
     src="{{ src_file | asset_url }}"
     srcset="{{ srcset }}"
@@ -74,4 +88,11 @@
     fetchpriority="{{ priority }}"
     decoding="async"
   >
+  {%- if key == 'infografia' -%}
+    <span class="g-zoom__hint" aria-hidden="true">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" focusable="false"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5M11 8v6M8 11h6"/></svg>
+    </span>
+    <span class="visually-hidden">{{ 'garelon.gallery.zoom_label' | t }}</span>
+    </a>
+  {%- endif -%}
 {%- endif -%}

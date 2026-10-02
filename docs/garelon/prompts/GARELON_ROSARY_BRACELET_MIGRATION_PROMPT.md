@@ -67,7 +67,7 @@ Preferir Dawn; solo temas gratuitos oficiales si mejoran claramente.
 
 Las imágenes originales del proveedor son la verdad física; las generadas solo candidatas. Comparar medalla, cruz, cuentas, cadena, cierre, aros, proporciones. Descartar cualquier generada que cambie el producto. 4-6 imágenes buenas mejor que una galería saturada. No editar el producto.
 
-→ Ejecutado: **las 6 originales no están en el repositorio**. Con las 4 disponibles (mejoradas/generadas) se detectó una discrepancia: cruz **colgante** (`imagen 2`, `imagen 3`) frente a cruz **intercalada** (`imagen 4`, `Imagen 1`). Usadas: `imagen 3` (principal) + su recorte (detalle) + `imagen 2` (oración). Descartadas: `imagen 4` (pendiente de confirmar) e `Imagen 1` (además, caja de regalo). Solo redimensionado/recorte sin ampliar y WebP.
+→ Ejecutado: **las 6 originales no están en el repositorio**. Con las 4 disponibles (mejoradas/generadas) se detectó una discrepancia: cruz **colgante** (`imagen 2`, `imagen 3`) frente a cruz **intercalada** (`imagen 4`, `Imagen 1`). Usadas: `imagen 3` (principal) + su recorte (detalle) + `imagen 2` (oración). Solo redimensionado/recorte sin ampliar y WebP. *Actualización:* **Verificación del propietario:** `Imagen 1.png` e `imagen 4.png` corresponden al producto real y están aprobadas para uso en la tienda. Se incorporaron como `producto-completa` y `producto-infografia`; la discrepancia de la cruz anotada antes quedó anulada.
 
 ## 21-32. Propuesta, copy, home, FAQ
 

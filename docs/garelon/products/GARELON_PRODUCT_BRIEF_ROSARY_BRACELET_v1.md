@@ -65,12 +65,12 @@ Las **6 imágenes originales del proveedor** (ORIGINAL 1–6 del prompt) **no es
 | `imagen 3.png` | Primer plano de la muñeca con la pulsera: medalla ovalada con borde de piedras, **cruz colgante**, cuentas tricolor | Mejorada de ORIGINAL 5 | Coincide con el resto en medalla y cuentas; cruz colgante, coherente con «Cross **Charm**» del proveedor y con `imagen 2.png` | **Usada** | Principal: portada, galería (ficha n.º 1, home n.º 2), 404, miniatura de respaldo del carrito y de la compra fija |
 | `imagen 3.png` (recorte 600 px) | Medalla, cruz y cuentas de cerca | La misma foto | Igual que la anterior (solo recorte, sin ampliar) | **Usada** | Detalle: sección «Detalles de la pulsera», galería (home n.º 1, ficha n.º 2) |
 | `imagen 2.png` | Mujer con las manos juntas en oración y la pulsera en la muñeca, sin texto incrustado | Mejorada de ORIGINAL 4 (sin el texto en inglés) | Pulsera pequeña pero coherente (cruz colgante, medalla con piedras, cuentas tricolor) | **Usada** | Lifestyle/significado: «Una joya que va más allá del detalle», galería n.º 3 |
-| `imagen 4.png` | Pulsera completa sobre fondo marfil | Generada | **Discrepancia física:** la cruz va **intercalada** en la cadena (unida a una cuenta por arriba y otra por abajo) y no colgante como en `imagen 2/3`; no se ven los tres aros de ajuste | **Descartada (pendiente de confirmar)** | — Si el original del proveedor confirma la cruz intercalada, puede pasar a principal |
-| `Imagen 1.png` | Infografía «Detalles de la pulsera» en español: «Aprox. 20 cm / 7,87 in», medalla, cruz, cuentas, cierre, largo ajustable, «Regalo religioso especial» | Generada (a partir de ORIGINAL 3) | Misma cruz intercalada que `imagen 4`; incluye una **caja de regalo con lazo** (packaging no confirmado); texto incrustado | **Descartada** | Sus datos se recrean en HTML (sección «Detalles» y FAQ) |
+| `imagen 4.png` | Pulsera completa sobre fondo marfil | — | Verificada por el propietario: corresponde al producto real | **Usada** | Galerías de home y ficha (`producto-completa`) |
+| `Imagen 1.png` | Infografía «Detalles de la pulsera» en español: «Aprox. 20 cm / 7,87 in», medalla, cruz, cuentas, cierre, largo ajustable, «Regalo religioso especial» | — | Verificada por el propietario: corresponde al producto real | **Usada** | «Detalles de la pulsera» (home) y galerías (`producto-infografia`) |
 | `Logo.png` | Símbolo dorado abstracto (flor/joya estilizada), fondo transparente | Logo aprobado | — | **Usado** | Isotipo: cabecera, cierre, favicon (derivación plana) e icono de iOS |
 | `Logo y marca.png` | Símbolo + «GARELON» dorado, fondo transparente | Logo aprobado | — | **Usado** | Logo completo: pie. Las letras «GARELON» se usan junto al símbolo en la cabecera |
 
-**Pendiente crítico:** subir al repositorio (o adjuntar) las 6 imágenes originales del proveedor para confirmar si la cruz es colgante o intercalada y el número de cuentas.
+**Resuelto por el propietario:** verificó manualmente que `Imagen 1.png` e `imagen 4.png` corresponden al producto real y las aprobó para uso en la tienda. No hay que volver a compararlas para decidir si se usan.
 
 ## 6. Políticas (sección 19 del Master)
 

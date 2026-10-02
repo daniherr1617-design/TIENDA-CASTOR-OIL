@@ -28,17 +28,19 @@ Barra superior («Una joya para llevar contigo o regalar») → cabecera (Inicio
 
 | Archivo | Decisión | Uso / motivo |
 |---|---|---|
-| `imagen 3.png` (pulsera en la muñeca: medalla, cruz colgante, cuentas tricolor) | **Usada** | `producto-principal`: portada (LCP), galería de la ficha (1.ª) y de la home (2.ª). Es la foto más clara de lo que recibe el cliente |
-| `imagen 3.png` (recorte de 600 px) | **Usada** | `producto-detalle`: «Detalles de la pulsera» y galerías. Acerca medalla, cruz y cuentas sin alterar nada |
+| `imagen 3.png` (pulsera en la muñeca: medalla, cruz, cuentas tricolor) | **Usada** | `producto-principal`: portada (LCP), galería de la ficha (1.ª) y de la home (3.ª) |
+| `imagen 3.png` (recorte de 600 px) | **Usada** | `producto-detalle`: «Detalles de la pulsera» de la ficha y galerías. Acerca medalla, cruz y cuentas sin alterar nada |
 | `imagen 2.png` (manos en oración con la pulsera, sin texto) | **Usada** | `producto-oracion`: «Una joya que va más allá del detalle» y galerías. Coherente con `imagen 3` |
-| `imagen 4.png` (pulsera completa sobre marfil) | **Descartada** | La cruz aparece intercalada en la cadena, no colgante como en `imagen 2` y `imagen 3`, y no se ven los 3 aros. No se puede saber cuál es la real (R25) |
-| `Imagen 1.png` (infografía) | **Descartada** | Misma cruz intercalada, caja de regalo no confirmada y texto incrustado. Sus datos están en HTML (Detalles y FAQ) |
+| `imagen 4.png` (pulsera completa sobre marfil) | **Usada · aprobada por el propietario** | `producto-completa`: galería de la home (1.ª) y de la ficha (2.ª). Vista clara de la pulsera completa |
+| `Imagen 1.png` (infografía «Detalles de la pulsera») | **Usada · aprobada por el propietario** | `producto-infografia`: imagen de «Detalles de la pulsera» en la home y 4.ª de ambas galerías. Se puede abrir ampliada (1254 px) para leer el texto |
 | `Logo.png` | **Usada** | Isotipo (cabecera), favicon e icono de iOS |
 | `Logo y marca.png` | **Usada** | Logo completo (pie) y letras GARELON (cabecera) |
 | `referencias/IMAGEN 1-10.png` y logos antiguos | No aplican | Son del sérum (producto anterior) |
 | 6 originales del proveedor (fondo rosa, 2.º ángulo, «PRODUCT DETAILS» con 14K, mujer rezando, mujer con la pulsera, «To My Godmother») | **No están en el repositorio** | No se han podido revisar. La de 14K y la de «To My Godmother» quedan descartadas por regla. Las demás, pendientes |
 
-Se usan **3 fotos (+1 recorte)**, menos que las 5-8 orientativas: son las únicas fieles y coherentes entre sí. La galería usa por defecto estas imágenes del tema, porque la multimedia que importa DSers puede traer la de 14K. Cuando la multimedia del producto esté revisada, el ajuste «Imágenes» de la compra y de la ficha puede pasar a «Multimedia de Shopify».
+**Verificación del propietario:** `Imagen 1.png` e `imagen 4.png` corresponden al producto real y están aprobadas para uso en la tienda. Sustituye a la revisión anterior, que las había descartado por una supuesta diferencia en la cruz: esa conclusión era incorrecta y **no debe volver a usarse para excluirlas**.
+
+Se usan **5 imágenes (4 archivos + 1 recorte)**, todas sin retocar: solo redimensionadas a WebP. Orden de las galerías: ficha `principal,completa,detalle,infografia,oracion`; home `completa,detalle,principal,infografia,oracion` (la portada ya enseña `principal`). La galería usa por defecto estas imágenes del tema, porque la multimedia que importa DSers puede traer la de 14K. Cuando la multimedia del producto esté revisada, el ajuste «Imágenes» de la compra y de la ficha puede pasar a «Multimedia de Shopify».
 
 ## 4. Packs
 

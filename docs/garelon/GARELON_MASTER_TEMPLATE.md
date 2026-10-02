@@ -1706,7 +1706,7 @@ Informe completo y tareas de Shopify/CJ: `GARELON-CAMBIOS-FONDUE.md`.
 | NO DISPONIBLE | precio, compare-at, coste, variantes, packs, SKU, stock, envío, packaging, cuidados, waterproof, hipoalergénica, garantía |
 | Proveedor | AliExpress · integración pendiente |
 | Imágenes usadas | `imagen 3.png` (principal + recorte de detalle) · `imagen 2.png` (oración) · `Logo.png` · `Logo y marca.png` |
-| Imágenes descartadas | `imagen 4.png` (cruz intercalada frente a colgante; pendiente de confirmar con los originales) · `Imagen 1.png` (misma discrepancia + caja de regalo + texto incrustado). Las 6 originales del proveedor no están en el repositorio |
+| Imágenes verificadas por el propietario | `imagen 4.png` (`producto-completa`) e `Imagen 1.png` (`producto-infografia`): el propietario confirmó que corresponden al producto real y están aprobadas para uso en la tienda. La discrepancia de la cruz anotada antes queda anulada. Las 6 originales del proveedor no están en el repositorio |
 | FAQ (9) | Material · Elementos · ¿Es ajustable? · Longitud · Qué incluye mi pedido · Ocasiones · ¿A diario? · Envío (→ política) · Problema con el pedido (→ contacto + devoluciones). Sin cuidados |
 | Términos de la Taza Fondue que no deben quedar | `fondue`, `chocolate`/`Chocolat`, `queso`, `taza`, `vela`, `tealight`, `130 ml`, `rojo`/`roja`, `marrón`, `Para compartir`, `CJ`, `CJPacket`, `YunExpress`, `garelon-fondue-`, `imagen1-8.png`, `LOGO.png`. En el código solo quedan textos genéricos del componente de packs (inactivo): «Mejor precio/unidad» como valor por defecto de su insignia y los ejemplos de ayuda del editor |
 
