@@ -539,5 +539,19 @@
       "expanded": "Formulario del destinatario de la tarjeta de regalo expandido",
       "collapsed": "Formulario del destinatario de tarjeta de regalo contraído"
     }
+  },
+  "garelon": {
+    "legal": {
+      "contact": "Contacto",
+      "shipping_policy": "Envíos",
+      "refund_policy": "Devoluciones y reembolsos",
+      "privacy_policy": "Privacidad",
+      "cookies": "Cookies",
+      "terms_of_service": "Términos y condiciones",
+      "legal_notice": "Aviso legal"
+    },
+    "header": {
+      "account": "Iniciar sesión"
+    }
   }
 }

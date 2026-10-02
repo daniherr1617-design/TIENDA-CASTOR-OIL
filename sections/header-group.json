@@ -4,27 +4,27 @@
   "sections": {
     "announcement-bar": {
       "type": "announcement-bar",
-      "settings": {
-        "color_scheme": "scheme-1",
-        "show_line_separator": true,
-        "show_social": false,
-        "auto_rotate": false,
-        "change_slides_speed": 5,
-        "enable_country_selector": false,
-        "enable_language_selector": false
-      },
       "blocks": {
-        "announcement-bar-0": {
+        "anuncio": {
           "type": "announcement",
           "settings": {
-            "text": "Welcome to our store",
+            "text": "Una joya para llevar contigo o regalar",
             "link": ""
           }
         }
       },
       "block_order": [
-        "announcement-bar-0"
-      ]
+        "anuncio"
+      ],
+      "settings": {
+        "color_scheme": "scheme-3",
+        "show_line_separator": false,
+        "show_social": false,
+        "auto_rotate": false,
+        "change_slides_speed": 5,
+        "enable_country_selector": false,
+        "enable_language_selector": false
+      }
     },
     "header": {
       "type": "header",
@@ -33,15 +33,24 @@
         "menu_color_scheme": "scheme-1",
         "logo_position": "middle-left",
         "menu": "main-menu",
+        "nav_link_1_label": "Inicio",
+        "nav_link_1_url": "/",
+        "nav_link_2_label": "Detalles",
+        "nav_link_2_url": "/#detalles",
+        "nav_link_3_label": "Preguntas frecuentes",
+        "nav_link_3_url": "/#preguntas-frecuentes",
+        "nav_link_4_label": "Contacto",
+        "nav_link_4_url": "/pages/contacto",
+        "garelon_show_search": false,
         "menu_type_desktop": "dropdown",
         "sticky_header_type": "on-scroll-up",
         "show_line_separator": true,
-        "enable_country_selector": true,
-        "enable_language_selector": true,
+        "enable_country_selector": false,
+        "enable_language_selector": false,
         "mobile_logo_position": "center",
         "margin_bottom": 0,
-        "padding_top": 20,
-        "padding_bottom": 20
+        "padding_top": 12,
+        "padding_bottom": 12
       }
     }
   },

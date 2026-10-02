@@ -1,0 +1,47 @@
+{%- comment -%}
+  GARELON · Enlaces de la navegación propia de la cabecera (hasta 4), editables en
+  Personalizar › Cabecera › «Navegación GARELON». Sustituyen al menú del Admin, que en una
+  tienda nueva incluye «Catálogo» (tienda de un solo producto: no se muestra).
+
+  Parámetros:
+  - mode: 'inline' (escritorio) | 'drawer' (menú móvil)
+
+  Uso (dentro de un <ul>): {% render 'garelon-nav-items', mode: 'drawer' %}
+{%- endcomment -%}
+{%- for i in (1..4) -%}
+  {%- liquid
+    assign label_key = 'nav_link_' | append: i | append: '_label'
+    assign url_key = 'nav_link_' | append: i | append: '_url'
+    assign label = section.settings[label_key]
+    assign url = section.settings[url_key]
+    assign is_current = false
+    if url == request.path
+      assign is_current = true
+    endif
+  -%}
+  {%- if label != blank and url != blank -%}
+    <li>
+      {%- if mode == 'drawer' -%}
+        <a
+          href="{{ url }}"
+          class="menu-drawer__menu-item list-menu__item link link--text focus-inset{% if is_current %} menu-drawer__menu-item--active{% endif %}"
+          {% if is_current %}
+            aria-current="page"
+          {% endif %}
+        >
+          {{- label | escape -}}
+        </a>
+      {%- else -%}
+        <a
+          href="{{ url }}"
+          class="header__menu-item list-menu__item link link--text focus-inset"
+          {% if is_current %}
+            aria-current="page"
+          {% endif %}
+        >
+          <span{% if is_current %} class="header__active-menu-item"{% endif %}>{{ label | escape }}</span>
+        </a>
+      {%- endif -%}
+    </li>
+  {%- endif -%}
+{%- endfor -%}

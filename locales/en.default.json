@@ -274,7 +274,6 @@
       "announcement": "Announcement",
       "announcement_bar": "Announcement bar"
     },
-
     "header": {
       "announcement": "Announcement",
       "menu": "Menu",
@@ -527,6 +526,20 @@
       "max_characters": "{{ max_chars }} characters max",
       "send_on": "YYYY-MM-DD",
       "send_on_label": "Send on (optional)"
+    }
+  },
+  "garelon": {
+    "legal": {
+      "contact": "Contact",
+      "shipping_policy": "Shipping",
+      "refund_policy": "Returns and refunds",
+      "privacy_policy": "Privacy",
+      "cookies": "Cookies",
+      "terms_of_service": "Terms and conditions",
+      "legal_notice": "Legal notice"
+    },
+    "header": {
+      "account": "Log in"
     }
   }
 }

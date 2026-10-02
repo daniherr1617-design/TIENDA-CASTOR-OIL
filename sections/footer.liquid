@@ -121,6 +121,11 @@
                               width: settings.brand_image_width
                           }}
                         </div>
+                      {%- else -%}
+                        {%- comment -%} GARELON: logo completo aprobado desde los assets si no se ha subido uno. {%- endcomment -%}
+                        <div class="footer-block__image-wrapper garelon-footer-logo">
+                          {%- render 'garelon-logo', variant: 'stacked' -%}
+                        </div>
                       {%- endif -%}
                       {%- if settings.brand_headline != blank -%}
                         <h2 class="footer-block__heading rte">{{ settings.brand_headline }}</h2>
@@ -305,15 +310,8 @@
         <small class="copyright__content">{{ powered_by_link }}</small>
         {%- if section.settings.show_policy -%}
           <ul class="policies list-unstyled">
-            {%- for policy in shop.policies -%}
-              {%- if policy != blank -%}
-                <li>
-                  <small class="copyright__content"
-                    ><a href="{{ policy.url }}">{{ policy.title | escape }}</a></small
-                  >
-                </li>
-              {%- endif -%}
-            {%- endfor -%}
+            {%- comment -%} GARELON: Contacto + políticas en orden fijo, solo las que existen. {%- endcomment -%}
+            {%- render 'garelon-legal-links' -%}
           </ul>
         {%- endif -%}
       </div>

@@ -1,0 +1,54 @@
+{%- comment -%}
+  GARELON · Enlaces legales del pie en orden fijo, solo los que existen en la tienda:
+  Contacto · Envíos · Devoluciones y reembolsos · Privacidad · Cookies · Términos y condiciones ·
+  Aviso legal · resto de políticas con contenido (títulos de Shopify).
+
+  - Contacto: página con handle «contacto» (o «contact»).
+  - Cookies: página con handle «politica-de-cookies» (o «cookies»): Shopify no tiene política de cookies.
+  - Políticas: Configuración › Políticas. Una política vacía no aparece.
+
+  Uso (dentro de un <ul>): {% render 'garelon-legal-links' %}
+{%- endcomment -%}
+{%- liquid
+  assign contact_page = pages['contacto']
+  if contact_page == blank
+    assign contact_page = pages['contact']
+  endif
+  assign cookies_page = pages['politica-de-cookies']
+  if cookies_page == blank
+    assign cookies_page = pages['cookies']
+  endif
+  assign keys = 'shipping-policy,refund-policy,privacy-policy,cookies,terms-of-service,legal-notice' | split: ','
+-%}
+{%- if contact_page != blank -%}
+  <li><small class="copyright__content"><a href="{{ contact_page.url }}">{{ 'garelon.legal.contact' | t }}</a></small></li>
+{%- endif -%}
+{%- for key in keys -%}
+  {%- if key == 'cookies' -%}
+    {%- if cookies_page != blank -%}
+      <li><small class="copyright__content"><a href="{{ cookies_page.url }}">{{ 'garelon.legal.cookies' | t }}</a></small></li>
+    {%- endif -%}
+  {%- else -%}
+    {%- assign suffix = '/policies/' | append: key -%}
+    {%- for policy in shop.policies -%}
+      {%- if policy != blank and policy.url contains suffix -%}
+        {%- assign label_key = key | replace: '-', '_' | prepend: 'garelon.legal.' -%}
+        <li><small class="copyright__content"><a href="{{ policy.url }}">{{ label_key | t }}</a></small></li>
+      {%- endif -%}
+    {%- endfor -%}
+  {%- endif -%}
+{%- endfor -%}
+{%- for policy in shop.policies -%}
+  {%- liquid
+    assign listed = false
+    for key in keys
+      assign suffix = '/policies/' | append: key
+      if policy.url contains suffix
+        assign listed = true
+      endif
+    endfor
+  -%}
+  {%- if policy != blank and listed == false -%}
+    <li><small class="copyright__content"><a href="{{ policy.url }}">{{ policy.title | escape }}</a></small></li>
+  {%- endif -%}
+{%- endfor -%}

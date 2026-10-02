@@ -4,6 +4,7 @@
   @param {boolean} [show_country_selector] - Whether to render the country selector in the drawer.
   @param {boolean} [show_language_selector] - Whether to render the language selector in the drawer.
   @param {boolean} [show_social_links] - Whether to render social links list in the drawer.
+  @param {boolean} [garelon_nav] - GARELON: render the header's own links instead of the Admin menu.
 
   @example
   {% render 'header-drawer', show_language_selector: true %}
@@ -25,6 +26,9 @@
         <div class="menu-drawer__navigation-container">
           <nav class="menu-drawer__navigation">
             <ul class="menu-drawer__menu has-submenu list-menu" role="list">
+              {%- if garelon_nav -%}
+                {%- render 'garelon-nav-items', mode: 'drawer' -%}
+              {%- else -%}
               {%- for link in section.settings.menu.links -%}
                 <li>
                   {%- if link.links != blank -%}
@@ -137,9 +141,17 @@
                   {%- endif -%}
                 </li>
               {%- endfor -%}
+              {%- endif -%}
             </ul>
           </nav>
           <div class="menu-drawer__utility-links">
+            {%- comment -%} GARELON: en móvil la cuenta va dentro del menú (el icono se oculta). {%- endcomment -%}
+            {%- if shop.customer_accounts_enabled -%}
+              <a href="{{ routes.account_url }}" class="garelon-drawer-account link link--text focus-inset">
+                <span class="svg-wrapper">{{- 'icon-account.svg' | inline_asset_content -}}</span>
+                {{- 'garelon.header.account' | t -}}
+              </a>
+            {%- endif -%}
             {%- if show_country_selector or show_language_selector -%}
               <div class="menu-drawer__localization header-localization">
                 {%- if show_country_selector -%}

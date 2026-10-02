@@ -1,0 +1,122 @@
+/* GARELON · capa visual sobre Dawn 16.0.0
+   Colores de los esquemas en Configuración del tema; aquí solo tokens y retoques.
+   1 rem = 10 px (Dawn). Móvil < 750 px · tableta 750-989 px · escritorio ≥ 990 px. */
+
+:root {
+  --g-ink: #2a2622;
+  --g-accent: #86672f;        /* acción: texto blanco encima 5,3:1 */
+  --g-accent-dark: #6e5220;   /* hover */
+  --g-accent-ink: #7a5a24;    /* texto dorado pequeño: ≥ 5,4:1 en blanco, marfil y champán */
+  --g-accent-soft: #f6efe2;
+  --g-line: rgba(42, 38, 34, 0.12);
+  --g-gold-line: rgba(134, 103, 47, 0.35);
+  --g-radius: 12px;
+  --g-radius-lg: 20px;
+}
+
+body {
+  letter-spacing: 0;
+}
+
+/* ---------- Logo (respaldo desde assets) ---------- */
+.g-logo--header {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.8rem;
+}
+.g-logo__isotype {
+  width: 3.6rem;
+  height: 3.6rem;
+}
+.g-logo__wordmark {
+  width: 13.6rem;
+  height: auto;
+}
+.header__heading-link {
+  padding: 0.4rem 0.6rem;
+}
+@media screen and (max-width: 749px) {
+  .g-logo--header {
+    gap: 0.6rem;
+  }
+  .g-logo__isotype {
+    width: 2.8rem;
+    height: 2.8rem;
+  }
+  .g-logo__wordmark {
+    width: 11.2rem;
+  }
+}
+@media screen and (max-width: 359px) {
+  .g-logo__wordmark {
+    width: 9.6rem;
+  }
+}
+
+/* ---------- Cabecera ---------- */
+.header__menu-item {
+  font-size: 1.5rem;
+}
+/* Móvil: menú · logo centrado · carrito. La cuenta va dentro del menú. */
+@media screen and (max-width: 749px) {
+  .header .header__icons .header__icon--account {
+    display: none;
+  }
+  .header {
+    padding-left: 1.2rem;
+    padding-right: 1.2rem;
+  }
+}
+.garelon-drawer-account {
+  display: none;
+  align-items: center;
+  gap: 1rem;
+  padding: 1.2rem 0;
+  font-size: 1.5rem;
+  min-height: 4.4rem;
+}
+.garelon-drawer-account .svg-wrapper {
+  width: 2rem;
+  height: 2rem;
+}
+@media screen and (max-width: 749px) {
+  .garelon-drawer-account {
+    display: inline-flex;
+  }
+}
+.menu-drawer__menu-item {
+  min-height: 4.4rem;
+}
+
+/* ---------- Barra superior ---------- */
+.announcement-bar__message {
+  font-size: 1.3rem;
+  letter-spacing: 0.04em;
+  padding-top: 0.9rem;
+  padding-bottom: 0.9rem;
+}
+
+/* ---------- Pie ---------- */
+.garelon-footer-logo .g-logo--stacked {
+  width: 12rem;
+  height: auto;
+}
+.footer .policies li small a {
+  min-height: 2.4rem;
+  display: inline-block;
+}
+.footer-block__details-content a {
+  text-decoration: underline;
+  text-underline-offset: 0.3rem;
+}
+
+/* ---------- Movimiento reducido ---------- */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    transition-duration: 0.01ms !important;
+    animation-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
