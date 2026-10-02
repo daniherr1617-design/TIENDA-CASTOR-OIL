@@ -1,40 +1,39 @@
 /* ==========================================================================
-   GARELON · Capa de diseño de la Taza Fondue sobre Dawn 16
+   GARELON · Capa de diseño de la Pulsera Rosario Virgen María sobre Dawn 16
    Mobile first, sin dependencias externas. Los colores de fondo, texto y botón
    vienen de los esquemas de Dawn (config/settings_data.json); aquí van los tokens
    de marca, la tipografía, los componentes GARELON y el ajuste fino de Dawn.
-   Dirección de esta tienda (no es una regla GARELON): blanco + rojo de la taza
-   para la acción + chocolate como apoyo + texto carbón.
+   Dirección de esta tienda (no es una regla GARELON): joyería sencilla y luminosa.
+   Blanco y marfil dominantes, dorado solo como acento (acción, antetítulos, iconos,
+   líneas finas) y texto carbón. Todo el dorado con texto encima cumple AA.
    ========================================================================== */
 
 :root {
-  --g-red: #b3161e; /* rojo de la taza: botones y acentos · 6,9:1 sobre blanco */
-  --g-red-dark: #93121a; /* hover / pulsado */
-  --g-red-text: #b3161e; /* texto rojo pequeño: AA sobre blanco y sobre #FAF6F2 */
-  --g-red-soft: #fcf1ee;
-  --g-red-tint: #f8e0dc;
-  --g-stage: #f7e8e3; /* disco suave detrás de la taza en la portada */
-  --g-choc: #3a2219;
-  --g-ink: #1e1a17;
-  --g-icon: var(--g-red);
-  --g-accent-text: var(--g-red-text);
-  --g-line: rgba(30, 26, 23, 0.12);
-  --g-line-strong: rgba(30, 26, 23, 0.22);
+  --g-accent: #86672f; /* dorado de acción: botones y selección · blanco encima 5,3:1 */
+  --g-accent-dark: #6e5220; /* hover / pulsado · 7,3:1 */
+  --g-accent-ink: #7a5a24; /* texto dorado pequeño: AA sobre blanco (6,3:1), marfil (5,9:1) y champán (5,4:1) */
+  --g-accent-soft: #f6efe2; /* círculo de los iconos, fondo del «+» de la FAQ */
+  --g-accent-tint: #efe4cf;
+  --g-gold-line: rgba(134, 103, 47, 0.28); /* líneas doradas finas (decorativas) */
+  --g-stage: #f4ecdd; /* disco suave opcional detrás de la foto de la portada */
+  --g-ink: #2a2622;
+  --g-icon: var(--g-accent);
+  --g-accent-text: var(--g-accent-ink);
+  --g-line: rgba(42, 38, 34, 0.1);
+  --g-line-strong: rgba(42, 38, 34, 0.2);
   --g-radius: 12px;
   --g-radius-lg: 20px;
-  --g-shadow: 0 1px 2px rgba(30, 26, 23, 0.05), 0 10px 28px rgba(30, 26, 23, 0.07);
+  --g-shadow: 0 1px 2px rgba(42, 38, 34, 0.04), 0 10px 28px rgba(42, 38, 34, 0.06);
   --g-ease: cubic-bezier(0.2, 0.7, 0.2, 1);
 }
 
-/* Barra superior (chocolate): acentos en blanco. */
+/* Barra superior (champán claro): texto carbón, sin acentos que compitan con la compra. */
 .color-scheme-3 {
-  --g-accent-text: #fff;
-  --g-icon: #fff;
-  --g-line: rgba(255, 255, 255, 0.3);
+  --g-line: var(--g-gold-line);
 }
 
 /* ---------- Base tipográfica ----------
-   Titulares en Lora (serif cálida, de cocina/regalo) y texto en Inter. Dawn añade
+   Titulares en Lora (serif clásica y legible, acompaña bien a las letras del logo) y texto en Inter. Dawn añade
    espaciado entre letras pensado para otras fuentes: aquí se deja el natural. */
 body {
   letter-spacing: 0;
@@ -112,7 +111,7 @@ h5,
 }
 
 .g-link-arrow span {
-  color: var(--g-red);
+  color: var(--g-accent);
   transition: transform 0.2s var(--g-ease);
 }
 
@@ -232,12 +231,7 @@ h5,
   height: auto;
 }
 
-.footer .garelon-logo--stacked .garelon-logo__isotype {
-  width: 66%;
-  margin: 0 auto 0.8rem;
-}
-
-.footer .garelon-logo--stacked .garelon-logo__wordmark {
+.footer .garelon-logo--stacked .garelon-logo__full {
   width: 100%;
 }
 
@@ -325,11 +319,11 @@ product-info {
 .g-eyebrow {
   display: inline-flex;
   align-items: center;
-  gap: 0.8rem;
+  gap: 1rem;
   margin: 0 0 1rem;
-  font-size: 1.3rem;
+  font-size: 1.25rem;
   font-weight: 600;
-  letter-spacing: 0.08em;
+  letter-spacing: 0.14em;
   line-height: 1.4;
   text-transform: uppercase;
   color: var(--g-accent-text);
@@ -338,10 +332,10 @@ product-info {
 .g-eyebrow::before {
   content: '';
   flex: none;
-  width: 0.7rem;
-  height: 0.7rem;
-  border-radius: 50%;
+  width: 2rem;
+  height: 1px;
   background: currentColor;
+  opacity: 0.7;
 }
 
 .g-h2 {
@@ -481,7 +475,7 @@ product-info {
 }
 
 /* ---------- Portada ----------
-   Móvil: la taza roja grande, sobre un disco suave, y debajo H1, precio, colores y botón
+   Móvil: la pulsera en la muñeca y debajo antetítulo, H1, frase, precio y botón
    (todo en la primera pantalla desde 360 × 740). Escritorio: texto a la izquierda. */
 .g-hero {
   overflow: hidden;
@@ -515,7 +509,7 @@ product-info {
   object-fit: contain;
 }
 
-/* Disco suave detrás de la taza: la foto tiene fondo blanco y se funde con él (multiply). */
+/* Disco suave opcional (show_stage) detrás de una foto de fondo blanco (se funde con multiply). */
 .g-hero__media--stage::before {
   content: '';
   position: absolute;
@@ -646,6 +640,24 @@ product-info {
 
   .g-hero__heading {
     font-size: 3rem;
+  }
+}
+
+/* Móvil con mobile_crop: la foto va a todo el ancho y en horizontal (4:3; 16:9 en pantallas
+   bajas), recortada con object-fit para que el producto se vea más grande con la misma altura. */
+@media screen and (max-width: 749px) {
+  .g-hero__media--crop img {
+    width: 100%;
+    max-height: none;
+    aspect-ratio: 4 / 3;
+    object-fit: cover;
+    object-position: 50% 52%;
+  }
+}
+
+@media screen and (max-width: 749px) and (max-height: 700px) {
+  .g-hero__media--crop img {
+    aspect-ratio: 16 / 9;
   }
 }
 
@@ -791,7 +803,7 @@ product-info {
   margin: 0 0 1rem;
   padding: 0.4rem 1.2rem;
   border-radius: 999px;
-  background: var(--g-red-soft);
+  background: var(--g-accent-soft);
   color: var(--g-accent-text);
   font-size: 1.3rem;
   font-weight: 600;
@@ -848,7 +860,7 @@ product-info {
   opacity: 0;
 }
 
-/* Color: píldoras con la foto de la taza de ese color. */
+/* Opciones que no son el pack: píldoras con la foto de la variante o una muestra de color. */
 .g-choice {
   min-width: 0;
   max-width: none;
@@ -892,8 +904,8 @@ product-info {
 }
 
 .g-choice__input:checked + .g-choice__button {
-  border-color: var(--g-red);
-  box-shadow: inset 0 0 0 1px var(--g-red);
+  border-color: var(--g-accent);
+  box-shadow: inset 0 0 0 1px var(--g-accent);
   font-weight: 600;
 }
 
@@ -912,7 +924,7 @@ product-info {
 
 .g-choice__dot {
   display: inline-block;
-  border: 1px solid rgba(30, 26, 23, 0.22);
+  border: 1px solid var(--g-line-strong);
   background: var(--g-dot, rgba(var(--color-foreground), 0.15));
 }
 
@@ -922,22 +934,6 @@ product-info {
   object-fit: cover;
   background: #fff;
   box-shadow: 0 0 0 1px var(--g-line);
-}
-
-.g-choice__dot--rojo,
-.g-choice__dot--red {
-  --g-dot: var(--g-red);
-}
-
-.g-choice__dot--blanco,
-.g-choice__dot--white {
-  --g-dot: #fbf8f4;
-}
-
-.g-choice__dot--marron,
-.g-choice__dot--brown,
-.g-choice__dot--chocolate {
-  --g-dot: #4a2a1d;
 }
 
 .g-choice__button--soldout .g-choice__name {
@@ -990,9 +986,9 @@ product-info {
 }
 
 .g-packs__input:checked + .g-pack {
-  border-color: var(--g-red);
-  box-shadow: inset 0 0 0 1px var(--g-red);
-  background: #fffafa;
+  border-color: var(--g-accent);
+  box-shadow: inset 0 0 0 1px var(--g-accent);
+  background: #fffdf8;
 }
 
 .g-packs__input:focus-visible + .g-pack {
@@ -1015,13 +1011,13 @@ product-info {
   width: 1.2rem;
   height: 1.2rem;
   border-radius: 50%;
-  background: var(--g-red);
+  background: var(--g-accent);
   transform: scale(0);
   transition: transform 0.2s var(--g-ease);
 }
 
 .g-packs__input:checked + .g-pack .g-pack__radio {
-  border-color: var(--g-red);
+  border-color: var(--g-accent);
 }
 
 .g-packs__input:checked + .g-pack .g-pack__radio::after {
@@ -1086,8 +1082,8 @@ product-info {
 .g-pack__save {
   padding: 0.2rem 0.8rem;
   border-radius: 999px;
-  background: var(--g-red-tint);
-  color: var(--g-red-dark);
+  background: var(--g-accent-tint);
+  color: var(--g-accent-dark);
   font-size: 1.25rem;
   font-weight: 600;
   line-height: 1.4;
@@ -1112,7 +1108,7 @@ product-info {
   right: 1.4rem;
   padding: 0.3rem 1rem;
   border-radius: 999px;
-  background: var(--g-red);
+  background: var(--g-accent);
   color: #fff;
   font-size: 1.15rem;
   font-weight: 600;
@@ -1176,7 +1172,7 @@ product-info {
 
 /* ---------- Botones de compra ----------
    Con el pago dinámico activado Dawn pinta «Añadir al carrito» como secundario: aquí es la
-   acción principal (rojo de la taza, píldora a todo el ancho) y «Comprar ahora» (sin marca)
+   acción principal (dorado accesible, píldora a todo el ancho) y «Comprar ahora» (sin marca)
    queda como botón con borde. Solo estilo: el formulario y el checkout no cambian. */
 .product-form__buttons {
   max-width: 48rem;
@@ -1188,7 +1184,7 @@ product-info {
 }
 
 .product-form__buttons .product-form__submit.button--secondary {
-  --color-button: 179, 22, 30;
+  --color-button: 134, 103, 47;
   --color-button-text: 255, 255, 255;
   --alpha-button-background: 1;
 }
@@ -1198,7 +1194,7 @@ product-info {
 }
 
 .product-form__buttons .product-form__submit:not([disabled]):hover {
-  background-color: var(--g-red-dark);
+  background-color: var(--g-accent-dark);
   background-image: none;
 }
 
@@ -1424,7 +1420,7 @@ product-info {
 .g-editor-note {
   margin: 1.2rem 0 0;
   padding: 1rem 1.2rem;
-  border: 2px dashed var(--g-red);
+  border: 2px dashed var(--g-accent);
   border-radius: var(--g-radius);
   background: #fffaf0;
   color: #4a3714; /* aviso solo del editor */
@@ -1648,7 +1644,7 @@ product-info {
   width: 5.6rem;
   height: 5.6rem;
   border-radius: 50%;
-  background: var(--g-red-soft);
+  background: var(--g-accent-soft);
 }
 
 .g-steps__icon .g-icon {
@@ -1783,7 +1779,7 @@ product-info {
   width: 4.4rem;
   height: 4.4rem;
   border-radius: 50%;
-  background: var(--g-red-soft);
+  background: var(--g-accent-soft);
 }
 
 .g-features__icon .g-icon {
@@ -1861,6 +1857,62 @@ product-info {
     grid-template-columns: 1.6fr 1fr;
     gap: 5rem;
     align-items: start;
+  }
+}
+
+/* Imagen al lado de las tarjetas (media_layout: side): foto cuadrada a 520 px como máximo. */
+.g-features__layout--side {
+  display: grid;
+  gap: 2.8rem;
+  align-items: center;
+  max-width: 110rem;
+  margin: 0 auto;
+}
+
+.g-features__layout--side .g-features__visual {
+  width: 100%;
+  max-width: 52rem;
+  margin: 0 auto;
+}
+
+.g-features__layout--side .g-features__visual .g-media__frame {
+  box-shadow: none;
+}
+
+@media screen and (min-width: 750px) {
+  .g-features__layout--side .g-features__grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media screen and (min-width: 990px) {
+  .g-features__layout--side {
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1.1fr);
+    gap: 6rem;
+  }
+
+  .g-features__layout--side .g-features__visual {
+    margin: 0;
+  }
+
+  .g-features__layout--side .g-features__body {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}
+
+/* Solo etiquetas, centradas (p. ej. ocasiones de regalo). */
+.g-features__body--uses-only {
+  max-width: 72rem;
+  text-align: center;
+}
+
+.g-features__body--uses-only .g-uses {
+  justify-content: center;
+}
+
+@media screen and (min-width: 990px) {
+  .g-features__body.g-features__body--uses-only {
+    grid-template-columns: minmax(0, 1fr);
   }
 }
 
@@ -2060,7 +2112,7 @@ product-info {
   width: 4.8rem;
   height: 4.8rem;
   border-radius: 50%;
-  background: var(--g-red-soft);
+  background: var(--g-accent-soft);
 }
 
 .g-benefits__icon .g-icon {
@@ -2247,8 +2299,8 @@ a.g-trust__title {
   width: 3.2rem;
   height: 3.2rem;
   border-radius: 50%;
-  background: var(--g-red-soft);
-  color: var(--g-red);
+  background: var(--g-accent-soft);
+  color: var(--g-accent);
 }
 
 .g-faq__toggle::before,
@@ -2349,7 +2401,7 @@ a.g-trust__title {
   padding: 0.8rem 0 calc(0.8rem + env(safe-area-inset-bottom));
   border-top: 1px solid var(--g-line);
   background: rgb(var(--color-background));
-  box-shadow: 0 -0.6rem 2rem rgba(30, 26, 23, 0.08);
+  box-shadow: 0 -0.6rem 2rem rgba(42, 38, 34, 0.07);
   transform: translateY(110%);
   visibility: hidden;
   transition: transform 0.25s var(--g-ease), visibility 0s linear 0.25s;

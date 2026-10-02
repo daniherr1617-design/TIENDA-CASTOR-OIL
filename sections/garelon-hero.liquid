@@ -22,7 +22,7 @@
   style="--g-pt: {{ section.settings.padding_top }}px; --g-pb: {{ section.settings.padding_bottom }}px;"
 >
   <div class="page-width g-hero__grid{% if section.settings.image_position == 'left' %} g-hero__grid--image-left{% endif %}{% unless section.settings.mobile_image_first %} g-hero__grid--text-first{% endunless %}">
-    <div class="g-hero__media{% if section.settings.show_stage %} g-hero__media--stage{% endif %}">
+    <div class="g-hero__media{% if section.settings.show_stage %} g-hero__media--stage{% elsif section.settings.mobile_crop %} g-hero__media--crop{% endif %}">
       {%- if desktop_image != blank and mobile_image != blank -%}
         <picture>
           <source
@@ -166,6 +166,13 @@
     },
     {
       "type": "checkbox",
+      "id": "mobile_crop",
+      "label": "Móvil: encuadrar la imagen en horizontal para acercar el producto",
+      "info": "Recorta arriba y abajo con CSS (la imagen no se modifica). Úsalo solo si el producto está en el centro de la foto. No se combina con el fondo circular.",
+      "default": false
+    },
+    {
+      "type": "checkbox",
       "id": "mobile_image_first",
       "label": "En móvil, mostrar la imagen antes del texto",
       "default": true
@@ -288,28 +295,26 @@
           "label": "Icono",
           "options": [
             { "value": "none", "label": "Ninguno" },
-            { "value": "mug", "label": "Taza" },
-            { "value": "fork", "label": "Tenedor" },
-            { "value": "candle", "label": "Vela" },
-            { "value": "flame", "label": "Llama" },
-            { "value": "melt", "label": "Calor" },
-            { "value": "stir", "label": "Remover" },
-            { "value": "chocolate", "label": "Chocolate" },
-            { "value": "cheese", "label": "Queso" },
-            { "value": "strawberry", "label": "Fresa" },
-            { "value": "fruit", "label": "Fruta" },
-            { "value": "bread", "label": "Pan" },
-            { "value": "waffle", "label": "Gofre" },
-            { "value": "measure", "label": "Capacidad" },
-            { "value": "microwave", "label": "Microondas" },
-            { "value": "box", "label": "Caja" },
-            { "value": "colors", "label": "Colores" },
+            { "value": "medal", "label": "Medalla" },
+            { "value": "cross", "label": "Cruz" },
+            { "value": "beads", "label": "Cuentas" },
+            { "value": "chain", "label": "Cadena" },
+            { "value": "rings", "label": "Aros de ajuste" },
+            { "value": "gem", "label": "Brillo / acabado" },
+            { "value": "material", "label": "Material" },
+            { "value": "measure", "label": "Medida" },
             { "value": "heart", "label": "Corazón" },
             { "value": "gift", "label": "Regalo" },
-            { "value": "users", "label": "Compartir" },
+            { "value": "star", "label": "Estrella" },
+            { "value": "calendar", "label": "Fecha / ocasión" },
+            { "value": "drop", "label": "Gota" },
+            { "value": "leaf", "label": "Hoja" },
+            { "value": "sparkle", "label": "Destello" },
+            { "value": "box", "label": "Caja" },
+            { "value": "colors", "label": "Colores" },
+            { "value": "users", "label": "Personas" },
             { "value": "home", "label": "Casa" },
             { "value": "moon", "label": "Noche" },
-            { "value": "sparkle", "label": "Destello" },
             { "value": "clock", "label": "Reloj" },
             { "value": "truck", "label": "Envío" },
             { "value": "return", "label": "Devolución" },

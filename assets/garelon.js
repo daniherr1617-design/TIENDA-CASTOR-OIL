@@ -3,7 +3,7 @@
   - <garelon-sticky-atc>: barra fija de compra en móvil (ficha y home). No crea su propio
     formulario: pulsa el botón real del formulario de Dawn, así el carrito (drawer/AJAX), las
     apps y los eventos de Shopify siguen funcionando igual. Muestra la variante elegida
-    (p. ej. «Rojo · 2 unidades»), su precio real y la foto del color.
+    (p. ej. «Color · 2 unidades»), su precio real y la foto del color.
   - Color × Pack (snippets/garelon-packs.liquid) no necesita JS propio: son variantes reales
     dentro del <variant-selects> de Dawn.
   - Galería del tema (snippets/garelon-gallery.liquid): al elegir un color, el carrusel se
@@ -96,7 +96,7 @@ if (!customElements.get('garelon-sticky-atc')) {
         }
 
         if (this.variantTarget) {
-          // Color y pack elegidos (garelon-packs: «Rojo · 2 unidades») o, si no hay packs, el nombre
+          // Color y pack elegidos (garelon-packs: «Color · 2 unidades») o, si no hay packs, el nombre
           // de la variante. Las opciones fijas ocultas no llevan etiqueta. Al cambiar de variante
           // Dawn deja 500 ms el selector anterior oculto y con el mismo id: se lee solo el visible.
           const selects = Array.from(document.querySelectorAll(`#variant-selects-${this.sectionId}`)).find(

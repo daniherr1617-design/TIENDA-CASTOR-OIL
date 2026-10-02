@@ -9,55 +9,55 @@
           "settings": {
             "background": "#FFFFFF",
             "background_gradient": "",
-            "text": "#1E1A17",
-            "button": "#B3161E",
+            "text": "#2A2622",
+            "button": "#86672F",
             "button_label": "#FFFFFF",
-            "secondary_button_label": "#1E1A17",
-            "shadow": "#1E1A17"
+            "secondary_button_label": "#2A2622",
+            "shadow": "#2A2622"
           }
         },
         "scheme-2": {
           "settings": {
-            "background": "#FAF6F2",
+            "background": "#FAF7F2",
             "background_gradient": "",
-            "text": "#1E1A17",
-            "button": "#B3161E",
+            "text": "#2A2622",
+            "button": "#86672F",
             "button_label": "#FFFFFF",
-            "secondary_button_label": "#1E1A17",
-            "shadow": "#1E1A17"
+            "secondary_button_label": "#2A2622",
+            "shadow": "#2A2622"
           }
         },
         "scheme-3": {
           "settings": {
-            "background": "#3A2219",
+            "background": "#F3ECDF",
             "background_gradient": "",
-            "text": "#FFFFFF",
-            "button": "#FFFFFF",
-            "button_label": "#3A2219",
-            "secondary_button_label": "#FFFFFF",
-            "shadow": "#1E1A17"
+            "text": "#2A2622",
+            "button": "#2A2622",
+            "button_label": "#FFFFFF",
+            "secondary_button_label": "#2A2622",
+            "shadow": "#2A2622"
           }
         },
         "scheme-4": {
           "settings": {
             "background": "#FFFFFF",
             "background_gradient": "",
-            "text": "#1E1A17",
-            "button": "#B3161E",
+            "text": "#2A2622",
+            "button": "#86672F",
             "button_label": "#FFFFFF",
-            "secondary_button_label": "#1E1A17",
-            "shadow": "#1E1A17"
+            "secondary_button_label": "#2A2622",
+            "shadow": "#2A2622"
           }
         },
         "scheme-5": {
           "settings": {
-            "background": "#FCF1EE",
+            "background": "#F7F1E6",
             "background_gradient": "",
-            "text": "#1E1A17",
-            "button": "#B3161E",
+            "text": "#2A2622",
+            "button": "#86672F",
             "button_label": "#FFFFFF",
-            "secondary_button_label": "#1E1A17",
-            "shadow": "#1E1A17"
+            "secondary_button_label": "#2A2622",
+            "shadow": "#2A2622"
           }
         }
       },
@@ -157,7 +157,7 @@
       "sale_badge_color_scheme": "scheme-3",
       "sold_out_badge_color_scheme": "scheme-2",
       "brand_headline": "",
-      "brand_description": "<p>Pequeños planes que saben a mucho.</p>",
+      "brand_description": "<p>Joyería con significado para acompañar momentos especiales.</p>",
       "brand_image_width": 120,
       "social_twitter_link": "",
       "social_facebook_link": "",

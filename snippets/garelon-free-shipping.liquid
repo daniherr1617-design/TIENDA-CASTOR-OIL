@@ -6,6 +6,8 @@
   - GARELON no muestra logos de métodos de pago en la tienda por ahora. Los métodos reales
     los decide Shopify (Configuración › Pagos) y el cliente los ve en el checkout oficial.
   - No toca {{ form | payment_button }} ni el checkout.
+  - Desactivado por defecto (show_free_shipping: false): sin tarifa 0 € verificada no se
+    muestra nada al cliente; en el editor aparece un aviso.
 
   Accepts:
   - block: {Object} bloque garelon_free_shipping
@@ -26,5 +28,10 @@
         </span>
       </li>
     </ul>
+  </div>
+{%- elsif request.design_mode -%}
+  <div class="g-editor-note" {{ block.shopify_attributes }}>
+    <p class="g-editor-note__title">«Envío gratis» desactivado (solo lo ves en el editor).</p>
+    <p>Actívalo cuando la tarifa de envío sea realmente 0 € en Configuración › Envío y entrega.</p>
   </div>
 {%- endif -%}

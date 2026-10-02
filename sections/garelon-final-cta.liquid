@@ -20,8 +20,8 @@
       {%- if section.settings.show_isotype -%}
         <img
           class="g-final__isotype"
-          src="{{ 'garelon-fondue-logo-96.webp' | asset_url }}"
-          srcset="{{ 'garelon-fondue-logo-96.webp' | asset_url }} 96w, {{ 'garelon-fondue-logo-192.webp' | asset_url }} 192w"
+          src="{{ 'garelon-rosario-isotipo-96.webp' | asset_url }}"
+          srcset="{{ 'garelon-rosario-isotipo-96.webp' | asset_url }} 96w, {{ 'garelon-rosario-isotipo-192.webp' | asset_url }} 192w"
           sizes="56px"
           width="56"
           height="56"
@@ -78,8 +78,9 @@
       "label": "Imagen del tema si no eliges ninguna",
       "options": [
         { "value": "none", "label": "Ninguna (solo texto, centrado)" },
-        { "value": "principal", "label": "Imagen principal del producto" },
-        { "value": "colores", "label": "Los colores disponibles" }
+        { "value": "principal", "label": "Imagen principal (pulsera en la muñeca)" },
+        { "value": "detalle", "label": "Detalle: medalla, cruz y cuentas" },
+        { "value": "oracion", "label": "Pulsera en un momento de oración" }
       ],
       "default": "none"
     },

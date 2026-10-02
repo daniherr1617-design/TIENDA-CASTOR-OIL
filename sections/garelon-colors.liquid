@@ -196,8 +196,8 @@
           "type": "text",
           "id": "name",
           "label": "Nombre del color",
-          "info": "Igual que el valor de la opción Color en Shopify (p. ej. Rojo).",
-          "default": "Rojo"
+          "info": "Igual que el valor de la opción Color en Shopify.",
+          "default": "Color"
         },
         {
           "type": "image_picker",
@@ -209,12 +209,12 @@
           "id": "fallback_image",
           "label": "Imagen del tema si no eliges ninguna",
           "options": [
-            { "value": "roja", "label": "Taza roja" },
-            { "value": "blanco", "label": "Taza blanca" },
-            { "value": "marron", "label": "Taza marrón" },
+            { "value": "principal", "label": "Imagen principal (pulsera en la muñeca)" },
+            { "value": "detalle", "label": "Detalle: medalla, cruz y cuentas" },
+            { "value": "oracion", "label": "Pulsera en un momento de oración" },
             { "value": "none", "label": "Ninguna" }
           ],
-          "default": "roja"
+          "default": "none"
         },
         {
           "type": "text",
@@ -233,28 +233,26 @@
           "label": "Icono",
           "options": [
             { "value": "none", "label": "Ninguno" },
-            { "value": "mug", "label": "Taza" },
-            { "value": "fork", "label": "Tenedor" },
-            { "value": "candle", "label": "Vela" },
-            { "value": "flame", "label": "Llama" },
-            { "value": "melt", "label": "Calor" },
-            { "value": "stir", "label": "Remover" },
-            { "value": "chocolate", "label": "Chocolate" },
-            { "value": "cheese", "label": "Queso" },
-            { "value": "strawberry", "label": "Fresa" },
-            { "value": "fruit", "label": "Fruta" },
-            { "value": "bread", "label": "Pan" },
-            { "value": "waffle", "label": "Gofre" },
-            { "value": "measure", "label": "Capacidad" },
-            { "value": "microwave", "label": "Microondas" },
-            { "value": "box", "label": "Caja" },
-            { "value": "colors", "label": "Colores" },
+            { "value": "medal", "label": "Medalla" },
+            { "value": "cross", "label": "Cruz" },
+            { "value": "beads", "label": "Cuentas" },
+            { "value": "chain", "label": "Cadena" },
+            { "value": "rings", "label": "Aros de ajuste" },
+            { "value": "gem", "label": "Brillo / acabado" },
+            { "value": "material", "label": "Material" },
+            { "value": "measure", "label": "Medida" },
             { "value": "heart", "label": "Corazón" },
             { "value": "gift", "label": "Regalo" },
-            { "value": "users", "label": "Compartir" },
+            { "value": "star", "label": "Estrella" },
+            { "value": "calendar", "label": "Fecha / ocasión" },
+            { "value": "drop", "label": "Gota" },
+            { "value": "leaf", "label": "Hoja" },
+            { "value": "sparkle", "label": "Destello" },
+            { "value": "box", "label": "Caja" },
+            { "value": "colors", "label": "Colores" },
+            { "value": "users", "label": "Personas" },
             { "value": "home", "label": "Casa" },
             { "value": "moon", "label": "Noche" },
-            { "value": "sparkle", "label": "Destello" },
             { "value": "clock", "label": "Reloj" },
             { "value": "truck", "label": "Envío" },
             { "value": "return", "label": "Devolución" },
@@ -267,7 +265,7 @@
           "type": "text",
           "id": "text",
           "label": "Texto",
-          "default": "1 taza de cerámica"
+          "default": "Elemento incluido"
         },
         {
           "type": "checkbox",
@@ -282,10 +280,8 @@
     {
       "name": "GARELON Colores",
       "blocks": [
-        { "type": "color", "settings": { "name": "Rojo", "fallback_image": "roja" } },
-        { "type": "color", "settings": { "name": "Blanco", "fallback_image": "blanco" } },
-        { "type": "color", "settings": { "name": "Marrón", "fallback_image": "marron" } },
-        { "type": "include", "settings": { "icon": "mug", "text": "1 taza de cerámica" } }
+        { "type": "color", "settings": { "name": "Color" } },
+        { "type": "include", "settings": { "icon": "check", "text": "Elemento incluido" } }
       ]
     }
   ]

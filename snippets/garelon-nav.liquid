@@ -1,9 +1,9 @@
 {%- comment -%}
   GARELON · Navegación principal de la tienda de un solo producto.
 
-  Enlaces: Inicio, las secciones de la home que se activen en la cabecera
-  (Cómo funciona, Qué incluye, Preguntas) y Contacto. No enlaza al catálogo
-  ni a colecciones. Las URLs son dinámicas: routes.root_url y la página de contacto
+  Enlaces: Inicio, hasta 4 secciones de la home (ajustes nav_link_N_label / nav_link_N_anchor
+  de la cabecera; hoy: La pulsera · Detalles · Regalo · Preguntas) y Contacto. No enlaza al
+  catálogo ni a colecciones. Las URLs son dinámicas: routes.root_url y la página de contacto
   real resuelta por el snippet garelon-url.
 
   Accepts:
@@ -22,21 +22,17 @@
   assign labels = 'Inicio'
   assign urls = home_url
   assign ids = 'inicio'
-  if section.settings.nav_show_how
-    assign labels = labels | append: '|Cómo funciona'
-    assign urls = urls | append: '|' | append: home_url | append: '#como-funciona'
-    assign ids = ids | append: '|como-funciona'
-  endif
-  if section.settings.nav_show_ingredients
-    assign labels = labels | append: '|Qué incluye'
-    assign urls = urls | append: '|' | append: home_url | append: '#que-incluye'
-    assign ids = ids | append: '|que-incluye'
-  endif
-  if section.settings.nav_show_faq
-    assign labels = labels | append: '|Preguntas'
-    assign urls = urls | append: '|' | append: home_url | append: '#preguntas-frecuentes'
-    assign ids = ids | append: '|preguntas-frecuentes'
-  endif
+  for n in (1..4)
+    assign label_key = 'nav_link_' | append: n | append: '_label'
+    assign anchor_key = 'nav_link_' | append: n | append: '_anchor'
+    assign link_label = section.settings[label_key] | strip | replace: '|', ' '
+    assign link_anchor = section.settings[anchor_key] | remove: '#' | handleize
+    if link_label != blank and link_anchor != blank
+      assign labels = labels | append: '|' | append: link_label
+      assign urls = urls | append: '|' | append: home_url | append: '#' | append: link_anchor
+      assign ids = ids | append: '|' | append: link_anchor
+    endif
+  endfor
   assign labels = labels | append: '|Contacto'
   assign urls = urls | append: '|' | append: contact_url
   assign ids = ids | append: '|contacto'

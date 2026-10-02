@@ -10,80 +10,80 @@
     "faq": {
       "type": "garelon-faq",
       "blocks": {
+        "q-material": {
+          "type": "question",
+          "settings": {
+            "question": "¿De qué material está hecha?",
+            "answer": "<p>Según la información facilitada por el proveedor, está fabricada en acero inoxidable con acabado dorado pulido.</p>"
+          }
+        },
+        "q-elementos": {
+          "type": "question",
+          "settings": {
+            "question": "¿Qué elementos tiene?",
+            "answer": "<p>La pulsera incorpora una medalla de la Virgen María, una cruz y cuentas de rosario tricolor.</p>"
+          }
+        },
+        "q-ajustable": {
+          "type": "question",
+          "settings": {
+            "question": "¿Es ajustable?",
+            "answer": "<p>La imagen del proveedor muestra tres aros destinados al ajuste de la longitud.</p>"
+          }
+        },
+        "q-longitud": {
+          "type": "question",
+          "settings": {
+            "question": "¿Qué longitud tiene?",
+            "answer": "<p>La imagen del proveedor indica una longitud de 7,87 pulgadas, que equivalen a unos 20 cm.</p>"
+          }
+        },
         "q-incluye": {
           "type": "question",
           "settings": {
-            "question": "¿Qué incluye cada taza?",
-            "answer": "<p>Cada unidad incluye una Taza Fondue de cerámica y un tenedor tipo fondue. La vela no está incluida.</p>"
+            "question": "¿Qué incluye mi pedido?",
+            "answer": "<p>Una Pulsera Rosario Virgen María.</p>"
           }
         },
-        "q-como": {
+        "q-regalo": {
           "type": "question",
           "settings": {
-            "question": "¿Cómo se utiliza?",
-            "answer": "<p>Coloca una vela en el hueco inferior, añade chocolate o queso y enciéndela. El calor ayuda a fundirlo o mantenerlo caliente. Remueve de vez en cuando y utiliza el tenedor con tus acompañamientos. No dejes la vela encendida sin vigilancia.</p>"
+            "question": "¿Para qué ocasiones puede ser un buen regalo?",
+            "answer": "<p>Puede ser un detalle con significado para bautizos, primeras comuniones, confirmaciones, Navidad, Pascua u otras ocasiones religiosas.</p>"
           }
         },
-        "q-queso": {
+        "q-diario": {
           "type": "question",
           "settings": {
-            "question": "¿Puedo usarla con queso?",
-            "answer": "<p>Sí. Puedes preparar una fondue individual de chocolate o de queso.</p>"
-          }
-        },
-        "q-microondas": {
-          "type": "question",
-          "settings": {
-            "question": "¿Es apta para microondas?",
-            "answer": "<p>Según la información facilitada por el proveedor, sí.</p>"
-          }
-        },
-        "q-capacidad": {
-          "type": "question",
-          "settings": {
-            "question": "¿Qué capacidad tiene?",
-            "answer": "<p>130 ml.</p>"
-          }
-        },
-        "q-colores": {
-          "type": "question",
-          "settings": {
-            "question": "¿Qué colores hay?",
-            "answer": "<p>Rojo, blanco y marrón.</p>"
-          }
-        },
-        "q-packs": {
-          "type": "question",
-          "settings": {
-            "question": "¿Qué incluyen los packs?",
-            "answer": "<p>1, 2 o 3 tazas del mismo color. Cada taza incluye su tenedor de fondue y no se mezclan colores dentro de un pack. El precio de cada pack es el que ves al elegirlo y, si su precio por unidad es más bajo, verás cuánto ahorras frente a comprar las mismas unidades por separado.</p>"
+            "question": "¿Puedo llevarla a diario?",
+            "answer": "<p>El proveedor la presenta como una pieza diseñada para lucir a diario.</p>"
           }
         },
         "q-envio": {
           "type": "question",
           "settings": {
             "question": "¿Cuándo recibiré mi pedido?",
-            "answer": "<p>Puedes consultar los plazos y condiciones de entrega actualizados en nuestra <a href=\"/policies/shipping-policy\" title=\"Política de envío\">política de envío</a>.</p>"
+            "answer": "<p>Consulta los plazos y condiciones de entrega actualizados en nuestra <a href=\"/policies/shipping-policy\" title=\"Política de envío\">política de envío</a>.</p>"
           }
         },
-        "q-danada": {
+        "q-problema": {
           "type": "question",
           "settings": {
-            "question": "¿Qué hago si llega dañada o tengo una duda con mi pedido?",
-            "answer": "<p>Escríbenos desde nuestra <a href=\"/pages/contacto\" title=\"Contacto\">página de contacto</a> con tu número de pedido y, si llega dañada, una foto del producto y del paquete. Te indicaremos los pasos según nuestra <a href=\"/policies/refund-policy\" title=\"Política de devoluciones\">política de devoluciones y reembolsos</a>.</p>"
+            "question": "¿Qué hago si tengo un problema con mi pedido?",
+            "answer": "<p>Escríbenos desde nuestra <a href=\"/pages/contacto\" title=\"Contacto\">página de contacto</a> con tu número de pedido y te ayudaremos. Puedes consultar también nuestra <a href=\"/policies/refund-policy\" title=\"Política de devoluciones\">política de devoluciones y reembolsos</a>.</p>"
           }
         }
       },
       "block_order": [
+        "q-material",
+        "q-elementos",
+        "q-ajustable",
+        "q-longitud",
         "q-incluye",
-        "q-como",
-        "q-queso",
-        "q-microondas",
-        "q-capacidad",
-        "q-colores",
-        "q-packs",
+        "q-regalo",
+        "q-diario",
         "q-envio",
-        "q-danada"
+        "q-problema"
       ],
       "settings": {
         "eyebrow": "",

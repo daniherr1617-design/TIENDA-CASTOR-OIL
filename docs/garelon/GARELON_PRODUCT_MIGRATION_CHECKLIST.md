@@ -4,6 +4,7 @@
 > - Cada punto dice **cómo comprobarlo**.
 > - Marca 🅲 = lo comprueba Claude Code en el repositorio o en un render local; 🆂 = solo se puede comprobar en Shopify real (Vista previa, Admin, app del proveedor —hoy CJ Dropshipping—).
 > - Las referencias «§» apuntan a secciones de `GARELON_MASTER_TEMPLATE.md`.
+> - Última ejecución: Pulsera Rosario Virgen María (1.9, rama `claude/rosary-bracelet`): producto sin packs y sin envío gratis verificado; ver los puntos marcados «(1.9)».
 > - Producto nuevo: ______________________ · Producto anterior: ______________________ · Rama: __________ · Fecha: ______
 
 ---
@@ -40,6 +41,7 @@
 ## 2. Imágenes
 
 - [ ] 🅲 Se han revisado **todas** las imágenes entregadas, con la tabla de §18.2 en el informe.
+- [ ] 🅲 (1.9) Están las imágenes **originales del proveedor**. Si faltan, las mejoradas/generadas se comparan entre sí (medalla, cruz, cuentas, cierre, piezas…), se descartan las que se contradigan con la descripción escrita y el informe lo marca como pendiente crítico (R25).
 - [ ] 🅲 Cada imagen usada muestra el producto **real**: misma marca, etiqueta, colores, piezas y accesorios. No lleva «GARELON» sobre el producto.
 - [ ] 🅲 Descartadas las que tienen erratas, marca o etiqueta distinta, claims prohibidos, antes/después sin respaldo, duplicados o poca resolución.
 - [ ] 🅲 Hay una **imagen principal** limpia (foto real con poco texto) en la portada, la 1.ª de la galería y la 404.
@@ -56,6 +58,7 @@
   - los valores `fallback_image` de las plantillas.
 - [ ] 🅲 Si alguna imagen no es cuadrada, su altura real está en `garelon-fallback-image` (no el `1080` fijo).
 - [ ] 🅲 Los textos incrustados dudosos de imágenes usadas están anotados en el informe.
+- [ ] 🅲 (1.9) Ninguna imagen usada muestra packaging, accesorios o regalos no confirmados como incluidos (p. ej. una caja con lazo).
 - [ ] 🆂 Opcional: imágenes subidas a la multimedia del producto en el mismo orden; el proveedor (hoy CJ Dropshipping) no las sobrescribe.
 
 ## 3. Contenido de la home (`templates/index.json`)
@@ -81,8 +84,8 @@
   - antetítulo y subtítulo nuevos;
   - bloques de Dawn intactos;
   - sin `garelon_stock` (desde la plantilla 1.8.2 bajo los botones solo va «Envío gratis»; si el producto lo necesita, el stock va sin cifras);
-  - `garelon_packs` y `garelon_shipping` presentes si el producto tiene packs (sin `variant_picker` ni `quantity_selector`);
-  - `garelon_free_shipping` justo después de `buy_buttons` (solo «Envío gratis», §10.15);
+  - `garelon_packs` y `garelon_shipping` presentes si el producto tiene packs (sin `variant_picker` ni `quantity_selector`); **sin packs confirmados (1.9)**: sin `garelon_packs` y con el bloque estándar `variant_picker` de Dawn (no se ve con una sola variante);
+  - `garelon_free_shipping` justo después de `buy_buttons` (solo «Envío gratis», §10.15), **activado solo con una tarifa de 0 € verificada**; si no, presente pero con `show_free_shipping: false` (1.9, R27);
   - la sección va justo después de la portada, con `garelon_mobile_info_first: true`.
 - [ ] 🅲 **Opiniones** (`garelon-reviews`, §10.16) **justo después de la compra**: home `product_cta` → `reviews` → `trust`; ficha `main` → `reviews` → `service`. Sin contenido de ejemplo; título «Opiniones · Lo que opinan nuestros clientes» (o equivalente). En la home, el ajuste «Producto de la valoración media» apunta al producto nuevo. Sin datos reales no deja hueco.
 - [ ] 🅲 **FAQ** (`garelon-faq`): 6-10 preguntas. Se mantienen «¿Qué es…?» (con la aclaración de fabricante externo), la de envío (→ política) y la de dudas (→ contacto + devoluciones).
@@ -119,7 +122,8 @@
 - [ ] 🅲 Métodos de pago visibles (R21): **opcionales**. Producto actual: **no se muestran** (ni bajo la compra ni en el pie, `payment_enable: false`). Si un producto futuro los quiere, solo métodos reales de `shop.enabled_payment_types` con `payment_type_svg_tag`, por decisión expresa del dueño; ningún logo de pago en `assets/` ni escrito en el código; nunca «100 % seguro».
 - [ ] 🅲 Sin garantías ni periodos («Garantía de 30 días», «satisfecho o te devolvemos el dinero») que no estén en una política real.
 - [ ] 🅲 Sin urgencia falsa: cuentas atrás, «quedan X», «personas viendo».
-- [ ] 🅲 Sin descuentos ficticios. «Envío gratis» visible bajo los botones de compra (home y ficha) y sin textos que lo contradigan (p. ej. «los gastos de envío se calculan…» junto al precio, o «descuentos y envío calculados en la pantalla de pago» en el cart drawer y en `/cart`).
+- [ ] 🅲 (1.9) Claims que solo aparecen dentro de una imagen del proveedor (p. ej. «14K») no se publican en ningún sitio: texto, alt, SEO ni imágenes usadas (R26).
+- [ ] 🅲 Sin descuentos ficticios. Con envío gratis verificado: «Envío gratis» visible bajo los botones de compra (home y ficha) y sin textos que lo contradigan; sin verificar (1.9): ni bajo la compra, ni en la barra superior, ni en las notas del carrito (p. ej. «los gastos de envío se calculan…» junto al precio, o «descuentos y envío calculados en la pantalla de pago» en el cart drawer y en `/cart`).
 - [ ] 🅲 Packs: ahorro calculado frente al precio real de 1 unidad × unidades; sin precios tachados inventados; insignia solo objetiva («Mejor precio/unidad»), nunca «Más vendido».
 - [ ] 🅲 Plazos de envío como estimación: sin «entrega garantizada», «24/48 h» ni costes internos del proveedor.
 - [ ] 🅲 Los datos técnicos (medidas, capacidad, materiales o ingredientes) coinciden en todos los sitios: home, ficha, FAQ, alt e imágenes.
@@ -161,7 +165,7 @@
 
 - [ ] 🅲 `[isotipo] GARELON` en un solo enlace a la home. El logo no es H1.
 - [ ] 🅲 Navegación: Inicio · (anclas activas) · Contacto. Sin Catálogo ni colecciones (`nav_source: garelon`, `hide_catalog_links: true`).
-- [ ] 🅲 Etiquetas y anclas de la navegación adaptadas a la categoría (p. ej. Ingredientes → Materiales); cada ancla existe en la home.
+- [ ] 🅲 Etiquetas y anclas de la navegación adaptadas a la categoría (p. ej. Ingredientes → Materiales); cada ancla existe en la home. (1.9) Se editan en la cabecera: `nav_link_1..4_label` / `_anchor`.
 - [ ] 🅲 Móvil (320-430 px):
   - menú · logo centrado · carrito;
   - búsqueda y cuenta **dentro** del menú;
@@ -174,7 +178,7 @@
 
 ## 9. Barra superior
 
-- [ ] 🅲 Texto simple y verdadero, sin urgencia. Hoy «Envío gratis disponible en España» + bandera (`show_flag_es`), solo con la tarifa real de 0 € configurada.
+- [ ] 🅲 Texto simple y verdadero, sin urgencia. Pulsera Rosario (1.9): «Una joya para llevar contigo o regalar», sin bandera. «Envío gratis…» + bandera solo con la tarifa real de 0 € configurada.
 - [ ] 🅲 Una sola línea (~38 px) de 320 a 1440 px.
 - [ ] 🆂 El texto coincide con las zonas de envío configuradas en Shopify.
 

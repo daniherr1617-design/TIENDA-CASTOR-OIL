@@ -82,7 +82,7 @@
       <div class="featured-product product product--{{ section.settings.media_size }} grid grid--1-col gradient color-{{ section.settings.color_scheme }} product--{{ section.settings.media_position }}{% if section.settings.secondary_background == false %} isolate{% endif %} {% if product.media.size > 0 or product == blank or section.settings.garelon_gallery %}grid--2-col-tablet{% else %}product--no-media{% endif %}{% if section.settings.garelon_mobile_info_first %} g-mobile-info-first{% endif %}">
         <div class="grid__item product__media-wrapper">
           {%- if section.settings.garelon_gallery -%}
-            {%- render 'garelon-gallery', section_id: section.id -%}
+            {%- render 'garelon-gallery', section_id: section.id, context: 'home' -%}
           {%- elsif placeholder != true -%}
             {% render 'product-media-gallery', product: product, variant_images: variant_images, limit: 1 %}
           {%- else -%}
@@ -760,7 +760,7 @@
       "settings": [
         {
           "type": "paragraph",
-          "content": "Color × Pack sobre las VARIANTES REALES del producto (p. ej. Color: Rojo / Blanco / Marrón y Pack: «1 unidad», «2 unidades», «3 unidades»). Cada combinación es una variante con cantidad 1, así que un pack siempre es del mismo color. Este bloque sustituye al selector de variantes y al de cantidad. Precio, ahorro y precio por unidad salen de los precios de Shopify del color elegido. Si el producto no cumple las condiciones, se usa el selector estándar y el editor muestra el motivo."
+          "content": "Color × Pack sobre las VARIANTES REALES del producto (p. ej. Color y Pack: «1 unidad», «2 unidades», «3 unidades»). Úsalo solo si el producto tiene packs reales en Shopify; sin packs, quita este bloque y usa «Selector de variantes». Cada combinación es una variante con cantidad 1, así que un pack siempre es del mismo color. Este bloque sustituye al selector de variantes y al de cantidad. Precio, ahorro y precio por unidad salen de los precios de Shopify del color elegido. Si el producto no cumple las condiciones, se usa el selector estándar y el editor muestra el motivo."
         },
         {
           "type": "text",
@@ -878,7 +878,7 @@
           "type": "text",
           "id": "tag_2",
           "label": "Etiqueta del pack de 2",
-          "info": "P. ej. «Para compartir». Nunca «Más vendido» sin datos reales."
+          "info": "Etiqueta editorial opcional. Nunca «Más vendido» sin datos reales."
         },
         {
           "type": "text",
@@ -960,7 +960,7 @@
           "id": "show_free_shipping",
           "label": "Mostrar envío gratis",
           "info": "Actívalo solo si la tarifa de envío es realmente 0 € en Configuración › Envío y entrega para las zonas en las que vendes.",
-          "default": true
+          "default": false
         },
         {
           "type": "text",
@@ -983,7 +983,7 @@
       "settings": [
         {
           "type": "paragraph",
-          "content": "Opcional. La Taza Fondue no lo usa: debajo de la compra solo aparece «Envío gratis» y los plazos viven en la política de envío. Si lo añades, escribe estimaciones que coincidan con tu política, nunca «entrega garantizada», y no muestres costes internos del proveedor."
+          "content": "Opcional. La Pulsera Rosario no lo usa: los plazos viven en la política de envío. Si lo añades, escribe estimaciones que coincidan con tu política, nunca «entrega garantizada», y no muestres costes internos del proveedor."
         },
         {
           "type": "text",
@@ -1720,7 +1720,7 @@
       "type": "checkbox",
       "id": "garelon_gallery",
       "label": "Galería GARELON (imágenes del tema)",
-      "info": "Muestra en carrusel las imágenes del producto incluidas en el tema (taza roja, los tres colores, blanca y marrón). Desactívalo para mostrar la multimedia del producto de Shopify, que cambia con la variante si cada color tiene su imagen.",
+      "info": "Muestra en carrusel las imágenes del producto incluidas en el tema (pulsera en la muñeca, detalle de la medalla y la cruz, y momento de oración). Desactívalo para mostrar la multimedia del producto de Shopify, que cambia con la variante si cada color tiene su imagen.",
       "default": false
     },
     {

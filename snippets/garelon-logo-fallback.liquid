@@ -2,12 +2,17 @@
   GARELON · Logo de respaldo desde los assets del tema.
   Se usa solo cuando no hay un logo subido en Configuración del tema.
 
-  Isotipo de esta versión: emblema de la taza fondue (garelon-fondue-logo-*.webp, cuadrado),
-  generado sin cambios a partir de LOGO.png. El nombre GARELON es garelon-wordmark-480.webp.
+  Identidad de esta versión (Pulsera Rosario): símbolo dorado abstracto aprobado por el dueño
+  («Logo.png») y logo completo símbolo + GARELON («Logo y marca.png»), en la raíz del
+  repositorio. Assets sin cambios de diseño (solo recorte del margen transparente y tamaños):
+  - garelon-rosario-isotipo-{96,192}.webp: el símbolo.
+  - garelon-rosario-wordmark-{240,480}.webp: las letras GARELON del logo completo, para
+    ponerlas a la derecha del símbolo en la cabecera (el logo apilado no se lee a 56 px de alto).
+  - garelon-rosario-logo-{240,480}.webp: el logo completo apilado (pie).
 
   Accepts:
-  - variant: 'wordmark' (por defecto, cabecera) | 'stacked' (isotipo + nombre, pie de página)
-             | 'isotype' (solo el isotipo, a la izquierda del nombre en la cabecera)
+  - variant: 'wordmark' (por defecto, cabecera) | 'stacked' (logo completo, pie de página)
+             | 'isotype' (solo el símbolo, a la izquierda del nombre en la cabecera)
 
   Usage:
   {% render 'garelon-logo-fallback', variant: 'stacked' %}
@@ -15,28 +20,19 @@
 {%- if variant == 'stacked' -%}
   {%- liquid
     assign logo_width = settings.brand_image_width | default: 120
-    assign isotype_width = logo_width | times: 2 | divided_by: 3
-    assign wordmark_height = logo_width | times: 72 | divided_by: 480
+    assign logo_height = logo_width | times: 442 | divided_by: 480
   -%}
   <div
     class="footer-block__image-wrapper garelon-logo garelon-logo--stacked"
     style="max-width: min(100%, {{ logo_width }}px);"
   >
     <img
-      class="garelon-logo__isotype"
-      src="{{ 'garelon-fondue-logo-192.webp' | asset_url }}"
-      srcset="{{ 'garelon-fondue-logo-96.webp' | asset_url }} 96w, {{ 'garelon-fondue-logo-192.webp' | asset_url }} 192w"
-      sizes="{{ isotype_width }}px"
-      width="{{ isotype_width }}"
-      height="{{ isotype_width }}"
-      alt=""
-      loading="lazy"
-    >
-    <img
-      class="garelon-logo__wordmark"
-      src="{{ 'garelon-wordmark-480.webp' | asset_url }}"
+      class="garelon-logo__full"
+      src="{{ 'garelon-rosario-logo-480.webp' | asset_url }}"
+      srcset="{{ 'garelon-rosario-logo-240.webp' | asset_url }} 240w, {{ 'garelon-rosario-logo-480.webp' | asset_url }} 480w"
+      sizes="{{ logo_width }}px"
       width="{{ logo_width }}"
-      height="{{ wordmark_height }}"
+      height="{{ logo_height }}"
       alt="{{ shop.name | escape }}"
       loading="lazy"
     >
@@ -48,8 +44,8 @@
   {%- endcomment -%}
   <img
     class="garelon-header-isotype"
-    src="{{ 'garelon-fondue-logo-96.webp' | asset_url }}"
-    srcset="{{ 'garelon-fondue-logo-96.webp' | asset_url }} 96w, {{ 'garelon-fondue-logo-192.webp' | asset_url }} 192w"
+    src="{{ 'garelon-rosario-isotipo-96.webp' | asset_url }}"
+    srcset="{{ 'garelon-rosario-isotipo-96.webp' | asset_url }} 96w, {{ 'garelon-rosario-isotipo-192.webp' | asset_url }} 192w"
     sizes="48px"
     width="96"
     height="96"
@@ -57,11 +53,13 @@
   >
 {%- else -%}
   {%- assign logo_width = settings.logo_width | default: 150 -%}
-  {%- assign logo_height = logo_width | times: 72 | divided_by: 480 -%}
+  {%- assign logo_height = logo_width | times: 78 | divided_by: 480 -%}
   <div class="header__heading-logo-wrapper garelon-logo garelon-logo--wordmark">
     <img
       class="header__heading-logo"
-      src="{{ 'garelon-wordmark-480.webp' | asset_url }}"
+      src="{{ 'garelon-rosario-wordmark-480.webp' | asset_url }}"
+      srcset="{{ 'garelon-rosario-wordmark-240.webp' | asset_url }} 240w, {{ 'garelon-rosario-wordmark-480.webp' | asset_url }} 480w"
+      sizes="{{ logo_width }}px"
       width="{{ logo_width }}"
       height="{{ logo_height }}"
       alt="{{ shop.name | escape }}"

@@ -1,11 +1,13 @@
 {%- comment -%}
   GARELON · Galería del producto con las imágenes del tema (compra de la home y ficha).
 
-  Muestra las imágenes del producto incluidas en el tema. La roja es la protagonista:
-  roja de cerca (imagen2 recortada en la taza, para no repetir la foto completa de la
-  portada) → los tres colores (imagen1) → blanca (imagen3) → marrón (imagen4).
-  Cada foto de un solo color lleva data-g-color (rojo | blanco | marron): al elegir ese color
-  en el selector, garelon.js desliza el carrusel hasta su foto.
+  Muestra las imágenes del producto incluidas en el tema, en el orden de la historia:
+  la pulsera en la muñeca (principal) → detalle de la medalla, la cruz y las cuentas
+  (detalle) → la pulsera en un momento de oración (oracion). Claves en garelon-fallback-image.
+  En la compra de la home (context: 'home') empieza por el detalle, porque la portada que
+  tiene justo encima ya muestra la imagen principal.
+  Si un producto futuro tiene colores con foto propia, cada slide puede llevar data-g-color
+  (valor de la opción Color en minúsculas): al elegir ese color, garelon.js desliza hasta ella.
   Se usa en la compra de la home y, si así se elige, en la ficha (en lugar de la multimedia de Shopify).
 
   Usa el carrusel de Dawn (<slider-component>, definido en global.js): se desliza con el
@@ -15,6 +17,7 @@
   Accepts:
   - section_id: {String} id de la sección, para que los ids del carrusel sean únicos
   - eager: {Boolean} (opcional) carga prioritaria de la primera imagen (ficha de producto)
+  - context: {String} (opcional) 'home' = compra de la home (otro orden, ver arriba)
 
   Usage:
   {% render 'garelon-gallery', section_id: section.id %}
@@ -22,8 +25,11 @@
 {{ 'component-slider.css' | asset_url | stylesheet_tag }}
 
 {%- liquid
-  assign keys = 'roja,colores,blanco,marron' | split: ','
-  assign colors = 'rojo,-,blanco,marron' | split: ','
+  assign keys = 'principal,detalle,oracion' | split: ','
+  if context == 'home'
+    assign keys = 'detalle,principal,oracion' | split: ','
+  endif
+  assign colors = '-,-,-' | split: ','
   assign slider_id = 'Slider-GGallery-' | append: section_id
 -%}
 

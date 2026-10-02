@@ -1,7 +1,9 @@
 {%- comment -%}
   GARELON · Miniatura de respaldo en el carrito (cart drawer y /cart) cuando la línea no tiene
-  imagen en Shopify (producto sin multimedia): foto del color elegido incluida en el tema.
-  Solo visual: no cambia la línea, la cantidad ni el checkout.
+  imagen en Shopify (producto sin multimedia todavía): imagen principal del producto incluida
+  en el tema (clave «principal» de garelon-fallback-image). Solo visual: no cambia la línea,
+  la cantidad ni el checkout. Tienda de un solo producto: en cuanto el producto tenga
+  multimedia en Shopify, el carrito usa la suya y este respaldo deja de aparecer.
 
   Accepts:
   - item: {Object} línea del carrito
@@ -9,20 +11,15 @@
   Usage:
   {% render 'garelon-cart-thumb', item: item %}
 {%- endcomment -%}
-{%- liquid
-  assign thumb_key = ''
-  for option in item.options_with_values
-    assign value_key = option.value | handleize
-    if value_key == 'rojo' or value_key == 'blanco' or value_key == 'marron'
-      assign thumb_key = value_key
-    endif
-  endfor
--%}
-{%- if thumb_key != '' -%}
+{%- capture thumb_src -%}
+  {%- render 'garelon-fallback-image', fallback: 'principal', src_only: true -%}
+{%- endcapture -%}
+{%- assign thumb_src = thumb_src | strip -%}
+{%- if thumb_src != '' -%}
   <a href="{{ item.url }}" class="cart-item__link" tabindex="-1" aria-hidden="true"> </a>
   <img
     class="cart-item__image"
-    src="{{ 'garelon-fondue-swatch-' | append: thumb_key | append: '.webp' | asset_url }}"
+    src="{{ thumb_src }}"
     alt=""
     loading="lazy"
     width="150"

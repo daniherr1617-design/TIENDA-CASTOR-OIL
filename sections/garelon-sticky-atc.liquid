@@ -11,13 +11,11 @@
     if thumb != blank
       assign thumb_src = thumb.preview_image | image_url: width: 120
     else
-      # Sin multimedia en Shopify: foto del color elegido incluida en el tema.
-      for option in product.options_with_values
-        assign color_key = option.selected_value | handleize
-        if color_key == 'rojo' or color_key == 'blanco' or color_key == 'marron'
-          assign thumb_src = 'garelon-fondue-swatch-' | append: color_key | append: '.webp' | asset_url
-        endif
-      endfor
+      # Sin multimedia en Shopify: imagen principal del producto incluida en el tema.
+      capture thumb_src
+        render 'garelon-fallback-image', fallback: 'principal', src_only: true
+      endcapture
+      assign thumb_src = thumb_src | strip
     endif
   -%}
   <garelon-sticky-atc

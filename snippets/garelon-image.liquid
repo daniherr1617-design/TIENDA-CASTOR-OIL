@@ -6,7 +6,7 @@
 
   Accepts:
   - image: {Object} imagen del image_picker (opcional)
-  - fallback: {String} nombre base del asset, p. ej. 'garelon-fondue-principal' (opcional)
+  - fallback: {String} nombre base del asset, p. ej. 'garelon-rosario-principal' (opcional)
   - fallback_widths: {String} anchos disponibles del asset, p. ej. '480,720,1080'
   - fallback_height: {Number} alto de la versión más ancha del asset
   - alt: {String} texto alternativo por defecto
@@ -15,7 +15,7 @@
   - eager: {Boolean} true para la imagen principal (LCP) de la página
 
   Usage:
-  {% render 'garelon-image', image: section.settings.image, fallback: 'garelon-fondue-principal', fallback_widths: '480,720,1080', fallback_height: 1080, alt: 'Taza Fondue', sizes: '100vw' %}
+  {% render 'garelon-image', image: section.settings.image, fallback: 'garelon-rosario-principal', fallback_widths: '480,720,1080', fallback_height: 1080, alt: 'Pulsera Rosario', sizes: '100vw' %}
 {%- endcomment -%}
 {%- liquid
   assign loading = 'lazy'

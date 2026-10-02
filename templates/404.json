@@ -8,10 +8,10 @@
       "settings": {
         "fallback_image": "principal",
         "show_isotype": true,
-        "heading": "Aquí no hay chocolate que fundir",
-        "text": "<p>Vuelve a la tienda y encuentra tu Taza Fondue.</p>",
+        "heading": "Esta página no está disponible",
+        "text": "<p>Vuelve a GARELON y descubre nuestra Pulsera Rosario Virgen María.</p>",
         "show_price": false,
-        "button_label": "Volver a la tienda",
+        "button_label": "Ver la pulsera",
         "color_scheme": "scheme-2",
         "anchor": "",
         "padding_top": 48,
