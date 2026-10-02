@@ -18,38 +18,26 @@ body {
   letter-spacing: 0;
 }
 
-/* ---------- Logo (respaldo desde assets) ---------- */
+/* ---------- Logo (respaldo desde assets) ----------
+   Logo completo (isotipo dorado + GARELON negro, 1,61:1). Solo se fija el ancho;
+   la altura sale de la proporción, así nunca se deforma. */
 .g-logo--header {
-  display: inline-flex;
-  align-items: center;
-  gap: 0.8rem;
-}
-.g-logo__isotype {
-  width: 3.6rem;
-  height: 3.6rem;
-}
-.g-logo__wordmark {
-  width: 13.6rem;
+  display: block;
+  width: 10rem;
+  max-width: 100%;
   height: auto;
 }
 .header__heading-link {
-  padding: 0.4rem 0.6rem;
+  padding: 0.2rem 0.6rem;
 }
 @media screen and (max-width: 749px) {
   .g-logo--header {
-    gap: 0.6rem;
-  }
-  .g-logo__isotype {
-    width: 2.8rem;
-    height: 2.8rem;
-  }
-  .g-logo__wordmark {
-    width: 11.2rem;
+    width: 8.6rem;
   }
 }
 @media screen and (max-width: 359px) {
-  .g-logo__wordmark {
-    width: 9.6rem;
+  .g-logo--header {
+    width: 8rem;
   }
 }
 
@@ -906,25 +894,60 @@ body {
   font-size: 1.3rem;
   color: rgba(var(--color-foreground), 0.7);
 }
+/* Etiquetas («Para regalar»): cuadrícula de tarjetas informativas iguales, no seleccionables.
+   Móvil 2 × 3, tableta y escritorio 3 × 2. Todas las filas miden lo que la más alta
+   (grid-auto-rows: 1fr), así un texto en 2 líneas no descuadra ninguna tarjeta. */
 .g-chips {
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: center;
-  gap: 1rem;
-  margin: 0;
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  grid-auto-rows: 1fr;
+  gap: 1.2rem;
+  max-width: 76rem;
+  margin: 0 auto;
   padding: 0;
   list-style: none;
 }
 .g-chip {
-  display: inline-flex;
+  display: flex;
   align-items: center;
+  justify-content: center;
   gap: 0.6rem;
-  min-height: 4.4rem;
-  padding: 0.8rem 1.8rem;
+  min-height: 6.6rem;
+  padding: 1rem 1.4rem;
   border: 1px solid var(--g-gold-line);
-  border-radius: 999px;
+  border-radius: var(--g-radius);
+  background: #fff;
+  color: var(--g-ink);
   font-size: 1.5rem;
-  background: rgb(var(--color-background));
+  line-height: 1.3;
+  text-align: center;
+  text-wrap: balance;
+  overflow-wrap: break-word;
+  min-width: 0;
+}
+.g-chip .g-icon {
+  flex: 0 0 auto;
+  color: var(--g-accent);
+}
+@media screen and (min-width: 750px) {
+  .g-chips {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 1.6rem;
+  }
+  .g-chip {
+    min-height: 7.2rem;
+    padding: 1.2rem 2rem;
+    font-size: 1.6rem;
+  }
+}
+@media screen and (max-width: 359px) {
+  .g-chips {
+    gap: 0.8rem;
+  }
+  .g-chip {
+    padding: 0.8rem 0.8rem;
+    font-size: 1.4rem;
+  }
 }
 .g-details--chips .g-details__note {
   text-align: center;

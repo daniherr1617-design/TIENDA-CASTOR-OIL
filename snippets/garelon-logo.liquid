@@ -2,23 +2,16 @@
   GARELON · Logo de la marca desde los assets del tema, para cuando no se ha subido un
   logo en Configuración del tema (Shopify no permite elegir assets del tema como imagen).
 
+  El logo completo es «LOGO DEFINITIVO.png» (isotipo dorado + GARELON en negro), solo sin
+  el margen transparente sobrante: garelon-logo-negro-{160,320,480}.webp (1262 × 782 de origen).
+  El isotipo dorado suelto sigue para usos pequeños, favicon e icono de Apple.
+
   Parámetros:
-  - variant: 'header' (isotipo + letras GARELON en horizontal) | 'stacked' (logo completo) | 'isotype'
+  - variant: 'header' (logo completo, cabecera) | 'stacked' (logo completo, pie) | 'isotype'
 
   Uso: {% render 'garelon-logo', variant: 'header' %}
 {%- endcomment -%}
 {%- case variant -%}
-  {%- when 'stacked' -%}
-    <img
-      class="g-logo g-logo--stacked"
-      src="{{ 'garelon-logo-240.webp' | asset_url }}"
-      srcset="{{ 'garelon-logo-240.webp' | asset_url }} 240w, {{ 'garelon-logo-480.webp' | asset_url }} 480w"
-      sizes="120px"
-      width="240"
-      height="221"
-      alt="GARELON"
-      loading="lazy"
-    >
   {%- when 'isotype' -%}
     <img
       class="g-logo g-logo--isotype"
@@ -31,24 +24,25 @@
       loading="lazy"
     >
   {%- else -%}
-    <span class="g-logo g-logo--header">
-      <img
-        class="g-logo__isotype"
-        src="{{ 'garelon-isotipo-96.webp' | asset_url }}"
-        srcset="{{ 'garelon-isotipo-96.webp' | asset_url }} 96w, {{ 'garelon-isotipo-192.webp' | asset_url }} 192w"
-        sizes="40px"
-        width="96"
-        height="96"
-        alt=""
-      >
-      <img
-        class="g-logo__wordmark"
-        src="{{ 'garelon-wordmark-240.webp' | asset_url }}"
-        srcset="{{ 'garelon-wordmark-240.webp' | asset_url }} 240w, {{ 'garelon-wordmark-480.webp' | asset_url }} 480w"
-        sizes="140px"
-        width="240"
-        height="39"
-        alt="GARELON"
-      >
-    </span>
+    {%- liquid
+      if variant == 'stacked'
+        assign logo_class = 'g-logo g-logo--stacked'
+        assign logo_sizes = '120px'
+      else
+        assign logo_class = 'g-logo g-logo--header'
+        assign logo_sizes = '(min-width: 990px) 113px, 92px'
+      endif
+    -%}
+    <img
+      class="{{ logo_class }}"
+      src="{{ 'garelon-logo-negro-320.webp' | asset_url }}"
+      srcset="{{ 'garelon-logo-negro-160.webp' | asset_url }} 160w, {{ 'garelon-logo-negro-320.webp' | asset_url }} 320w, {{ 'garelon-logo-negro-480.webp' | asset_url }} 480w"
+      sizes="{{ logo_sizes }}"
+      width="320"
+      height="198"
+      alt="GARELON"
+      {% if variant == 'stacked' %}
+        loading="lazy"
+      {% endif %}
+    >
 {%- endcase -%}

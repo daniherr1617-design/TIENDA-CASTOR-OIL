@@ -19,7 +19,7 @@ Rama `claude/rosary-clean-rebuild`, sobre el tema limpio (Dawn 16.0.0). No se re
 - **Estilo del widget de Judge.me:** estrellas doradas, botón redondeado y sin título duplicado.
 - **Resumen sin widget:** nota grande (4,6), estrellas y número de opiniones.
 - **«Ocultar sin opiniones»:** con la valoración sincronizada a 0, el cliente no ve un widget vacío.
-- **Título de la sección:** ahora «Lo que opinan quienes ya la llevan», que es honesto también con opiniones importadas.
+- **Título de la sección:** «Opiniones sobre esta pulsera» (pulido final), neutro también con opiniones importadas.
 
 ## 2. Cómo funcionan las tarjetas
 
@@ -57,7 +57,7 @@ Rama `claude/rosary-clean-rebuild`, sobre el tema limpio (Dawn 16.0.0). No se re
 | Texto de pack que hable de ahorro («Ahorra más por unidad») | Solo si ese pack ahorra de verdad; si no, se oculta solo |
 | Distintivo | En el pack elegido en «Pack con distintivo» y solo si el texto no está vacío. Por defecto: pack de 2, «Recomendado» |
 | Texto de promoción | Solo si se activa «Mostrar texto de promoción». Por defecto, apagado. Sin contador |
-| Garantías | Cada una solo si su texto no está vacío. Por defecto: Envío con seguimiento · Compra protegida · 14 días para cambiar de opinión · Envíos a España |
+| Garantías | Cada una solo si su texto no está vacío. Por defecto (pulido final): Envío gratis + seguimiento · Pago seguro · 14 días para cambiar de opinión · Envíos internacionales |
 
 «Más popular» no va por defecto: solo debe usarse si las ventas lo confirman.
 

@@ -31,13 +31,13 @@
           "settings": {
             "phrase": "Un símbolo de tu fe, contigo cada día.",
             "chip_1_icon": "envio",
-            "chip_1_text": "Envío con seguimiento",
-            "chip_2_icon": "escudo",
-            "chip_2_text": "Compra protegida",
+            "chip_1_text": "Envío gratis + seguimiento",
+            "chip_2_icon": "candado",
+            "chip_2_text": "Pago seguro",
             "chip_3_icon": "devolucion",
             "chip_3_text": "14 días para cambiar de opinión",
-            "chip_4_icon": "ubicacion",
-            "chip_4_text": "Envíos a España"
+            "chip_4_icon": "globo",
+            "chip_4_text": "Envíos internacionales"
           }
         },
         "oferta": {
@@ -160,10 +160,11 @@
       "type": "garelon-reviews",
       "settings": {
         "eyebrow": "Opiniones reales",
-        "heading": "Lo que opinan quienes ya la llevan",
+        "heading": "Opiniones sobre esta pulsera",
         "show_summary": true,
         "summary_with_app": false,
         "hide_without_reviews": true,
+        "note": "<p>Incluye opiniones de compradores del mismo modelo, importadas mediante Judge.me.</p>",
         "color_scheme": "scheme-1",
         "anchor": "opiniones",
         "padding_top": 48,

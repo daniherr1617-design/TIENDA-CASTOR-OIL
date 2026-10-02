@@ -31,7 +31,8 @@
 | `snippets/garelon-icon.liquid` | Iconos lineales decorativos |
 | `assets/garelon.css` | Toda la capa visual (≈ 16 KB) |
 | `assets/garelon.js` | ≈ 3 KB: cierra el menú móvil al pulsar un ancla de la misma página y gestiona la compra fija |
-| `assets/garelon-{isotipo,wordmark,logo}-*.webp`, `garelon-favicon-32.png`, `garelon-apple-touch-180.png` | Marca aprobada (de `Logo.png` y `Logo y marca.png`) |
+| `assets/garelon-logo-negro-{160,320,480}.webp` | Logo completo (isotipo dorado + GARELON negro), de `LOGO DEFINITIVO.png` sin el margen transparente sobrante. Cabecera y pie |
+| `assets/garelon-isotipo-*.webp`, `garelon-favicon-32.png`, `garelon-apple-touch-180.png` | Isotipo dorado suelto (de `Logo.png`): favicon, icono de Apple, usos pequeños |
 | `assets/producto-{principal,detalle,oracion}-*.webp` | Imágenes fieles del producto (de `imagen 3.png` e `imagen 2.png`) |
 
 **Modificados respecto a Dawn (17):**
@@ -98,6 +99,10 @@ Ver `GARELON-CRO-OFERTA-CONFIANZA.md`.
 - Con tarjetas, el bloque «Precio» de Dawn queda solo para lectores de pantalla y la nota de impuestos va debajo de las tarjetas.
 - `garelon-reviews` con «Ocultar sin opiniones» y nota sobre el origen de las opiniones.
 
-## 8. Regla nueva
+## 8. Pulido final (v1.2)
+
+Ver `GARELON-PULIDO-FINAL.md`. Logo nuevo con letras negras en cabecera y pie (el logotipo dorado antiguo ya no está en `assets/`), garantías definitivas, «Para regalar» en cuadrícula de tarjetas iguales, título y nota de opiniones.
+
+## 9. Regla nueva
 
 - **R31 · Instalabilidad primero.** No se entrega ningún ZIP que no salga de `tools/build_zip.py`. `templates/index.json` usa solo secciones del tema y valores válidos, sin apps, imágenes de Files ni recursos de la tienda. Se construye de menos a más, validando cada fase, y no se sigue sobre un fallo.

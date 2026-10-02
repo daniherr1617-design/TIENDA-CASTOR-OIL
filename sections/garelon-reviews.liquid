@@ -45,6 +45,10 @@
       assign show_summary = true
     endif
   endif
+  assign has_visible_reviews = show_summary
+  if has_app and waiting == false
+    assign has_visible_reviews = true
+  endif
 -%}
 {%- if show_section -%}
   <section
@@ -91,7 +95,8 @@
           <div class="g-reviews__app">{% render block %}</div>
         {%- endif -%}
       {%- endfor -%}
-      {%- if section.settings.note != blank -%}
+      {%- comment -%} La nota sobre el origen solo acompaña a opiniones visibles (resumen o widget). {%- endcomment -%}
+      {%- if section.settings.note != blank and has_visible_reviews -%}
         <div class="g-reviews__note rte">{{ section.settings.note }}</div>
       {%- endif -%}
     </div>
