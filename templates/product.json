@@ -3,101 +3,335 @@
     "main": {
       "type": "main-product",
       "blocks": {
-        "vendor": {
+        "antetitulo": {
           "type": "text",
           "settings": {
-            "text": "{{ product.vendor }}",
+            "text": "Joyería con significado",
             "text_style": "uppercase"
           }
         },
-        "title": {
+        "titulo": {
           "type": "title"
         },
-        "price": {
+        "valoracion": {
+          "type": "rating"
+        },
+        "precio": {
           "type": "price"
         },
-        "variant_picker": {
+        "resumen": {
+          "type": "text",
+          "settings": {
+            "text": "Acero inoxidable con acabado dorado, medalla de la Virgen María, cruz y cuentas tricolor.",
+            "text_style": "body"
+          }
+        },
+        "frase": {
+          "type": "garelon_quote",
+          "settings": {
+            "text": "Un símbolo de tu fe, contigo cada día."
+          }
+        },
+        "selector_packs": {
           "type": "variant_picker",
           "settings": {
             "picker_type": "button",
-            "swatch_shape": "circle"
+            "swatch_shape": "none"
           }
         },
-        "quantity_selector": {
-          "type": "quantity_selector"
+        "precio_packs": {
+          "type": "garelon_packs",
+          "settings": {
+            "heading": "Precio de cada pack",
+            "option_name": "Pack",
+            "unit_singular": "pulsera"
+          }
         },
-        "buy_buttons": {
+        "comprar": {
           "type": "buy_buttons",
           "settings": {
             "show_dynamic_checkout": true,
-            "show_gift_card_recipient": true
+            "show_gift_card_recipient": false
           }
         },
-        "description": {
+        "descripcion": {
           "type": "description"
         },
-        "share": {
-          "type": "share",
+        "envios": {
+          "type": "collapsible_tab",
           "settings": {
-            "share_label": "Share"
+            "heading": "Envíos y devoluciones",
+            "icon": "truck",
+            "content": "<p>Consulta los plazos y condiciones de entrega en nuestra <a href=\"/policies/shipping-policy\" title=\"Política de envíos\">política de envíos</a>.</p><p>Dispones de 14 días naturales desde la recepción del pedido para ejercer tu derecho de desistimiento. Consulta las condiciones en nuestra <a href=\"/policies/refund-policy\" title=\"Política de devoluciones\">política de devoluciones y reembolsos</a>.</p>"
           }
         }
       },
       "block_order": [
-        "vendor",
-        "title",
-        "price",
-        "variant_picker",
-        "quantity_selector",
-        "buy_buttons",
-        "description",
-        "share"
+        "antetitulo",
+        "titulo",
+        "valoracion",
+        "precio",
+        "resumen",
+        "frase",
+        "selector_packs",
+        "precio_packs",
+        "comprar",
+        "descripcion",
+        "envios"
       ],
       "settings": {
         "enable_sticky_info": true,
+        "garelon_media": "theme",
+        "garelon_gallery_keys": "principal,detalle,oracion",
         "color_scheme": "scheme-1",
-        "media_position": "left",
-        "gallery_layout": "stacked",
         "media_size": "large",
         "constrain_to_viewport": true,
         "media_fit": "contain",
-        "image_zoom": "lightbox",
+        "gallery_layout": "stacked",
         "mobile_thumbnails": "hide",
-        "hide_variants": true,
+        "media_position": "left",
+        "image_zoom": "lightbox",
+        "hide_variants": false,
         "enable_video_looping": false,
-        "padding_top": 36,
-        "padding_bottom": 12
+        "padding_top": 24,
+        "padding_bottom": 40
       }
     },
-    "disclosures": {
-      "type": "disclosures",
+    "tranquilidad": {
+      "type": "rich-text",
+      "blocks": {
+        "subtitulo": {
+          "type": "caption",
+          "settings": {
+            "caption": "14 días para cambiar de opinión",
+            "text_style": "caption-with-letter-spacing",
+            "text_size": "medium"
+          }
+        },
+        "titulo": {
+          "type": "heading",
+          "settings": {
+            "heading": "Compra con tranquilidad",
+            "heading_size": "h1"
+          }
+        },
+        "texto": {
+          "type": "text",
+          "settings": {
+            "text": "<p>En compras online dispones de 14 días naturales desde la recepción del pedido para ejercer tu derecho de desistimiento. Además, tus derechos frente a faltas de conformidad están cubiertos por la garantía legal aplicable.</p>"
+          }
+        },
+        "enlace": {
+          "type": "button",
+          "settings": {
+            "button_label": "Consulta la política de devoluciones",
+            "button_link": "/policies/refund-policy",
+            "button_style_secondary": true,
+            "button_label_2": "",
+            "button_link_2": "",
+            "button_style_secondary_2": false
+          }
+        }
+      },
+      "block_order": [
+        "subtitulo",
+        "titulo",
+        "texto",
+        "enlace"
+      ],
       "settings": {
-        "padding_top": 36,
-        "padding_bottom": 0
+        "desktop_content_position": "center",
+        "content_alignment": "center",
+        "color_scheme": "scheme-2",
+        "full_width": false,
+        "padding_top": 48,
+        "padding_bottom": 48
       }
     },
-    "related-products": {
-      "type": "related-products",
+    "opiniones": {
+      "type": "garelon-reviews",
       "settings": {
-        "heading": "You may also like",
-        "heading_size": "h2",
-        "products_to_show": 4,
-        "columns_desktop": 4,
+        "eyebrow": "Opiniones",
+        "heading": "Lo que opinan nuestros clientes",
+        "show_summary": true,
+        "summary_with_app": false,
         "color_scheme": "scheme-1",
-        "image_ratio": "square",
-        "image_shape": "default",
-        "show_secondary_image": true,
-        "show_vendor": false,
-        "show_rating": false,
-        "columns_mobile": "2",
-        "padding_top": 36,
-        "padding_bottom": 28
+        "anchor": "opiniones",
+        "padding_top": 48,
+        "padding_bottom": 48
+      }
+    },
+    "detalles": {
+      "type": "garelon-details",
+      "blocks": {
+        "d1": {
+          "type": "item",
+          "settings": {
+            "icon": "material",
+            "title": "Acero inoxidable",
+            "text": "Con acabado dorado pulido."
+          }
+        },
+        "d2": {
+          "type": "item",
+          "settings": {
+            "icon": "medalla",
+            "title": "Medalla de la Virgen María"
+          }
+        },
+        "d3": {
+          "type": "item",
+          "settings": {
+            "icon": "cruz",
+            "title": "Cruz y cuentas tricolor",
+            "text": "Cuentas en tonos dorado, plateado y rosado."
+          }
+        },
+        "d4": {
+          "type": "item",
+          "settings": {
+            "icon": "longitud",
+            "title": "Longitud",
+            "text": "7,87 pulgadas, unos 20 cm, según el proveedor."
+          }
+        },
+        "d5": {
+          "type": "item",
+          "settings": {
+            "icon": "ajuste",
+            "title": "Ajuste",
+            "text": "3 aros para ajustar la longitud, según la información del proveedor."
+          }
+        }
+      },
+      "block_order": [
+        "d1",
+        "d2",
+        "d3",
+        "d4",
+        "d5"
+      ],
+      "settings": {
+        "layout": "list",
+        "eyebrow": "Detalles",
+        "heading": "Detalles de la pulsera",
+        "image_key": "detalle",
+        "image_alt": "Detalle de la pulsera rosario: medalla ovalada de la Virgen María con borde de pequeñas piedras, cruz y cuentas tricolor",
+        "note": "Datos según la información facilitada por el proveedor. Cada unidad incluye 1 pulsera.",
+        "color_scheme": "scheme-2",
+        "anchor": "detalles",
+        "padding_top": 56,
+        "padding_bottom": 56
+      }
+    },
+    "preguntas": {
+      "type": "garelon-faq",
+      "blocks": {
+        "p1": {
+          "type": "question",
+          "settings": {
+            "question": "¿De qué material está hecha?",
+            "answer": "<p>Según la información del proveedor, es de acero inoxidable con acabado dorado pulido.</p>"
+          }
+        },
+        "p2": {
+          "type": "question",
+          "settings": {
+            "question": "¿Qué elementos tiene?",
+            "answer": "<p>Una medalla de la Virgen María, una cruz y cuentas de rosario tricolor, con detalles en tonos dorado, plateado y rosado.</p>"
+          }
+        },
+        "p3": {
+          "type": "question",
+          "settings": {
+            "question": "¿Es ajustable?",
+            "answer": "<p>Sí. Según la información del proveedor, tiene 3 aros para ajustar la longitud.</p>"
+          }
+        },
+        "p4": {
+          "type": "question",
+          "settings": {
+            "question": "¿Qué longitud tiene?",
+            "answer": "<p>El proveedor indica una longitud de 7,87 pulgadas, unos 20 cm.</p>"
+          }
+        },
+        "p5": {
+          "type": "question",
+          "settings": {
+            "question": "¿Qué incluye mi pedido?",
+            "answer": "<p>Cada unidad es 1 pulsera. Si eliges el pack de 2 o de 3, recibes ese número de pulseras.</p>"
+          }
+        },
+        "p6": {
+          "type": "question",
+          "settings": {
+            "question": "¿Para qué ocasiones puede ser un buen regalo?",
+            "answer": "<p>Puede ser un detalle con significado para un bautizo, una primera comunión, una confirmación, Navidad, Pascua u otras ocasiones religiosas.</p>"
+          }
+        },
+        "p7": {
+          "type": "question",
+          "settings": {
+            "question": "¿Puedo llevarla a diario?",
+            "answer": "<p>Está pensada para llevarla en el día a día o regalarla en un momento especial.</p>"
+          }
+        },
+        "p8": {
+          "type": "question",
+          "settings": {
+            "question": "¿Cuándo recibiré mi pedido?",
+            "answer": "<p>Consulta los plazos y condiciones de entrega en nuestra <a href=\"/policies/shipping-policy\" title=\"Política de envíos\">política de envíos</a>.</p>"
+          }
+        },
+        "p9": {
+          "type": "question",
+          "settings": {
+            "question": "¿Puedo devolver mi pedido?",
+            "answer": "<p>En compras online dispones de 14 días naturales desde la recepción del pedido para ejercer tu derecho de desistimiento. Consulta las condiciones en nuestra <a href=\"/policies/refund-policy\" title=\"Política de devoluciones\">política de devoluciones y reembolsos</a>.</p>"
+          }
+        },
+        "p10": {
+          "type": "question",
+          "settings": {
+            "question": "¿Qué hago si tengo un problema con mi pedido?",
+            "answer": "<p>Escríbenos desde nuestra <a href=\"/pages/contacto\" title=\"Contacto\">página de contacto</a> indicando tu número de pedido y te ayudaremos. También puedes consultar nuestra <a href=\"/policies/refund-policy\" title=\"Política de devoluciones\">política de devoluciones y reembolsos</a>.</p>"
+          }
+        }
+      },
+      "block_order": [
+        "p1",
+        "p2",
+        "p3",
+        "p4",
+        "p5",
+        "p6",
+        "p7",
+        "p8",
+        "p9",
+        "p10"
+      ],
+      "settings": {
+        "eyebrow": "Dudas",
+        "heading": "Preguntas frecuentes",
+        "color_scheme": "scheme-2",
+        "anchor": "preguntas-frecuentes",
+        "padding_top": 56,
+        "padding_bottom": 56
+      }
+    },
+    "compra_fija": {
+      "type": "garelon-sticky-cta",
+      "settings": {
+        "color_scheme": "scheme-4"
       }
     }
   },
   "order": [
     "main",
-    "disclosures",
-    "related-products"
+    "tranquilidad",
+    "opiniones",
+    "detalles",
+    "preguntas",
+    "compra_fija"
   ]
 }

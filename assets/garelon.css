@@ -679,3 +679,50 @@ body {
 [id$='__cierre'] .rich-text__text {
   font-size: 1.6rem;
 }
+
+/* ---------- Compra fija (ficha, móvil) ---------- */
+.g-sticky {
+  position: fixed;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 3;
+  display: flex;
+  align-items: center;
+  gap: 1.2rem;
+  padding: 1rem 1.5rem calc(1rem + env(safe-area-inset-bottom));
+  border-top: 1px solid var(--g-line);
+  box-shadow: 0 -6px 20px rgba(42, 38, 34, 0.08);
+  transform: translateY(110%);
+  transition: transform 0.25s ease;
+}
+.g-sticky.is-visible {
+  transform: translateY(0);
+}
+.g-sticky__info {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+  flex: 1;
+}
+.g-sticky__title {
+  font-size: 1.3rem;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.g-sticky__price {
+  font-size: 1.6rem;
+  font-weight: 600;
+}
+.g-sticky__button {
+  flex: 0 0 auto;
+  min-height: 4.8rem;
+  min-width: 15rem;
+  padding: 0 2rem;
+}
+@media screen and (min-width: 750px) {
+  .g-sticky {
+    display: none;
+  }
+}

@@ -1,0 +1,50 @@
+{%- comment -%}
+  GARELON · Compra fija en móvil (solo en la ficha de producto).
+  No tiene formulario propio: su botón pulsa el botón real de Dawn de la ficha, así que
+  respeta la variante (pack) elegida, la cantidad 1, el estado agotado y el cajón del carrito.
+  Aparece cuando el botón principal sale de la pantalla por arriba (assets/garelon.js).
+{%- endcomment -%}
+{%- if product != blank -%}
+  <div
+    class="g-sticky color-{{ section.settings.color_scheme }} gradient"
+    data-garelon-sticky
+    aria-hidden="true"
+    inert
+  >
+    <div class="g-sticky__info">
+      <span class="g-sticky__title">{{ product.title | escape }}</span>
+      <span class="g-sticky__price" data-sticky-price>{{ product.selected_or_first_available_variant.price | money }}</span>
+    </div>
+    <button type="button" class="button button--primary g-sticky__button" data-sticky-button>
+      {{- 'products.product.add_to_cart' | t -}}
+    </button>
+  </div>
+{%- endif -%}
+
+{% schema %}
+{
+  "name": "GARELON Compra fija",
+  "tag": "div",
+  "class": "section",
+  "enabled_on": {
+    "templates": ["product"]
+  },
+  "settings": [
+    {
+      "type": "paragraph",
+      "content": "Barra inferior en móvil con el botón «Añadir al carrito» de la ficha. Usa el formulario de Dawn de la sección de producto."
+    },
+    {
+      "type": "color_scheme",
+      "id": "color_scheme",
+      "label": "Esquema de color",
+      "default": "scheme-4"
+    }
+  ],
+  "presets": [
+    {
+      "name": "GARELON Compra fija"
+    }
+  ]
+}
+{% endschema %}

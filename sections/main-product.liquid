@@ -75,9 +75,14 @@
   {% assign variant_images = product.images | where: 'attached_to_variant?', true | map: 'src' %}
   <product-component view-event-payload="{{ product | standard_event_data: 'view', context: 'page' | escape }}">
     <div class="page-width">
-      <div class="product product--{{ section.settings.media_size }} product--{{ section.settings.media_position }} product--{{ section.settings.gallery_layout }} product--mobile-{{ section.settings.mobile_thumbnails }} grid grid--1-col {% if product.media.size > 0 %}grid--2-col-tablet{% else %}product--no-media{% endif %}">
+      <div class="product product--{{ section.settings.media_size }} product--{{ section.settings.media_position }} product--{{ section.settings.gallery_layout }} product--mobile-{{ section.settings.mobile_thumbnails }} grid grid--1-col {% if product.media.size > 0 or section.settings.garelon_media == 'theme' %}grid--2-col-tablet{% else %}product--no-media{% endif %}">
         <div class="grid__item product__media-wrapper">
-          {% render 'product-media-gallery', variant_images: variant_images %}
+          {%- if section.settings.garelon_media == 'theme' -%}
+            {%- comment -%} GARELON: imágenes fieles del tema mientras la multimedia de Shopify no esté revisada. {%- endcomment -%}
+            {%- render 'garelon-gallery', keys: section.settings.garelon_gallery_keys, eager: true -%}
+          {%- else -%}
+            {% render 'product-media-gallery', variant_images: variant_images %}
+          {%- endif -%}
         </div>
         <div class="product__info-wrapper grid__item{% if settings.page_width > 1400 and section.settings.media_size == "small" %} product__info-wrapper--extra-padding{% endif %}{% if settings.animations_reveal_on_scroll %} scroll-trigger animate--slide-in{% endif %}">
           <section
@@ -688,6 +693,12 @@
                   </product-recommendations>
                 {%- when 'icon-with-text' -%}
                   {% render 'icon-with-text', block: block %}
+                {%- when 'garelon_quote' -%}
+                  {%- if block.settings.text != blank -%}
+                    <p class="g-quote" {{ block.shopify_attributes }}>{{ block.settings.text | escape }}</p>
+                  {%- endif -%}
+                {%- when 'garelon_packs' -%}
+                  {%- render 'garelon-pack-prices', product: product, block: block -%}
               {%- endcase -%}
             {%- endfor -%}
             <a href="{{ product.url }}" class="link product__view-details animate-arrow">
@@ -761,6 +772,46 @@
   "blocks": [
     {
       "type": "@app"
+    },
+    {
+      "type": "garelon_quote",
+      "name": "GARELON Frase",
+      "limit": 1,
+      "settings": [
+        {
+          "type": "text",
+          "id": "text",
+          "label": "Frase"
+        }
+      ]
+    },
+    {
+      "type": "garelon_packs",
+      "name": "GARELON Precio de packs",
+      "limit": 1,
+      "settings": [
+        {
+          "type": "paragraph",
+          "content": "Lista el precio de cada variante de la opción de packs (p. ej. «1 pulsera», «2 pulseras», «3 pulseras»). Precio por unidad y ahorro solo aparecen si los precios reales de Shopify lo justifican. El pack se elige con el bloque «Selector de variantes» y se añade con cantidad 1."
+        },
+        {
+          "type": "text",
+          "id": "heading",
+          "label": "Título"
+        },
+        {
+          "type": "text",
+          "id": "option_name",
+          "label": "Nombre de la opción de packs",
+          "default": "Pack"
+        },
+        {
+          "type": "text",
+          "id": "unit_singular",
+          "label": "Nombre de una unidad",
+          "default": "unidad"
+        }
+      ]
     },
     {
       "type": "text",
@@ -2152,6 +2203,28 @@
       "id": "enable_sticky_info",
       "default": true,
       "label": "t:sections.main-product.settings.enable_sticky_info.label"
+    },
+    {
+      "type": "header",
+      "content": "GARELON"
+    },
+    {
+      "type": "select",
+      "id": "garelon_media",
+      "label": "Imágenes",
+      "options": [
+        { "value": "theme", "label": "Imágenes del tema (fieles al producto)" },
+        { "value": "shopify", "label": "Multimedia de Shopify" }
+      ],
+      "default": "shopify",
+      "info": "Usa «Multimedia de Shopify» cuando las fotos del producto estén revisadas en el Admin."
+    },
+    {
+      "type": "text",
+      "id": "garelon_gallery_keys",
+      "label": "Imágenes del tema (orden)",
+      "default": "principal,detalle,oracion",
+      "info": "Claves separadas por comas: principal, detalle, oracion."
     },
     {
       "type": "color_scheme",
