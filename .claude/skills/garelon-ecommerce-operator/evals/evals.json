@@ -4,7 +4,7 @@
     {"id": 1, "name": "A-cambiar-producto", "prompt": "Quiero cambiar de producto.",
      "expected_output": "MODE MIGRATE_PRODUCT: explica la cadena producto→brief→…→lanzamiento, pide el brief y las imágenes, no toca el tema todavía y no pregunta lo que ya está en el repo (marca, logo, paleta, packs, proveedor actual).",
      "assertions": ["Identifica el flujo de migración de producto (MIGRATE_PRODUCT o equivalente)", "Pide o remite al brief GARELON_PRODUCT_BRIEF_TEMPLATE.md", "Exige analizar todas las imágenes antes de elegir", "No modifica archivos del tema ni empieza a implementar", "No pregunta por marca, logo, paleta o proveedor actual como si no se supieran"]},
-    {"id": 2, "name": "B-mejorar-imagen", "prompt": "Mejora esta imagen: imagen 3.png",
+    {"id": 2, "name": "B-mejorar-imagen", "prompt": "Mejora esta imagen: NUEVA IMAGEN 3.png",
      "expected_output": "Carga las reglas de fidelidad: Claude Code no altera el producto; puede redimensionar, recortar sin ampliar, convertir y optimizar; la mejora visual de fondo o entorno se hace fuera y sin tocar el producto.",
      "assertions": ["Declara que no se puede alterar el producto físico en la imagen", "Ofrece solo operaciones permitidas (redimensionar, recortar sin ampliar, convertir, comprimir)", "Indica que la mejora de fondo o entorno se hace fuera de Claude Code o sin tocar el producto", "No edita ni regenera la imagen"]},
     {"id": 3, "name": "C-countdown", "prompt": "Pon un countdown de 24 horas encima de los packs para meter urgencia.",

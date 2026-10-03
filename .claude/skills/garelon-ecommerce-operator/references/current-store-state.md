@@ -1,19 +1,19 @@
 # Estado actual de la tienda · SNAPSHOT
 
 <!-- snapshot-header:start -->
-> **SNAPSHOT, no verdad eterna.** Generado el 2026-10-03 desde `daniherr1617-design/TIENDA-CASTOR-OIL`, rama `claude/rosary-clean-rebuild`, **commit `974eadd`** (último commit que cambió el tema).
+> **SNAPSHOT, no verdad eterna.** Generado el 2026-10-03 desde `daniherr1617-design/TIENDA-CASTOR-OIL`, rama `claude/rosary-clean-rebuild`, **commit `3a78374`** (último commit que cambió el tema).
 <!-- snapshot-header:end -->
 >
 > Antes de una tarea importante, revalida lo relevante: `python3 .claude/skills/garelon-ecommerce-operator/scripts/garelon_store_snapshot.py`. Si el repo y este archivo difieren, **manda el repo** y este archivo se regenera (DOCUMENT_SYNC). `tools/garelon_docs_check.py` avisa si el tema ha cambiado después de este commit.
 
-<!-- snapshot-commit: 974eadd -->
+<!-- snapshot-commit: 3a78374 -->
 
 ## 1. Datos leídos del repositorio (generados por el script)
 
 <!-- snapshot:start -->
-- **Generado:** 2026-10-03 10:13 UTC
-- **Repositorio:** `daniherr1617-design/TIENDA-CASTOR-OIL` · **rama:** `claude/rosary-clean-rebuild` · **HEAD:** `974eadd` (2026-10-03) «Corregir badge y envío gratis en carrito»
-- **Último commit que cambió el tema:** `974eadd` (2026-10-03)
+- **Generado:** 2026-10-03 13:41 UTC
+- **Repositorio:** `daniherr1617-design/TIENDA-CASTOR-OIL` · **rama:** `claude/rosary-clean-rebuild` · **HEAD:** `3a78374` (2026-10-03) «Corregir imagen principal para fidelidad del producto»
+- **Último commit que cambió el tema:** `3a78374` (2026-10-03)
 - **Carpetas del tema sin cambios pendientes:** sí
 - **Tema:** GARELON (Dawn) 16.0.0 · base Dawn en el commit `b2adb07`
 - **Conteos (carpetas del tema):** assets 214, config 2, layout 2, locales 51, sections 54, snippets 49, templates 13
@@ -37,12 +37,12 @@
 - **Barra superior:** «Una joya para llevar contigo o regalar»
 - **Pie:** bloques brand_information, text; iconos de pago: False; newsletter: False
 - **Imágenes del tema por clave:** `principal` (480/720/1080), `oracion` (480/720/1080), `completa` (480/720/1080), `infografia` (480/720/1080/1254), `detalle` (480/600)
-- **Imágenes fuente en la raíz (fuera del ZIP):** `Imagen 1.png`, `LOGO DEFINITIVO.png`, `Logo y marca.png`, `Logo.png`, `imagen 2.png`, `imagen 3.png`, `imagen 4.png`
+- **Imágenes fuente en la raíz (fuera del ZIP):** `Imagen 1.png`, `LOGO DEFINITIVO.png`, `Logo y marca.png`, `Logo.png`, `NUEVA IMAGEN 3.png`, `imagen 2.png`, `imagen 4.png`
 - **Ajustes globales:** fuentes lora_n4 + inter_n4, carrito `drawer`, ancho 1200, radio de botón 40, búsqueda predictiva False
 - **Esquemas de color:** scheme-1 fondo #FFFFFF / texto #2A2622 / botón #86672F, scheme-2 fondo #FAF7F2 / texto #2A2622 / botón #86672F, scheme-3 fondo #F3ECDF / texto #2A2622 / botón #2A2622, scheme-4 fondo #FFFFFF / texto #2A2622 / botón #86672F, scheme-5 fondo #F7F1E6 / texto #2A2622 / botón #86672F
 - **Locales con textos `garelon.*`:** 31
 - **Herramientas en `tools/`:** `build_zip.py`, `garelon_check.py`, `garelon_docs_check.py`, `test_garelon_check.py`, `test_garelon_docs_check.py`
-- **Batería de render versionada:** `tests/render-harness` · fases A-K · dependencias fijadas: `@fontsource/inter` 5.3.0, `@fontsource/lora` 5.3.0, `@shopify/theme-check-node` 3.30.1, `liquidjs` 10.29.0, `playwright-core` 1.63.0 · con `package-lock.json`
+- **Batería de render versionada:** `tests/render-harness` · fases A-L · dependencias fijadas: `@fontsource/inter` 5.3.0, `@fontsource/lora` 5.3.0, `@shopify/theme-check-node` 3.30.1, `liquidjs` 10.29.0, `playwright-core` 1.63.0 · con `package-lock.json`
 <!-- snapshot:end -->
 
 ## 2. Lectura humana del estado
@@ -53,9 +53,11 @@
 - **Portada:** sin precio; CTA «Elegir mi pulsera» → `/#comprar`.
 - **Envío:** gratis (confirmado por el propietario). Un único ajuste global, Configuración del tema › Carrito › «Envío gratis» (`garelon_free_shipping`, activo), y una nota común (`snippets/garelon-shipping-note.liquid`): bajo los packs, en la ficha, en el cajón del carrito y en `/cart` dice «Impuestos incluidos. Envío gratis.». Si se desactiva, vuelve la nota original de Dawn y hay que cambiar también la garantía «Envío gratis + seguimiento» (`garelon_check` da error si no). La tarifa real se configura en Shopify Admin › Envío y entrega.
 - **Confianza:** 4 garantías confirmadas. «Compra con tranquilidad» con sello de escudo con check, decorativo, en la home y en la ficha.
-- **Imágenes:** fuentes aprobadas por el propietario `Imagen 1.png`, `imagen 2.png`, `imagen 3.png` e `imagen 4.png`, más el recorte de detalle de `imagen 3.png`. Las galerías usan las imágenes del tema (`garelon_media: theme`) hasta revisar la multimedia de Shopify.
-  - `principal` ← `imagen 3.png` (pulsera en la muñeca)
-  - `detalle` ← recorte de `imagen 3.png`
+- **Imágenes:** fuentes aprobadas por el propietario `Imagen 1.png`, `imagen 2.png`, `NUEVA IMAGEN 3.png` e `imagen 4.png`, más el recorte de detalle de `NUEVA IMAGEN 3.png`. Las galerías usan las imágenes del tema (`garelon_media: theme`) hasta revisar la multimedia de Shopify.
+  - `principal` ← `NUEVA IMAGEN 3.png` (pulsera en la muñeca; desde `3a78374`)
+  - `detalle` ← recorte `(330, 330, 930, 930)` de `NUEVA IMAGEN 3.png` (desde `3a78374`)
+  - La antigua `imagen 3.png` (cruz colgante, **no fiel al producto**) se retiró del repositorio; solo queda en el historial de git. No volver a usarla.
+- **Geometría verificada por el propietario:** la cruz forma parte de la pulsera y la cadena se une a ella por los dos extremos de su eje largo. No cuelga ninguna cruz, cadena ni cuenta. No se vuelve a cuestionar salvo petición expresa.
   - `oracion` ← `imagen 2.png`
   - `completa` ← `imagen 4.png` (pulsera entera sobre marfil)
   - `infografia` ← `Imagen 1.png` (infografía «Detalles de la pulsera»)
@@ -74,18 +76,19 @@
 
 ## 4. Pruebas: última línea base conocida
 
-Medida el 2026-10-03 en el commit `974eadd`, en este entorno, con `node tests/render-harness/validate.js` (instalación: `cd tests/render-harness && npm ci`; ver `tests/render-harness/README.md`):
+Medida el 2026-10-03 en el commit `3a78374`, en este entorno, con `node tests/render-harness/validate.js` (instalación: `cd tests/render-harness && npm ci`; ver `tests/render-harness/README.md`):
 - `tools/garelon_check.py`: OK.
 - `tools/test_garelon_check.py`: 24/24.
 - Theme Check (`@shopify/theme-check-node` 3.30.1): 0 errores y 9 avisos, los 9 `BASELINE DAWN` (mismos avisos que Dawn 16.0.0 oficial) y 0 `GARELON`.
 - Liquid (Ruby, gema `liquid` 5.14.0) estricto: 0 errores.
-- Batería de render **versionada** (`tests/render-harness`, fases A-K: routing, packs, carrito, cajón, responsive a 320/360/375/390/430/768/1024/1440, accesibilidad básica): 430/430 en el repo y 418/418 en el ZIP descomprimido `GARELON-PULSERA-ROSARIO-CLEAN-v1.6-ENVIO-CARRITO.zip`. La diferencia son las 12 pruebas que necesitan git.
+- Batería de render **versionada** (`tests/render-harness`, fases A-L: routing, packs, carrito, cajón, imágenes y su fuente, responsive a 320/360/375/390/430/768/1024/1440, accesibilidad básica): 463/463 en el repo y 444/444 en el ZIP descomprimido `GARELON-PULSERA-ROSARIO-CLEAN-v1.7-IMAGEN-CORREGIDA.zip`. La diferencia son las 19 pruebas que necesitan git o las fuentes PNG.
 - La misma validación pasó desde un clon limpio del repositorio con `npm ci`.
 
 **Limitaciones:** todo es `PROBADO LOCALMENTE` / `ZIP DESCOMPRIMIDO`. No se han probado aquí la vista previa ni la tienda publicada, el checkout, los pagos, DSers, el widget real de Judge.me ni los metafields reales.
 
 ## 5. Observaciones abiertas (no son cambios hechos)
 
-- El ZIP `GARELON-PULSERA-ROSARIO-CLEAN-v1.6-ENVIO-CARRITO.zip` (commit `974eadd`) está pendiente de que el propietario lo suba a Shopify. Qué versión está publicada: `NO DISPONIBLE` desde aquí.
+- El ZIP `GARELON-PULSERA-ROSARIO-CLEAN-v1.7-IMAGEN-CORREGIDA.zip` (commit `3a78374`, incluye también lo de la v1.6) está pendiente de que el propietario lo suba a Shopify. Qué versión está publicada: `NO DISPONIBLE` desde aquí.
+- La multimedia del producto en Shopify Admin puede seguir teniendo la foto antigua con la cruz colgante: el tema no la usa (`garelon_media: theme`), pero conviene sustituirla allí también (y en anuncios o feeds).
 - Galerías con imágenes del tema (`garelon_media: theme`); pasar a `shopify` cuando la multimedia del producto en Shopify esté revisada (pendiente en el Decision Log).
 - Hay documentación histórica en la raíz (`GARELON-CAMBIOS-*.md`, `GARELON-COPIAR-PEGAR.md`, `GARELON-GUIA.md`…) y en `docs/garelon/products/`, `docs/garelon/prompts/` y `docs/garelon/GARELON_ARQUITECTURA_V2.md`. No es el estado actual.

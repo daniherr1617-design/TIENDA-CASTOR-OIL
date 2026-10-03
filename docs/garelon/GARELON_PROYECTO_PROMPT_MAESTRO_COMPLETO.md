@@ -1,8 +1,8 @@
 # GARELON · PROMPT MAESTRO DEL PROYECTO (constitución operativa)
 
-> **Versión:** 3.1 · **Fecha:** 2026-10-03 · **Repositorio:** `daniherr1617-design/TIENDA-CASTOR-OIL` · **Rama fuente:** `claude/rosary-clean-rebuild` · **Commit fuente:** `974eadd`
+> **Versión:** 3.2 · **Fecha:** 2026-10-03 · **Repositorio:** `daniherr1617-design/TIENDA-CASTOR-OIL` · **Rama fuente:** `claude/rosary-clean-rebuild` · **Commit fuente:** `3a78374`
 >
-> Snapshot generado desde `974eadd`. Ante discrepancias futuras manda el repositorio actual y, por encima de él, el producto real y las decisiones recientes del propietario (§3).
+> Snapshot generado desde `3a78374`. Ante discrepancias futuras manda el repositorio actual y, por encima de él, el producto real y las decisiones recientes del propietario (§3).
 
 Este documento es la **constitución** de GARELON: qué es la marca, quién hace qué, qué fuentes mandan, qué reglas no se rompen nunca y cómo se trabaja. No describe el código en detalle (eso es `GARELON_MASTER_TEMPLATE.md`) ni guarda el estado del día (eso es `.claude/skills/garelon-ecommerce-operator/references/current-store-state.md`).
 
@@ -290,11 +290,11 @@ Si cambian en Shopify o en las políticas, mandan Shopify y las políticas, y el
 > Resumen estable. El detalle con commit y fecha está en `current-store-state.md`.
 
 - **Producto:** Pulsera Rosario Virgen María Dorada. Frase: «Un símbolo de tu fe, contigo cada día.»
-- **Confirmado:** rosario católico; medalla de la Virgen María; cruz; cuentas de rosario tricolor; acero inoxidable; acabado dorado pulido; longitud aprox. 20 cm / 7,87 pulgadas; ajuste mediante 3 aros.
+- **Confirmado:** rosario católico; medalla de la Virgen María; cruz integrada en la pulsera (la cadena se une a ella por los dos extremos de su eje largo; no cuelga ninguna cruz, cadena ni cuenta); cuentas de rosario tricolor; acero inoxidable; acabado dorado pulido; longitud aprox. 20 cm / 7,87 pulgadas; ajuste mediante 3 aros.
 - **No asumir ni publicar:** 14K, chapado 14K, hipoalergénico, waterproof, «no se oxida», «no pierde color», milagros, suerte, protección espiritual garantizada, fabricación por GARELON.
 - **Packs:** un solo producto Shopify con la opción `Pack` = `1 pulsera` · `2 pulseras` · `3 pulseras` (variantes reales, cantidad 1). Pack de 3 = 3 pulseras físicas = 3 unidades compradas al proveedor.
 - **Proveedor:** DSers + AliExpress (no AutoDS). Fulfillment inicial manual.
-- **Imágenes aprobadas por el propietario:** `Imagen 1.png`, `imagen 2.png`, `imagen 3.png`, `imagen 4.png`. No se vuelven a descartar.
+- **Imágenes aprobadas por el propietario:** `Imagen 1.png`, `imagen 2.png`, `NUEVA IMAGEN 3.png`, `imagen 4.png`. No se vuelven a descartar. La antigua `imagen 3.png` (cruz colgante) no es fiel al producto y no se usa.
 - **Tienda:** ya funciona en Shopify sobre Dawn 16.0.0 + capa GARELON. El 404 histórico de la home quedó resuelto con la reconstrucción limpia y no es un problema actual.
 
 ---

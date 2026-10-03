@@ -1,6 +1,6 @@
 # GARELON · REGISTRO DE DECISIONES
 
-> **Versión:** 3.1 · **Fecha:** 2026-10-03 · **Repositorio:** `daniherr1617-design/TIENDA-CASTOR-OIL` · **Rama fuente:** `claude/rosary-clean-rebuild` · **Commit fuente:** `974eadd`
+> **Versión:** 3.2 · **Fecha:** 2026-10-03 · **Repositorio:** `daniherr1617-design/TIENDA-CASTOR-OIL` · **Rama fuente:** `claude/rosary-clean-rebuild` · **Commit fuente:** `3a78374`
 >
 > Este registro es **histórico**: explica por qué las cosas son como son. Las reglas vigentes están en `GARELON_PROYECTO_PROMPT_MAESTRO_COMPLETO.md` y el estado actual en `current-store-state.md`. Las entradas solo se añaden, no se reescriben. Si una decisión se revoca, se añade una entrada nueva que la sustituye.
 
@@ -26,7 +26,7 @@
 | D16 | 2026-10-03 | Integración actual: **DSers + AliExpress**, no AutoDS. Fulfillment inicial manual. En documentos genéricos: `{{SUPPLIER_INTEGRATION}}` | Confirmación del propietario | Prompt del propietario 2026-10-03 | Vigente |
 | D17 | 2026-10-02 | **Portada sin «A partir de X €»**; un solo CTA «Elegir mi pulsera» → `/#comprar` | El precio se descubre en los packs; menos ruido en la portada | `aaf47b0` | Vigente |
 | D18 | 2026-10-02 | `Imagen 1.png` e `imagen 4.png` **verificadas por el propietario** e incorporadas. La revisión anterior que las descartaba (supuesta diferencia en la cruz) queda anulada | La confirmación del propietario prevalece sobre una revisión del modelo | `57ba415` | Vigente |
-| D19 | 2026-10-03 | Imágenes válidas: `Imagen 1.png`, `imagen 2.png`, `imagen 3.png`, `imagen 4.png`; no se vuelven a descartar | Confirmación del propietario | Prompt del propietario 2026-10-03 | Vigente |
+| D19 | 2026-10-03 | Imágenes válidas: `Imagen 1.png`, `imagen 2.png`, `imagen 3.png`, `imagen 4.png`; no se vuelven a descartar | Confirmación del propietario | Prompt del propietario 2026-10-03 | Vigente; `imagen 3.png` sustituida por `NUEVA IMAGEN 3.png` (D29) |
 | D20 | 2026-10-03 | **Envío gratis:** bajo los packs, «Impuestos incluidos. Envío gratis.» (ajuste `free_shipping` del bloque de packs, activo por defecto) | El envío actual es gratuito; el texto de Shopify («se calculan en la pantalla de pago») confundía | `955bcc3` | Sustituida en parte por D26 (el ajuste pasa a ser global) |
 | D21 | 2026-10-03 | Sello de escudo con check en «Compra con tranquilidad» (decorativo) | Confianza visual elegante sin simular una certificación | `955bcc3` | Vigente |
 | D22 | 2026-10-03 | Orden de galerías razonado: ficha = producto entero → puesta → detalle → infografía → contexto; home = adelanta detalle e infografía porque la portada ya enseña la foto en la muñeca | Contar la historia comercial sin repetir | `955bcc3` | Vigente (orden exacto en el snapshot) |
@@ -36,6 +36,7 @@
 | D26 | 2026-10-03 | **Envío gratis coherente:** un único ajuste global «Envío gratis» (`garelon_free_shipping`, Configuración del tema › Carrito, activo) y una nota común (`snippets/garelon-shipping-note.liquid`) para packs, ficha, cajón del carrito y `/cart`: «Impuestos incluidos. Envío gratis.». Desactivado, vuelven las notas de Dawn. El bloque de packs deja de tener ajuste de envío propio | Los packs decían «Envío gratis» y el carrito «envío calculado en la pantalla de pago»: contradicción. El tema solo comunica; la tarifa real está en Shopify Admin | `974eadd` (envío gratis confirmado por el propietario) | Vigente |
 | D27 | 2026-10-03 | **Distintivo por defecto «Recomendado»** en el schema del bloque de packs (antes «Más popular»). «Más popular», «Más vendido» o similares solo con datos de ventas reales | Un schema no debe sugerir por defecto un claim no demostrado | `974eadd` | Vigente |
 | D28 | 2026-10-03 | `tools/garelon_check.py` vigila la honestidad: error si un default de schema trae un claim de ventas o si, con «Envío gratis» desactivado, una plantilla sigue prometiéndolo | Eliminar la causa, no el síntoma: que el riesgo no pueda volver sin que falle la validación | `974eadd` | Vigente |
+| D29 | 2026-10-03 | **Corrección de fidelidad:** la cruz del producto está integrada en la pulsera y conectada por los extremos de su eje largo (no cuelga nada). La imagen principal anterior (`imagen 3.png`, cruz colgante) se sustituyó por la nueva imagen verificada por el propietario, `NUEVA IMAGEN 3.png`, en `principal` y en el recorte `detalle` (mismo slot, clave y orden de galería). Alt de la portada: «cruz integrada en la pulsera» | Representar el producto real; la confirmación del propietario prevalece sobre análisis anteriores y no se vuelve a cuestionar | `3a78374` (imagen subida por el propietario a `main` en `b7bb42c`) | Vigente |
 
 ## Pendiente de decidir (propietario)
 
