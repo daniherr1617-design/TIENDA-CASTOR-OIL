@@ -63,6 +63,8 @@
   - `infografia` ← `Imagen 1.png` (infografía «Detalles de la pulsera»)
 - **Logo:** isotipo dorado + wordmark negro (`LOGO DEFINITIVO.png` → `assets/garelon-logo-negro-*.webp`). Isotipo dorado en el favicon y en el icono de iOS.
 - **Opiniones:** Judge.me. El widget se añade desde el editor (no está en las plantillas). Título «Opiniones sobre esta pulsera» y nota de opiniones importadas del mismo modelo.
+  - Según el propietario (2026-10-03): Judge.me instalado y configurado, opiniones de AliExpress publicadas y valoración sincronizada (la home muestra el resumen, ≈4,9). El Review Widget está en la ficha.
+  - En la home faltaba añadir el widget: el resumen sale de los metafields, pero las tarjetas y las fotos solo las pinta el bloque de app. Se añade desde el editor dentro de «GARELON Opiniones» (Añadir bloque › Apps › Review Widget de Judge.me) y se elige el producto en el propio bloque. El tema ya lo admite (bloque `@app` desde D13); no hace falta código.
 
 ## 3. Integraciones y apps conocidas
 
@@ -70,7 +72,7 @@
 |---|---|---|
 | Shopify (tienda `8ndnek-0x.myshopify.com`, según la documentación histórica) | Tema en funcionamiento (propietario) | No: la red de este entorno bloquea la tienda |
 | DSers + AliExpress | Integración actual; fulfillment inicial manual (propietario) | No |
-| Judge.me | App de opiniones; importación desde AliExpress del mismo modelo | No (ni el widget real ni los metafields) |
+| Judge.me | Instalada y configurada (propietario): opiniones importadas de AliExpress del mismo modelo publicadas; widget en Carousel con colores GARELON y su título desactivado; valoración sincronizada con Shopify | No (ni el widget real ni los metafields) |
 | Píxeles y analítica (Meta, TikTok, GA4) | `NO DISPONIBLE` | No |
 | Sincronización GitHub ↔ Shopify | `NO DISPONIBLE` (si el tema está conectado a la rama, se sincroniza solo; si no, se sube el ZIP) | No |
 
@@ -90,5 +92,6 @@ Medida el 2026-10-03 en el commit `3a78374`, en este entorno, con `node tests/re
 
 - El ZIP `GARELON-PULSERA-ROSARIO-CLEAN-v1.7-IMAGEN-CORREGIDA.zip` (commit `3a78374`, incluye también lo de la v1.6) está pendiente de que el propietario lo suba a Shopify. Qué versión está publicada: `NO DISPONIBLE` desde aquí.
 - La multimedia del producto en Shopify Admin puede seguir teniendo la foto antigua con la cruz colgante: el tema no la usa (`garelon_media: theme`), pero conviene sustituirla allí también (y en anuncios o feeds).
+- Añadir el Review Widget de Judge.me a la home (dentro de «GARELON Opiniones», con el producto elegido en el bloque) y comprobarlo en `SHOPIFY PREVIEW`: tarjetas y fotos reales, sin valoración duplicada, nota de origen debajo.
 - Galerías con imágenes del tema (`garelon_media: theme`); pasar a `shopify` cuando la multimedia del producto en Shopify esté revisada (pendiente en el Decision Log).
 - Hay documentación histórica en la raíz (`GARELON-CAMBIOS-*.md`, `GARELON-COPIAR-PEGAR.md`, `GARELON-GUIA.md`…) y en `docs/garelon/products/`, `docs/garelon/prompts/` y `docs/garelon/GARELON_ARQUITECTURA_V2.md`. No es el estado actual.

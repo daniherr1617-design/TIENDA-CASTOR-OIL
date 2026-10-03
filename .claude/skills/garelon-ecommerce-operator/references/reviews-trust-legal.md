@@ -6,6 +6,7 @@
 
 - Solo opiniones **reales**. El tema no contiene ninguna y nunca inventa notas, estrellas ni recuentos.
 - `sections/garelon-reviews.liquid` muestra el bloque de app de Judge.me (se añade desde el editor, **nunca** en `index.json`) y/o el resumen de los metafields `reviews.rating` / `reviews.rating_count`. Sin datos, invisible para el cliente.
+- **Widget en la home:** la home no es una plantilla de producto. El Review Widget de Judge.me se añade dentro de «GARELON Opiniones» (Añadir bloque › Apps) y el producto se elige en el propio bloque («Select product»). Sin el bloque, la home solo muestra el resumen de los metafields, sin tarjetas ni fotos. Con el bloque, el resumen GARELON se oculta (`summary_with_app` = falso) para no duplicar la valoración.
 - Título aprobado: «Opiniones sobre esta <producto>». Nota cuando hay importadas: «Incluye opiniones de compradores del mismo modelo, importadas mediante Judge.me.»
 
 ### Importar opiniones de AliExpress (lo hace el propietario)
