@@ -1,5 +1,7 @@
 # GARELON · Reconstrucción limpia del tema (Pulsera Rosario Virgen María)
 
+> **HISTÓRICO · no describe el estado actual.** Se conserva como registro y lección aprendida. El sistema vigente está en `docs/garelon/` (Prompt Maestro, Master Template, brief, prompt de migración, checklist, registro de decisiones) y el estado real en `.claude/skills/garelon-ecommerce-operator/references/current-store-state.md`. Ante cualquier contradicción manda el repositorio actual.
+
 Rama `claude/rosary-clean-rebuild`, creada desde `main`. No se ha tocado `main`, `claude/rosary-bracelet`, `claude/fondue-mug` ni `baseline/garelon-fondue`. Arquitectura y reglas: `docs/garelon/GARELON_ARQUITECTURA_V2.md` y Master 2.0 (R31).
 
 > **Estado de las pruebas:**

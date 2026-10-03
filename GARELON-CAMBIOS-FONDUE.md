@@ -1,5 +1,7 @@
 # GARELON · Migración a la Taza Fondue de Chocolate con Tenedor (v1 · ronda visual v1.1 · ronda PRO v2 · copy v2.1 · stock v2.2)
 
+> **HISTÓRICO · no describe el estado actual.** Se conserva como registro y lección aprendida. El sistema vigente está en `docs/garelon/` (Prompt Maestro, Master Template, brief, prompt de migración, checklist, registro de decisiones) y el estado real en `.claude/skills/garelon-ecommerce-operator/references/current-store-state.md`. Ante cualquier contradicción manda el repositorio actual.
+
 > Rama `claude/fondue-mug`. Primera migración de producto sobre el baseline del sérum (`baseline/garelon-serum`, commit `f08f9bb`). Misma arquitectura: Dawn 16.0.0 + capa GARELON, carrito y checkout de Shopify, opiniones solo reales, sin pagos visuales.
 >
 > Todo lo marcado como probado se ha probado en un **render local** (Liquid + el JavaScript real de Dawn, con un producto simulado de 3 colores × 3 packs). Nada de lo que depende de Shopify Admin, de CJ o del checkout real se ha podido comprobar: está en «Pasos manuales».

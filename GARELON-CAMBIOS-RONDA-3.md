@@ -1,5 +1,7 @@
 # GARELON · Cambios de la ronda 3 (imágenes nuevas, home, navegación y cabecera móvil)
 
+> **HISTÓRICO · no describe el estado actual.** Se conserva como registro y lección aprendida. El sistema vigente está en `docs/garelon/` (Prompt Maestro, Master Template, brief, prompt de migración, checklist, registro de decisiones) y el estado real en `.claude/skills/garelon-ecommerce-operator/references/current-store-state.md`. Ante cualquier contradicción manda el repositorio actual.
+
 Usa esta guía si **ya tienes el theme GARELON instalado**. No cambia colores, tipografías, botones, carrito ni pie de página: sustituye el sistema de imágenes y ajusta navegación, cabecera móvil, barra superior y enlaces.
 
 Qué incluye:

@@ -1,5 +1,7 @@
 # GARELON · Cambios: confianza en la compra, packs visibles en la home, variantes reales y proveedor CJ Dropshipping
 
+> **HISTÓRICO · no describe el estado actual.** Se conserva como registro y lección aprendida. El sistema vigente está en `docs/garelon/` (Prompt Maestro, Master Template, brief, prompt de migración, checklist, registro de decisiones) y el estado real en `.claude/skills/garelon-ecommerce-operator/references/current-store-state.md`. Ante cualquier contradicción manda el repositorio actual.
+
 > **Septiembre 2026 · rama `claude/great-lamport-8mb0rc`.** El producto no cambia: sigue siendo el mismo sérum de contorno de ojos (marca física Baafven).
 > - **Simplificación (C18, la más reciente):** opiniones **justo después de la compra** y **ningún icono de pago ni «Pago seguro»** en la tienda. Donde las partes anteriores hablen de iconos de pago, «Pago seguro» o del bloque `garelon_payment_trust`, manda C18.
 > - **Parte C:** confianza y conversión: «Envío gratis» + «Pago seguro» con los métodos de pago **habilitados en Shopify** bajo los botones de compra, y una sección de **opiniones solo reales**.

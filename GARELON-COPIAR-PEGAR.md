@@ -1,5 +1,7 @@
 # GARELON · Código para copiar y pegar en Shopify
 
+> **HISTÓRICO · no describe el estado actual.** Se conserva como registro y lección aprendida. El sistema vigente está en `docs/garelon/` (Prompt Maestro, Master Template, brief, prompt de migración, checklist, registro de decisiones) y el estado real en `.claude/skills/garelon-ecommerce-operator/references/current-store-state.md`. Ante cualquier contradicción manda el repositorio actual.
+
 > ⚠️ **Esta guía es de la ronda 3 y no incluye la actualización CJ + packs (septiembre 2026).** Para instalar la versión actual usa el ZIP del tema o la integración de GitHub. Si trabajas en el editor de código, sustituye **completos** los archivos que lista `GARELON-CAMBIOS-CJ-PACKS.md` (apartado «Archivos modificados/creados») copiándolos del repositorio.
 
 > **Recomendación:** la forma más rápida y segura es subir el archivo **`garelon-theme.zip`** en

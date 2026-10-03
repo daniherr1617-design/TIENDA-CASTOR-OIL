@@ -1,5 +1,7 @@
 # GARELON · Mejora de CRO honesto (oferta, confianza, detalles, opiniones)
 
+> **HISTÓRICO · no describe el estado actual.** Se conserva como registro y lección aprendida. El sistema vigente está en `docs/garelon/` (Prompt Maestro, Master Template, brief, prompt de migración, checklist, registro de decisiones) y el estado real en `.claude/skills/garelon-ecommerce-operator/references/current-store-state.md`. Ante cualquier contradicción manda el repositorio actual.
+
 Rama `claude/rosary-clean-rebuild`, sobre el tema limpio (Dawn 16.0.0). No se reconstruye nada. La home (`templates/index.json`) mantiene las mismas 9 secciones en el mismo orden.
 
 > **Estado de las pruebas:**

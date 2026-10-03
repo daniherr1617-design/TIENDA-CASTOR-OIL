@@ -1,5 +1,7 @@
 # GARELON · BRIEF DE PRODUCTO · TAZA DE FONDUE DE CERÁMICA
 
+> **HISTÓRICO · no describe el estado actual.** Se conserva como registro y lección aprendida. El sistema vigente está en `docs/garelon/` (Prompt Maestro, Master Template, brief, prompt de migración, checklist, registro de decisiones) y el estado real en `.claude/skills/garelon-ecommerce-operator/references/current-store-state.md`. Ante cualquier contradicción manda el repositorio actual.
+
 > **Versión 1.2 · 30/09/2026** (1.1: estado de la migración del tema, sección 20 · 1.2: ronda PRO, imágenes 7/8 como referencia y no como imagen publicada)
 >
 > **Nota 1.3 (limpieza de copy, octubre 2026):** este brief es un documento técnico interno y conserva términos del proveedor («tealight», «mojar»). En la tienda se publica «vela», «sumergir» o «disfruta con»; «130 ml» y «la vela no está incluida» solo aparecen en la FAQ, y los plazos de envío solo en la política de envío de Shopify (ver `GARELON-CAMBIOS-FONDUE.md` §8).

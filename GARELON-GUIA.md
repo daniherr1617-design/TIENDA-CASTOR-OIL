@@ -1,5 +1,7 @@
 # GARELON · Guía del theme
 
+> **HISTÓRICO · no describe el estado actual.** Se conserva como registro y lección aprendida. El sistema vigente está en `docs/garelon/` (Prompt Maestro, Master Template, brief, prompt de migración, checklist, registro de decisiones) y el estado real en `.claude/skills/garelon-ecommerce-operator/references/current-store-state.md`. Ante cualquier contradicción manda el repositorio actual.
+
 Theme basado en **Dawn 16.0.0** (theme oficial de Shopify, Online Store 2.0), con una capa de marca GARELON encima.
 No hay ningún dato comercial fijo en el código: precio, precio comparado, variantes, stock, imágenes de la galería y SKU salen siempre del producto de Shopify que conecta el proveedor (hoy CJ Dropshipping).
 

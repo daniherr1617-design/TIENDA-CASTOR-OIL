@@ -1,5 +1,7 @@
 # Política de devoluciones y reembolsos · texto para Shopify
 
+> **HISTÓRICO · no describe el estado actual.** Se conserva como registro y lección aprendida. El sistema vigente está en `docs/garelon/` (Prompt Maestro, Master Template, brief, prompt de migración, checklist, registro de decisiones) y el estado real en `.claude/skills/garelon-ecommerce-operator/references/current-store-state.md`. Ante cualquier contradicción manda el repositorio actual.
+
 Dónde se pega: **Shopify Admin → Configuración → Políticas → Política de reembolso**.
 Es la opción recomendada, porque Shopify la publica en `/policies/refund-policy` con el diseño del theme. También la enlaza en el pie de página (el theme la muestra como «Política de devoluciones y reembolsos») y en el checkout.
 

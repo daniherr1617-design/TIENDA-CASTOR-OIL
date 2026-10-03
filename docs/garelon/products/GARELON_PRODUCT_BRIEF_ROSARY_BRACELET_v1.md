@@ -1,5 +1,7 @@
 # GARELON · BRIEF DE PRODUCTO · PULSERA ROSARIO VIRGEN MARÍA
 
+> **HISTÓRICO · no describe el estado actual.** Se conserva como registro y lección aprendida. El sistema vigente está en `docs/garelon/` (Prompt Maestro, Master Template, brief, prompt de migración, checklist, registro de decisiones) y el estado real en `.claude/skills/garelon-ecommerce-operator/references/current-store-state.md`. Ante cualquier contradicción manda el repositorio actual.
+
 > **Versión 1.1 · 02/10/2026** (1.1: packs 1/2/3 pulseras, frase de fe, «Compra con tranquilidad» y opiniones reales; ver §9). **Versión 1.0 · 02/10/2026.** Brief técnico interno de la migración Taza Fondue → Pulsera Rosario (rama `claude/rosary-bracelet`, desde `b45d132`; la versión anterior queda en `baseline/garelon-fondue`).
 >
 > Regla: lo que no está verificado se marca **NO DISPONIBLE** y no se publica. Este documento conserva términos del proveedor («14K Gold Plated», «O-rings») solo como referencia: **no se publican**.

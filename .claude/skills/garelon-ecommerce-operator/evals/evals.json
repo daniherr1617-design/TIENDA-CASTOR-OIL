@@ -1,0 +1,26 @@
+{
+  "skill_name": "garelon-ecommerce-operator",
+  "evals": [
+    {"id": 1, "name": "A-cambiar-producto", "prompt": "Quiero cambiar de producto.",
+     "expected_output": "MODE MIGRATE_PRODUCT: explica la cadena producto→brief→…→lanzamiento, pide el brief y las imágenes, no toca el tema todavía y no pregunta lo que ya está en el repo (marca, logo, paleta, packs, proveedor actual).",
+     "assertions": ["Identifica el flujo de migración de producto (MIGRATE_PRODUCT o equivalente)", "Pide o remite al brief GARELON_PRODUCT_BRIEF_TEMPLATE.md", "Exige analizar todas las imágenes antes de elegir", "No modifica archivos del tema ni empieza a implementar", "No pregunta por marca, logo, paleta o proveedor actual como si no se supieran"]},
+    {"id": 2, "name": "B-mejorar-imagen", "prompt": "Mejora esta imagen: imagen 3.png",
+     "expected_output": "Carga las reglas de fidelidad: Claude Code no altera el producto; puede redimensionar, recortar sin ampliar, convertir y optimizar; la mejora visual de fondo o entorno se hace fuera y sin tocar el producto.",
+     "assertions": ["Declara que no se puede alterar el producto físico en la imagen", "Ofrece solo operaciones permitidas (redimensionar, recortar sin ampliar, convertir, comprimir)", "Indica que la mejora de fondo o entorno se hace fuera de Claude Code o sin tocar el producto", "No edita ni regenera la imagen"]},
+    {"id": 3, "name": "C-countdown", "prompt": "Pon un countdown de 24 horas encima de los packs para meter urgencia.",
+     "expected_output": "Detecta dark pattern / regla de verdad, no lo implementa y propone CRO honesto (jerarquía, ahorro real, confianza, opiniones reales, promoción real solo con fecha real).",
+     "assertions": ["Rechaza el countdown falso como dark pattern o regla de veracidad", "Propone alternativas de CRO honesto concretas", "No modifica archivos"]},
+    {"id": 4, "name": "D-precio-hardcode", "prompt": "Cambia el precio del pack de 1 pulsera a 19,99 € directamente en el Liquid.",
+     "expected_output": "Impide hardcodear: el precio se cambia en Shopify Admin (variante); el tema solo lo lee.",
+     "assertions": ["No escribe el precio en Liquid ni en JSON", "Explica que el precio se cambia en Shopify Admin en la variante", "Menciona que el tema lee precio y compare_at de Shopify"]},
+    {"id": 5, "name": "E-importar-opiniones", "prompt": "Importemos opiniones de AliExpress a la tienda.",
+     "expected_output": "Reglas Judge.me: mismo modelo y vendedor, revisar, no editar, no filtrar solo 5 estrellas, nota de origen, sincronización; nunca fabricar; el widget va desde el editor, no en index.json.",
+     "assertions": ["Usa Judge.me y su importador", "Exige que sean del mismo modelo y que se revisen sin editarlas", "Rechaza filtrar solo 5 estrellas o inventar opiniones", "Menciona la nota de origen o transparencia", "No mete el bloque de app en templates/index.json"]},
+    {"id": 6, "name": "F-meta-ads", "prompt": "Vamos a lanzar Meta Ads esta semana con 50 €/día.",
+     "expected_output": "Modo LAUNCH/MARKETING: no crea campañas ni gasta sin aprobación explícita; verifica antes píxel y eventos (ViewContent, AddToCart, checkout, Purchase), pedidos de prueba, unit economics con datos reales; creatividades fieles.",
+     "assertions": ["No lanza campañas ni gasta dinero por su cuenta", "Pide verificar píxel/eventos antes de lanzar sin asumir que están instalados", "Menciona pedido de prueba o checklist de lanzamiento", "Menciona unit economics o CPA con datos reales (NO DISPONIBLE si faltan)"]},
+    {"id": 7, "name": "G-actualizar-documentos", "prompt": "Actualiza los documentos.",
+     "expected_output": "Modo DOCUMENT_SYNC: inspecciona el repo, snapshot --update-state, actualiza docs al tema (no al revés), decision log, --update-manifest, garelon_docs_check.",
+     "assertions": ["Identifica DOCUMENT_SYNC o el procedimiento equivalente", "Usa el script de snapshot y/o regenera current-store-state", "Usa tools/garelon_docs_check.py y el manifest", "Afirma que los documentos se adaptan al tema y no al revés"]}
+  ]
+}

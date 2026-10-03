@@ -1,126 +1,139 @@
-# GARELON · Brief de producto nuevo
+# GARELON · BRIEF DE PRODUCTO (plantilla genérica)
 
-> Formulario para rellenar **antes** de adaptar la tienda. Se entrega a ChatGPT junto con las imágenes y `GARELON_MASTER_TEMPLATE.md`.
-> - Copia la plantilla de abajo y rellena cada campo con datos **reales**.
-> - Si no sabes algo, escribe `NO DISPONIBLE`: nunca se inventa.
-> - Pega los textos del proveedor tal cual, aunque exageren: ChatGPT los filtrará (sección 17 de la plantilla maestra).
+> **Versión:** 3.0 · **Fecha:** 2026-10-03 · **Repositorio:** `daniherr1617-design/TIENDA-CASTOR-OIL` · **Rama fuente:** `claude/rosary-clean-rebuild` · **Commit fuente:** `955bcc3`
+>
+> Snapshot generado desde `955bcc3`. Ante discrepancias futuras manda el repositorio actual. Las reglas que filtran este brief están en `GARELON_PROYECTO_PROMPT_MAESTRO_COMPLETO.md` §4.
+
+**Para qué sirve:** reunir los **datos reales** de un producto antes de tocar la tienda. Es la entrada de `GARELON_MIGRATION_PROMPT_TEMPLATE.md`.
+
+**Cómo rellenarlo:**
+- Cada campo con datos reales. Lo que no sepas: **`NO DISPONIBLE`**. Nunca se inventa.
+- En cada dato, indica la **fuente**: `PRODUCTO FÍSICO` (lo has visto o recibido), `PROPIETARIO` (lo confirmas tú), `PROVEEDOR` (ficha o descripción escrita), `IMAGEN DEL PROVEEDOR` (solo aparece dentro de una imagen: no verificado) o `NO DISPONIBLE`.
+- Pega los textos del proveedor tal cual, aunque exageren: se filtran después.
+- No incluyas credenciales, tokens ni datos personales de clientes.
 
 ```text
-====================================================
+====================================================================
 GARELON · BRIEF DE PRODUCTO
 Fecha:
-====================================================
+Rellenado por:
+Versión del brief:
+====================================================================
 
 1. PRODUCTO
    Nombre en español (cómo lo llamarías tú):
-   Nombre corto para el botón («Comprar …»):
-   ¿Qué recibe exactamente el cliente? (unidades, accesorios, caja):
-   Marca impresa en el producto o en la caja (o «sin marca»):
+   Nombre corto para botones («Elegir mi …»):
+   Categoría (joyería, hogar, cosmética, gadget, mascotas, moda, bienestar, otra):
+   Frase de marca o emocional propuesta (sin promesas):
+   Público objetivo:
+   Qué problema resuelve o qué significado tiene:
 
-2. TÍTULO DEL PROVEEDOR (CJ Dropshipping u otro; copiar tal cual):
+2. PROVEEDOR
+   Nombre del proveedor / tienda:
+   URL del producto en el proveedor:
+   ¿Es el mismo artículo exacto (mismo vendedor, mismo modelo) que se va a comprar? [sí/no]
+   Valoración y nº de ventas en el proveedor (solo como referencia interna, NO se publica):
 
-3. DESCRIPCIÓN ORIGINAL (copiar tal cual, del proveedor):
+3. INTEGRACIÓN ({{SUPPLIER_INTEGRATION}})
+   [ ] DSers   [ ] otra: ________   [ ] ninguna (manual)
+   ¿El producto ya está importado en Shopify? [sí/no] · Handle en Shopify:
+   ¿Variantes mapeadas con el proveedor? [sí/no/NO DISPONIBLE]
 
-4. CATEGORÍA
-   [ ] cosmética  [ ] electrónica/gadget  [ ] hogar  [ ] mascotas
-   [ ] moda       [ ] bienestar           [ ] accesorio  [ ] organización
-   [ ] otra:
+4. COSTE PRODUCTO (por unidad, con moneda e impuestos si aplica):
 
-5. PRECIO / COSTE (solo referencia; el tema lo lee de Shopify)
-   Coste proveedor:
-   Precio de venta previsto:
-   Precio comparado (solo si es real):
+5. COSTE ENVÍO DEL PROVEEDOR (por unidad / por pedido; método de envío interno):
 
-6. VARIANTES (nombre de la opción y valores; ¿tienen imagen propia?):
-   ¿Se vende en packs de unidades? [sí/no]
-     Si sí: valores del proveedor (p. ej. «1 unidad», «2 unidades», «3 piezas»),
-     cómo se llamarán en Shopify («1 unidad», «2 unidades», «3 unidades»)
-     y precio previsto de cada pack (se configura en Shopify, no en el tema):
+6. FULFILLMENT
+   [ ] manual   [ ] automático vía integración   [ ] otro:
+   Cómo se compra cada pack al proveedor (Pack de N → N unidades del mismo SKU):
+   ¿Pedido de prueba hecho? [sí/no]
 
-7. CARACTERÍSTICAS (hechos objetivos):
+7. CONTENIDO EXACTO (qué recibe el cliente por unidad; piezas, accesorios):
 
-8. INGREDIENTES / MATERIALES / ESPECIFICACIONES
-   (lista exacta del envase o del proveedor; cosmética: INCI completo)
-   Fuente del dato (envase / ficha del proveedor / foto de la etiqueta):
+8. PACKAGING (bolsa, caja, estuche, tarjeta; si no se sabe: NO DISPONIBLE):
 
-9. DIMENSIONES Y CAPACIDAD (producto y caja, peso, ml/g, con unidades):
+9. MARCA FÍSICA (marca impresa en el producto o en el envase, o «sin marca»):
+   Recordatorio: nunca se añade «GARELON» al producto ni al envase.
 
-10. MODO DE USO (pasos reales, del envase o del proveedor):
+10. MATERIALES / INGREDIENTES / ESPECIFICACIONES (con fuente):
 
-11. ADVERTENCIAS Y CUIDADOS (uso externo, edad, alergias, limpieza, batería…):
+11. MEDIDAS (producto y envase, peso, capacidad; con unidades y conversión si viene en pulgadas):
 
-12. BENEFICIOS DEL PROVEEDOR (copiar tal cual, aunque exageren):
+12. VARIANTES (opciones y valores reales; ¿tienen imagen propia?):
 
-13. CLAIMS QUE DEBEN EVITARSE (los que ya sabes que no quieres o que no son ciertos):
-    Certificaciones o pruebas que SÍ tienes documentadas (adjuntar):
+13. PACKS
+    ¿Se vende en packs? [sí/no]
+    Nombre de la opción en Shopify (hoy «Pack»):
+    Valores (p. ej. «1 <unidad>», «2 <unidades>», «3 <unidades>»):
+    Precio previsto de cada pack (se configura en Shopify, NO en el tema):
+    ¿compare_at_price real para alguno? [sí/no] · Si sí, precio anterior real y fecha:
+    Distintivo editorial (p. ej. «Recomendado») y en qué pack:
 
-14. INFORMACIÓN DE ENVÍO
-    Mercado (actualmente España):
-    Zonas y condiciones configuradas en Shopify:
-    Proveedor / fulfillment y método de envío (interno, no se publica):
-    Plazos que muestra el proveedor (preparación y entrega, con su % si lo da):
-    Plazos prudentes que quieres mostrar al cliente:
-    ¿Cambia el texto de la barra superior? (hoy «Envío disponible a toda España»):
+14. CLAIMS (lo que se puede decir, con fuente):
 
-15. POLÍTICAS: ¿el producto afecta a…? (sí/no + detalle)
-    Devoluciones (higiene, producto abierto…):
+15. CLAIMS PROHIBIDOS (lo que no es cierto o no está verificado; incluye lo que solo
+    aparece dentro de imágenes del proveedor):
+
+16. ADVERTENCIAS Y CUIDADOS (uso, edad, piezas pequeñas, alergias, limpieza, batería…):
+
+17. POLÍTICAS: ¿el producto afecta a…? (sí/no + detalle)
+    Devoluciones / desistimiento (higiene, personalizado, precintado):
     Envíos (baterías, líquidos, tamaño):
-    Seguridad o higiene:
-    Garantía:
+    Garantía legal / comercial:
     Edad o restricciones:
 
-16. IMÁGENES DISPONIBLES (originales del proveedor)
-    Nº · nombre de archivo · qué muestra · ¿texto incrustado? · ¿antes/después?
+18. SHIPPING (lo que ve el cliente)
+    ¿Envío gratis en Shopify? [sí/no] · Zonas:
+    ¿Envíos internacionales? [sí/no] · Países:
+    ¿Seguimiento? [sí/no]
+    Plazos del proveedor (preparación y entrega):
+    Plazos prudentes para la política de envíos:
+
+19. IMÁGENES (todas, una por línea)
+    Nº · archivo · qué muestra · origen (proveedor / mejorada / propia) ·
+    ¿coincide con el producto real? · ¿texto incrustado? (¿claims?) ·
+    papel propuesto (producto entero / escala-uso / detalle / información / contexto) ·
+    ¿verificada por el propietario? [sí/no]
     1.
     2.
-    …
 
-17. IMÁGENES MEJORADAS (si ChatGPT u otra herramienta las ha retocado)
-    Nº · qué se cambió (fondo, maquetación, textos) · confirmo que el producto NO se alteró [sí/no]
-    1.
-    …
+20. VIDEOS (archivo o URL · qué muestra · ¿coincide con el producto? · ¿derechos de uso?):
 
-18. OTROS DATOS
-    Público objetivo:
-    Qué lo diferencia de productos parecidos:
-    Preguntas que te hacen o que esperas de los clientes:
-    Enlaces a la ficha del proveedor (CJ Dropshipping u otro):
+21. COMPETIDORES / REFERENCIAS (URL · qué aprender: estructura, interacción, jerarquía, CRO.
+    Nunca se copia el diseño ni sus condiciones legales):
 
-19. DATOS TÉCNICOS PARA LA MIGRACIÓN
-    Producto anterior que se retira:
-    Handle del producto nuevo en Shopify (si ya está importado):
-    ¿El producto anterior sigue publicado? [sí/no] · ¿Se archivará? [sí/no]
-    ¿Has cambiado algo en el editor de temas desde la última entrega? [sí/no]
-      Si sí: adjunta el ZIP del tema publicado (Temas → … → Descargar archivo del tema).
-    Rama de git donde debe trabajar Claude Code:
-    ¿Packs como variantes reales (bloque GARELON Packs)? [sí/no] · ¿Están ya creadas y mapeadas en Shopify? [sí/no]
+22. PRECIO (venta previsto por pack, IVA incluido):
+
+23. UNIT ECONOMICS (por pack)
+    Coste producto × unidades + envío proveedor + comisión de pago + otros =
+    Margen bruto por pack:
+    CPA máximo tolerable (break-even):
+    Datos que faltan: NO DISPONIBLE
+
+24. CREATIVE ANGLES (ángulos de anuncio honestos: regalo, significado, uso diario, problema/solución…;
+    sin antes/después falsos ni testimonios inventados):
+
+25. DATOS NO CONFIRMADOS (todo lo que hay que verificar antes de publicarlo):
+
+26. DATOS DE MIGRACIÓN
+    Producto anterior que se retira (handle):
+    ¿Se archiva o se despublica? · ¿Redirección del handle anterior → / ? [sí/no]
+    ¿Cambios hechos en el editor de temas de Shopify desde la última entrega? [sí/no]
+      Si sí: exporta el tema publicado (Temas › … › Descargar archivo del tema) y adjúntalo.
+    Rama de trabajo propuesta para Claude Code:
 ```
 
-## Checklist antes de enviarlo a ChatGPT
+## Comprobaciones antes de entregarlo
 
-- [ ] Tengo al menos **una foto limpia** del producto real, sin apenas texto (será la imagen principal).
-- [ ] Las imágenes muestran **el mismo producto** que llegará: envase, marca, color, piezas y accesorios.
-- [ ] Los ingredientes, materiales o especificaciones salen del envase o de la ficha del proveedor, no de suposiciones.
-- [ ] Las medidas llevan unidades.
-- [ ] He marcado qué imágenes tienen antes/después o textos dudosos.
-- [ ] Sé si el producto anterior se retira de la tienda.
+- [ ] Hay al menos una foto limpia del **producto real**, que sirva como imagen principal.
+- [ ] Todas las imágenes muestran **el mismo producto** que llega: forma, piezas, colores y materiales.
+- [ ] Los claims tienen fuente, y los que solo aparecen dentro de imágenes están marcados como no verificados.
+- [ ] Las medidas llevan unidades y la conversión es correcta.
+- [ ] Los precios están decididos para Shopify, no para el tema.
+- [ ] Todo lo desconocido dice `NO DISPONIBLE`.
 
-## Qué hace ChatGPT con este brief
+## Qué pasa después
 
-1. Rellena el bloque **NEW PRODUCT DATA** de la plantilla maestra.
-2. Filtra claims, elige secciones y redacta el copy.
-3. Propone el uso de las imágenes.
-4. Genera el **prompt final para Claude Code** (sección 29 de la plantilla maestra).
-
-## Ejemplo resuelto (producto actual, resumido)
-
-- **Producto:** sérum para el contorno de ojos con aceite de ricino y roller («Comprar el sérum»); frasco de vidrio ámbar de 10 ml con bola metálica, tapón y caja; marca impresa «Baafven».
-- **Categoría:** cosmética.
-- **Ingredientes:** Ricinus Communis (Castor) Seed Oil, Acetyl Tripeptide-1, Collagen, Boswellia Serrata Extract, Aqua.
-- **Medidas:** caja 8,7 × 2,2 × 2,2 cm; frasco ≈ 8,4 × 1,9 cm.
-- **Uso:** limpia y seca → aplica con el roller → masajea con la bola.
-- **Advertencias:** solo uso externo; evitar el contacto con los ojos.
-- **Claims a evitar:** «elimina ojeras/arrugas», «anti-aging».
-- **Imágenes:** 10 entregadas; 6 usadas y 4 descartadas (errata, etiqueta distinta, dos antes/después).
-- **Packs:** opción «Pack»: 1 unidad · 2 unidades · 3 unidades (en CJ, «3 piezas»), a 19,99 / 35,00 / 48,00 € en Shopify.
-- **Proveedor y envío:** CJ Dropshipping · CJPacket Euro Cosmetic Line (interno). Al cliente: «Preparación estimada: 1–3 días» · «Entrega estimada en España: aproximadamente 8–16 días».
+1. ChatGPT verifica los datos, analiza **todas** las imágenes, filtra claims y redacta el copy (Prompt Maestro §8-§10).
+2. Rellena `GARELON_MIGRATION_PROMPT_TEMPLATE.md` y entrega el prompt final para Claude Code.
+3. Claude Code implementa siguiendo `GARELON_MASTER_TEMPLATE.md` y valida con `GARELON_PRODUCT_MIGRATION_CHECKLIST.md`.

@@ -1,5 +1,7 @@
 # PROMPT · MIGRACIÓN GARELON A PULSERA ROSARIO VIRGEN MARÍA (versión adaptada y ejecutada)
 
+> **HISTÓRICO · no describe el estado actual.** Se conserva como registro y lección aprendida. El sistema vigente está en `docs/garelon/` (Prompt Maestro, Master Template, brief, prompt de migración, checklist, registro de decisiones) y el estado real en `.claude/skills/garelon-ecommerce-operator/references/current-store-state.md`. Ante cualquier contradicción manda el repositorio actual.
+
 > Copia adaptada del prompt del dueño (02/10/2026), con el **estado real ejecutado** en `claude/rosary-bracelet`. Las notas «→ Ejecutado» dicen qué se hizo y dónde la realidad obligó a desviarse. Detalle completo: `GARELON-CAMBIOS-ROSARIO.md` (raíz) y `docs/garelon/products/GARELON_PRODUCT_BRIEF_ROSARY_BRACELET_v1.md`.
 
 ## 0. Repositorio, baseline y seguridad
