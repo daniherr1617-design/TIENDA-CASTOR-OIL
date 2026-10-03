@@ -6,6 +6,9 @@ const fs = require('fs');
 const { execSync } = require('child_process');
 const P = '/products/pulsera-rosario-virgen-maria';
 const BASE = 'c265802'; // HEAD antes de la ronda K
+// Alcance de K23-K26 fijado al rango c265802..974eadd (fijado en la ronda L; las rondas siguientes tienen su propia prueba de alcance).
+const ROUND_HEAD = '974eadd';
+const atRound = (f) => execSync(`git -C ${THEME} show ${ROUND_HEAD}:${f}`).toString();
 const REPO = fs.existsSync(THEME + '/.git');
 const VPS = [320, 360, 375, 390, 430, 768, 1024, 1440];
 const FREE = 'Impuestos incluidos. Envío gratis.';
@@ -133,16 +136,15 @@ module.exports = async function (browser) {
 
   if (!REPO) return;
   // 7 · Alcance de la ronda K frente a c265802
-  const changed = execSync(`git -C ${THEME} diff --name-only ${BASE} -- assets config layout sections snippets templates`).toString().trim().split('\n').filter(Boolean);
-  const untracked = execSync(`git -C ${THEME} ls-files --others --exclude-standard -- assets config layout sections snippets templates`).toString().trim().split('\n').filter(Boolean);
-  const all = [...new Set([...changed, ...untracked])].sort();
+  const changed = execSync(`git -C ${THEME} diff --name-only ${BASE} ${ROUND_HEAD} -- assets config layout sections snippets templates`).toString().trim().split('\n').filter(Boolean);
+  const all = [...new Set(changed)].sort();
   ok('K23 archivos del tema tocados limitados al scope (badge + nota de envío)', JSON.stringify(all) === JSON.stringify(['config/settings_data.json', 'config/settings_schema.json', 'sections/featured-product.liquid', 'sections/main-cart-footer.liquid', 'sections/main-product.liquid', 'snippets/cart-drawer.liquid', 'snippets/garelon-offer.liquid', 'snippets/garelon-shipping-note.liquid']), all);
   const flat = (o, p = '', out = {}) => { for (const [k, v] of Object.entries(o)) (v && typeof v === 'object') ? flat(v, p + k + '.', out) : (out[p + k] = v); return out; };
-  const locDiff = locs.map(f => { const a = flat(JSON.parse(execSync(`git -C ${THEME} show ${BASE}:locales/${f}`).toString())); const b = flat(JSON.parse(fs.readFileSync(`${THEME}/locales/${f}`, 'utf8')));
+  const locDiff = locs.map(f => { const a = flat(JSON.parse(execSync(`git -C ${THEME} show ${BASE}:locales/${f}`).toString())); const b = flat(JSON.parse(atRound(`locales/${f}`)));
     return [...new Set([...Object.keys(a), ...Object.keys(b)])].filter(k => a[k] !== b[k]); });
   ok('K24 locales: el único cambio es la clave nueva garelon.cart.taxes_at_checkout', locDiff.every(d => JSON.stringify(d) === '["garelon.cart.taxes_at_checkout"]'), locDiff.filter(d => d.length !== 1).slice(0, 2));
-  const same = (f) => execSync(`git -C ${THEME} show ${BASE}:${f}`).toString() === fs.readFileSync(`${THEME}/${f}`, 'utf8');
+  const same = (f) => execSync(`git -C ${THEME} show ${BASE}:${f}`).toString() === atRound(f);
   ok('K25 plantillas, grupos de cabecera y pie, CSS y JS sin cambios (packs, hero, galería, FAQ, footer intactos)', ['templates/index.json', 'templates/product.json', 'sections/header-group.json', 'sections/footer-group.json', 'assets/garelon.css', 'assets/garelon.js'].every(same));
-  const dataDiff = (() => { const a = flat(JSON.parse(execSync(`git -C ${THEME} show ${BASE}:config/settings_data.json`).toString())); const b = flat(JSON.parse(fs.readFileSync(`${THEME}/config/settings_data.json`, 'utf8'))); return [...new Set([...Object.keys(a), ...Object.keys(b)])].filter(k => a[k] !== b[k]); })();
+  const dataDiff = (() => { const a = flat(JSON.parse(execSync(`git -C ${THEME} show ${BASE}:config/settings_data.json`).toString())); const b = flat(JSON.parse(atRound('config/settings_data.json'))); return [...new Set([...Object.keys(a), ...Object.keys(b)])].filter(k => a[k] !== b[k]); })();
   ok('K26 settings_data: solo se añade garelon_free_shipping = true', dataDiff.length === 1 && /\.garelon_free_shipping$/.test(dataDiff[0]), dataDiff);
 };

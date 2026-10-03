@@ -35,7 +35,7 @@ const valueIds = {};
 const vid = (o, v) => { const k = o + '|' + v; if (!(k in valueIds)) valueIds[k] = 9001 + Object.keys(valueIds).length; return valueIds[k]; };
 function mediaList() {
   if (!state.media) return [];
-  return ['garelon-rosario-principal-1080.webp', 'garelon-rosario-oracion-1080.webp'].map((f, i) => {
+  return ['producto-principal-1080.webp', 'producto-oracion-1080.webp'].map((f, i) => {
     const img = new MediaImage({ src: `/assets/${f}`, width: 1080, height: 1080, aspect_ratio: 1, alt: 'Foto de producto (simulada)', id: 700 + i, presentation: { focal_point: '50% 50%' } });
     return { id: 700 + i, media_type: 'image', position: i + 1, alt: img.alt, preview_image: img, aspect_ratio: 1, src: img.src, width: 1080, height: 1080, presentation: img.presentation };
   });

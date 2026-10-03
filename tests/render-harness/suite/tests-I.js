@@ -5,6 +5,8 @@ const fs = require('fs');
 const { execSync } = require('child_process');
 const P = '/products/pulsera-rosario-virgen-maria';
 const BASE = 'aaf47b0';
+// Alcance de I25/I27 fijado al rango aaf47b0..955bcc3 (fijado en la ronda L; las rondas siguientes tienen su propia prueba de alcance).
+const ROUND_HEAD = '955bcc3';
 const es = JSON.parse(fs.readFileSync(`${THEME}/locales/es.json`, 'utf8')).garelon.gallery;
 const gallery = (html) => (html.match(/<div class="g-gallery"[\s\S]*?<\/ul>/) || [''])[0];
 const slides = (g) => [...g.matchAll(/producto-(\w+)-\d+\.webp/g)].map(m => m[1]).filter((k, i, a) => a.indexOf(k) === i);
@@ -125,7 +127,7 @@ print(';'.join(f.split('/')[-1]+'='+'x'.join(map(str,Image.open(f).size)) for f 
   if (!REPO) return;
   // 7 · index.json: solo cambian las claves de imagen; el resto (hero sin precio incluido) intacto
   const before = JSON.parse(execSync(`git -C ${THEME} show ${BASE}:templates/index.json`).toString());
-  const now = JSON.parse(fs.readFileSync(`${THEME}/templates/index.json`, 'utf8'));
+  const now = JSON.parse(execSync(`git -C ${THEME} show ${ROUND_HEAD}:templates/index.json`).toString());
   const diffs = [];
   const walk = (a, b, p) => { if (typeof a !== 'object' || a === null || typeof b !== 'object' || b === null) { if (JSON.stringify(a) !== JSON.stringify(b)) diffs.push(p); return; }
     for (const k of new Set([...Object.keys(a), ...Object.keys(b)])) walk(a[k], b[k], p + '.' + k); };
@@ -133,7 +135,7 @@ print(';'.join(f.split('/')[-1]+'='+'x'.join(map(str,Image.open(f).size)) for f 
   ok('I25 index.json intacto salvo galería de compra, imagen de Detalles y sello de tranquilidad', JSON.stringify(diffs.sort()) === JSON.stringify(['.sections.compra.settings.garelon_gallery_keys', '.sections.detalles.settings.image_alt', '.sections.detalles.settings.image_key', '.sections.tranquilidad.settings.garelon_badge']), diffs);
   ok('I26 hero sin precio (show_price false) y mismo orden de secciones', now.sections.portada.settings.show_price === false && JSON.stringify(now.order) === JSON.stringify(before.order));
   const pj = (x) => { const j = JSON.parse(x); delete j.sections.main.settings.garelon_gallery_keys; delete j.sections.tranquilidad.settings.garelon_badge; return JSON.stringify(j); };
-  ok('I27 product.json: solo cambia el orden de la galería (y el sello de tranquilidad)', pj(execSync(`git -C ${THEME} show ${BASE}:templates/product.json`).toString()) === pj(fs.readFileSync(`${THEME}/templates/product.json`, 'utf8')));
+  ok('I27 product.json: solo cambia el orden de la galería (y el sello de tranquilidad)', pj(execSync(`git -C ${THEME} show ${BASE}:templates/product.json`).toString()) === pj(execSync(`git -C ${THEME} show ${ROUND_HEAD}:templates/product.json`).toString()));
 
   // 8 · Documentación: aprobadas por el propietario, sin «descartadas» vigentes
   const doc = fs.readFileSync(`${THEME}/GARELON-RECONSTRUCCION-LIMPIA.md`, 'utf8');

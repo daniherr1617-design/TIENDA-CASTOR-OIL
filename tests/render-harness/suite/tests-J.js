@@ -98,7 +98,7 @@ module.exports = async function (browser) {
   // 7 · Plantillas: solo los cambios previstos frente a 57ba415
   const walk = (a, b, p, d) => { if (typeof a !== 'object' || a === null || typeof b !== 'object' || b === null) { if (JSON.stringify(a) !== JSON.stringify(b)) d.push(p); return; }
     for (const k of new Set([...Object.keys(a), ...Object.keys(b)])) walk(a[k], b[k], p + '.' + k, d); return d; };
-  const diff = (f) => walk(JSON.parse(execSync(`git -C ${THEME} show ${BASE}:${f}`).toString()), JSON.parse(fs.readFileSync(`${THEME}/${f}`, 'utf8')), '', []).sort();
+  const diff = (f) => walk(JSON.parse(execSync(`git -C ${THEME} show ${BASE}:${f}`).toString()), JSON.parse(execSync(`git -C ${THEME} show ${ROUND_HEAD}:${f}`).toString()), '', []).sort();
   const di = diff('templates/index.json'); const dp = diff('templates/product.json');
   ok('J19 index.json intacto salvo el orden de la galería de compra y el sello de tranquilidad', JSON.stringify(di) === JSON.stringify(['.sections.compra.settings.garelon_gallery_keys', '.sections.tranquilidad.settings.garelon_badge']), di);
   ok('J20 product.json: solo orden de galería y sello', JSON.stringify(dp) === JSON.stringify(['.sections.main.settings.garelon_gallery_keys', '.sections.tranquilidad.settings.garelon_badge']), dp);

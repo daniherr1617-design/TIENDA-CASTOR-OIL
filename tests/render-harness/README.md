@@ -52,7 +52,7 @@ Para el Liquid estricto: `gem install liquid -v 5.14.0` (o, sin permisos de sist
 - **Tienda:** carrito (`/cart/add`, `/cart/change`, Section Rendering API), páginas, políticas, menús de una tienda nueva y bloque de app de opiniones (fixture).
 - **Routing como Shopify:** `/`, `/products/<handle>`, `/pages/<handle>`, `/policies/<x>`, `/cart`; el resto da la plantilla 404 con HTTP 404.
 
-`suite/tests.js` (fase A) y `suite/tests-B.js` … `tests-K.js` abren las páginas con Chromium y comprueban:
+`suite/tests.js` (fase A) y `suite/tests-B.js` … `tests-L.js` abren las páginas con Chromium y comprueban:
 
 - routing y 404;
 - cabecera, navegación, logo y pie;
@@ -61,7 +61,7 @@ Para el Liquid estricto: `gem install liquid -v 5.14.0` (o, sin permisos de sist
 - envío gratis coherente en los packs, la ficha, el cajón del carrito y `/cart`, también con el ajuste desactivado y con otras combinaciones de impuestos y aranceles;
 - añadir al carrito con la cantidad 1;
 - ficha, compra fija, FAQ, opiniones y claims prohibidos;
-- imágenes y orden de galería;
+- imágenes y orden de galería, incluido de qué fuente sale cada asset (fase L: `principal` y `detalle` desde `NUEVA IMAGEN 3.png`);
 - schemas, locales (31 idiomas) y alcance de los cambios de cada ronda;
 - accesibilidad básica: un H1, anclas, `alt`, contraste y foco;
 - sin errores JS;
@@ -92,7 +92,7 @@ Por eso, en los informes se distingue `PROBADO LOCALMENTE` / `ZIP DESCOMPRIMIDO`
 ## 8. Mantenimiento
 
 - **Pruebas de una ronda nueva:** se añaden en `suite/tests-<letra>.js` y la letra se añade a `PHASES` en `suite/tests.js`.
-- **Alcance de cada ronda:** las pruebas que comparan con git («archivos tocados», «plantillas intactas salvo…») se fijan al rango de commits de esa ronda (p. ej. J21: `57ba415..955bcc3`; K23-K26 comparan con `c265802`). Así no fallan cuando una ronda posterior cambia otros archivos, y la ronda nueva tiene su propia prueba de alcance.
+- **Alcance de cada ronda:** las pruebas que comparan con git («archivos tocados», «plantillas intactas salvo…») se fijan al rango de commits de esa ronda (I25-I27 y J19-J21: hasta `955bcc3`; K23-K26: `c265802..974eadd`; L13-L17 comparan con `fb4b850`). Así no fallan cuando una ronda posterior cambia otros archivos, y la ronda nueva tiene su propia prueba de alcance.
 - **Cambio de producto:** muchas pruebas son específicas de la Pulsera Rosario (textos, claves de imagen, handle). Hay que adaptarlas en la migración (`docs/garelon/GARELON_MIGRATION_PROMPT_TEMPLATE.md`).
 - **Lo que no se versiona:** `node_modules/`, capturas, logs, trazas, ZIPs y resultados (`.gitignore`). Las capturas de comprobación visual se guardan fuera del repo.
 
@@ -105,7 +105,7 @@ tests/render-harness/
 ├── run.js              lanzador: servidor en un puerto libre + batería
 ├── validate.js         validación completa (5 pasos)
 ├── src/server.js       Shopify simulado (liquidjs)
-├── suite/tests.js      fase A + utilidades; tests-B.js … tests-K.js
+├── suite/tests.js      fase A + utilidades; tests-B.js … tests-L.js
 ├── fixtures/           stub de standard-events de Shopify, bloque de app de prueba, textos esperados de la FAQ
 └── checks/             theme-check.js (Theme Check con clasificación Dawn/GARELON), liquid-strict.rb
 ```

@@ -1,10 +1,10 @@
 // SOLO TEST · Batería incremental del tema GARELON reconstruido (render local, NO es Shopify).
-// PHASE=A|B|…|K ejecuta las pruebas de esa fase y de todas las anteriores (por defecto, la última).
+// PHASE=A|B|…|L ejecuta las pruebas de esa fase y de todas las anteriores (por defecto, la última).
 const { chromium } = require('playwright-core');
 const fs = require('fs'); const path = require('path');
 const THEME = path.resolve(process.env.THEME || path.join(__dirname, '..', '..', '..'));
 const B = 'http://localhost:' + (process.env.PORT || 8810);
-const PHASES = 'ABCDEFGHIJK'; const PH = PHASES.indexOf(process.env.PHASE || PHASES.slice(-1));
+const PHASES = 'ABCDEFGHIJKL'; const PH = PHASES.indexOf(process.env.PHASE || PHASES.slice(-1));
 const at = (p) => PHASES.indexOf(p) <= PH;
 const results = []; const ok = (n, c, i) => results.push([c ? 'PASS' : 'FAIL', n, i === undefined ? '' : JSON.stringify(i).slice(0, 300)]);
 const setState = (q) => fetch(`${B}/__state?${q}`).then(r => r.json());
