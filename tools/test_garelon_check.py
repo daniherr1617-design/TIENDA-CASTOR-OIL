@@ -168,6 +168,34 @@ def m_missing_translation(t):
     jsave(p, d)
 
 
+def sales_claim_default(sc):
+    for b in sc.get('blocks', []):
+        for st in b.get('settings', []):
+            if st.get('id') == 'badge_text':
+                st['default'] = 'Más popular'; return True
+    return False
+
+
+def set_free_shipping(t, value):
+    p = f'{t}/config/settings_data.json'
+    d = jload(p)
+    cur = d['presets'][d['current']] if isinstance(d['current'], str) else d['current']
+    cur['garelon_free_shipping'] = value
+    jsave(p, d)
+
+
+def m_free_shipping_off(t):
+    set_free_shipping(t, False)  # la garantía «Envío gratis + seguimiento» sigue en las plantillas
+
+
+def ok_free_shipping_off_coherent(t):
+    set_free_shipping(t, False)
+    for f in ('index.json', 'product.json'):
+        p = f'{t}/templates/{f}'
+        s = open(p, encoding='utf-8').read().replace('Envío gratis + seguimiento', 'Envío con seguimiento')
+        open(p, 'w', encoding='utf-8').write(s)
+
+
 MUTATIONS = [
     ('falta templates/index.json', m_remove('templates/index.json')),
     ('falta layout/theme.liquid', m_remove('layout/theme.liquid')),
@@ -189,6 +217,13 @@ MUTATIONS = [
     ('snippet renderizado que no existe', m_missing_snippet),
     ('imagen de producto por clave que no existe', m_missing_image),
     ('traducción que falta en un idioma', m_missing_translation),
+    ('schema: default «Más popular» (claim de ventas sin datos)', schema_mutation(sales_claim_default)),
+    ('«Envío gratis» desactivado pero una garantía sigue prometiéndolo', m_free_shipping_off),
+]
+
+# Cambios válidos que NO deben dar error (sin falsos positivos).
+VALID = [
+    ('«Envío gratis» desactivado y garantía cambiada a «Envío con seguimiento»', ok_free_shipping_off_coherent),
 ]
 
 
@@ -209,6 +244,12 @@ def main():
                 results.append((f'{name} → no aplicable ({e})', None))
                 continue
             results.append((f'{name} → ERROR detectado', run(t) != 0))
+        for name, fn in VALID:
+            t = os.path.join(base, 'm')
+            shutil.rmtree(t, ignore_errors=True)
+            shutil.copytree(clean, t)
+            fn(t)
+            results.append((f'{name} → OK', run(t) == 0))
     bad = 0
     for name, passed in results:
         mark = 'SKIP' if passed is None else ('PASS' if passed else 'FAIL')

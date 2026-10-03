@@ -583,6 +583,9 @@
       },
       "editor_empty": "Solo en el editor: «GARELON Opiniones» está oculta para los clientes porque no hay opiniones reales. Añade el bloque de tu app de reseñas (Añadir bloque › Apps) o espera a que la app publique la valoración del producto.",
       "editor_waiting": "Solo en el editor: el widget de opiniones está oculto para los clientes porque la valoración sincronizada con Shopify es 0. Aparecerá cuando haya opiniones publicadas (o desactiva «Ocultar sin opiniones»)."
+    },
+    "cart": {
+      "taxes_at_checkout": "Impuestos calculados en la pantalla de pago."
     }
   }
 }

@@ -16,7 +16,9 @@ tema (y, si es `templates/index.json`, que la home dé 404):
     imágenes de Files ni recursos que puedan no existir en la tienda;
   * settings_data.json contra settings_schema.json (incluidos los esquemas de color);
   * referencias Liquid: render/include → snippets, section(s) → sections,
-    'archivo' | asset_url → assets.
+    'archivo' | asset_url → assets;
+  * honestidad: ningún default de schema con claims de ventas («Más popular»…) y, con el
+    ajuste global «Envío gratis» desactivado, ningún texto de plantilla que prometa envío gratis.
 
 Uso:  python3 tools/garelon_check.py [RAÍZ_DEL_TEMA] [--strict-root]
       --strict-root: además, la raíz solo puede contener las 7 carpetas del tema
@@ -232,6 +234,10 @@ def check_value(theme, where, st, v, context):
         err(w, f'tipo de ajuste no contemplado {t!r}')
 
 
+# Claims que exigen datos de ventas reales: no pueden venir por defecto en un schema.
+SALES_CLAIM_RE = re.compile(r'm[aá]s\s+popular|m[aá]s\s+vendid|best\s*-?\s*sell|top\s+ventas|n\.?\s*º\s*1\s+en\s+ventas', re.I)
+
+
 def lint_setting_defs(theme, where, defs):
     ids = set()
     for st in defs:
@@ -277,6 +283,9 @@ def lint_setting_defs(theme, where, defs):
                 err(where, f'«{sid}» ({t}) no admite default')
             else:
                 check_value(theme, where, st, st['default'], 'default')
+            if isinstance(st['default'], str) and SALES_CLAIM_RE.search(st['default']):
+                err(where, f'«{sid}»: el default «{st["default"]}» es un claim de ventas («Más popular», «Más vendido»…); '
+                           'solo con datos reales, nunca por defecto (usa p. ej. «Recomendado»)')
     return ids
 
 
@@ -497,6 +506,36 @@ def check_config(theme):
             check_value(theme, 'settings_schema', st, st['default'], 'value')
 
 
+# ---------------------------------------------------------------- envío gratis
+FREE_SHIPPING_RE = re.compile(r'env[ií]o\s+gratis|free\s+shipping', re.I)
+
+
+def check_free_shipping(theme):
+    """Con el ajuste global «Envío gratis» (garelon_free_shipping) desactivado, ningún texto de la
+    tienda en plantillas o grupos puede seguir prometiendo envío gratis (p. ej. la garantía
+    «Envío gratis + seguimiento»): packs, carrito y garantías no deben contradecirse."""
+    schema = load_json(theme.root, 'config/settings_schema.json') or []
+    data = load_json(theme.root, 'config/settings_data.json') or {}
+    st = next((x for g in schema for x in g.get('settings', []) if x.get('id') == 'garelon_free_shipping'), None)
+    if st is None:
+        return
+    cur = data.get('current')
+    if isinstance(cur, str):
+        cur = (data.get('presets') or {}).get(cur)
+    value = (cur or {}).get('garelon_free_shipping', st.get('default', False))
+    if value:
+        return
+    for d in ('templates', 'sections'):
+        for fn in sorted(os.listdir(os.path.join(theme.root, d))):
+            if not fn.endswith('.json'):
+                continue
+            rel = f'{d}/{fn}'
+            for m in FREE_SHIPPING_RE.finditer(read(theme.root, rel)):
+                err(rel, f'promete «{m.group(0)}» con el ajuste global «Envío gratis» desactivado: '
+                         'cambia ese texto o vuelve a activar el ajuste')
+                break
+
+
 # ---------------------------------------------------------------- liquid
 REF_PATTERNS = [
     (re.compile(r"{%-?\s*(?:render|include)\s+'([^']+)'"), 'snippets', '.liquid'),
@@ -638,6 +677,7 @@ def main(argv):
     check_liquid_refs(theme)
     check_image_keys(theme)
     check_locales(theme)
+    check_free_shipping(theme)
 
     index = load_json(root, 'templates/index.json')
     if index is not None and not index.get('order'):

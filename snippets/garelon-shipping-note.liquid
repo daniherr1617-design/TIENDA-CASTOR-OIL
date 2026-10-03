@@ -1,0 +1,37 @@
+{%- comment -%}
+  GARELON · Nota de impuestos y envío. Fuente única para los packs («Elige tu oferta»), la nota de
+  la ficha sin packs, el cajón del carrito y /cart, para que nunca se contradigan.
+
+  El envío gratis lo decide UN ajuste global: Configuración del tema › Carrito › «Envío gratis»
+  (settings.garelon_free_shipping). El tema solo comunica; la tarifa real se configura en
+  Shopify Admin › Configuración › Envío y entrega.
+
+  Parámetro context:
+  - 'product' (por defecto): impuestos/aranceles con los textos de producto de Dawn y, después,
+    «Envío gratis.» o, sin envío gratis, el enlace a la política de envío de Dawn.
+  - 'cart': solo con envío gratis activo (sin él, el carrito conserva la nota original de Dawn).
+    Impuestos/aranceles como en el producto; si los impuestos no van incluidos, se avisa de que
+    se calculan en la pantalla de pago. Después, «Envío gratis.».
+{%- endcomment -%}
+{%- liquid
+  if cart.duties_included and cart.taxes_included
+    echo 'products.product.duties_and_taxes_included' | t
+  elsif cart.taxes_included
+    echo 'products.product.taxes_included' | t
+  elsif cart.duties_included
+    echo 'products.product.duties_included' | t
+  endif
+  if context == 'cart' and cart.taxes_included == false
+    if cart.duties_included
+      echo ' '
+    endif
+    echo 'garelon.cart.taxes_at_checkout' | t
+  endif
+  if settings.garelon_free_shipping
+    echo ' '
+    echo 'garelon.offer.free_shipping' | t
+  elsif context != 'cart' and shop.shipping_policy.body != blank
+    echo ' '
+    echo 'products.product.shipping_policy_html' | t: link: shop.shipping_policy.url
+  endif
+-%}

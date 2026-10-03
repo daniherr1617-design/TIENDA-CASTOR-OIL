@@ -48,16 +48,17 @@ Para el Liquid estricto: `gem install liquid -v 5.14.0` (o, sin permisos de sist
 
 - **Producto:** «Pulsera Rosario Virgen María» con escenarios de variantes cambiables por `/__state`: sin variantes, 2 o 3 packs, con y sin ahorro, con `compare_at`, otra opción, dos opciones, agotados.
 - **Precios:** inventados para la prueba, en céntimos. Nunca son los reales de la tienda.
+- **Ajustes forzables:** el ajuste global «Envío gratis» (`/__state?freeship=0|1`; vacío = el valor del tema) y los impuestos del carrito (`taxes=included|excluded|duties|both`).
 - **Tienda:** carrito (`/cart/add`, `/cart/change`, Section Rendering API), páginas, políticas, menús de una tienda nueva y bloque de app de opiniones (fixture).
 - **Routing como Shopify:** `/`, `/products/<handle>`, `/pages/<handle>`, `/policies/<x>`, `/cart`; el resto da la plantilla 404 con HTTP 404.
 
-`suite/tests.js` (fase A) y `suite/tests-B.js` … `tests-J.js` abren las páginas con Chromium y comprueban:
+`suite/tests.js` (fase A) y `suite/tests-B.js` … `tests-K.js` abren las páginas con Chromium y comprueban:
 
 - routing y 404;
 - cabecera, navegación, logo y pie;
 - portada y CTA;
 - packs como variantes reales, precio, ahorro y `compare_at`, con distintivo «Recomendado»;
-- envío gratis bajo los packs;
+- envío gratis coherente en los packs, la ficha, el cajón del carrito y `/cart`, también con el ajuste desactivado y con otras combinaciones de impuestos y aranceles;
 - añadir al carrito con la cantidad 1;
 - ficha, compra fija, FAQ, opiniones y claims prohibidos;
 - imágenes y orden de galería;
@@ -91,7 +92,7 @@ Por eso, en los informes se distingue `PROBADO LOCALMENTE` / `ZIP DESCOMPRIMIDO`
 ## 8. Mantenimiento
 
 - **Pruebas de una ronda nueva:** se añaden en `suite/tests-<letra>.js` y la letra se añade a `PHASES` en `suite/tests.js`.
-- **Alcance de cada ronda:** las pruebas que comparan con git («archivos tocados», «plantillas intactas salvo…») se fijan al rango de commits de esa ronda (p. ej. J21: `57ba415..955bcc3`). Así no fallan cuando una ronda posterior cambia otros archivos, y la ronda nueva tiene su propia prueba de alcance.
+- **Alcance de cada ronda:** las pruebas que comparan con git («archivos tocados», «plantillas intactas salvo…») se fijan al rango de commits de esa ronda (p. ej. J21: `57ba415..955bcc3`; K23-K26 comparan con `c265802`). Así no fallan cuando una ronda posterior cambia otros archivos, y la ronda nueva tiene su propia prueba de alcance.
 - **Cambio de producto:** muchas pruebas son específicas de la Pulsera Rosario (textos, claves de imagen, handle). Hay que adaptarlas en la migración (`docs/garelon/GARELON_MIGRATION_PROMPT_TEMPLATE.md`).
 - **Lo que no se versiona:** `node_modules/`, capturas, logs, trazas, ZIPs y resultados (`.gitignore`). Las capturas de comprobación visual se guardan fuera del repo.
 
@@ -104,20 +105,21 @@ tests/render-harness/
 ├── run.js              lanzador: servidor en un puerto libre + batería
 ├── validate.js         validación completa (5 pasos)
 ├── src/server.js       Shopify simulado (liquidjs)
-├── suite/tests.js      fase A + utilidades; tests-B.js … tests-J.js
+├── suite/tests.js      fase A + utilidades; tests-B.js … tests-K.js
 ├── fixtures/           stub de standard-events de Shopify, bloque de app de prueba, textos esperados de la FAQ
 └── checks/             theme-check.js (Theme Check con clasificación Dawn/GARELON), liquid-strict.rb
 ```
 
 ## 10. Origen
 
-Son las fuentes reales con las que se validaron las rondas hasta `955bcc3` (386/386 en el repo, 378/378 en el ZIP descomprimido), traídas desde la carpeta temporal de la sesión. Cambios al versionarlas:
+Son las fuentes reales con las que se validaron las rondas hasta `955bcc3` (386/386 en el repo, 378/378 en el ZIP descomprimido), traídas desde la carpeta temporal de la sesión. La fase K (distintivo y envío del carrito) se añadió después, ya en el repositorio. Cambios al versionarlas:
 
 - rutas absolutas → relativas;
 - fuentes tipográficas desde `@fontsource` de `node_modules`;
 - Chromium detectado sin ruta fija;
 - `faq.json` movido a `fixtures/`;
 - J21 fijado al rango de su ronda;
+- J18 actualizada en la ronda K, cuando «Envío gratis» pasó del bloque de packs a un ajuste global (comprueba lo mismo en su sitio nuevo);
 - lanzadores de shell sustituidos por `run.js` / `validate.js`.
 
 La lógica de las pruebas es la misma.

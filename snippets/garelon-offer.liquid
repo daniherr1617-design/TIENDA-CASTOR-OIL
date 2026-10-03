@@ -190,29 +190,13 @@
       <p class="g-offer__note">{{ 'garelon.offer.saving_note' | t: unit: unit_name }}</p>
     {%- endif -%}
     {%- comment -%}
-      Envío gratis (ajuste «Envío gratis» del bloque, activo por defecto). Si se desactiva,
-      vuelve el texto de Dawn con la política de envío.
+      Impuestos y envío: nota común con el carrito (garelon-shipping-note). «Envío gratis» es el
+      ajuste global del tema (Configuración del tema › Carrito); si se desactiva, vuelve el texto
+      de Dawn con la política de envío.
     {%- endcomment -%}
-    {%- liquid
-      assign free_shipping = true
-      if block.settings.free_shipping == false
-        assign free_shipping = false
-      endif
-    -%}
-    {%- if free_shipping or cart.taxes_included or cart.duties_included or shop.shipping_policy.body != blank -%}
+    {%- if settings.garelon_free_shipping or cart.taxes_included or cart.duties_included or shop.shipping_policy.body != blank -%}
       <p class="g-offer__tax">
-        {%- if cart.duties_included and cart.taxes_included -%}
-          {{ 'products.product.duties_and_taxes_included' | t }}
-        {%- elsif cart.taxes_included -%}
-          {{ 'products.product.taxes_included' | t }}
-        {%- elsif cart.duties_included -%}
-          {{ 'products.product.duties_included' | t }}
-        {%- endif -%}
-        {%- if free_shipping %}
-          {{ 'garelon.offer.free_shipping' | t }}
-        {%- elsif shop.shipping_policy.body != blank %}
-          {{ 'products.product.shipping_policy_html' | t: link: shop.shipping_policy.url }}
-        {%- endif -%}
+        {%- render 'garelon-shipping-note', context: 'product' -%}
       </p>
     {%- endif -%}
     <script type="application/json" data-selected-variant>

@@ -114,7 +114,6 @@
               # GARELON: si «GARELON Elige tu oferta» pinta las tarjetas (con su precio), el precio de Dawn
               # bajo el título queda solo para lectores de pantalla y para el JS de Dawn: un único precio visible.
               assign garelon_offer_on = false
-              assign garelon_free_shipping = false
               assign garelon_offer_block = section.blocks | where: 'type', 'garelon_offer' | first
               if garelon_offer_block and placeholder != true
                 capture garelon_offer_check
@@ -123,10 +122,6 @@
                 if garelon_offer_check contains 'on'
                   assign garelon_offer_on = true
                 endif
-                # Envío gratis (ajuste del bloque, activo por defecto) también en la nota sin tarjetas.
-                unless garelon_offer_block.settings.free_shipping == false
-                  assign garelon_free_shipping = true
-                endunless
               endif
             -%}
 
@@ -166,20 +161,10 @@
                   {%- endif -%}
                   {%- comment -%} GARELON: con las tarjetas de oferta, esta nota va debajo de ellas. {%- endcomment -%}
                   {%- unless garelon_offer_on -%}
-                  {%- if cart.taxes_included or cart.duties_included or shop.shipping_policy.body != blank -%}
+                  {%- comment -%} GARELON: nota de impuestos y envío común (envío gratis = ajuste global del tema). {%- endcomment -%}
+                  {%- if settings.garelon_free_shipping or cart.taxes_included or cart.duties_included or shop.shipping_policy.body != blank -%}
                     <div class="product__tax caption rte">
-                      {%- if cart.duties_included and cart.taxes_included -%}
-                        {{ 'products.product.duties_and_taxes_included' | t }}
-                      {%- elsif cart.taxes_included -%}
-                        {{ 'products.product.taxes_included' | t }}
-                      {%- elsif cart.duties_included -%}
-                        {{ 'products.product.duties_included' | t }}
-                      {%- endif -%}
-                      {%- if garelon_free_shipping %}
-                        {{ 'garelon.offer.free_shipping' | t }}
-                      {%- elsif shop.shipping_policy.body != blank -%}
-                        {{ 'products.product.shipping_policy_html' | t: link: shop.shipping_policy.url }}
-                      {%- endif -%}
+                      {%- render 'garelon-shipping-note', context: 'product' -%}
                     </div>
                   {%- endif -%}
                   {%- endunless -%}
@@ -846,13 +831,6 @@
           "default": "unidad"
         },
         {
-          "type": "checkbox",
-          "id": "free_shipping",
-          "label": "Mostrar «Envío gratis» bajo los packs",
-          "info": "Desactívalo si el envío deja de ser gratuito: volverá el texto de Shopify sobre el envío calculado en la pantalla de pago.",
-          "default": true
-        },
-        {
           "type": "header",
           "content": "Texto de cada pack"
         },
@@ -913,8 +891,8 @@
           "type": "text",
           "id": "badge_text",
           "label": "Texto del distintivo",
-          "default": "Más popular",
-          "info": "«Más popular» solo si tus ventas lo confirman; si no, por ejemplo «Recomendado»."
+          "default": "Recomendado",
+          "info": "Distintivo editorial. «Más popular» o «Más vendido» solo si tus datos de ventas reales lo demuestran."
         },
         {
           "type": "header",

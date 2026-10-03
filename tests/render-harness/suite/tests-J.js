@@ -87,9 +87,12 @@ module.exports = async function (browser) {
   const locs = fs.readdirSync(`${THEME}/locales`).filter(f => !/schema/.test(f));
   ok('J17 «free_shipping» en los 31 idiomas (es: «Envío gratis.»)', locs.length === 31 && locs.every(f => JSON.parse(fs.readFileSync(`${THEME}/locales/${f}`, 'utf8')).garelon.offer.free_shipping) && JSON.parse(fs.readFileSync(`${THEME}/locales/es.json`, 'utf8')).garelon.offer.free_shipping === 'Envío gratis.');
   const schema = (f) => JSON.parse(fs.readFileSync(`${THEME}/sections/${f}`, 'utf8').match(/{% schema %}([\s\S]*){% endschema %}/)[1]);
-  const fsOk = ['featured-product.liquid', 'main-product.liquid'].every(f => { const s = schema(f).blocks.find(b => b.type === 'garelon_offer').settings.find(x => x.id === 'free_shipping'); return s && s.type === 'checkbox' && s.default === true; });
+  // Ronda K: «Envío gratis» pasó del bloque de packs a un ajuste GLOBAL del tema (una sola fuente para packs, cajón y /cart).
+  // Se comprueba lo mismo (activo por defecto) en su nuevo sitio y que el bloque ya no tiene un ajuste que lo contradiga.
+  const gs = JSON.parse(fs.readFileSync(`${THEME}/config/settings_schema.json`, 'utf8')).flatMap(g => g.settings || []).find(x => x.id === 'garelon_free_shipping');
+  const fsOk = gs && gs.type === 'checkbox' && gs.default === true && ['featured-product.liquid', 'main-product.liquid'].every(f => !schema(f).blocks.find(b => b.type === 'garelon_offer').settings.some(x => x.id === 'free_shipping'));
   const rb = schema('rich-text.liquid').settings.find(x => x.id === 'garelon_badge');
-  ok('J18 schema: «Envío gratis» activo por defecto en el bloque de packs; «Sello GARELON» en rich-text con «none» por defecto', fsOk && rb && rb.default === 'none' && rb.options.map(o => o.value).join() === 'none,escudo,candado');
+  ok('J18 schema: «Envío gratis» activo por defecto (ajuste global desde la ronda K); «Sello GARELON» en rich-text con «none» por defecto', fsOk && rb && rb.default === 'none' && rb.options.map(o => o.value).join() === 'none,escudo,candado');
 
   if (!REPO) return;
   // 7 · Plantillas: solo los cambios previstos frente a 57ba415

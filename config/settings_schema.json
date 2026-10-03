@@ -1436,6 +1436,17 @@
       },
       {
         "type": "header",
+        "content": "GARELON · Envío"
+      },
+      {
+        "type": "checkbox",
+        "id": "garelon_free_shipping",
+        "label": "Envío gratis",
+        "info": "Actívalo solo si el envío es gratuito en Shopify Admin › Configuración › Envío y entrega (el tema no cambia la tarifa). Muestra «Envío gratis.» bajo los packs, en el carrito lateral y en /cart. Si lo desactivas, vuelve la nota de Shopify (envío calculado en la pantalla de pago): cambia también la garantía «Envío gratis + seguimiento».",
+        "default": true
+      },
+      {
+        "type": "header",
         "content": "t:settings_schema.cart.settings.cart_drawer.header"
       },
       {

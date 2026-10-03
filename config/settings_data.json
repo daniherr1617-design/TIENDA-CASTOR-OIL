@@ -175,6 +175,7 @@
       "cart_type": "drawer",
       "show_vendor": false,
       "show_cart_note": false,
+      "garelon_free_shipping": true,
       "cart_drawer_collection": "",
       "cart_color_scheme": "scheme-1",
       "sections": {

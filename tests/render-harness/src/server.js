@@ -12,7 +12,11 @@ const readJson = (p) => JSON.parse(read(p).replace(/^\s*\/\*[\s\S]*?\*\//, ''));
 const HANDLE = 'pulsera-rosario-virgen-maria';
 
 const state = { mode: 'single', soldout: [], design: false, catalog: 'ok', contact: 'ok', refund: 'ok', shipping: 'ok', cookies: 'none',
-  noindex: false, reviews: 'none', accounts: true, cart: [], log: [], media: false };
+  noindex: false, reviews: 'none', accounts: true, cart: [], log: [], media: false,
+  // Ronda K: freeship '' = valor del tema (settings_data), '1'/'0' fuerza el ajuste global «Envío gratis»;
+  // taxes = included | excluded | duties (solo aranceles) | both (aranceles e impuestos incluidos).
+  freeship: '', taxes: 'included' };
+const taxFlags = () => ({ taxes_included: state.taxes === 'included' || state.taxes === 'both', duties_included: state.taxes === 'duties' || state.taxes === 'both' });
 function scenario() {
   const m = state.mode; // precios SIMULADOS (SOLO TEST)
   if (m === 'pack3') return { options: ['Pack'], rows: [[['1 pulsera'], 1999], [['2 pulseras'], 3998], [['3 pulseras'], 5997]] };
@@ -84,7 +88,7 @@ function cartDrop() {
       line_level_discount_allocations: [], selling_plan_allocation: null, unit_price_measurement: null, sku: v.sku, vendor: 'GARELON', product_has_only_default_variant: product.has_only_default_variant }; });
   const total = items.reduce((a, it) => a + it.final_line_price, 0);
   return new CartDrop({ items, item_count: items.reduce((a, it) => a + it.quantity, 0), total_price: total, items_subtotal_price: total, original_total_price: total,
-    cart_level_discount_applications: [], taxes_included: true, duties_included: false, currency: { iso_code: 'EUR' }, note: '', attributes: {}, requires_shipping: true, empty: items.length === 0 });
+    cart_level_discount_applications: [], ...taxFlags(), currency: { iso_code: 'EUR' }, note: '', attributes: {}, requires_shipping: true, empty: items.length === 0 });
 }
 
 const hexToColor = (hex) => { const n = parseInt(String(hex).slice(1), 16); const r = n >> 16, g = (n >> 8) & 255, b = n & 255; return { red: r, green: g, blue: b, rgb: `${r} ${g} ${b}`, alpha: 1, toString() { return hex; } }; };
@@ -163,7 +167,8 @@ const linklists = { 'main-menu': { handle: 'main-menu', title: 'Menú principal'
   'customer-account-main-menu': { handle: 'customer-account-main-menu', links: [], levels: 0 } };
 function globals(req, product) {
   const noCat = state.catalog === 'none'; const policies = policyList(); const pol = (h) => policies.find(p => p.handle === h) || null;
-  return { settings: L.settings, pages: pagesObj(), linklists, product: req.pageType === 'product' ? product : null,
+  const settings = state.freeship === '' ? L.settings : { ...L.settings, garelon_free_shipping: state.freeship === '1' };
+  return { settings, pages: pagesObj(), linklists, product: req.pageType === 'product' ? product : null,
     collections: { all: { products: noCat ? [] : [product], products_count: noCat ? 0 : 1, url: '/collections/all', title: 'Productos' } }, all_products: noCat ? {} : { [HANDLE]: product }, cart: cartDrop(),
     routes: { root_url: '/', cart_url: '/cart', cart_add_url: '/cart/add', cart_change_url: '/cart/change', cart_update_url: '/cart/update', search_url: '/search', account_url: '/account', account_login_url: '/account/login', account_register_url: '/account/register', all_products_collection_url: '/collections/all', collections_url: '/collections', predictive_search_url: '/search/suggest', product_recommendations_url: '/recommendations/products' },
     shop: { name: 'GARELON', policies, refund_policy: pol('refund-policy'), shipping_policy: pol('shipping-policy'), privacy_policy: pol('privacy-policy'), terms_of_service: pol('terms-of-service'),
@@ -227,10 +232,10 @@ http.createServer(async (req, res) => {
     if (p.startsWith('/__fonts/')) { const fp = path.join(FONTS_DIR, p.slice(9)); return fs.readFile(fp, (e, d) => { if (e) { res.writeHead(404); return res.end(); } res.writeHead(200, { 'Content-Type': 'font/woff2' }); res.end(d); }); }
     if (p.startsWith('/assets/')) { const fp = path.join(T, decodeURIComponent(p)); return fs.readFile(fp, (e, d) => { if (e) { res.writeHead(404); return res.end(); } res.writeHead(200, { 'Content-Type': types[path.extname(fp)] || 'application/octet-stream' }); res.end(d); }); }
     if (p === '/__state') { const q = u.searchParams;
-      for (const k of ['mode', 'catalog', 'contact', 'refund', 'shipping', 'cookies', 'reviews']) if (q.has(k)) state[k] = q.get(k);
+      for (const k of ['mode', 'catalog', 'contact', 'refund', 'shipping', 'cookies', 'reviews', 'freeship', 'taxes']) if (q.has(k)) state[k] = q.get(k);
       for (const k of ['design', 'noindex', 'accounts', 'media']) if (q.has(k)) state[k] = q.get(k) === '1';
       if (q.has('soldout')) state.soldout = q.get('soldout').split(',').filter(Boolean).map(Number);
-      if (q.has('reset')) { state.cart = []; state.log = []; }
+      if (q.has('reset')) { state.cart = []; state.log = []; if (!q.has('freeship')) state.freeship = ''; if (!q.has('taxes')) state.taxes = 'included'; }
       if (q.has('reload')) L = loadSettings();
       res.writeHead(200, { 'Content-Type': 'application/json' }); return res.end(JSON.stringify(state)); }
     if (p === '/cart.js' || p === '/cart.json') { res.setHeader('Content-Type', 'application/json'); const c = cartDrop(); return res.end(JSON.stringify({ item_count: c.item_count, items: c.items.map(i => ({ id: i.id, quantity: i.quantity, variant_id: i.id })), total_price: c.total_price })); }

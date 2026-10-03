@@ -1,14 +1,14 @@
 // SOLO TEST · Batería incremental del tema GARELON reconstruido (render local, NO es Shopify).
-// PHASE=A|B|…|J ejecuta las pruebas de esa fase y de todas las anteriores (por defecto, la última).
+// PHASE=A|B|…|K ejecuta las pruebas de esa fase y de todas las anteriores (por defecto, la última).
 const { chromium } = require('playwright-core');
 const fs = require('fs'); const path = require('path');
 const THEME = path.resolve(process.env.THEME || path.join(__dirname, '..', '..', '..'));
 const B = 'http://localhost:' + (process.env.PORT || 8810);
-const PHASES = 'ABCDEFGHIJ'; const PH = PHASES.indexOf(process.env.PHASE || PHASES.slice(-1));
+const PHASES = 'ABCDEFGHIJK'; const PH = PHASES.indexOf(process.env.PHASE || PHASES.slice(-1));
 const at = (p) => PHASES.indexOf(p) <= PH;
 const results = []; const ok = (n, c, i) => results.push([c ? 'PASS' : 'FAIL', n, i === undefined ? '' : JSON.stringify(i).slice(0, 300)]);
 const setState = (q) => fetch(`${B}/__state?${q}`).then(r => r.json());
-const reset = () => setState('mode=single&soldout=&design=0&catalog=ok&contact=ok&refund=ok&shipping=ok&cookies=none&noindex=0&reviews=none&accounts=1&media=0&reset=1');
+const reset = () => setState('mode=single&soldout=&design=0&catalog=ok&contact=ok&refund=ok&shipping=ok&cookies=none&noindex=0&reviews=none&accounts=1&media=0&freeship=&taxes=included&reset=1');
 const get = async (u) => { const r = await fetch(B + u, { redirect: 'manual' }); const t = await r.text(); return { status: r.status, tpl: r.headers.get('x-test-template'), html: t }; };
 const count = (s, re) => (s.match(re) || []).length;
 const text = (html) => html.replace(/<script[\s\S]*?<\/script>/g, '').replace(/<style[\s\S]*?<\/style>/g, '').replace(/<[^>]+>/g, ' ').replace(/\s+/g, ' ');
