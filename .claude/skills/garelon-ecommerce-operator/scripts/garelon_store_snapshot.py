@@ -193,6 +193,13 @@ def collect(repo):
     if rev:
         snap['reviews'] = {k: rev['settings'].get(k) for k in ('heading', 'show_summary', 'summary_with_app', 'hide_without_reviews', 'note')}
         snap['reviews']['app_blocks_in_template'] = len([b for _, b in rev['blocks'] if b['type'] == '@app'])
+        # D30: bloques de app versionados en «GARELON Opiniones» (home y ficha) y App Embeds de settings_data.
+        prev = find(prod, 'garelon-reviews')
+        snap['reviews']['versioned_apps'] = {tpl: [(b['type'].split('/blocks/')[-1].split('/')[0], b.get('settings', {}).get('review_data'))
+                                                   for _, b in (sec or {}).get('blocks', []) if b['type'].startswith('shopify://apps/')]
+                                             for tpl, sec in (('index', rev), ('product', prev))}
+        snap['reviews']['app_embeds'] = [(b.get('type', '').split('/blocks/')[-1].split('/')[0], not b.get('disabled', False))
+                                         for b in (cur.get('blocks') or {}).values()]
     sticky = find(prod, 'garelon-sticky-cta')
     snap['sticky_cta'] = bool(sticky and not sticky['disabled'])
 
@@ -268,7 +275,7 @@ def to_markdown(s):
     a('- **Sello GARELON (rich-text):** ' + (', '.join(f'`{i}`={b}' for i, b in s['seal']) or 'ninguno'))
     if 'reviews' in s:
         r = s['reviews']
-        a(f"- **Opiniones:** «{r['heading']}», ocultar sin opiniones: {r['hide_without_reviews']}, bloques de app en la plantilla: {r['app_blocks_in_template']} (Judge.me se añade desde el editor), nota: {re.sub('<[^>]+>', '', r['note'] or '') or 'ninguna'}")
+        a(f"- **Opiniones:** «{r['heading']}», ocultar sin opiniones: {r['hide_without_reviews']}, Review Widget de Judge.me versionado (D30): home {r.get('versioned_apps', {}).get('index') or 'no'} · ficha {r.get('versioned_apps', {}).get('product') or 'no'} [(bloque, review_data)], App Embeds en settings_data: {r.get('app_embeds') or 'ninguno'} [(bloque, activo)], nota: {re.sub('<[^>]+>', '', r['note'] or '') or 'ninguna'}")
     a(f"- **Compra fija (ficha):** {'sí' if s['sticky_cta'] else 'no'}")
     a('- **Navegación:** ' + ' · '.join(f'{l} (`{u}`)' for l, u in s.get('nav', [])) + f" · búsqueda en cabecera: {s.get('header_search')}")
     a('- **Barra superior:** ' + ' · '.join(f'«{t}»' for t in s['announcement']))

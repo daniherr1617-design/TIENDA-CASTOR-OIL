@@ -42,7 +42,7 @@ Todo el JavaScript de Dawn está sin tocar.
 
 ## Reglas de arquitectura que más se olvidan
 
-- `templates/index.json` solo con secciones del tema y valores válidos: sin bloques de app, imágenes de Files ni productos (R17). Judge.me se añade desde el editor.
+- `templates/index.json` solo con secciones del tema y valores válidos: sin bloques de app, imágenes de Files ni productos (R17). Única excepción (D30): el Review Widget oficial de Judge.me, versionado en «GARELON Opiniones» de la home y la ficha, más su App Embed Judge.me Core en `settings_data.json`. `garelon_check` rechaza cualquier otro.
 - Nombres de schema ≤ 25 bytes. Un nombre largo hace que Shopify rechace la sección y la home dé 404.
 - Con las tarjetas de oferta, el precio de Dawn queda solo para lectores de pantalla (el visible está en cada tarjeta). La nota de impuestos y envío va bajo las tarjetas.
 - «Envío gratis» se decide en **un solo sitio** (ajuste global `garelon_free_shipping`) y lo pinta **un solo snippet** (`garelon-shipping-note`). No añadas otro ajuste ni otro texto de envío que pueda contradecirlo.

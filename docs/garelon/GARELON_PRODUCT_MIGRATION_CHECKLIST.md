@@ -1,8 +1,8 @@
 # GARELON · CHECKLIST DE MIGRACIÓN Y VERIFICACIÓN
 
-> **Versión:** 3.1 · **Fecha:** 2026-10-03 · **Repositorio:** `daniherr1617-design/TIENDA-CASTOR-OIL` · **Rama fuente:** `claude/rosary-clean-rebuild` · **Commit fuente:** `974eadd`
+> **Versión:** 3.2 · **Fecha:** 2026-10-03 · **Repositorio:** `daniherr1617-design/TIENDA-CASTOR-OIL` · **Rama fuente:** `claude/rosary-clean-rebuild` · **Commit fuente:** `a1b03ef`
 >
-> Snapshot generado desde `974eadd`. Ante discrepancias futuras manda el repositorio actual. Si una comprobación ya no corresponde a la arquitectura real, se corrige este checklist (DOCUMENT_SYNC), no el tema.
+> Snapshot generado desde `a1b03ef`. Ante discrepancias futuras manda el repositorio actual. Si una comprobación ya no corresponde a la arquitectura real, se corrige este checklist (DOCUMENT_SYNC), no el tema.
 
 **Marcadores:**
 - 🅲 **Claude Code / local:** se comprueba en el repositorio y en el ZIP descomprimido (batería versionada `tests/render-harness`, que simula Shopify con datos ficticios).
@@ -72,7 +72,9 @@ Cada punto se marca con el lugar donde se probó: `PROBADO LOCALMENTE`, `ZIP DES
 
 ## 9. Opiniones y Judge.me
 - [ ] 🅲 El tema no contiene ninguna opinión; sin datos, la sección no se ve (nunca «0 opiniones»).
-- [ ] 🆂 Widget de Judge.me añadido en «GARELON Opiniones» (home y ficha) desde el editor.
+- [ ] 🅲 Review Widget oficial de Judge.me versionado en «GARELON Opiniones» de `index.json` y `product.json` (D30), con `review_data` = `real_data`; App Embed Judge.me Core en `settings_data.json`; ningún otro bloque de app.
+- [ ] 🆂 Tras subir el tema: App Embed de Judge.me activo y, en la home, el producto nuevo elegido en el Review Widget («Select product»), salvo que su referencia ya venga versionada.
+- [ ] 🆂 Home y ficha: encabezado → reseñas reales con fotos → nota de origen; la valoración media sale una sola vez.
 - [ ] 🆂 Sincronización de la valoración con Shopify activa (metafields `reviews.rating` / `reviews.rating_count`).
 - [ ] 🅿 Importadas solo del mismo modelo, revisadas, sin editar, sin filtrar solo 5 estrellas; nota de origen coherente.
 
@@ -109,7 +111,7 @@ Cada punto se marca con el lugar donde se probó: `PROBADO LOCALMENTE`, `ZIP DES
 ## 16. Routing e instalabilidad
 - [ ] 🅲 `GET /` → 200 (plantilla index), con y sin producto publicado.
 - [ ] 🅲 Ficha → 200; ruta inexistente → 404 limpia; `/cart` → 200; contacto → 200.
-- [ ] 🅲 `templates/index.json` sin bloques de app, imágenes de Files ni recursos de la tienda; nombres de schema ≤ 25 bytes.
+- [ ] 🅲 `templates/index.json` sin bloques de app (salvo el Review Widget de Judge.me, D30), imágenes de Files ni recursos de la tienda; nombres de schema ≤ 25 bytes.
 - [ ] 🆂 Tras subir el tema: la home y Personalizar › Página de inicio abren sin 404.
 
 ## 17. Pruebas

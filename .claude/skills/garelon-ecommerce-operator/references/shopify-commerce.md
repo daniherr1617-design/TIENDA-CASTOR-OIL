@@ -12,7 +12,7 @@
 | Pagos y checkout | Admin › Pagos / Checkout | No se toca |
 | Contacto | Admin › Páginas (handle `contacto`) | Enlaza |
 | Producto ↔ proveedor y pedidos | `{{SUPPLIER_INTEGRATION}}` (actual: DSers + AliExpress; fulfillment manual) | Sin código del proveedor |
-| Opiniones | Judge.me | Muestra el bloque de app o la valoración |
+| Opiniones | Judge.me | Muestra el Review Widget versionado (D30) o, sin la app, la valoración |
 | Píxeles y eventos | Admin › Eventos de cliente / canales | No inyecta nada a mano |
 
 ## Packs

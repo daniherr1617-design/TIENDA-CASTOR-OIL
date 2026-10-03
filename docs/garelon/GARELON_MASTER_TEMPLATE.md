@@ -1,8 +1,8 @@
 # GARELON · MASTER TEMPLATE (arquitectura real del tema)
 
-> **Versión:** 3.1 · **Fecha:** 2026-10-03 · **Repositorio:** `daniherr1617-design/TIENDA-CASTOR-OIL` · **Rama fuente:** `claude/rosary-clean-rebuild` · **Commit fuente:** `974eadd`
+> **Versión:** 3.2 · **Fecha:** 2026-10-03 · **Repositorio:** `daniherr1617-design/TIENDA-CASTOR-OIL` · **Rama fuente:** `claude/rosary-clean-rebuild` · **Commit fuente:** `a1b03ef`
 >
-> Snapshot generado desde `974eadd`. Ante discrepancias futuras manda el repositorio actual: revisa el código antes de actuar sobre lo que dice este documento.
+> Snapshot generado desde `a1b03ef`. Ante discrepancias futuras manda el repositorio actual: revisa el código antes de actuar sobre lo que dice este documento.
 
 Este documento describe **cómo está construido el tema hoy** y **qué hay que tocar al cambiar de producto**. Sustituye a la arquitectura 1.x (secciones `garelon-trust-bar`, `garelon-benefits`, `garelon-packs`, `garelon-url`… de ramas anteriores), que ya no existe en el tema.
 
@@ -31,7 +31,7 @@ Este documento describe **cómo está construido el tema hoy** y **qué hay que 
 1. **Dawn 16.0.0 oficial como base.** El commit «Fase 0: Dawn 16.0.0 oficial sin cambios» es una copia byte a byte de Shopify/dawn v16.0.0. El `theme_name` es «GARELON (Dawn)».
 2. **Capa GARELON mínima.** Lo nuevo lleva prefijo `garelon-` (secciones, snippets, assets de marca) o `producto-` (imágenes del producto). Cada cambio dentro de un archivo de Dawn va comentado con `GARELON:`.
 3. **Usar lo que Dawn ya resuelve.** Formulario de producto, selector de variantes, carrito AJAX, cajón del carrito, pago dinámico, valoración por metafields, `rich-text`, 404 y structured data son de Dawn.
-4. **`templates/index.json` siempre instalable** (R17): solo secciones del tema y valores válidos. Sin producto en la tienda, la home sigue respondiendo 200.
+4. **`templates/index.json` siempre instalable** (R17): solo secciones del tema y valores válidos. Sin producto en la tienda, la home sigue respondiendo 200. Único bloque de app permitido: el Review Widget oficial de Judge.me en «GARELON Opiniones» (D30).
 5. **De menos a más.** Se construye y se valida por fases. No se sigue sobre un fallo.
 6. **Contenido editable.** Los textos de la tienda viven en plantillas JSON y ajustes. Los textos de interfaz, en `locales/` (`garelon.*`).
 
@@ -44,7 +44,7 @@ Este documento describe **cómo está construido el tema hoy** y **qué hay que 
 | Archivo | Función |
 |---|---|
 | `sections/garelon-hero.liquid` | Portada: antetítulo, H1, texto, CTA principal (vacío = `/#comprar`), 2.º botón opcional, precio opcional (`show_price`), imagen LCP |
-| `sections/garelon-reviews.liquid` | Opiniones reales: bloque de app (`@app`, Judge.me) y/o resumen con `reviews.rating` / `reviews.rating_count`. Sin datos, invisible para el cliente; aviso solo en el editor |
+| `sections/garelon-reviews.liquid` | Opiniones reales: bloque de app (`@app`; el Review Widget de Judge.me viene versionado en home y ficha) y/o resumen con `reviews.rating` / `reviews.rating_count`. Sin datos, invisible para el cliente; aviso solo en el editor |
 | `sections/garelon-image-text.liquid` | Imagen + texto (significado, historia, lifestyle) |
 | `sections/garelon-details.liquid` | Lista de hechos verificables con icono e imagen (`layout: list`) o cuadrícula de tarjetas informativas (`layout: chips`) |
 | `sections/garelon-faq.liquid` | Preguntas frecuentes con `details`/`summary` |
@@ -141,7 +141,13 @@ Reglas de cálculo:
 Tarjeta con subtítulo «14 días para cambiar de opinión», título, texto legal (derecho de desistimiento + garantía legal aplicable) y enlace a `/policies/refund-policy`. El sello (escudo con check o candado) es decorativo (`aria-hidden`), va centrado encima del subtítulo y mide 64 px en móvil y 72 px desde 750 px.
 
 ### 3.10 Opiniones · `garelon-reviews`
-- El widget de Judge.me se añade desde el editor (Añadir bloque › Apps). **No va en `index.json`** (R17).
+- **Review Widget de Judge.me versionado** (D30, única excepción a R17): bloque `shopify://apps/judge-me-reviews/blocks/review_widget/61ccd3b1-a9f2-4160-9fe9-4fec8413e5d8` en `blocks`/`block_order` de la sección `opiniones` de `templates/index.json` y `templates/product.json`.
+  - Ajustes copiados de plantillas reales generadas por el editor de Shopify: `review_data` = `real_data` (nunca la muestra de Judge.me), `show_shop_reviews` = falso, `empty_state` = `empty_widget`, `max_width` = 1200.
+  - En Liquid, un bloque de app llega con `block.type == '@app'` y se pinta con `{% render block %}` en `.g-reviews__app`, entre el encabezado y la nota.
+  - App Embed Judge.me Core (`judgeme_core`, mismo UUID) en `config/settings_data.json` (`blocks` del preset actual).
+  - **Producto del widget en la home:** sin preseleccionar. La clave del ajuste y el handle real no están verificados desde el repo; se elige en el bloque («Select product») o se versiona cuando se conozca el JSON real. En la ficha lo pone la página.
+  - `summary_with_app` = falso: con el widget, el resumen GARELON no se pinta y Judge.me pone estrellas, recuento y reseñas. Sin la app (bloque no pintado), el resumen de los metafields hace de respaldo.
+  - Si Judge.me se sustituye o se desinstala: quitar el bloque de las dos plantillas y el App Embed (el tema sigue instalable sin ellos).
 - Con `hide_without_reviews`, si la valoración sincronizada es 0, el cliente no ve un widget vacío.
 - Nota de origen editable, que solo se muestra con opiniones visibles.
 
@@ -272,7 +278,7 @@ grep -rn -i -E "pulsera|rosario|virgen" assets config layout locales sections sn
 ## 8. Routing e instalabilidad
 
 - **Un 404 en `/` es un problema de instalación:** Shopify no encontró un `templates/index.json` utilizable, normalmente porque rechazó una sección que usa. Un 404 en otra URL es de contenido (producto no publicado, página o política inexistente) y se arregla en el Admin, nunca editando `templates/404.json`.
-- **Causas típicas de rechazo** (las detecta `tools/garelon_check.py`): `name` de sección, bloque o preset de más de 25 bytes; valores que no cumplen el schema; claves JSON duplicadas; bloques de app, imágenes de Files o recursos de la tienda dentro de `index.json`; referencias a snippets o assets inexistentes.
+- **Causas típicas de rechazo** (las detecta `tools/garelon_check.py`): `name` de sección, bloque o preset de más de 25 bytes; valores que no cumplen el schema; claves JSON duplicadas; bloques de app (salvo el Review Widget de Judge.me, D30), imágenes de Files o recursos de la tienda dentro de `index.json`; referencias a snippets o assets inexistentes.
 - **Nunca diagnostiques con `request.path` dentro de la 404:** en Shopify vale siempre `/404`.
 - Si alguien informa de un 404, pide la **URL exacta** y si ve la 404 de GARELON o una página de Shopify.
 
@@ -318,7 +324,7 @@ Las fases (A, B, C…) son rondas de trabajo; cada ronda nueva añade la suya. R
 - Un segundo ajuste o texto de «Envío gratis»: la decisión vive solo en `garelon_free_shipping` y el texto solo en `garelon-shipping-note`.
 - El checkout, los métodos de pago, el fulfillment y la configuración del proveedor.
 - El logo y la identidad (R20), las reglas CSS de la cabecera móvil y el orden legal del pie.
-- `templates/index.json` con bloques de app o recursos de la tienda (R17).
+- `templates/index.json` con bloques de app distintos del Review Widget de Judge.me, o con recursos de la tienda (R17, D30).
 - `layout/theme.liquid`, salvo una necesidad imprescindible y justificada.
 
 ---

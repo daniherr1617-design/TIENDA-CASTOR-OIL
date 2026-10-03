@@ -24,7 +24,7 @@ Marca, logo, dominio, cabecera, pie, navegación mínima, sistema de packs (`gar
 
 ## Qué cambia
 
-Producto y textos, imágenes `producto-*` y sus claves, galerías, iconos de producto, ajustes de packs (`option_name`, `unit_singular`, `sub_1..3`), frase de confianza, título y nota de opiniones, barra superior y anclas. La lista completa es el Master §7.
+Producto y textos, imágenes `producto-*` y sus claves, galerías, iconos de producto, ajustes de packs (`option_name`, `unit_singular`, `sub_1..3`), frase de confianza, título y nota de opiniones, asociación de producto del Review Widget de Judge.me en la home (D30), barra superior y anclas. La lista completa es el Master §7.
 
 ## Qué NO preguntar
 
@@ -36,4 +36,4 @@ Datos reales que no existen: precios de los packs (para Shopify), si el envío e
 
 ## Shopify (lo hace el propietario; Claude lo deja en el informe)
 
-Producto y descripción, opción de packs con precio real, `compare_at_price` solo si es real, multimedia revisada, SEO, redirección del handle anterior → `/`, envío, políticas, widget de Judge.me, mapping con el proveedor y un pedido de prueba por pack.
+Producto y descripción, opción de packs con precio real, `compare_at_price` solo si es real, multimedia revisada, SEO, redirección del handle anterior → `/`, envío, políticas, Judge.me (App Embed activo y producto del Review Widget de la home), mapping con el proveedor y un pedido de prueba por pack.

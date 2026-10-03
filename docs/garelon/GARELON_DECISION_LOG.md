@@ -1,6 +1,6 @@
 # GARELON · REGISTRO DE DECISIONES
 
-> **Versión:** 3.2 · **Fecha:** 2026-10-03 · **Repositorio:** `daniherr1617-design/TIENDA-CASTOR-OIL` · **Rama fuente:** `claude/rosary-clean-rebuild` · **Commit fuente:** `3a78374`
+> **Versión:** 3.3 · **Fecha:** 2026-10-03 · **Repositorio:** `daniherr1617-design/TIENDA-CASTOR-OIL` · **Rama fuente:** `claude/rosary-clean-rebuild` · **Commit fuente:** `a1b03ef`
 >
 > Este registro es **histórico**: explica por qué las cosas son como son. Las reglas vigentes están en `GARELON_PROYECTO_PROMPT_MAESTRO_COMPLETO.md` y el estado actual en `current-store-state.md`. Las entradas solo se añaden, no se reescriben. Si una decisión se revoca, se añade una entrada nueva que la sustituye.
 
@@ -37,6 +37,7 @@
 | D27 | 2026-10-03 | **Distintivo por defecto «Recomendado»** en el schema del bloque de packs (antes «Más popular»). «Más popular», «Más vendido» o similares solo con datos de ventas reales | Un schema no debe sugerir por defecto un claim no demostrado | `974eadd` | Vigente |
 | D28 | 2026-10-03 | `tools/garelon_check.py` vigila la honestidad: error si un default de schema trae un claim de ventas o si, con «Envío gratis» desactivado, una plantilla sigue prometiéndolo | Eliminar la causa, no el síntoma: que el riesgo no pueda volver sin que falle la validación | `974eadd` | Vigente |
 | D29 | 2026-10-03 | **Corrección de fidelidad:** la cruz del producto está integrada en la pulsera y conectada por los extremos de su eje largo (no cuelga nada). La imagen principal anterior (`imagen 3.png`, cruz colgante) se sustituyó por la nueva imagen verificada por el propietario, `NUEVA IMAGEN 3.png`, en `principal` y en el recorte `detalle` (mismo slot, clave y orden de galería). Alt de la portada: «cruz integrada en la pulsera» | Representar el producto real; la confirmación del propietario prevalece sobre análisis anteriores y no se vuelve a cuestionar | `3a78374` (imagen subida por el propietario a `main` en `b7bb42c`) | Vigente |
+| D30 | 2026-10-03 | Por decisión del propietario, **el Review Widget oficial de Judge.me queda versionado en la home** (y en la ficha) para que las reseñas completas se carguen al instalar el tema. Es la **única excepción** permitida a la regla de no versionar bloques de app en `index.json` (R17). Bloque `review_widget` y App Embed `judgeme_core` de `judge-me-reviews` (UUID `61ccd3b1-a9f2-4160-9fe9-4fec8413e5d8`, verificado en plantillas reales generadas por el editor de Shopify), dentro de «GARELON Opiniones», con `review_data` = `real_data`. `garelon_check` acepta solo esa excepción. El producto del widget de la home no se preselecciona: la clave del ajuste y el handle real no están verificados | No depender de añadir el bloque a mano tras cada subida del ZIP; Judge.me sigue siendo la única fuente de las opiniones | `a1b03ef`; prompt del propietario 2026-10-03 | Vigente (mientras Judge.me sea la app de opiniones) |
 
 ## Pendiente de decidir (propietario)
 

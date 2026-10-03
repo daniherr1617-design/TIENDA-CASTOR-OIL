@@ -1,8 +1,8 @@
 # GARELON · PLANTILLA DEL PROMPT DE MIGRACIÓN (brief + imágenes + repo → prompt para Claude Code)
 
-> **Versión:** 3.1 · **Fecha:** 2026-10-03 · **Repositorio:** `daniherr1617-design/TIENDA-CASTOR-OIL` · **Rama fuente:** `claude/rosary-clean-rebuild` · **Commit fuente:** `974eadd`
+> **Versión:** 3.2 · **Fecha:** 2026-10-03 · **Repositorio:** `daniherr1617-design/TIENDA-CASTOR-OIL` · **Rama fuente:** `claude/rosary-clean-rebuild` · **Commit fuente:** `a1b03ef`
 >
-> Snapshot generado desde `974eadd`. Ante discrepancias futuras manda el repositorio actual: la fase F0 obliga a Claude Code a revalidarlo.
+> Snapshot generado desde `a1b03ef`. Ante discrepancias futuras manda el repositorio actual: la fase F0 obliga a Claude Code a revalidarlo.
 
 **Quién lo usa:** ChatGPT (o el propietario) rellena los `{{…}}` con el brief (`GARELON_PRODUCT_BRIEF_TEMPLATE.md`) y el análisis de imágenes, y entrega a Claude Code el bloque «PROMPT FINAL». No depende de ningún producto concreto.
 
@@ -99,6 +99,7 @@ F4 · Assets y puntos acoplados al producto (Master Template §7)
 
 F5 · Home (templates/index.json)
   - Mantén la estructura salvo que el producto exija otra; index.json siempre instalable (R17).
+    Único bloque de app permitido: el Review Widget oficial de Judge.me en «GARELON Opiniones» (D30).
   - Portada sin precio y con un CTA a /#comprar; packs con el bloque garelon_offer.
 
 F6 · Ficha (templates/product.json)
@@ -110,6 +111,11 @@ F7 · Packs, confianza, envío y opiniones
     Si es «no», desactívalo y cambia la garantía de envío gratis (garelon_check da error si no).
   - Garantías solo si son ciertas. «Compra con tranquilidad» solo si el producto admite desistimiento.
   - Título y nota de opiniones adaptados; sin opiniones inventadas.
+  - Review Widget de Judge.me (D30): se conserva versionado en «GARELON Opiniones» (home y ficha) con
+    review_data = real_data. Revisa la asociación de producto del widget de la HOME: si el JSON real del
+    bloque con el producto nuevo está disponible, versiónalo; si no, no inventes handle ni ID y deja en el
+    informe la tarea de elegir el producto en el bloque. Si Judge.me deja de ser la app, retira el bloque
+    y el App Embed.
 
 F8 · Limpieza
   - Busca restos del producto anterior ({{PREVIOUS_PRODUCT_TERMS}}) en las 7 carpetas del tema:
@@ -136,7 +142,8 @@ F10 · ZIP, documentación, git e informe
     pruebas (PROBADO LOCALMENTE / ZIP DESCOMPRIMIDO; nada de Shopify si no se probó), SHA-256 del ZIP,
     y la lista de tareas del propietario en Shopify Admin (producto, variantes de packs con precio,
     compare_at solo real, multimedia revisada, SEO, redirección del handle anterior, envío, políticas,
-    Judge.me, mapping con {{SUPPLIER_INTEGRATION}} y un pedido de prueba por pack).
+    Judge.me: App Embed activo y producto del Review Widget de la home, mapping con {{SUPPLIER_INTEGRATION}}
+    y un pedido de prueba por pack).
 
 NO HACER: publicar el tema, hacer merge, tocar Shopify Admin, el checkout o el fulfillment,
 hardcodear precios, stock, SKU o IDs, inventar opiniones, urgencia o descuentos, alterar

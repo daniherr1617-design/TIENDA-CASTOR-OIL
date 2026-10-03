@@ -66,7 +66,7 @@ Además, por tema: opiniones, Judge.me, garantías, devoluciones o políticas �
 | «Garantía de 14 días», «sin riesgos», sellos o certificaciones falsas | Derecho de desistimiento y garantía legal aplicable, con su nombre (R10-R11) |
 | «Fabricado/diseñado por GARELON» | GARELON comercializa, no fabrica (R2) |
 | Rediseñar el logo, reconstruir la tienda o crear un formulario o checkout paralelo | Se conserva lo que funciona (R15, R19, R20) |
-| Bloques de app, imágenes de Files o productos dentro de `templates/index.json` | Rompe la instalación (R17). Las apps se añaden desde el editor |
+| Bloques de app, imágenes de Files o productos dentro de `templates/index.json` | Rompe la instalación (R17). Única excepción: el Review Widget oficial de Judge.me en «GARELON Opiniones» (D30); cualquier otra app se añade desde el editor |
 | Afirmar que el checkout, DSers, Judge.me o Shopify funcionan sin haberlo probado ahí | Distinguir siempre dónde se probó (R23) |
 
 ## 7. Confirmación explícita obligatoria

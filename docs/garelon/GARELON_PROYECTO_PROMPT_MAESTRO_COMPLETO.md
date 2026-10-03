@@ -1,8 +1,8 @@
 # GARELON · PROMPT MAESTRO DEL PROYECTO (constitución operativa)
 
-> **Versión:** 3.2 · **Fecha:** 2026-10-03 · **Repositorio:** `daniherr1617-design/TIENDA-CASTOR-OIL` · **Rama fuente:** `claude/rosary-clean-rebuild` · **Commit fuente:** `3a78374`
+> **Versión:** 3.3 · **Fecha:** 2026-10-03 · **Repositorio:** `daniherr1617-design/TIENDA-CASTOR-OIL` · **Rama fuente:** `claude/rosary-clean-rebuild` · **Commit fuente:** `a1b03ef`
 >
-> Snapshot generado desde `3a78374`. Ante discrepancias futuras manda el repositorio actual y, por encima de él, el producto real y las decisiones recientes del propietario (§3).
+> Snapshot generado desde `a1b03ef`. Ante discrepancias futuras manda el repositorio actual y, por encima de él, el producto real y las decisiones recientes del propietario (§3).
 
 Este documento es la **constitución** de GARELON: qué es la marca, quién hace qué, qué fuentes mandan, qué reglas no se rompen nunca y cómo se trabaja. No describe el código en detalle (eso es `GARELON_MASTER_TEMPLATE.md`) ni guarda el estado del día (eso es `.claude/skills/garelon-ecommerce-operator/references/current-store-state.md`).
 
@@ -138,7 +138,12 @@ Ninguna instrucción posterior las anula. Si una petición choca con una regla, 
 **Shopify y arquitectura**
 - **R15 · Se conserva lo nativo:** formulario de producto de Dawn, variantes, carrito AJAX, cajón del carrito, checkout oficial, pagos dinámicos, structured data. Sin hacks sobre el checkout ni formularios paralelos.
 - **R16 · Online Store 2.0:** plantillas JSON, secciones, bloques y ajustes editables. Nada de una home en un Liquid gigante con contenido fijo.
-- **R17 · Instalabilidad primero.** `templates/index.json` usa solo secciones del tema y valores válidos, sin bloques de app, imágenes de Files ni recursos de la tienda. Nombres de schema (sección, bloque, preset) ≤ 25 caracteres. Ningún ZIP sale sin `tools/build_zip.py`, que valida el repositorio y la copia descomprimida.
+- **R17 · Instalabilidad primero.** `templates/index.json` (y el resto de plantillas y grupos) usa solo secciones del tema y valores válidos, sin imágenes de Files ni recursos de la tienda, y **sin bloques de app, con una única excepción controlada** (D30, decisión del propietario): el **Review Widget oficial de Judge.me** (`shopify://apps/judge-me-reviews/blocks/review_widget/61ccd3b1-a9f2-4160-9fe9-4fec8413e5d8`) dentro de «GARELON Opiniones» en la home y la ficha, uno por sección y con `review_data` = `real_data`, más su App Embed Judge.me Core en `config/settings_data.json`.
+  - Vale solo mientras Judge.me sea la app de opiniones de GARELON: si se cambia o se desinstala, se retiran esas referencias.
+  - Al migrar de producto se revisa la asociación de producto del widget de la home (§8).
+  - El tema sigue sin contener opiniones ni fotos de opiniones: Judge.me es la fuente de verdad.
+  - `tools/garelon_check.py` acepta solo esa excepción y rechaza cualquier otro bloque de app o App Embed.
+  - Nombres de schema (sección, bloque, preset) ≤ 25 caracteres. Ningún ZIP sale sin `tools/build_zip.py`, que valida el repositorio y la copia descomprimida.
 - **R18 · Un H1 por página y un único structured data de producto.**
 - **R19 · No se reconstruye infraestructura estable.** Se cambia lo que el producto exige; lo que funciona se conserva.
 
@@ -189,7 +194,7 @@ Ninguna instrucción posterior las anula. Si una petición choca con una regla, 
 | Métodos de pago y checkout | Shopify Admin › Pagos / Checkout | Nunca los toca |
 | Página de contacto | Shopify Admin › Páginas (handle `contacto`) | Enlaza a ella |
 | Relación producto ↔ proveedor, pedidos al proveedor | `{{SUPPLIER_INTEGRATION}}` (actual: DSers + AliExpress; fulfillment manual) | No contiene código del proveedor |
-| Opiniones, widget, valoración | Judge.me (bloque de app + metafields `reviews.rating` / `reviews.rating_count`) | Muestra el bloque de app o la valoración; nunca escribe opiniones |
+| Opiniones, widget, valoración | Judge.me (Review Widget versionado en «GARELON Opiniones» de home y ficha, App Embed Judge.me Core, metafields `reviews.rating` / `reviews.rating_count`) | Muestra el widget de la app o, sin app, la valoración; nunca escribe opiniones |
 | Píxeles y analítica (Meta, TikTok, GA4) | Shopify Admin › Eventos de cliente / apps de canal | No inyecta píxeles a mano |
 | Textos de la tienda, orden de secciones, imágenes del tema, ajustes de bloques | Tema (plantillas JSON, secciones, locales, assets) | Es su responsabilidad |
 
@@ -220,6 +225,8 @@ Cuando el propietario dice «quiero cambiar de producto» (o algo equivalente), 
 | 15 | **Lanzamiento** (tracking verificado, presupuesto aprobado) | Propietario | §15 |
 
 Se conserva siempre: marca, logo, dominio, cabecera, pie, sistema de packs, confianza, opiniones, carrito, checkout, políticas y la arquitectura del tema. Cambia: producto, textos, imágenes, iconos y, si el producto lo pide, qué secciones se usan.
+
+Al cambiar de producto se revisa también **la asociación de producto del Review Widget de Judge.me en la home** (D30). En la ficha, el widget toma el producto de la página. En la home hay que elegir el producto nuevo en el bloque, o versionar su referencia verificada en `templates/index.json`.
 
 ---
 
@@ -282,6 +289,10 @@ Si cambian en Shopify o en las políticas, mandan Shopify y las políticas, y el
 - Título aprobado actual: **«Opiniones sobre esta pulsera»** (en un producto nuevo: «Opiniones sobre este/esta <producto>»).
 - Nota transparente cuando hay importadas: «Incluye opiniones de compradores del mismo modelo, importadas mediante Judge.me.»
 - Nunca se inventan «4,9/5», estrellas, número de compradores ni de opiniones. Sin opiniones visibles, la sección no se muestra al cliente.
+- **Widget versionado (D30):** el Review Widget oficial de Judge.me viene en el tema, dentro de «GARELON Opiniones» de la home y de la ficha (encabezado GARELON → widget → nota de origen), y el App Embed Judge.me Core en `settings_data.json`.
+  - Con el widget, el resumen GARELON se oculta (`summary_with_app` = falso): estrellas, recuento y reseñas los pone Judge.me.
+  - En la ficha, el producto lo pone la página. En la home, el producto se elige en el bloque («Select product») mientras su referencia no esté verificada y versionada.
+  - El estilo del widget (layout, colores, galería, nombres) se configura en Judge.me; el tema no lo duplica en CSS.
 
 ---
 

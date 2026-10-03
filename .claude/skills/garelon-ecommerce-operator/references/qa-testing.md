@@ -22,7 +22,7 @@ Todo está versionado en `tests/render-harness/` (`tests/render-harness/README.m
 
 | Área | Cómo |
 |---|---|
-| JSON y schemas | `tools/garelon_check.py` (claves duplicadas, valores contra schema, nombres ≤ 25 bytes, `order`/`block_order`, secciones permitidas, apps o recursos en plantillas, claves de imagen, locales) |
+| JSON y schemas | `tools/garelon_check.py` (claves duplicadas, valores contra schema, nombres ≤ 25 bytes, `order`/`block_order`, secciones permitidas, apps o recursos en plantillas (solo se admite el Review Widget de Judge.me, D30), claves de imagen, locales) |
 | Theme Check | Sin errores; avisos = línea base |
 | Liquid estricto | 0 errores |
 | Render y routing | `/` → 200 (index), con y sin producto; ficha 200; ruta inexistente → 404 limpia; `/cart` 200; contacto 200 |
@@ -61,7 +61,7 @@ python3 tools/build_zip.py /ruta/fuera/del/repo/GARELON-<PRODUCTO>-vX.zip
 
 ## 5. Informe
 
-Marca cada resultado: `PROBADO LOCALMENTE` · `ZIP DESCOMPRIMIDO` · `SHOPIFY PREVIEW` · `PUBLICADO`. Lista lo no probado: checkout, pagos, DSers, el widget real de Judge.me, los metafields reales y Shopify Admin.
+Marca cada resultado: `PROBADO LOCALMENTE` · `ZIP DESCOMPRIMIDO` · `SHOPIFY PREVIEW` · `PUBLICADO`. Lista lo no probado: checkout, pagos, DSers, el widget real de Judge.me (que el bloque versionado y el App Embed queden activos al subir el tema), los metafields reales y Shopify Admin.
 
 ## 6. DOCUMENT_SYNC (documentos)
 
