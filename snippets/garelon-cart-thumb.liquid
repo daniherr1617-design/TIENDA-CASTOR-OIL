@@ -1,0 +1,28 @@
+{%- comment -%}
+  GARELON · Miniatura de respaldo en el carrito (cart drawer y /cart) cuando la línea no tiene
+  imagen en Shopify (producto sin multimedia todavía): imagen principal del producto incluida
+  en el tema (clave «principal» de garelon-fallback-image). Solo visual: no cambia la línea,
+  la cantidad ni el checkout. Tienda de un solo producto: en cuanto el producto tenga
+  multimedia en Shopify, el carrito usa la suya y este respaldo deja de aparecer.
+
+  Accepts:
+  - item: {Object} línea del carrito
+
+  Usage:
+  {% render 'garelon-cart-thumb', item: item %}
+{%- endcomment -%}
+{%- capture thumb_src -%}
+  {%- render 'garelon-fallback-image', fallback: 'principal', src_only: true -%}
+{%- endcapture -%}
+{%- assign thumb_src = thumb_src | strip -%}
+{%- if thumb_src != '' -%}
+  <a href="{{ item.url }}" class="cart-item__link" tabindex="-1" aria-hidden="true"> </a>
+  <img
+    class="cart-item__image"
+    src="{{ thumb_src }}"
+    alt=""
+    loading="lazy"
+    width="150"
+    height="150"
+  >
+{%- endif -%}

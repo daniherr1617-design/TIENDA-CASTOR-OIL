@@ -7,61 +7,61 @@
       "color_schemes": {
         "scheme-1": {
           "settings": {
-            "background": "#F8F4EC",
+            "background": "#FFFFFF",
             "background_gradient": "",
-            "text": "#1B1714",
-            "button": "#1B1714",
+            "text": "#2A2622",
+            "button": "#86672F",
             "button_label": "#FFFFFF",
-            "secondary_button_label": "#1B1714",
-            "shadow": "#1B1714"
+            "secondary_button_label": "#2A2622",
+            "shadow": "#2A2622"
           }
         },
         "scheme-2": {
           "settings": {
-            "background": "#EFE6D7",
+            "background": "#FAF7F2",
             "background_gradient": "",
-            "text": "#1B1714",
-            "button": "#1B1714",
+            "text": "#2A2622",
+            "button": "#86672F",
             "button_label": "#FFFFFF",
-            "secondary_button_label": "#1B1714",
-            "shadow": "#1B1714"
+            "secondary_button_label": "#2A2622",
+            "shadow": "#2A2622"
           }
         },
         "scheme-3": {
           "settings": {
-            "background": "#1B1714",
+            "background": "#F3ECDF",
             "background_gradient": "",
-            "text": "#F8F4EC",
-            "button": "#D2B06A",
-            "button_label": "#1B1714",
-            "secondary_button_label": "#F8F4EC",
-            "shadow": "#1B1714"
+            "text": "#2A2622",
+            "button": "#2A2622",
+            "button_label": "#FFFFFF",
+            "secondary_button_label": "#2A2622",
+            "shadow": "#2A2622"
           }
         },
         "scheme-4": {
           "settings": {
             "background": "#FFFFFF",
             "background_gradient": "",
-            "text": "#1B1714",
-            "button": "#1B1714",
+            "text": "#2A2622",
+            "button": "#86672F",
             "button_label": "#FFFFFF",
-            "secondary_button_label": "#1B1714",
-            "shadow": "#1B1714"
+            "secondary_button_label": "#2A2622",
+            "shadow": "#2A2622"
           }
         },
         "scheme-5": {
           "settings": {
-            "background": "#B88A3B",
+            "background": "#F7F1E6",
             "background_gradient": "",
-            "text": "#1B1714",
-            "button": "#1B1714",
+            "text": "#2A2622",
+            "button": "#86672F",
             "button_label": "#FFFFFF",
-            "secondary_button_label": "#1B1714",
-            "shadow": "#1B1714"
+            "secondary_button_label": "#2A2622",
+            "shadow": "#2A2622"
           }
         }
       },
-      "type_header_font": "playfair_display_n4",
+      "type_header_font": "lora_n4",
       "heading_scale": 100,
       "type_body_font": "inter_n4",
       "body_scale": 100,
@@ -73,21 +73,21 @@
       "animations_hover_elements": "default",
       "buttons_border_thickness": 1,
       "buttons_border_opacity": 100,
-      "buttons_radius": 4,
+      "buttons_radius": 40,
       "buttons_shadow_opacity": 0,
       "buttons_shadow_horizontal_offset": 0,
       "buttons_shadow_vertical_offset": 4,
       "buttons_shadow_blur": 5,
       "variant_pills_border_thickness": 1,
       "variant_pills_border_opacity": 40,
-      "variant_pills_radius": 4,
+      "variant_pills_radius": 40,
       "variant_pills_shadow_opacity": 0,
       "variant_pills_shadow_horizontal_offset": 0,
       "variant_pills_shadow_vertical_offset": 4,
       "variant_pills_shadow_blur": 5,
       "inputs_border_thickness": 1,
       "inputs_border_opacity": 35,
-      "inputs_radius": 4,
+      "inputs_radius": 10,
       "inputs_shadow_opacity": 0,
       "inputs_shadow_horizontal_offset": 0,
       "inputs_shadow_vertical_offset": 4,
@@ -98,7 +98,7 @@
       "card_color_scheme": "scheme-4",
       "card_border_thickness": 0,
       "card_border_opacity": 10,
-      "card_corner_radius": 6,
+      "card_corner_radius": 12,
       "card_shadow_opacity": 0,
       "card_shadow_horizontal_offset": 0,
       "card_shadow_vertical_offset": 4,
@@ -127,14 +127,14 @@
       "blog_card_shadow_blur": 5,
       "text_boxes_border_thickness": 0,
       "text_boxes_border_opacity": 10,
-      "text_boxes_radius": 6,
+      "text_boxes_radius": 12,
       "text_boxes_shadow_opacity": 0,
       "text_boxes_shadow_horizontal_offset": 0,
       "text_boxes_shadow_vertical_offset": 4,
       "text_boxes_shadow_blur": 5,
       "media_border_thickness": 0,
       "media_border_opacity": 5,
-      "media_radius": 6,
+      "media_radius": 12,
       "media_shadow_opacity": 0,
       "media_shadow_horizontal_offset": 0,
       "media_shadow_vertical_offset": 4,
@@ -157,7 +157,7 @@
       "sale_badge_color_scheme": "scheme-3",
       "sold_out_badge_color_scheme": "scheme-2",
       "brand_headline": "",
-      "brand_description": "<p>Cuidado diario para tu mirada.</p>",
+      "brand_description": "<p>Joyería con significado para acompañar momentos especiales.</p>",
       "brand_image_width": 120,
       "social_twitter_link": "",
       "social_facebook_link": "",
@@ -171,7 +171,7 @@
       "predictive_search_enabled": true,
       "predictive_search_show_vendor": false,
       "predictive_search_show_price": false,
-      "currency_code_enabled": true,
+      "currency_code_enabled": false,
       "cart_type": "drawer",
       "show_vendor": false,
       "show_cart_note": false,

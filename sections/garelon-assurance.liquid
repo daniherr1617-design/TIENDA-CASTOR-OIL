@@ -1,0 +1,166 @@
+{%- comment -%}
+  GARELON · Compra con tranquilidad: un derecho legal explicado con calma (no una promesa comercial).
+
+  Pensada para el derecho de desistimiento de las compras online (14 días naturales desde la
+  recepción) y, en segundo plano, la garantía legal. Reglas (Master R28):
+  - Llamarlo por su nombre: «derecho de desistimiento» / «14 días para cambiar de opinión».
+    No presentarlo como una garantía comercial ni prometer ausencia total de riesgo.
+  - Las condiciones (estado del producto, embalaje, excepciones, costes) viven en la política
+    de devoluciones de Shopify, no aquí. No añadas canales de contacto que no estén configurados.
+  - Si una categoría está legalmente exceptuada del desistimiento, no uses esta sección.
+
+  El enlace va a la política de devoluciones resuelta por garelon-url (política de Shopify,
+  /policies/refund-policy) salvo que se elija otro. Si la política está vacía, el editor lo avisa.
+{%- endcomment -%}
+<div
+  {% if section.settings.anchor != blank %}
+    id="{{ section.settings.anchor | handleize }}"
+  {% endif %}
+  class="g-section g-assurance color-{{ section.settings.color_scheme }} gradient"
+  style="--g-pt: {{ section.settings.padding_top }}px; --g-pb: {{ section.settings.padding_bottom }}px;"
+>
+  <div class="page-width">
+    <div class="g-assurance__inner{% if section.settings.show_card %} g-assurance__inner--card{% endif %}">
+      {%- if section.settings.icon != 'none' -%}
+        <span class="g-assurance__icon">{%- render 'garelon-icon', icon: section.settings.icon -%}</span>
+      {%- endif -%}
+      {%- if section.settings.eyebrow != blank -%}
+        <p class="g-eyebrow g-assurance__eyebrow">{{ section.settings.eyebrow | escape }}</p>
+      {%- endif -%}
+      {%- if section.settings.heading != blank -%}
+        <h2 class="g-h2 g-assurance__heading">{{ section.settings.heading | escape }}</h2>
+      {%- endif -%}
+      {%- if section.settings.text != blank -%}
+        <div class="g-assurance__text rte">{{ section.settings.text }}</div>
+      {%- endif -%}
+      {%- if section.settings.link_label != blank -%}
+        <a
+          href="
+            {%- if section.settings.link != blank -%}
+              {%- render 'garelon-url', url: section.settings.link -%}
+            {%- else -%}
+              {%- render 'garelon-url', type: 'refund' -%}
+            {%- endif -%}
+          "
+          class="g-assurance__link link"
+        >
+          {{- section.settings.link_label | escape -}}
+        </a>
+      {%- endif -%}
+      {%- if request.design_mode and section.settings.link == blank and shop.refund_policy.body == blank -%}
+        <div class="g-editor-note g-editor-note--center" role="note">
+          <p class="g-editor-note__title">Falta la política de devoluciones</p>
+          <p>
+            Crea la política en Shopify (Configuración › Políticas): hasta entonces el enlace no lleva a ningún sitio. Revisa que refleje
+            el derecho de desistimiento aplicable.
+          </p>
+        </div>
+      {%- endif -%}
+    </div>
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "GARELON Compra tranquila",
+  "tag": "section",
+  "class": "section",
+  "settings": [
+    {
+      "type": "paragraph",
+      "content": "Explica un derecho legal con su nombre correcto: «derecho de desistimiento» / «14 días para cambiar de opinión». No lo presentes como una garantía comercial ni añadas condiciones o canales de contacto que no estén en tu política: los detalles viven en la política de devoluciones."
+    },
+    {
+      "type": "select",
+      "id": "icon",
+      "label": "Icono",
+      "options": [
+        { "value": "shield", "label": "Escudo con check" },
+        { "value": "check", "label": "Check" },
+        { "value": "return", "label": "Devolución" },
+        { "value": "none", "label": "Ninguno" }
+      ],
+      "default": "shield"
+    },
+    {
+      "type": "text",
+      "id": "eyebrow",
+      "label": "Antetítulo",
+      "default": "14 días para cambiar de opinión"
+    },
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "Título",
+      "default": "Compra con tranquilidad"
+    },
+    {
+      "type": "richtext",
+      "id": "text",
+      "label": "Texto",
+      "info": "Breve. Sin párrafos jurídicos: el detalle va en la política.",
+      "default": "<p>En compras online dispones de 14 días naturales desde la recepción del pedido para ejercer tu derecho de desistimiento.</p>"
+    },
+    {
+      "type": "text",
+      "id": "link_label",
+      "label": "Texto del enlace",
+      "default": "Consulta la política de devoluciones"
+    },
+    {
+      "type": "url",
+      "id": "link",
+      "label": "Enlace",
+      "info": "Vacío = política de devoluciones de Shopify (/policies/refund-policy)."
+    },
+    {
+      "type": "header",
+      "content": "Diseño"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_card",
+      "label": "Mostrar el contenido en una tarjeta marfil",
+      "info": "Útil cuando la sección usa un fondo blanco y las secciones vecinas también.",
+      "default": true
+    },
+    {
+      "type": "color_scheme",
+      "id": "color_scheme",
+      "label": "Esquema de color",
+      "default": "scheme-1"
+    },
+    {
+      "type": "text",
+      "id": "anchor",
+      "label": "ID de ancla",
+      "info": "Opcional. Permite enlazar a esta sección, p. ej. /#tranquilidad"
+    },
+    {
+      "type": "range",
+      "id": "padding_top",
+      "min": 0,
+      "max": 100,
+      "step": 4,
+      "unit": "px",
+      "label": "Margen superior",
+      "default": 56
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom",
+      "min": 0,
+      "max": 100,
+      "step": 4,
+      "unit": "px",
+      "label": "Margen inferior",
+      "default": 56
+    }
+  ],
+  "presets": [
+    {
+      "name": "GARELON Compra tranquila"
+    }
+  ]
+}
+{% endschema %}

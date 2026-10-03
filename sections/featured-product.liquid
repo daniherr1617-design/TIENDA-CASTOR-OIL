@@ -82,7 +82,7 @@
       <div class="featured-product product product--{{ section.settings.media_size }} grid grid--1-col gradient color-{{ section.settings.color_scheme }} product--{{ section.settings.media_position }}{% if section.settings.secondary_background == false %} isolate{% endif %} {% if product.media.size > 0 or product == blank or section.settings.garelon_gallery %}grid--2-col-tablet{% else %}product--no-media{% endif %}{% if section.settings.garelon_mobile_info_first %} g-mobile-info-first{% endif %}">
         <div class="grid__item product__media-wrapper">
           {%- if section.settings.garelon_gallery -%}
-            {%- render 'garelon-gallery', section_id: section.id -%}
+            {%- render 'garelon-gallery', section_id: section.id, context: 'home' -%}
           {%- elsif placeholder != true -%}
             {% render 'product-media-gallery', product: product, variant_images: variant_images, limit: 1 %}
           {%- else -%}
@@ -122,6 +122,10 @@
                     section_id: section.id,
                     block: block
                   -%}
+                {%- when 'garelon_quote' -%}
+                  {%- render 'garelon-quote', block: block -%}
+                {%- when 'garelon_rating' -%}
+                  {%- render 'garelon-rating-summary', product: product, block: block -%}
                 {%- when 'garelon_packs' -%}
                   {%- comment -%}
                     GARELON: packs = variantes reales. Sustituye al selector de variantes y al de
@@ -754,20 +758,54 @@
       ]
     },
     {
+      "type": "garelon_quote",
+      "name": "GARELON Frase destacada",
+      "limit": 1,
+      "settings": [
+        {
+          "type": "paragraph",
+          "content": "Franja corta y elegante, pensada para ir justo antes de «Elige tu pack». Conexión emocional y simbólica: sin promesas espirituales ni sobrenaturales."
+        },
+        {
+          "type": "text",
+          "id": "text",
+          "label": "Frase",
+          "info": "Una línea breve. Vacío = el bloque no se muestra."
+        }
+      ]
+    },
+    {
+      "type": "garelon_rating",
+      "name": "GARELON Valoración",
+      "limit": 1,
+      "settings": [
+        {
+          "type": "paragraph",
+          "content": "Estrellas · nota/5 · número de opiniones, leídos de la valoración REAL de Shopify (product.metafields.reviews.rating y rating_count, que rellenan las apps de reseñas). Sin valoración o con 0 opiniones no se muestra nada. Nunca escribas notas ni recuentos a mano."
+        },
+        {
+          "type": "text",
+          "id": "anchor",
+          "label": "Enlace a la sección de opiniones",
+          "info": "ID de ancla de la sección «GARELON Opiniones» de la misma página. Vacío = sin enlace.",
+          "default": "opiniones"
+        }
+      ]
+    },
+    {
       "type": "garelon_packs",
       "name": "GARELON Packs (variantes)",
       "limit": 1,
       "settings": [
         {
           "type": "paragraph",
-          "content": "Oferta de packs sobre las VARIANTES REALES del producto («1 unidad», «2 unidades», «3 unidades»). Cada tarjeta selecciona su variante con cantidad 1; este bloque sustituye al selector de variantes y al de cantidad. Precio, ahorro y precio por unidad salen de los precios de Shopify. Si el producto no cumple las condiciones, se usa el selector estándar y el editor muestra el motivo."
+          "content": "Packs sobre las VARIANTES REALES del producto: opción «Pack» con valores como «1 pulsera», «2 pulseras», «3 pulseras», cada uno con su precio en Shopify. Cada pack es UNA variante y se compra con cantidad 1 («2 pulseras» × 1, nunca «1 pulsera» × 2). Este bloque sustituye al selector de variantes y al de cantidad. Precio, ahorro y precio por unidad salen de los precios reales de Shopify; nada se escribe a mano. Si el producto aún no tiene los packs (p. ej. una sola variante), se usa el selector estándar y el editor muestra el motivo."
         },
         {
           "type": "text",
           "id": "offer_label",
           "label": "Etiqueta de oferta",
-          "info": "Se muestra sobre el título si algún pack tiene ahorro. Vacío = sin etiqueta. No añadas fechas ni cuentas atrás que no sean reales.",
-          "default": "Oferta limitada"
+          "info": "Se muestra sobre el título si algún pack tiene ahorro. Vacío = sin etiqueta (recomendado). No uses «Oferta limitada», fechas ni cuentas atrás si no son reales."
         },
         {
           "type": "text",
@@ -779,8 +817,23 @@
           "type": "text",
           "id": "intro",
           "label": "Introducción",
-          "info": "Vacío = sin introducción.",
-          "default": "Cuantas más unidades incluye tu pack, menos pagas por cada una."
+          "info": "Vacío = sin introducción (recomendado). No prometas ahorros que los precios reales no confirmen."
+        },
+        {
+          "type": "header",
+          "content": "Otras opciones (si existen)"
+        },
+        {
+          "type": "text",
+          "id": "style_heading",
+          "label": "Título de la otra opción",
+          "info": "Solo si el producto tiene otra opción con varios valores además del pack. Vacío = nombre de la opción en Shopify."
+        },
+        {
+          "type": "text",
+          "id": "style_intro",
+          "label": "Texto bajo la otra opción",
+          "info": "Vacío = sin texto."
         },
         {
           "type": "header",
@@ -790,7 +843,7 @@
           "type": "text",
           "id": "option_name",
           "label": "Nombre de la opción de Shopify (opcional)",
-          "info": "Vacío = la única opción con varios valores (recomendado: una sola opción «Pack»). Cada valor debe incluir su número de unidades: «1 unidad», «2 unidades», «3 unidades». Tiene que existir el pack de 1 unidad."
+          "info": "Vacío = se detecta sola (opción «Pack», «Cantidad» o la única cuyos valores llevan número). Cada valor debe incluir su número de unidades: «1 pulsera», «2 pulseras», «3 pulseras». Tiene que existir el pack de 1."
         },
         {
           "type": "text",
@@ -822,9 +875,16 @@
         },
         {
           "type": "checkbox",
+          "id": "unit_price_only_savings",
+          "label": "Precio por unidad solo si algún pack tiene ahorro real",
+          "info": "Recomendado: si todos los packs cuestan lo mismo por unidad, no se muestra.",
+          "default": true
+        },
+        {
+          "type": "checkbox",
           "id": "show_savings",
           "label": "Mostrar ahorro («Ahorra 4,98 €»)",
-          "info": "Se calcula frente al precio real de la variante de 1 unidad × unidades del pack. No usa el precio comparado.",
+          "info": "Se calcula frente al precio real de la variante de 1 × unidades del pack. Solo aparece si es mayor que 0. No usa el precio comparado.",
           "default": true
         },
         {
@@ -837,7 +897,7 @@
           "type": "checkbox",
           "id": "show_reference",
           "label": "Mostrar precio comprando por separado",
-          "info": "«Comprando por separado: 39,98 €» = precio de 1 unidad × unidades. No es un precio tachado.",
+          "info": "«Comprando por separado: …» = precio real del pack de 1 × unidades. No es un precio tachado.",
           "default": true
         },
         {
@@ -849,9 +909,26 @@
         {
           "type": "text",
           "id": "single_note",
-          "label": "Texto del pack de 1 unidad",
-          "info": "Se muestra en el pack de 1 unidad cuando otros packs tienen ahorro. Vacío = sin texto.",
-          "default": "Sin descuento"
+          "label": "Texto del pack de 1",
+          "info": "Se muestra en el pack de 1 cuando otros packs tienen ahorro real. Vacío = sin texto."
+        },
+        {
+          "type": "text",
+          "id": "tag_1",
+          "label": "Etiqueta del pack de 1",
+          "info": "Texto editorial bajo el nombre del pack (p. ej. «Individual»). Vacío = sin etiqueta."
+        },
+        {
+          "type": "text",
+          "id": "tag_2",
+          "label": "Etiqueta del pack de 2",
+          "info": "Etiqueta editorial opcional. Nunca «Más vendido» sin datos reales."
+        },
+        {
+          "type": "text",
+          "id": "tag_3",
+          "label": "Etiqueta del pack de 3",
+          "info": "Vacío = sin etiqueta. La insignia de mejor precio por unidad se calcula sola."
         },
         {
           "type": "text",
@@ -927,7 +1004,7 @@
           "id": "show_free_shipping",
           "label": "Mostrar envío gratis",
           "info": "Actívalo solo si la tarifa de envío es realmente 0 € en Configuración › Envío y entrega para las zonas en las que vendes.",
-          "default": true
+          "default": false
         },
         {
           "type": "text",
@@ -950,25 +1027,22 @@
       "settings": [
         {
           "type": "paragraph",
-          "content": "Plazos orientativos junto a la compra. Escribe estimaciones («estimada», «aproximadamente»), nunca «entrega garantizada», y no muestres costes internos del proveedor."
+          "content": "Opcional. La Pulsera Rosario no lo usa: los plazos viven en la política de envío. Si lo añades, escribe estimaciones que coincidan con tu política, nunca «entrega garantizada», y no muestres costes internos del proveedor."
         },
         {
           "type": "text",
           "id": "preparation",
-          "label": "Preparación",
-          "default": "Preparación estimada: 1–3 días."
+          "label": "Preparación"
         },
         {
           "type": "text",
           "id": "delivery",
-          "label": "Entrega",
-          "default": "Entrega estimada en España: aproximadamente 8–16 días."
+          "label": "Entrega"
         },
         {
           "type": "text",
           "id": "note",
-          "label": "Nota",
-          "default": "Los plazos pueden variar según destino y transporte."
+          "label": "Nota"
         },
         {
           "type": "text",
@@ -1690,7 +1764,7 @@
       "type": "checkbox",
       "id": "garelon_gallery",
       "label": "Galería GARELON (imágenes del tema)",
-      "info": "Muestra IMAGEN 1, 10, 7, 5, 4 y 9 en carrusel. Desactívalo para mostrar la multimedia del producto de Shopify (también si tus variantes tienen imagen propia). Los packs de unidades no necesitan imagen propia.",
+      "info": "Muestra en carrusel las imágenes del producto incluidas en el tema (pulsera en la muñeca, detalle de la medalla y la cruz, y momento de oración). Desactívalo para mostrar la multimedia del producto de Shopify, que cambia con la variante si cada color tiene su imagen.",
       "default": false
     },
     {

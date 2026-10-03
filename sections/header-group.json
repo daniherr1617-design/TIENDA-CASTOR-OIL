@@ -17,9 +17,9 @@
         "announcement-bar-0": {
           "type": "announcement",
           "settings": {
-            "text": "Envío disponible a toda España",
+            "text": "Una joya para llevar contigo o regalar",
             "link": "",
-            "show_flag_es": true
+            "show_flag_es": false
           }
         }
       },
@@ -35,9 +35,14 @@
         "logo_position": "middle-left",
         "menu": "main-menu",
         "nav_source": "garelon",
-        "nav_show_how": false,
-        "nav_show_ingredients": true,
-        "nav_show_faq": true,
+        "nav_link_1_label": "La pulsera",
+        "nav_link_1_anchor": "comprar",
+        "nav_link_2_label": "Detalles",
+        "nav_link_2_anchor": "detalles",
+        "nav_link_3_label": "Regalo",
+        "nav_link_3_anchor": "regalo",
+        "nav_link_4_label": "Preguntas",
+        "nav_link_4_anchor": "preguntas-frecuentes",
         "hide_catalog_links": true,
         "menu_type_desktop": "dropdown",
         "sticky_header_type": "on-scroll-up",
@@ -46,8 +51,8 @@
         "enable_language_selector": false,
         "mobile_logo_position": "center",
         "margin_bottom": 0,
-        "padding_top": 12,
-        "padding_bottom": 12,
+        "padding_top": 8,
+        "padding_bottom": 8,
         "show_isotype": true
       }
     }

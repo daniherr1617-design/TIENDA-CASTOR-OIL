@@ -13,7 +13,7 @@
 {%- endcomment -%}
 {%- if block.settings.preparation != blank or block.settings.delivery != blank -%}
   <div class="g-ship" {{ block.shopify_attributes }}>
-    <span class="g-ship__icon">{% render 'garelon-icon', icon: 'truck' %}</span>
+    <span class="g-ship__icon">{% render 'garelon-icon', icon: 'clock' %}</span>
     <div class="g-ship__body">
       {%- if block.settings.preparation != blank -%}
         <p class="g-ship__line">{{ block.settings.preparation | escape }}</p>
