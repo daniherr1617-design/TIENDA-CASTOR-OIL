@@ -18,6 +18,12 @@
   <div class="rich-text content-container color-{{ section.settings.color_scheme }} gradient{% if section.settings.full_width %} rich-text--full-width content-container--full-width{% endif %} section-{{ section.id }}-padding">
     <div class="rich-text__wrapper rich-text__wrapper--{{ section.settings.desktop_content_position }}{% if section.settings.full_width %} page-width{% endif %}">
       <div class="rich-text__blocks {{ section.settings.content_alignment }}">
+        {%- comment -%} GARELON: sello decorativo opcional (ajuste «Sello GARELON»). {%- endcomment -%}
+        {%- if section.settings.garelon_badge == 'escudo' or section.settings.garelon_badge == 'candado' -%}
+          <div class="g-seal g-seal--{{ section.settings.content_alignment }}" aria-hidden="true">
+            <span class="g-seal__ring">{% render 'garelon-icon', icon: section.settings.garelon_badge %}</span>
+          </div>
+        {%- endif -%}
         {%- for block in section.blocks -%}
           {%- case block.type -%}
             {%- when 'heading' -%}
@@ -178,6 +184,18 @@
       "unit": "px",
       "label": "t:sections.all.padding.padding_bottom",
       "default": 52
+    },
+    {
+      "type": "select",
+      "id": "garelon_badge",
+      "label": "Sello GARELON",
+      "info": "Icono decorativo encima del texto (p. ej. en «Compra con tranquilidad»).",
+      "options": [
+        { "value": "none", "label": "Ninguno" },
+        { "value": "escudo", "label": "Escudo con check (compra protegida)" },
+        { "value": "candado", "label": "Candado (pago seguro)" }
+      ],
+      "default": "none"
     }
   ],
   "blocks": [

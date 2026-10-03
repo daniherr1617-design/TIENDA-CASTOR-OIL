@@ -114,6 +114,7 @@
               # GARELON: si «GARELON Elige tu oferta» pinta las tarjetas (con su precio), el precio de Dawn
               # bajo el título queda solo para lectores de pantalla y para el JS de Dawn: un único precio visible.
               assign garelon_offer_on = false
+              assign garelon_free_shipping = false
               assign garelon_offer_block = section.blocks | where: 'type', 'garelon_offer' | first
               if garelon_offer_block and placeholder != true
                 capture garelon_offer_check
@@ -122,6 +123,10 @@
                 if garelon_offer_check contains 'on'
                   assign garelon_offer_on = true
                 endif
+                # Envío gratis (ajuste del bloque, activo por defecto) también en la nota sin tarjetas.
+                unless garelon_offer_block.settings.free_shipping == false
+                  assign garelon_free_shipping = true
+                endunless
               endif
             -%}
 
@@ -170,7 +175,9 @@
                       {%- elsif cart.duties_included -%}
                         {{ 'products.product.duties_included' | t }}
                       {%- endif -%}
-                      {%- if shop.shipping_policy.body != blank -%}
+                      {%- if garelon_free_shipping %}
+                        {{ 'garelon.offer.free_shipping' | t }}
+                      {%- elsif shop.shipping_policy.body != blank -%}
                         {{ 'products.product.shipping_policy_html' | t: link: shop.shipping_policy.url }}
                       {%- endif -%}
                     </div>
@@ -837,6 +844,13 @@
           "id": "unit_singular",
           "label": "Nombre de una unidad",
           "default": "unidad"
+        },
+        {
+          "type": "checkbox",
+          "id": "free_shipping",
+          "label": "Mostrar «Envío gratis» bajo los packs",
+          "info": "Desactívalo si el envío deja de ser gratuito: volverá el texto de Shopify sobre el envío calculado en la pantalla de pago.",
+          "default": true
         },
         {
           "type": "header",

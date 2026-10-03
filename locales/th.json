@@ -560,6 +560,7 @@
       "unit_price": "{{ price }} per {{ unit }}",
       "save": "Save {{ amount }}",
       "saving_note": "Savings compared with buying each {{ unit }} separately.",
+      "free_shipping": "Free shipping.",
       "editor_missing": "Editor only: «Choose your offer» shows the standard picker because the product doesn't have a single «Pack» option. Customers can still buy normally. Check the option name in the block or create the variants in Products › (product) › Variants."
     },
     "reviews": {

@@ -40,9 +40,13 @@ Barra superior («Una joya para llevar contigo o regalar») → cabecera (Inicio
 
 **Verificación del propietario:** `Imagen 1.png` e `imagen 4.png` corresponden al producto real y están aprobadas para uso en la tienda. Sustituye a la revisión anterior, que las había descartado por una supuesta diferencia en la cruz: esa conclusión era incorrecta y **no debe volver a usarse para excluirlas**.
 
-Se usan **5 imágenes (4 archivos + 1 recorte)**, todas sin retocar: solo redimensionadas a WebP. Orden de las galerías: ficha `principal,completa,detalle,infografia,oracion`; home `completa,detalle,principal,infografia,oracion` (la portada ya enseña `principal`). La galería usa por defecto estas imágenes del tema, porque la multimedia que importa DSers puede traer la de 14K. Cuando la multimedia del producto esté revisada, el ajuste «Imágenes» de la compra y de la ficha puede pasar a «Multimedia de Shopify».
+Se usan **5 imágenes (4 archivos + 1 recorte)**, todas sin retocar: solo redimensionadas a WebP. Orden de las galerías (revisado en los retoques finales): ficha `completa,principal,detalle,infografia,oracion` (producto entero → puesta en la muñeca → detalle de medalla, cruz y cuentas → infografía → contexto de oración); home `completa,detalle,infografia,principal,oracion` (la portada, justo encima, ya enseña `principal`, así que la compra adelanta el detalle y la infografía con medidas y cierre). La galería usa por defecto estas imágenes del tema, porque la multimedia que importa DSers puede traer la de 14K. Cuando la multimedia del producto esté revisada, el ajuste «Imágenes» de la compra y de la ficha puede pasar a «Multimedia de Shopify».
 
 ## 4. Packs
+
+**Texto bajo los packs:** «Impuestos incluidos. Envío gratis.» (`garelon.offer.free_shipping`). Lo controla el ajuste «Mostrar «Envío gratis» bajo los packs» del bloque «GARELON Elige tu oferta» (activo por defecto); si se desactiva vuelve el texto de Shopify. La nota del cajón del carrito y de `/cart` sigue siendo la de Dawn.
+
+**«Compra con tranquilidad»:** sello decorativo de escudo con check encima del subtítulo (ajuste «Sello GARELON» de la sección de texto enriquecido; `none` por defecto en cualquier otra).
 
 - Opción **«Pack»** en Shopify: «1 pulsera», «2 pulseras», «3 pulseras». Cada pack es una variante real con su propio precio, y se añade al carrito con **cantidad 1**: no hay selector de cantidad.
 - Se eligen con el selector de variantes de Dawn: botones en una fila desde 320 px.

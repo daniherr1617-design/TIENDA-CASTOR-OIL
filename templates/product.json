@@ -90,7 +90,7 @@
       "settings": {
         "enable_sticky_info": true,
         "garelon_media": "theme",
-        "garelon_gallery_keys": "principal,completa,detalle,infografia,oracion",
+        "garelon_gallery_keys": "completa,principal,detalle,infografia,oracion",
         "color_scheme": "scheme-1",
         "media_size": "large",
         "constrain_to_viewport": true,
@@ -153,7 +153,8 @@
         "color_scheme": "scheme-2",
         "full_width": false,
         "padding_top": 48,
-        "padding_bottom": 48
+        "padding_bottom": 48,
+        "garelon_badge": "escudo"
       }
     },
     "opiniones": {

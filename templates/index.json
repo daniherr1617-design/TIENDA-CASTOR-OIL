@@ -83,7 +83,7 @@
       "settings": {
         "garelon_anchor": "comprar",
         "garelon_media": "theme",
-        "garelon_gallery_keys": "completa,detalle,principal,infografia,oracion",
+        "garelon_gallery_keys": "completa,detalle,infografia,principal,oracion",
         "color_scheme": "scheme-2",
         "secondary_background": false,
         "media_size": "medium",
@@ -145,7 +145,8 @@
         "color_scheme": "scheme-2",
         "full_width": false,
         "padding_top": 48,
-        "padding_bottom": 48
+        "padding_bottom": 48,
+        "garelon_badge": "escudo"
       }
     },
     "opiniones": {
