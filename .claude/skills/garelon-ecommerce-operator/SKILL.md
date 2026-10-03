@@ -84,5 +84,6 @@ DOCUMENT_SYNC ligero:
 2. Si hubo una decisión, añade una entrada a `GARELON_DECISION_LOG.md`.
 3. Si cambió alguno de los 5 documentos: `python3 tools/garelon_docs_check.py --update-manifest`.
 4. Ejecuta `python3 tools/garelon_docs_check.py` (y `python3 tools/test_garelon_docs_check.py` si tocaste el comprobador) y verifica que pasa.
+5. Si cambió el tema: `node tests/render-harness/validate.js` (repo) y, sobre el ZIP descomprimido, `--theme <carpeta> --zip`.
 
 Los documentos se adaptan al tema, nunca el tema a los documentos.

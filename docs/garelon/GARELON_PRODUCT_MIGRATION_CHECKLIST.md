@@ -1,11 +1,11 @@
 # GARELON · CHECKLIST DE MIGRACIÓN Y VERIFICACIÓN
 
-> **Versión:** 3.0 · **Fecha:** 2026-10-03 · **Repositorio:** `daniherr1617-design/TIENDA-CASTOR-OIL` · **Rama fuente:** `claude/rosary-clean-rebuild` · **Commit fuente:** `955bcc3`
+> **Versión:** 3.1 · **Fecha:** 2026-10-03 · **Repositorio:** `daniherr1617-design/TIENDA-CASTOR-OIL` · **Rama fuente:** `claude/rosary-clean-rebuild` · **Commit fuente:** `974eadd`
 >
-> Snapshot generado desde `955bcc3`. Ante discrepancias futuras manda el repositorio actual. Si una comprobación ya no corresponde a la arquitectura real, se corrige este checklist (DOCUMENT_SYNC), no el tema.
+> Snapshot generado desde `974eadd`. Ante discrepancias futuras manda el repositorio actual. Si una comprobación ya no corresponde a la arquitectura real, se corrige este checklist (DOCUMENT_SYNC), no el tema.
 
 **Marcadores:**
-- 🅲 **Claude Code / local:** se comprueba en el repositorio y en el ZIP descomprimido (render local con datos simulados).
+- 🅲 **Claude Code / local:** se comprueba en el repositorio y en el ZIP descomprimido (batería versionada `tests/render-harness`, que simula Shopify con datos ficticios).
 - 🆂 **Shopify real:** solo vale comprobado en la vista previa o en la tienda (lo hace el propietario, o Claude si tiene acceso real).
 - 🅿 **Propietario:** decisión o verificación física que solo puede hacer el propietario.
 
@@ -54,13 +54,15 @@ Cada punto se marca con el lugar donde se probó: `PROBADO LOCALMENTE`, `ZIP DES
 - [ ] 🅲 Precio tachado solo con `compare_at_price > price`.
 - [ ] 🅲 Ahorro de pack solo si es > 0, con la nota de cálculo; sin ahorro real no hay textos de ahorro.
 - [ ] 🅿 Cualquier `compare_at_price` es un precio anterior real (referencia: el más bajo de los 30 días anteriores).
-- [ ] 🅲 Distintivo editorial («Recomendado»); nunca «Más popular» sin datos.
+- [ ] 🅲 Distintivo editorial («Recomendado», también como default del schema); nunca «Más popular» sin datos (`garelon_check` bloquea ese default).
 
 ## 7. Envío
 - [ ] 🆂 Tarifa de envío real configurada (gratis, si se anuncia gratis) para las zonas anunciadas.
-- [ ] 🅲 Bajo los packs: «Impuestos incluidos. Envío gratis.» solo si el envío es gratis; si no, `free_shipping` desactivado.
-- [ ] 🅲 Garantías («Envío gratis + seguimiento», «Envíos internacionales»…) coherentes con Shopify.
-- [ ] 🅿 Decidir si la nota del cajón y de `/cart` (texto de Dawn) debe decir también «Envío gratis».
+- [ ] 🅿 Confirmado si el envío es gratis. Ajuste global «Envío gratis» (Configuración del tema › Carrito) activo solo en ese caso.
+- [ ] 🅲 Con envío gratis: packs, ficha, cajón del carrito y `/cart` dicen «Impuestos incluidos. Envío gratis.» y no aparece «envío calculado en la pantalla de pago».
+- [ ] 🅲 Sin envío gratis: vuelven las notas de Shopify/Dawn y ningún texto promete envío gratis (`garelon_check` OK).
+- [ ] 🅲 Garantías («Envío gratis + seguimiento», «Envíos internacionales»…) coherentes con Shopify y con el ajuste.
+- [ ] 🆂 En la vista previa: el cajón y `/cart` muestran la misma nota de envío que los packs.
 
 ## 8. Confianza y legal
 - [ ] 🅲 «14 días para cambiar de opinión» se presenta como derecho de desistimiento, nunca como «garantía de 14 días».
@@ -111,15 +113,16 @@ Cada punto se marca con el lugar donde se probó: `PROBADO LOCALMENTE`, `ZIP DES
 - [ ] 🆂 Tras subir el tema: la home y Personalizar › Página de inicio abren sin 404.
 
 ## 17. Pruebas
+- [ ] 🅲 `cd tests/render-harness && npm ci` y `node tests/render-harness/validate.js` en verde (validador, autoprueba, Theme Check, Liquid, render).
 - [ ] 🅲 `python3 tools/garelon_check.py` OK y `python3 tools/test_garelon_check.py` OK.
-- [ ] 🅲 Theme Check sin errores nuevos frente a la línea base de Dawn.
+- [ ] 🅲 Theme Check: 0 errores y 0 avisos `GARELON` (los `BASELINE DAWN` son de Dawn 16.0.0).
 - [ ] 🅲 Liquid (Ruby) estricto: 0 errores.
-- [ ] 🅲 Render, routing, regresión y responsive en verde (indicar el total real de la batería usada).
+- [ ] 🅲 Batería de render (routing, packs, carrito, cajón, responsive) en verde, con una fase nueva para esta ronda; indicar el total real. Ninguna prueba borrada para conseguir verde.
 - [ ] 🅲 `python3 tools/garelon_docs_check.py` OK si cambió la documentación.
 
 ## 18. ZIP
 - [ ] 🅲 ZIP generado con `tools/build_zip.py`: solo las 7 carpetas del tema.
-- [ ] 🅲 Descomprimido en una carpeta nueva y validado otra vez (`--strict-root`, Theme Check, Liquid, render).
+- [ ] 🅲 Descomprimido en una carpeta nueva y validado otra vez: `node tests/render-harness/validate.js --theme <carpeta> --zip`.
 - [ ] 🅲 SHA-256 anotado en el informe; el ZIP no se sube a GitHub.
 
 ## 19. Shopify preview y publicación

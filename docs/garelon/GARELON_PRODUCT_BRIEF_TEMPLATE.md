@@ -1,8 +1,8 @@
 # GARELON · BRIEF DE PRODUCTO (plantilla genérica)
 
-> **Versión:** 3.0 · **Fecha:** 2026-10-03 · **Repositorio:** `daniherr1617-design/TIENDA-CASTOR-OIL` · **Rama fuente:** `claude/rosary-clean-rebuild` · **Commit fuente:** `955bcc3`
+> **Versión:** 3.1 · **Fecha:** 2026-10-03 · **Repositorio:** `daniherr1617-design/TIENDA-CASTOR-OIL` · **Rama fuente:** `claude/rosary-clean-rebuild` · **Commit fuente:** `974eadd`
 >
-> Snapshot generado desde `955bcc3`. Ante discrepancias futuras manda el repositorio actual. Las reglas que filtran este brief están en `GARELON_PROYECTO_PROMPT_MAESTRO_COMPLETO.md` §4.
+> Snapshot generado desde `974eadd`. Ante discrepancias futuras manda el repositorio actual. Las reglas que filtran este brief están en `GARELON_PROYECTO_PROMPT_MAESTRO_COMPLETO.md` §4.
 
 **Para qué sirve:** reunir los **datos reales** de un producto antes de tocar la tienda. Es la entrada de `GARELON_MIGRATION_PROMPT_TEMPLATE.md`.
 

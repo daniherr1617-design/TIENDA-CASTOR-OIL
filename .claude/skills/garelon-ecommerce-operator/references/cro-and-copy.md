@@ -24,7 +24,7 @@ Jerarquía visual · un CTA claro · packs con ahorro real · `compare_at_price`
 ## Estructura de la página (lo aprobado hoy)
 
 - **Portada:** producto y beneficio, un CTA («Elegir mi …» → `/#comprar`), **sin «A partir de X €»**.
-- **Compra:** título, valoración real (si existe), frase emocional (una vez), 4 garantías, «Elige tu oferta» (precio dentro de cada tarjeta), «Impuestos incluidos. Envío gratis.» (si el envío es gratis), Añadir al carrito y pago dinámico.
+- **Compra:** título, valoración real (si existe), frase emocional (una vez), 4 garantías, «Elige tu oferta» (precio dentro de cada tarjeta), «Impuestos incluidos. Envío gratis.» (si el envío es gratis; el mismo texto en el cajón y en `/cart`), Añadir al carrito y pago dinámico.
 - Después: «Compra con tranquilidad» → opiniones → significado → detalles → regalo → FAQ → cierre. El orden real está en el snapshot.
 
 ## Copy

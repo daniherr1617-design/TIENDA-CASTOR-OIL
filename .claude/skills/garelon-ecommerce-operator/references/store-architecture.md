@@ -36,14 +36,17 @@ Todo el JavaScript de Dawn está sin tocar.
 | Estilos y tokens | `assets/garelon.css` (`:root`) |
 | Colores y fuentes | `config/settings_data.json` |
 | Textos de interfaz | `locales/*.json` › `garelon.*` |
-| Carrito | Dawn sin cambios, salvo «Seguir comprando» → home |
+| Nota de impuestos y envío (packs, ficha, cajón y `/cart`) | `snippets/garelon-shipping-note.liquid` + ajuste global `garelon_free_shipping` (Configuración del tema › Carrito) |
+| Carrito | Dawn, salvo «Seguir comprando» → home y la nota de envío común (`snippets/cart-drawer.liquid`, `sections/main-cart-footer.liquid`) |
+| Pruebas | `tools/` (validador, ZIP, docs) y `tests/render-harness/` (render, Theme Check, Liquid estricto) |
 
 ## Reglas de arquitectura que más se olvidan
 
 - `templates/index.json` solo con secciones del tema y valores válidos: sin bloques de app, imágenes de Files ni productos (R17). Judge.me se añade desde el editor.
 - Nombres de schema ≤ 25 bytes. Un nombre largo hace que Shopify rechace la sección y la home dé 404.
 - Con las tarjetas de oferta, el precio de Dawn queda solo para lectores de pantalla (el visible está en cada tarjeta). La nota de impuestos y envío va bajo las tarjetas.
-- Un ajuste nuevo que anuncie algo comercial debe ser cierto con su default o ir desactivado.
+- «Envío gratis» se decide en **un solo sitio** (ajuste global `garelon_free_shipping`) y lo pinta **un solo snippet** (`garelon-shipping-note`). No añadas otro ajuste ni otro texto de envío que pueda contradecirlo.
+- Un ajuste nuevo que anuncie algo comercial debe ser cierto con su default o ir desactivado. Ningún default de schema con claims de ventas («Más popular», «Más vendido»): `garelon_check` lo bloquea.
 - Al tocar un archivo de Dawn: cambio mínimo y comentario `GARELON:`.
 - Theme Check limita la complejidad Liquid por archivo (`LiquidComplexity`). `main-product.liquid` está cerca del límite: reutiliza los bloques `liquid` existentes antes de añadir condiciones.
 

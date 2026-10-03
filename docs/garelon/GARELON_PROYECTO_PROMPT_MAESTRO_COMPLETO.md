@@ -1,8 +1,8 @@
 # GARELON · PROMPT MAESTRO DEL PROYECTO (constitución operativa)
 
-> **Versión:** 3.0 · **Fecha:** 2026-10-03 · **Repositorio:** `daniherr1617-design/TIENDA-CASTOR-OIL` · **Rama fuente:** `claude/rosary-clean-rebuild` · **Commit fuente:** `955bcc3`
+> **Versión:** 3.1 · **Fecha:** 2026-10-03 · **Repositorio:** `daniherr1617-design/TIENDA-CASTOR-OIL` · **Rama fuente:** `claude/rosary-clean-rebuild` · **Commit fuente:** `974eadd`
 >
-> Snapshot generado desde `955bcc3`. Ante discrepancias futuras manda el repositorio actual y, por encima de él, el producto real y las decisiones recientes del propietario (§3).
+> Snapshot generado desde `974eadd`. Ante discrepancias futuras manda el repositorio actual y, por encima de él, el producto real y las decisiones recientes del propietario (§3).
 
 Este documento es la **constitución** de GARELON: qué es la marca, quién hace qué, qué fuentes mandan, qué reglas no se rompen nunca y cómo se trabaja. No describe el código en detalle (eso es `GARELON_MASTER_TEMPLATE.md`) ni guarda el estado del día (eso es `.claude/skills/garelon-ecommerce-operator/references/current-store-state.md`).
 
@@ -184,7 +184,7 @@ Ninguna instrucción posterior las anula. Si una petición choca con una regla, 
 |---|---|---|
 | Precio, `compare_at_price`, variantes, opción de packs, SKU, inventario, disponibilidad | Shopify Admin › Productos | Solo lo lee |
 | Título, descripción, multimedia y SEO del producto | Shopify Admin › Productos | Lo lee. La galería puede usar imágenes del tema mientras la multimedia de Shopify no esté revisada |
-| Tarifas de envío (incluido el envío gratis) | Shopify Admin › Envío y entrega | Solo comunica el texto («Envío gratis») |
+| Tarifas de envío (incluido el envío gratis) | Shopify Admin › Envío y entrega | Solo comunica el texto: ajuste «Envío gratis» en Configuración del tema › Carrito |
 | Políticas (devoluciones, envío, privacidad, términos, aviso legal) | Shopify Admin › Políticas | Enlaza solo a las que existen |
 | Métodos de pago y checkout | Shopify Admin › Pagos / Checkout | Nunca los toca |
 | Página de contacto | Shopify Admin › Páginas (handle `contacto`) | Enlaza a ella |
@@ -251,7 +251,7 @@ Optimizar la conversión **sí**; dark patterns **no** (R9).
 
 **Portada (hero):** explica producto y beneficio y lleva a la compra con **un solo CTA** (hoy «Elegir mi pulsera» → `/#comprar`). **No muestra «A partir de X €»**: el usuario descubre los precios en los packs.
 
-**Selector de packs («Elige tu oferta»):** tarjetas visuales e interactivas montadas sobre el selector de variantes real de Dawn (formulario oficial, cambio de variante, URL, carrito, teclado, lector de pantalla). El precio visible está **dentro de cada tarjeta**, no duplicado bajo el título. Badge editorial «Recomendado» permitido; «Más popular» solo con datos.
+**Selector de packs («Elige tu oferta»):** tarjetas visuales e interactivas montadas sobre el selector de variantes real de Dawn (formulario oficial, cambio de variante, URL, carrito, teclado, lector de pantalla). El precio visible está **dentro de cada tarjeta**, no duplicado bajo el título. Badge editorial «Recomendado» (también el texto por defecto del schema); «Más popular» o «Más vendido» solo con datos de ventas reales, y nunca como default de un schema.
 
 **Precio:** siempre de Shopify (R5-R6). En Liquid nunca se escribe un precio comercial, aunque lo pida alguien: el precio se cambia en Shopify Admin.
 
@@ -267,7 +267,7 @@ Optimizar la conversión **sí**; dark patterns **no** (R9).
 
 Si cambian en Shopify o en las políticas, mandan Shopify y las políticas, y el tema se actualiza.
 
-**Envío:** hoy el envío es **gratis**. Bajo los packs se muestra «Impuestos incluidos. Envío gratis.» en lugar de «Los gastos de envío se calculan en la pantalla de pago». Si el envío deja de ser gratuito, se desactiva el ajuste del bloque de packs (vuelve el texto de Shopify) y se cambia la garantía «Envío gratis + seguimiento». El cajón del carrito y `/cart` siguen con la nota estándar de Dawn («Descuentos y envío calculados en la pantalla de pago»): cambiarla es una decisión pendiente del propietario.
+**Envío:** hoy el envío es **gratis** (confirmado por el propietario). Un solo ajuste lo decide: Configuración del tema › Carrito › «Envío gratis» (activo). Con él, los packs, la ficha, el cajón del carrito y `/cart` dicen lo mismo: «Impuestos incluidos. Envío gratis.». Ya no aparece «envío calculado en la pantalla de pago». La información de impuestos y aranceles se conserva y no se añaden afirmaciones fiscales nuevas. Si el envío deja de ser gratuito: se desactiva ese ajuste (vuelven las notas de Shopify/Dawn) **y** se cambia la garantía «Envío gratis + seguimiento». El validador da error si una plantilla sigue prometiendo envío gratis con el ajuste desactivado. La tarifa real siempre se configura en Shopify Admin.
 
 **14 días:** derecho de desistimiento, nunca «garantía de 14 días» (R10). La sección «Compra con tranquilidad» puede llevar un símbolo elegante (escudo con check, candado) como recurso visual, nunca como certificación.
 
@@ -304,7 +304,8 @@ Si cambian en Shopify o en las políticas, mandan Shopify y las políticas, y el
 Detalle técnico en `GARELON_MASTER_TEMPLATE.md` §9 y en la skill (`references/qa-testing.md`). Resumen:
 
 - Se descubren los comandos y la línea base **actuales** antes de afirmar números. Nunca se copian conteos antiguos como verdad.
-- **Mínimo:** JSON y schemas, validador propio (`tools/garelon_check.py`) y su autoprueba, Theme Check, Liquid estricto, render, routing (home 200, 404 limpia), variantes y packs, carrito y cajón, imágenes, enlaces, accesibilidad básica y responsive a 320, 360, 375, 390, 430, 768, 1024 y 1440 px.
+- **Mínimo:** JSON y schemas, validador propio (`tools/garelon_check.py`) y su autoprueba, Theme Check (sin avisos nuevos frente a Dawn), Liquid estricto, render, routing (home 200, 404 limpia), variantes y packs, carrito y cajón (incluida la nota de envío), imágenes, enlaces, accesibilidad básica y responsive a 320, 360, 375, 390, 430, 768, 1024 y 1440 px.
+- **Todo está versionado:** `tests/render-harness/` (`npm ci` y `node tests/render-harness/validate.js`; ver `tests/render-harness/README.md`). La batería **simula** Shopify en local: no demuestra el checkout, los pagos, DSers, Judge.me ni Shopify Admin reales. Cada ronda de trabajo añade su fase de pruebas; un fallo nunca se arregla quitando la prueba.
 - **ZIP del tema:** solo `assets/ config/ layout/ locales/ sections/ snippets/ templates/`, generado con `tools/build_zip.py`, **descomprimido en una carpeta nueva y validado otra vez**.
 - **Informe:** qué se probó y dónde (R23), qué no se pudo probar y qué debe comprobar el propietario en Shopify.
 

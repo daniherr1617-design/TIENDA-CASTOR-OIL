@@ -7,7 +7,7 @@
 | Dato | Dónde se cambia | Tema |
 |---|---|---|
 | Precio, `compare_at_price`, variantes, SKU, inventario, disponibilidad | Shopify Admin › Productos | Solo lee |
-| Tarifas de envío | Admin › Envío y entrega | Solo comunica «Envío gratis» si es cierto |
+| Tarifas de envío | Admin › Envío y entrega | Solo comunica: ajuste «Envío gratis» del tema (Configuración del tema › Carrito) activo solo si la tarifa real es gratuita |
 | Políticas | Admin › Políticas | Enlaza solo las que existen |
 | Pagos y checkout | Admin › Pagos / Checkout | No se toca |
 | Contacto | Admin › Páginas (handle `contacto`) | Enlaza |

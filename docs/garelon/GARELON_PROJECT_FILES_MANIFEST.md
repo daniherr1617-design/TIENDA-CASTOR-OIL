@@ -1,6 +1,6 @@
 # GARELON · MANIFEST DE DOCUMENTOS DEL PROYECTO
 
-> **Versión:** 3.0 · **Fecha:** 2026-10-03 · **Repositorio:** `daniherr1617-design/TIENDA-CASTOR-OIL` · **Rama fuente:** `claude/rosary-clean-rebuild` · **Commit fuente:** `955bcc3`
+> **Versión:** 3.1 · **Fecha:** 2026-10-03 · **Repositorio:** `daniherr1617-design/TIENDA-CASTOR-OIL` · **Rama fuente:** `claude/rosary-clean-rebuild` · **Commit fuente:** `974eadd`
 >
 > La tabla de versiones y SHA-256 se regenera con `python3 tools/garelon_docs_check.py --update-manifest`. `python3 tools/garelon_docs_check.py` falla si no coincide con los archivos.
 
@@ -23,11 +23,11 @@ Son los que se suben al proyecto de ChatGPT (`GARELON-PROJECT-DOCS-LATEST.zip`, 
 <!-- manifest:start -->
 | Documento | Versión | Fecha | Commit fuente | Líneas | SHA-256 |
 |---|---|---|---|---|---|
-| `GARELON_PROYECTO_PROMPT_MAESTRO_COMPLETO.md` | 3.0 | 2026-10-03 | `955bcc3` | 373 | `3ade22c49b058036e40f7ed469e23a8e8ed10c2fe68480954c0a2aa4f95c69b0` |
-| `GARELON_MASTER_TEMPLATE.md` | 3.0 | 2026-10-03 | `955bcc3` | 299 | `57af14d819ec5f3e7f8a509bd64bceda4d985b959fc533137c8b887206700c84` |
-| `GARELON_PRODUCT_BRIEF_TEMPLATE.md` | 3.0 | 2026-10-03 | `955bcc3` | 139 | `506f4d7cb29a755f426a8b18f851aa56535bb15e494ac7e07fe2b1305529743b` |
-| `GARELON_MIGRATION_PROMPT_TEMPLATE.md` | 3.0 | 2026-10-03 | `955bcc3` | 147 | `426c792c12ca95228056cac0a87190fdb0f7579a0465cdf019ccbdc14f621901` |
-| `GARELON_PRODUCT_MIGRATION_CHECKLIST.md` | 3.0 | 2026-10-03 | `955bcc3` | 135 | `b47207a3ec68976c5f3566528900edb4b9c27ee7651791df8b1c1fed2243fa66` |
+| `GARELON_PROYECTO_PROMPT_MAESTRO_COMPLETO.md` | 3.1 | 2026-10-03 | `974eadd` | 374 | `8b40bd0ed210df47a498c5092fe7f7f17270968ed60e3066f2651381ddcd66df` |
+| `GARELON_MASTER_TEMPLATE.md` | 3.1 | 2026-10-03 | `974eadd` | 333 | `f56cbcce6b6dd609c3c0773cd8d7c62b4e38e652a69611c4c63ed47c09b3cc50` |
+| `GARELON_PRODUCT_BRIEF_TEMPLATE.md` | 3.1 | 2026-10-03 | `974eadd` | 139 | `7e8baf9b60b5b09c1cadf7a710ebd016bcf788bf7a525d738431c5d11defccca` |
+| `GARELON_MIGRATION_PROMPT_TEMPLATE.md` | 3.1 | 2026-10-03 | `974eadd` | 153 | `5e5a54180373ca3e80b84d16c77744d62f0b0182cb4680db53e904b8328a632a` |
+| `GARELON_PRODUCT_MIGRATION_CHECKLIST.md` | 3.1 | 2026-10-03 | `974eadd` | 138 | `efd0a2c4e594f55faa1f72640f4483492ce252ec40387ec3a214b482c63beaee` |
 <!-- manifest:end -->
 
 ## 3. Documentos de apoyo (no van en el ZIP del proyecto)
@@ -41,6 +41,7 @@ Son los que se suben al proyecto de ChatGPT (`GARELON-PROJECT-DOCS-LATEST.zip`, 
 | `.claude/skills/garelon-ecommerce-operator/scripts/garelon_store_snapshot.py` | Genera el snapshot desde el repo |
 | `tools/garelon_docs_check.py` | Comprobación del sistema documental, manifest y ZIP del proyecto |
 | `tools/test_garelon_docs_check.py` | Autoprueba del comprobador documental |
+| `tests/render-harness/README.md` | Batería de render versionada: instalación, ejecución, qué simula y qué no prueba |
 
 ## 4. Histórico (no describe el estado actual)
 

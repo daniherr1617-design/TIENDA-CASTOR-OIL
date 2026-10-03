@@ -1,6 +1,6 @@
 # GARELON · REGISTRO DE DECISIONES
 
-> **Versión:** 3.0 · **Fecha:** 2026-10-03 · **Repositorio:** `daniherr1617-design/TIENDA-CASTOR-OIL` · **Rama fuente:** `claude/rosary-clean-rebuild` · **Commit fuente:** `955bcc3`
+> **Versión:** 3.1 · **Fecha:** 2026-10-03 · **Repositorio:** `daniherr1617-design/TIENDA-CASTOR-OIL` · **Rama fuente:** `claude/rosary-clean-rebuild` · **Commit fuente:** `974eadd`
 >
 > Este registro es **histórico**: explica por qué las cosas son como son. Las reglas vigentes están en `GARELON_PROYECTO_PROMPT_MAESTRO_COMPLETO.md` y el estado actual en `current-store-state.md`. Las entradas solo se añaden, no se reescriben. Si una decisión se revoca, se añade una entrada nueva que la sustituye.
 
@@ -27,15 +27,18 @@
 | D17 | 2026-10-02 | **Portada sin «A partir de X €»**; un solo CTA «Elegir mi pulsera» → `/#comprar` | El precio se descubre en los packs; menos ruido en la portada | `aaf47b0` | Vigente |
 | D18 | 2026-10-02 | `Imagen 1.png` e `imagen 4.png` **verificadas por el propietario** e incorporadas. La revisión anterior que las descartaba (supuesta diferencia en la cruz) queda anulada | La confirmación del propietario prevalece sobre una revisión del modelo | `57ba415` | Vigente |
 | D19 | 2026-10-03 | Imágenes válidas: `Imagen 1.png`, `imagen 2.png`, `imagen 3.png`, `imagen 4.png`; no se vuelven a descartar | Confirmación del propietario | Prompt del propietario 2026-10-03 | Vigente |
-| D20 | 2026-10-03 | **Envío gratis:** bajo los packs, «Impuestos incluidos. Envío gratis.» (ajuste `free_shipping` del bloque de packs, activo por defecto) | El envío actual es gratuito; el texto de Shopify («se calculan en la pantalla de pago») confundía | `955bcc3` | Vigente |
+| D20 | 2026-10-03 | **Envío gratis:** bajo los packs, «Impuestos incluidos. Envío gratis.» (ajuste `free_shipping` del bloque de packs, activo por defecto) | El envío actual es gratuito; el texto de Shopify («se calculan en la pantalla de pago») confundía | `955bcc3` | Sustituida en parte por D26 (el ajuste pasa a ser global) |
 | D21 | 2026-10-03 | Sello de escudo con check en «Compra con tranquilidad» (decorativo) | Confianza visual elegante sin simular una certificación | `955bcc3` | Vigente |
 | D22 | 2026-10-03 | Orden de galerías razonado: ficha = producto entero → puesta → detalle → infografía → contexto; home = adelanta detalle e infografía porque la portada ya enseña la foto en la muñeca | Contar la historia comercial sin repetir | `955bcc3` | Vigente (orden exacto en el snapshot) |
 | D23 | 2026-10-03 | La tienda **ya funciona en Shopify**; el 404 histórico de la home está resuelto y no es un problema actual | Confirmación del propietario | Prompt del propietario 2026-10-03 | Vigente |
-| D24 | 2026-10-03 | Sistema documental 3.0 + skill `garelon-ecommerce-operator`. Las reglas R1-R31 de los Master 1.x/2.0 se consolidan en R1-R24 del Prompt Maestro (mismas ideas, sin referencias a archivos que ya no existen) | Evitar que el código y la documentación diverjan; trabajar sin reexplicar el proyecto | Este commit | Vigente |
+| D24 | 2026-10-03 | Sistema documental 3.0 + skill `garelon-ecommerce-operator`. Las reglas R1-R31 de los Master 1.x/2.0 se consolidan en R1-R24 del Prompt Maestro (mismas ideas, sin referencias a archivos que ya no existen) | Evitar que el código y la documentación diverjan; trabajar sin reexplicar el proyecto | `c265802` | Vigente |
+| D25 | 2026-10-03 | **Batería de render versionada** en `tests/render-harness/` (fuentes reales de la batería que daba 386/386, dependencias fijadas con `package-lock.json`, `run.js` y `validate.js`, README). Theme Check marca cada aviso `BASELINE DAWN` o `GARELON`. Cada ronda añade su fase de pruebas | Las pruebas vivían en una carpeta temporal y se perdían con el contenedor; ahora se reproducen desde un clon limpio | `a7d3015` | Vigente |
+| D26 | 2026-10-03 | **Envío gratis coherente:** un único ajuste global «Envío gratis» (`garelon_free_shipping`, Configuración del tema › Carrito, activo) y una nota común (`snippets/garelon-shipping-note.liquid`) para packs, ficha, cajón del carrito y `/cart`: «Impuestos incluidos. Envío gratis.». Desactivado, vuelven las notas de Dawn. El bloque de packs deja de tener ajuste de envío propio | Los packs decían «Envío gratis» y el carrito «envío calculado en la pantalla de pago»: contradicción. El tema solo comunica; la tarifa real está en Shopify Admin | `974eadd` (envío gratis confirmado por el propietario) | Vigente |
+| D27 | 2026-10-03 | **Distintivo por defecto «Recomendado»** en el schema del bloque de packs (antes «Más popular»). «Más popular», «Más vendido» o similares solo con datos de ventas reales | Un schema no debe sugerir por defecto un claim no demostrado | `974eadd` | Vigente |
+| D28 | 2026-10-03 | `tools/garelon_check.py` vigila la honestidad: error si un default de schema trae un claim de ventas o si, con «Envío gratis» desactivado, una plantilla sigue prometiéndolo | Eliminar la causa, no el síntoma: que el riesgo no pueda volver sin que falle la validación | `974eadd` | Vigente |
 
 ## Pendiente de decidir (propietario)
 
-- Nota del cajón del carrito y de `/cart`: sigue el texto de Dawn («Descuentos y envío calculados en la pantalla de pago»). ¿Cambiar a «Envío gratis»?
 - Pasar `garelon_media` a `shopify` cuando la multimedia del producto en Shopify esté revisada.
-- Default del schema `badge_text` = «Más popular» (invisible mientras `badge_pack` sea `none`): cambiarlo a «Recomendado» en una ronda de tema.
-- Versionar en el repositorio la batería de render y responsive (hoy vive fuera del repo).
+
+Resueltas el 2026-10-03: nota del cajón y de `/cart` (D26), default «Más popular» (D27) y batería de render fuera del repo (D25).

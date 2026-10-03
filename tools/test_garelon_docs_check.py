@@ -56,6 +56,7 @@ CASES = [
     ('reference citada inexistente', lambda r: edit(r, SK, append('Lee `references/no-existe.md`.')), 'que no está en references'),
     ('snapshot sin marcador de commit', lambda r: edit(r, ST, lambda s: re.sub(r'<!-- snapshot-commit: \w+ -->', '', s)), 'sin marcador'),
     ('snapshot desfasado', lambda r: edit(r, ST, lambda s: re.sub(r'<!-- snapshot-commit: \w+ -->', f'<!-- snapshot-commit: {stale_commit()} -->', s)), 'snapshot desfasado'),
+    ('«Envío gratis» desactivado presentado como estado actual', lambda r: edit(r, MT, append('El envío gratis está desactivado.')), 'el envío gratis está activo'),
     ('manifest desactualizado', lambda r: edit(r, MT, append('Cambio sin actualizar el manifest.')), 'desactualizado'),
 ]
 

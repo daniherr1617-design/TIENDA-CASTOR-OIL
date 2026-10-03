@@ -19,7 +19,7 @@
 
 ## Confianza
 
-- Garantías actuales confirmadas: «Envío gratis + seguimiento» · «Pago seguro» · «14 días para cambiar de opinión» · «Envíos internacionales». Si cambian en Shopify o en las políticas, mandan ellas.
+- Garantías actuales confirmadas: «Envío gratis + seguimiento» · «Pago seguro» · «14 días para cambiar de opinión» · «Envíos internacionales». Si cambian en Shopify o en las políticas, mandan ellas. Si el envío deja de ser gratis: desactiva el ajuste «Envío gratis» **y** cambia la garantía «Envío gratis + seguimiento» (`garelon_check` da error si una plantilla sigue prometiéndolo).
 - «Pago seguro» = checkout oficial de Shopify. Sin logos de pago dibujados a mano.
 - Un símbolo (escudo con check, candado) es decorativo (`aria-hidden`), nunca una certificación ni un sello de terceros.
 

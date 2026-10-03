@@ -61,7 +61,10 @@ OBSOLETE = [
      'archivo de la arquitectura 1.x que ya no existe'),
     (r'claude/rosary-bracelet|claude/fondue-mug|baseline/garelon-', 'rama histórica'),
     (r'letras doradas', 'el logo con letras doradas no es el actual'),
-    (r'[Ee]nvío gratis[^.\n]*desactivad', 'el envío gratis está activo'),
+    # «Envío gratis desactivado» como estado actual es obsoleto; como hipótesis («si se desactiva»,
+    # «con el ajuste desactivado», una fila de tabla «activado/desactivado») es documentación válida.
+    (r'[Ee]nvío gratis[^.\n]*desactivad', 'el envío gratis está activo',
+     r'(?i)\b(?:si|con|cuando|sin)\b[^.\n]*env[ií]o gratis[^.\n]*desactivad|activad[oa]/desactivad|\|\s*env[ií]o gratis\s*\*\*desactivad'),
 ]
 CONTEXT_OK = re.compile(r'históric|ya no|no AutoDS|en lugar de|sustitu|antiguo|dejan de|no es el (?:logo )?actual|anterior', re.I)
 
@@ -180,8 +183,8 @@ def check_obsolete(root, rel, text):
     for n, line in enumerate(text.splitlines(), 1):
         if CONTEXT_OK.search(line):
             continue
-        for pattern, why in OBSOLETE:
-            if re.search(pattern, line):
+        for pattern, why, *allowed in OBSOLETE:
+            if re.search(pattern, line) and not (allowed and re.search(allowed[0], line)):
                 err(f'{rel}:{n}', f'término obsoleto ({why}): «{line.strip()[:110]}»')
 
 

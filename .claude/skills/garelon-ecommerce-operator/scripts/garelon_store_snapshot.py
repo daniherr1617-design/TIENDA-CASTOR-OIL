@@ -126,6 +126,13 @@ def collect(repo):
     cur = sd.get('presets', {}).get(cur, {}) if isinstance(cur, str) else (cur or {})
     snap['settings'] = {k: cur.get(k) for k in ('type_header_font', 'type_body_font', 'cart_type', 'page_width',
                                                  'buttons_radius', 'predictive_search_enabled')}
+    # Envío gratis: ajuste global (Configuración del tema › Carrito) y quién usa la nota común.
+    gdefs = {x['id']: x for g in (load_json(os.path.join(repo, 'config/settings_schema.json')) or []) for x in g.get('settings', []) if x.get('id')}
+    if 'garelon_free_shipping' in gdefs:
+        snap['free_shipping'] = {'value': cur.get('garelon_free_shipping', gdefs['garelon_free_shipping'].get('default')),
+                                 'source': 'settings_data' if 'garelon_free_shipping' in cur else 'default del schema',
+                                 'used_by': sorted(f'{d}/{f}' for d in ('sections', 'snippets') for f in os.listdir(os.path.join(repo, d))
+                                                   if f.endswith('.liquid') and "render 'garelon-shipping-note'" in open(os.path.join(repo, d, f), encoding='utf-8').read())}
     snap['color_schemes'] = {k: {x: v['settings'].get(x) for x in ('background', 'text', 'button')}
                              for k, v in cur.get('color_schemes', {}).items()}
 
@@ -167,9 +174,9 @@ def collect(repo):
         defs = block_defs(fp_sc, 'garelon_offer')
         s = offer.get('settings', {})
         snap['offer'] = {k: effective(s, defs, k) for k in
-                         ('heading', 'option_name', 'unit_singular', 'free_shipping', 'sub_1', 'sub_2', 'sub_3',
+                         ('heading', 'option_name', 'unit_singular', 'sub_1', 'sub_2', 'sub_3',
                           'show_unit_price', 'badge_pack', 'badge_text', 'show_promo', 'promo_text')}
-        snap['offer']['free_shipping_source'] = 'plantilla' if 'free_shipping' in s else 'default del schema'
+        snap['offer']['badge_text_default'] = next((d.get('default') for d in defs if d.get('id') == 'badge_text'), None)
     _, trust = block(buy_home, 'garelon_trust')
     if trust:
         s = trust.get('settings', {})
@@ -208,6 +215,13 @@ def collect(repo):
                           for k, w in keys.items()}
     snap['source_images_in_root'] = sorted(f for f in os.listdir(repo) if f.lower().endswith(('.png', '.jpg', '.jpeg', '.webp')))
     snap['templates'] = sorted(os.listdir(os.path.join(repo, 'templates')))
+    hp = os.path.join(repo, 'tests', 'render-harness')
+    if os.path.isfile(os.path.join(hp, 'package.json')):
+        pkg = load_json(os.path.join(hp, 'package.json')) or {}
+        tjs = open(os.path.join(hp, 'suite', 'tests.js'), encoding='utf-8').read() if os.path.isfile(os.path.join(hp, 'suite', 'tests.js')) else ''
+        m = re.search(r"const PHASES = '([A-Z]+)'", tjs)
+        snap['render_harness'] = {'path': 'tests/render-harness', 'phases': m.group(1) if m else 'NO DISPONIBLE',
+                                  'deps': pkg.get('dependencies', {}), 'lock': os.path.isfile(os.path.join(hp, 'package-lock.json'))}
     snap['tools'] = sorted(f for f in os.listdir(os.path.join(repo, 'tools'))) if os.path.isdir(os.path.join(repo, 'tools')) else []
     snap['locales_with_garelon'] = len([f for f in os.listdir(os.path.join(repo, 'locales'))
                                         if not f.endswith('.schema.json') and 'garelon' in (load_json(os.path.join(repo, 'locales', f)) or {})])
@@ -245,7 +259,10 @@ def to_markdown(s):
         a(f"- **Portada:** imagen `{h['image_key']}`, H1 «{h['heading']}», precio visible: {h['show_price']}, CTA «{h['button_label']}» → `{h['button_link'] or '/#comprar (vacío = compra de la home)'}`, 2.º botón: {h['button2_label'] or 'ninguno'}")
     if 'offer' in s:
         o = s['offer']
-        a(f"- **Packs («{o['heading']}»):** opción `{o['option_name']}`, unidad «{o['unit_singular']}», textos «{o['sub_1']}» / «{o['sub_2']}» / «{o['sub_3']}», distintivo pack {o['badge_pack']} «{o['badge_text']}», promo: {o['show_promo']}, precio por unidad: {o['show_unit_price']}, envío gratis bajo los packs: {o['free_shipping']} ({o['free_shipping_source']})")
+        a(f"- **Packs («{o['heading']}»):** opción `{o['option_name']}`, unidad «{o['unit_singular']}», textos «{o['sub_1']}» / «{o['sub_2']}» / «{o['sub_3']}», distintivo pack {o['badge_pack']} «{o['badge_text']}» (default del schema: «{o['badge_text_default']}»), promo: {o['show_promo']}, precio por unidad: {o['show_unit_price']}")
+    if 'free_shipping' in s:
+        f = s['free_shipping']
+        a(f"- **Envío gratis (ajuste global `garelon_free_shipping`, Configuración del tema › Carrito):** {f['value']} ({f['source']}) · nota común `snippets/garelon-shipping-note.liquid` usada por " + ', '.join(f'`{x}`' for x in f['used_by']))
     if 'trust' in s:
         a(f"- **Confianza:** frase «{s['trust']['phrase']}» · chips: " + ' · '.join(f'«{t}» ({i})' for i, t in s['trust']['chips'] if t))
     a('- **Sello GARELON (rich-text):** ' + (', '.join(f'`{i}`={b}' for i, b in s['seal']) or 'ninguno'))
@@ -264,6 +281,12 @@ def to_markdown(s):
     a('- **Esquemas de color:** ' + ', '.join(f"{k} fondo {v['background']} / texto {v['text']} / botón {v['button']}" for k, v in s['color_schemes'].items()))
     a(f"- **Locales con textos `garelon.*`:** {s['locales_with_garelon']}")
     a('- **Herramientas en `tools/`:** ' + ', '.join(f'`{t}`' for t in s['tools'] if t.endswith('.py')))
+    if 'render_harness' in s:
+        h = s['render_harness']
+        a(f"- **Batería de render versionada:** `{h['path']}` · fases {'-'.join([h['phases'][0], h['phases'][-1]]) if h['phases'] != 'NO DISPONIBLE' else h['phases']} · dependencias fijadas: "
+          + ', '.join(f'`{k}` {v}' for k, v in h['deps'].items()) + (' · con `package-lock.json`' if h['lock'] else ' · SIN lockfile'))
+    else:
+        a('- **Batería de render versionada:** NO DISPONIBLE en el repo')
     return '\n'.join(L)
 
 

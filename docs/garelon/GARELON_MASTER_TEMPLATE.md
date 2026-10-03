@@ -1,8 +1,8 @@
 # GARELON · MASTER TEMPLATE (arquitectura real del tema)
 
-> **Versión:** 3.0 · **Fecha:** 2026-10-03 · **Repositorio:** `daniherr1617-design/TIENDA-CASTOR-OIL` · **Rama fuente:** `claude/rosary-clean-rebuild` · **Commit fuente:** `955bcc3`
+> **Versión:** 3.1 · **Fecha:** 2026-10-03 · **Repositorio:** `daniherr1617-design/TIENDA-CASTOR-OIL` · **Rama fuente:** `claude/rosary-clean-rebuild` · **Commit fuente:** `974eadd`
 >
-> Snapshot generado desde `955bcc3`. Ante discrepancias futuras manda el repositorio actual: revisa el código antes de actuar sobre lo que dice este documento.
+> Snapshot generado desde `974eadd`. Ante discrepancias futuras manda el repositorio actual: revisa el código antes de actuar sobre lo que dice este documento.
 
 Este documento describe **cómo está construido el tema hoy** y **qué hay que tocar al cambiar de producto**. Sustituye a la arquitectura 1.x (secciones `garelon-trust-bar`, `garelon-benefits`, `garelon-packs`, `garelon-url`… de ramas anteriores), que ya no existe en el tema.
 
@@ -49,7 +49,8 @@ Este documento describe **cómo está construido el tema hoy** y **qué hay que 
 | `sections/garelon-details.liquid` | Lista de hechos verificables con icono e imagen (`layout: list`) o cuadrícula de tarjetas informativas (`layout: chips`) |
 | `sections/garelon-faq.liquid` | Preguntas frecuentes con `details`/`summary` |
 | `sections/garelon-sticky-cta.liquid` | Compra fija en móvil, solo en la plantilla de producto; pulsa el botón real de Dawn |
-| `snippets/garelon-offer.liquid` | Tarjetas «Elige tu oferta» sobre los radios del `<variant-selects>` de Dawn y nota de impuestos/envío |
+| `snippets/garelon-offer.liquid` | Tarjetas «Elige tu oferta» sobre los radios del `<variant-selects>` de Dawn y, debajo, la nota de impuestos y envío |
+| `snippets/garelon-shipping-note.liquid` | Nota de impuestos y envío **común** a packs, ficha, cajón del carrito y `/cart` (§3.17). Única que pinta «Envío gratis.» |
 | `snippets/garelon-trust.liquid` | Frase destacada + hasta 4 garantías con icono |
 | `snippets/garelon-pack-prices.liquid` | Lista de precios por pack (bloque `garelon_packs`, disponible pero sin usar en las plantillas) |
 | `snippets/garelon-gallery.liquid` | Galería sin JS de las imágenes del tema: scroll-snap en móvil, rejilla desde 750 px |
@@ -75,11 +76,12 @@ Este documento describe **cómo está construido el tema hoy** y **qué hay que 
 | `sections/main-product.liquid` (ficha) | Lo mismo salvo el producto de respaldo y el ancla |
 | `sections/rich-text.liquid` | Ajuste opcional «Sello GARELON» (`garelon_badge`: `none`/`escudo`/`candado`, `none` por defecto) |
 | `sections/main-404.liquid`, `sections/main-cart-items.liquid`, `snippets/cart-drawer.liquid` | «Seguir comprando» lleva a la home en lugar del catálogo |
-| `config/settings_schema.json` | `theme_name` |
-| `config/settings_data.json` | Esquemas de color, fuentes, botones, carrito en cajón, descripción de marca |
+| `snippets/cart-drawer.liquid`, `sections/main-cart-footer.liquid` | Con «Envío gratis» activo, la nota del carrito es la común (`garelon-shipping-note`); si no, la de Dawn sin cambios |
+| `config/settings_schema.json` | `theme_name` y ajuste global «Envío gratis» (`garelon_free_shipping`, grupo Carrito) |
+| `config/settings_data.json` | Esquemas de color, fuentes, botones, carrito en cajón, descripción de marca, `garelon_free_shipping: true` |
 | `sections/header-group.json`, `sections/footer-group.json` | Barra superior, cabecera y pie GARELON |
 | `templates/index.json`, `templates/product.json` | Home y ficha |
-| `locales/*.json` | Namespace `garelon.*` en todos los idiomas y «Añadir al carrito» en español de España |
+| `locales/*.json` | Namespace `garelon.*` en todos los idiomas (español en `es.json`, inglés en el resto) y «Añadir al carrito» en español de España |
 
 Todo el JavaScript de Dawn (`global.js`, `product-info.js`, `product-form.js`, `cart*.js`, `media-gallery.js`…) está **sin modificar**.
 
@@ -111,7 +113,7 @@ Formulario oficial de Dawn. Bloques típicos: título, valoración, precio, conf
 Sin JS. En móvil, scroll-snap: la infografía ocupa todo el ancho para que se lea; el resto deja asomar la siguiente. Desde 750 px, rejilla. Solo la primera imagen de la ficha es `eager`. La infografía enlaza a su versión grande para ampliarla. Los textos alternativos salen de `garelon.gallery.alt_<clave>`.
 
 ### 3.6 Confianza · bloque `garelon_trust` (`snippets/garelon-trust.liquid`)
-Frase destacada (una vez por página, junto a la compra) + hasta 4 garantías con icono (2 × 2 en móvil). Cada garantía solo aparece si su texto no está vacío. Los textos deben ser ciertos en Shopify (envío gratis, internacional…).
+Frase destacada (una vez por página, junto a la compra) + hasta 4 garantías con icono (2 × 2 en móvil). Cada garantía solo aparece si su texto no está vacío. Los textos deben ser ciertos en Shopify (envío gratis, internacional…). Con el ajuste «Envío gratis» desactivado, `tools/garelon_check.py` da error si una garantía sigue diciendo «Envío gratis».
 
 ### 3.7 Elige tu oferta · bloque `garelon_offer` (`snippets/garelon-offer.liquid`)
 Tarjetas clicables que **son** los radios del `<variant-selects>` de Dawn: Dawn cambia la variante, el `id` del formulario, el precio, la URL (ficha), la disponibilidad y el botón. Teclado: Tab + flechas. El grupo se anuncia con el título del bloque.
@@ -121,10 +123,11 @@ Tarjetas clicables que **son** los radios del `<variant-selects>` de Dawn: Dawn 
 | `option_name` | Nombre de la opción de packs en Shopify (hoy `Pack`). El número inicial del valor («2 pulseras») son las unidades |
 | `unit_singular` | Palabra de la unidad para «X € por <unidad>» y la nota de ahorro (schema: «unidad») |
 | `sub_1..3` | Texto corto de cada tarjeta. Un texto que hable de ahorro («ahorr…») se oculta solo si ese pack no ahorra de verdad |
-| `badge_pack` / `badge_text` | Distintivo editorial en un pack. **Atención:** el texto por defecto del schema es «Más popular» (con `badge_pack: none`, invisible). Al activar un distintivo, escribe un texto editorial («Recomendado») salvo que haya datos de ventas (R9) |
+| `badge_pack` / `badge_text` | Distintivo editorial en un pack (`badge_pack` por defecto `none`). El texto por defecto del schema es «Recomendado». «Más popular», «Más vendido» o similares solo con datos de ventas reales (R9); `tools/garelon_check.py` impide que un default de schema los traiga |
 | `show_unit_price` | Precio por unidad, solo en packs con ahorro real |
 | `show_promo` / `promo_text` | Texto de promoción, apagado por defecto, sin contador |
-| `free_shipping` | «Impuestos incluidos. Envío gratis.» bajo los packs (default `true`). Desactivado, vuelve el texto de Shopify sobre el envío calculado en el checkout |
+
+Bajo las tarjetas va la nota de impuestos y envío común (`garelon-shipping-note`, §3.17). El bloque **no tiene** ajuste de envío propio: lo decide el ajuste global «Envío gratis».
 
 Reglas de cálculo:
 - **Precio tachado:** solo si la variante tiene `compare_at_price > price` en Shopify.
@@ -161,8 +164,26 @@ Título, texto y botón hacia `/#comprar`.
 ### 3.16 Pie · `footer` (Dawn + GARELON)
 Logo completo, descripción de marca, bloque «Ayuda» con enlace a contacto, enlaces legales en orden fijo y solo si existen (Contacto · Envíos · Devoluciones y reembolsos · Privacidad · Cookies · Términos · Aviso legal). Sin iconos de pago ni newsletter.
 
-### 3.17 Carrito
-Cajón (`cart_type: drawer`) y `/cart` de Dawn, sin cambios salvo «Seguir comprando» → home. La nota del carrito es la de Dawn (hoy «Impuestos incluidos. Descuentos y envío calculados en la pantalla de pago»). Sin upsells, casillas premarcadas ni productos añadidos automáticamente.
+### 3.17 Carrito y nota de envío
+Cajón (`cart_type: drawer`) y `/cart` de Dawn: formulario, líneas, cantidades, subtotal y botón de pago sin cambios. Dos cambios GARELON: «Seguir comprando» → home, y la nota de impuestos y envío.
+
+**Envío gratis: una sola fuente de verdad.**
+
+| Pieza | Dónde |
+|---|---|
+| Decisión | Ajuste global «Envío gratis» (`garelon_free_shipping`), en Configuración del tema › Carrito. Activo por defecto y en `settings_data.json`, porque el propietario confirmó que el envío es gratis. Se activa solo si la tarifa real en Shopify Admin › Envío y entrega es gratuita: el tema no cambia tarifas |
+| Texto | `snippets/garelon-shipping-note.liquid`, único archivo que pinta «Envío gratis.» (`garelon.offer.free_shipping`) |
+| Dónde se ve | Bajo los packs (`garelon-offer`), bajo el precio cuando no hay packs (`featured-product`, `main-product`), en el cajón (`cart-drawer`) y en `/cart` (`main-cart-footer`) |
+
+| Situación | Packs y ficha | Cajón y `/cart` |
+|---|---|---|
+| Envío gratis + impuestos incluidos (hoy) | «Impuestos incluidos. Envío gratis.» | «Impuestos incluidos. Envío gratis.» |
+| Envío gratis + aranceles e impuestos incluidos | «Aranceles e impuestos incluidos. Envío gratis.» | Igual |
+| Envío gratis + solo aranceles incluidos | «Aranceles incluidos. Envío gratis.» | «Aranceles incluidos. Impuestos calculados en la pantalla de pago. Envío gratis.» |
+| Envío gratis + impuestos no incluidos | «Envío gratis.» (como Dawn, el producto no habla de impuestos) | «Impuestos calculados en la pantalla de pago. Envío gratis.» (`garelon.cart.taxes_at_checkout`) |
+| Envío gratis **desactivado** | Texto de Dawn: «Impuestos incluidos. Los gastos de envío se calculan en la pantalla de pago.» (con enlace a la política de envío si existe) | Nota original de Dawn: «Impuestos incluidos. Descuentos y envío calculados en la pantalla de pago.» |
+
+Así no se pierde información fiscal ni se inventan afirmaciones nuevas. Si se desactiva el envío gratis, cambia también la garantía «Envío gratis + seguimiento» (§3.6). Sin upsells, casillas premarcadas ni productos añadidos automáticamente.
 
 ### 3.18 Otras plantillas
 `404.json` (Dawn, «Seguir comprando» → home), `page.contact.json` (página `contacto` del Admin), `cart.json`, `search.json`, `password.json`, `collection.json`, `list-collections.json`, `blog.json`, `article.json`, `page.json`, `gift_card.liquid`, todas de Dawn.
@@ -208,7 +229,8 @@ Cajón (`cart_type: drawer`) y `/cart` de Dawn, sin cambios salvo «Seguir compr
 | Barra superior, navegación | `sections/header-group.json` |
 | Pie (bloque Ayuda) | `sections/footer-group.json` |
 | Descripción de marca | `config/settings_data.json` (`brand_description`) |
-| Textos de interfaz GARELON (legales, galería, packs, oferta, opiniones) | `locales/*.json` › `garelon.*` |
+| Textos de interfaz GARELON (legales, galería, packs, oferta, envío del carrito, opiniones) | `locales/*.json` › `garelon.*` |
+| Envío gratis (sí/no) | Configuración del tema › Carrito › «Envío gratis» (`config/settings_data.json`) |
 | Valores por defecto de bloques y secciones | `{% schema %}` de cada sección |
 | Título, descripción y SEO del producto | Shopify Admin |
 
@@ -236,6 +258,8 @@ Lista de comprobación técnica. El prompt de migración la recorre fase a fase.
 | 14 | Paleta y fuentes: **solo si el propietario lo pide** | `config/settings_data.json`, `assets/garelon.css` |
 | 15 | Producto, variantes, packs, precios, multimedia, SEO, redirección del handle anterior → `/` | **Shopify Admin** (propietario) |
 | 16 | Mapping con el proveedor y pedidos de prueba | `{{SUPPLIER_INTEGRATION}}` (propietario) |
+| 17 | Envío gratis: confirmar con la tarifa real del producto nuevo. Si no es gratis, desactivar el ajuste y cambiar la garantía de envío | Configuración del tema › Carrito (`config/settings_data.json`), plantillas JSON |
+| 18 | Pruebas específicas del producto (textos, handle, claves de imagen) | `tests/render-harness/suite/` y `src/server.js` (producto simulado) |
 
 Comando para encontrar restos del producto anterior (adapta los términos):
 
@@ -266,22 +290,32 @@ grep -rn -i -E "pulsera|rosario|virgen" assets config layout locales sections sn
 | `python3 tools/garelon_docs_check.py` | Coherencia del sistema documental, no del tema: cabeceras, rutas citadas, enlaces, términos obsoletos, skill, snapshot al día y manifest. `--update-manifest` y `--zip` para el paquete de ChatGPT |
 | `python3 tools/test_garelon_docs_check.py` | Autoprueba del comprobador documental |
 
-**Fuera del repositorio (hay que instalarlo en la sesión):**
-- **Theme Check:** `@shopify/theme-check-node` (Node). La línea base de Dawn 16.0.0 tiene avisos propios: se compara con la línea base, no con cero.
-- **Liquid estricto:** gema `liquid` de Ruby, con `error_mode: :strict` sobre `layout`, `sections`, `snippets` y `templates`, registrando `schema`, `style`, `form`, etc.
-- **Render, routing, responsive y regresión:** servidor local con `liquidjs`, que pinta el Liquid real del tema con datos simulados (producto con packs, sin producto, agotado, con y sin opiniones, con y sin políticas), y Playwright con Chromium y el JS real de Dawn. **No está versionado en el repositorio.** Mientras no se versione, cada sesión lo reconstruye o recupera una copia entregada aparte. Ver `references/qa-testing.md` de la skill.
+`tools/garelon_check.py` también vigila la honestidad: ningún default de schema con claims de ventas («Más popular»…) y, con «Envío gratis» desactivado, ninguna plantilla que siga prometiéndolo.
+
+**Batería de render y comprobaciones externas (versionadas en `tests/render-harness/`):**
+
+| Comando | Qué hace |
+|---|---|
+| `cd tests/render-harness && npm ci` | Instala las dependencias fijadas en `package-lock.json` (`liquidjs`, `playwright-core`, `@shopify/theme-check-node`, fuentes). Chromium: el de `/opt/pw-browsers` en Claude Code web o `npm run install-chromium` |
+| `node tests/render-harness/validate.js` | Todo en orden: validador, autoprueba, Theme Check, Liquid estricto y batería de render. Con `--theme <carpeta> --zip`, sobre el ZIP descomprimido |
+| `node tests/render-harness/run.js [--theme <carpeta>] [--phase X]` | Solo la batería de render: servidor local con `liquidjs` que pinta el Liquid real con datos **simulados** (packs con y sin ahorro, `compare_at`, agotado, sin producto, con y sin opiniones, políticas, envío gratis activado/desactivado, impuestos) y Playwright con el JS real de Dawn |
+| `npm run theme-check` | Theme Check oficial; cada aviso se marca `BASELINE DAWN` (ya está en Dawn 16.0.0) o `GARELON`. Objetivo: 0 errores y 0 avisos `GARELON` |
+| `npm run liquid-strict` | Gema `liquid` de Ruby (5.14.0) en modo estricto. `BAD 0` = bien |
+
+Las fases (A, B, C…) son rondas de trabajo; cada ronda nueva añade la suya. Requisitos, qué simula, qué no prueba y cómo leer los resultados: `tests/render-harness/README.md`. Los totales actuales están en el snapshot.
 
 **Responsive obligatorio:** 320, 360, 375, 390, 430, 768, 1024 y 1440 px, sin scroll horizontal.
 
-**ZIP del tema:** solo `assets/ config/ layout/ locales/ sections/ snippets/ templates/`. Sale siempre de `tools/build_zip.py`. Después se **descomprime en una carpeta nueva y se vuelve a validar** (validador `--strict-root`, Theme Check, Liquid estricto, render). Los ZIP no se suben a GitHub.
+**ZIP del tema:** solo `assets/ config/ layout/ locales/ sections/ snippets/ templates/`. Sale siempre de `tools/build_zip.py`, con el nombre `GARELON-PULSERA-ROSARIO-CLEAN-v<versión>-<TEMA>.zip` y la versión siguiente a la última entregada. Después se **descomprime en una carpeta nueva y se vuelve a validar** con `node tests/render-harness/validate.js --theme <carpeta> --zip`. Los ZIP no se suben a GitHub.
 
-**Lo que este entorno no prueba:** Shopify real (subida, vista previa, tienda publicada), checkout, pagos, DSers, el widget real de Judge.me ni los metafields reales.
+**Lo que este entorno no prueba:** Shopify real (subida, vista previa, tienda publicada, Admin), checkout, pagos, tarifas de envío reales, DSers, el widget real de Judge.me ni los metafields reales. La batería **simula** Shopify.
 
 ---
 
 ## 10. No tocar
 
-- JavaScript de Dawn, `snippets/buy-buttons.liquid`, el formulario de producto y la lógica del carrito y del cajón (salvo los enlaces «Seguir comprando», ya hechos).
+- JavaScript de Dawn, `snippets/buy-buttons.liquid`, el formulario de producto y la lógica del carrito y del cajón (salvo los enlaces «Seguir comprando» y la nota de envío común, ya hechos).
+- Un segundo ajuste o texto de «Envío gratis»: la decisión vive solo en `garelon_free_shipping` y el texto solo en `garelon-shipping-note`.
 - El checkout, los métodos de pago, el fulfillment y la configuración del proveedor.
 - El logo y la identidad (R20), las reglas CSS de la cabecera móvil y el orden legal del pie.
 - `templates/index.json` con bloques de app o recursos de la tienda (R17).
@@ -295,5 +329,5 @@ grep -rn -i -E "pulsera|rosario|virgen" assets config layout locales sections sn
 2. Lo nuevo va con prefijo `garelon-`, `name` ≤ 25 bytes, schema con defaults válidos y textos de interfaz en `locales/` (todos los idiomas, `garelon.*`).
 3. Un cambio dentro de un archivo de Dawn va comentado con `GARELON:` y es mínimo.
 4. Los ajustes nuevos llevan un default seguro. Lo que anuncie una oferta o un dato comercial debe ser cierto con la configuración por defecto, o ir desactivado hasta que el propietario lo confirme.
-5. Antes de entregar: validador, autoprueba, Theme Check (contra la línea base), Liquid estricto, render y responsive, y ZIP validado descomprimido.
+5. Antes de entregar: `node tests/render-harness/validate.js` (validador, autoprueba, Theme Check sin avisos `GARELON`, Liquid estricto, render y responsive), con una fase nueva de pruebas para la ronda, y el ZIP validado descomprimido.
 6. Actualiza `current-store-state.md` y, si cambia la arquitectura, este documento (DOCUMENT_SYNC).
