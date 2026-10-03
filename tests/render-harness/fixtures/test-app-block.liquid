@@ -1,5 +1,7 @@
 {%- comment -%} SOLO TEST: simula el HTML de un bloque de app de reseñas (no existe en el tema). Clases como las del widget de Judge.me. {%- endcomment -%}
-<div class="test-app-block jdgm-widget jdgm-review-widget" data-test="app-reviews">
+{%- comment -%}theme-check-disable UndefinedObject{%- endcomment -%}
+{%- comment -%} block = el bloque @app que pasa el servidor de prueba (solo existe en la batería). {%- endcomment -%}
+<div class="test-app-block jdgm-widget jdgm-review-widget" data-test="app-reviews" data-app-type="{{ block.app_type }}" data-review-data="{{ block.settings.review_data }}">
   <div class="jdgm-rev-widg">
     <h2 class="jdgm-rev-widg__title">Opiniones de clientes</h2>
     <p>DATOS DE PRUEBA · widget simulado de una app de reseñas</p>

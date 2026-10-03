@@ -13,8 +13,11 @@ tema (y, si es `templates/index.json`, que la home dé 404):
   * plantillas JSON y grupos: tipo de sección existente y permitido en esa
     plantilla/grupo, ajustes existentes y con valor válido, bloques existentes,
     order/block_order coherentes, límites de bloques; sin referencias a apps,
-    imágenes de Files ni recursos que puedan no existir en la tienda;
+    imágenes de Files ni recursos que puedan no existir en la tienda. ÚNICA excepción
+    (R17, decisión D30 del propietario): el Review Widget oficial de Judge.me dentro de
+    «GARELON Opiniones» en index/product, uno por sección y con datos reales;
   * settings_data.json contra settings_schema.json (incluidos los esquemas de color);
+    como App Embed solo se admite Judge.me Core (D30);
   * referencias Liquid: render/include → snippets, section(s) → sections,
     'archivo' | asset_url → assets;
   * honestidad: ningún default de schema con claims de ventas («Más popular»…) y, con el
@@ -65,6 +68,18 @@ MENUS_OK = {'', 'main-menu', 'footer', 'customer-account-main-menu'}
 NAME_MAX_BYTES = 25
 MAX_SECTIONS_PER_TEMPLATE = 25
 MAX_BLOCKS_PER_SECTION = 50
+
+# R17 · Excepción controlada (decisión D30 del propietario). Identificadores verificados en plantillas
+# generadas por el editor de Shopify en tiendas reales (sep. 2026). Mientras Judge.me sea la app de
+# opiniones de GARELON; si se cambia o se desinstala, se retiran estas referencias de las plantillas.
+JUDGEME_UUID = '61ccd3b1-a9f2-4160-9fe9-4fec8413e5d8'
+JUDGEME_REVIEW_WIDGET = f'shopify://apps/judge-me-reviews/blocks/review_widget/{JUDGEME_UUID}'
+JUDGEME_CORE_EMBED = f'shopify://apps/judge-me-reviews/blocks/judgeme_core/{JUDGEME_UUID}'
+JUDGEME_ALLOWED_TEMPLATES = {'index', 'product'}
+JUDGEME_ALLOWED_SECTION = 'garelon-reviews'
+# Ajustes del bloque vistos en plantillas reales. review_data tiene que ser 'real_data' (nunca las
+# opiniones de muestra de Judge.me: R14). La selección de producto se añadirá cuando se verifique su clave.
+JUDGEME_WIDGET_SETTINGS = {'review_data', 'max_width', 'show_shop_reviews', 'empty_state'}
 
 errors = []
 warnings = []
@@ -392,7 +407,7 @@ def check_section_instance(theme, where, sid, sec, kind, owner):
             err(bw, 'id de bloque no válido')
         bt = b.get('type', '')
         if bt.startswith('shopify://') or bt == '@app':
-            err(bw, 'referencia a un bloque de app: la app puede no estar instalada; añádelo desde el editor')
+            check_app_block(bw, bt, b, st, kind, owner, counts)
             continue
         if bt not in bdefs:
             err(bw, f'tipo de bloque {bt!r} no existe en el schema de {st}')
@@ -409,6 +424,44 @@ def check_section_instance(theme, where, sid, sec, kind, owner):
                 check_value(theme, bw, bset[k], v, 'value')
         if 'blocks' in b:
             err(bw, 'bloques anidados no soportados por este tema')
+
+
+def check_app_block(bw, bt, b, st, kind, owner, counts):
+    """R17: ningún bloque de app en plantillas ni grupos, salvo el Review Widget oficial de Judge.me (D30)."""
+    if bt != JUDGEME_REVIEW_WIDGET:
+        err(bw, f'bloque de app no autorizado {bt!r}: solo se versiona el Review Widget oficial de Judge.me (R17/D30); '
+                'el resto se añade desde el editor')
+        return
+    if kind != 'templates' or owner not in JUDGEME_ALLOWED_TEMPLATES or st != JUDGEME_ALLOWED_SECTION:
+        err(bw, f'el Review Widget de Judge.me solo se permite en «GARELON Opiniones» ({JUDGEME_ALLOWED_SECTION}) '
+                f'de las plantillas {sorted(JUDGEME_ALLOWED_TEMPLATES)}')
+        return
+    counts['@judgeme'] = counts.get('@judgeme', 0) + 1
+    if counts['@judgeme'] > 1:
+        err(bw, 'más de un Review Widget de Judge.me en la misma sección')
+    if b.get('disabled'):
+        err(bw, 'Review Widget de Judge.me desactivado en la plantilla: quítalo o actívalo')
+    settings = b.get('settings') or {}
+    unknown = set(settings) - JUDGEME_WIDGET_SETTINGS
+    if unknown:
+        err(bw, f'ajustes del Review Widget no verificados {sorted(unknown)}')
+    if settings.get('review_data') != 'real_data':
+        err(bw, 'el Review Widget de Judge.me debe usar review_data = "real_data" (nunca opiniones de muestra, R14)')
+    if 'blocks' in b:
+        err(bw, 'bloques anidados no soportados por este tema')
+
+
+def check_app_embeds(cur):
+    """App Embeds en settings_data: solo Judge.me Core (D30)."""
+    for bid, b in (cur.get('blocks') or {}).items():
+        w = f'settings_data › blocks › {bid}'
+        if not ID_RE.match(bid):
+            err(w, 'id de bloque no válido')
+        if not isinstance(b, dict) or b.get('type') != JUDGEME_CORE_EMBED:
+            err(w, f'App Embed no autorizado {(b or {}).get("type")!r}: solo Judge.me Core (D30)')
+            continue
+        if not isinstance(b.get('disabled', False), bool) or b.get('settings') not in (None, {}):
+            err(w, 'Judge.me Core: «disabled» debe ser booleano y sin ajustes')
 
 
 def check_template(theme, rel):
@@ -478,6 +531,7 @@ def check_config(theme):
     if not isinstance(cur, dict):
         err('settings_data.json', '"current" no apunta a un preset válido')
         return
+    check_app_embeds(cur)
     schemes = cur.get('color_schemes') or {}
     theme.scheme_ids = set(schemes)
     if not schemes:

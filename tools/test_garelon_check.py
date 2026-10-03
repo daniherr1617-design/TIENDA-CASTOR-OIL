@@ -196,6 +196,75 @@ def ok_free_shipping_off_coherent(t):
         open(p, 'w', encoding='utf-8').write(s)
 
 
+# R17 · excepción controlada de Judge.me (D30): solo el Review Widget oficial, en «GARELON Opiniones»,
+# uno por sección y con datos reales; como App Embed, solo Judge.me Core.
+JM_UUID = '61ccd3b1-a9f2-4160-9fe9-4fec8413e5d8'
+JM_WIDGET = f'shopify://apps/judge-me-reviews/blocks/review_widget/{JM_UUID}'
+
+
+def jm_section(t, tpl='index'):
+    p = f'{t}/templates/{tpl}.json'; d = jload(p); sec = d['sections']['opiniones']
+    if not any(b['type'] == JM_WIDGET for b in (sec.get('blocks') or {}).values()):
+        raise AssertionError(f'{tpl}.json sin Review Widget versionado')
+    return p, d, sec
+
+
+def jm_add(sec, bid, block):
+    sec.setdefault('blocks', {})[bid] = block; sec.setdefault('block_order', []).append(bid)
+
+
+def m_jm_sample(t):
+    p, d, sec = jm_section(t)
+    for b in sec['blocks'].values():
+        b['settings']['review_data'] = 'sample_data'
+    jsave(p, d)
+
+
+def m_jm_other_app(t):
+    p, d, sec = jm_section(t)
+    jm_add(sec, 'otra_app', {'type': 'shopify://apps/otra-app/blocks/widget/00000000-0000-4000-8000-000000000000', 'settings': {}})
+    jsave(p, d)
+
+
+def m_jm_wrong_uuid(t):
+    p, d, sec = jm_section(t)
+    for b in sec['blocks'].values():
+        b['type'] = JM_WIDGET.replace(JM_UUID, '00000000-0000-4000-8000-000000000000')
+    jsave(p, d)
+
+
+def m_jm_duplicate(t):
+    p, d, sec = jm_section(t)
+    jm_add(sec, 'judge_me_dos', {'type': JM_WIDGET, 'settings': {'review_data': 'real_data'}})
+    jsave(p, d)
+
+
+def m_jm_wrong_section(t):
+    p, d, _ = jm_section(t)
+    jm_add(d['sections']['compra'], 'judge_me_en_compra', {'type': JM_WIDGET, 'settings': {'review_data': 'real_data'}})
+    jsave(p, d)
+
+
+def m_jm_unknown_setting(t):
+    p, d, sec = jm_section(t)
+    for b in sec['blocks'].values():
+        b['settings']['ajuste_inventado'] = 'x'
+    jsave(p, d)
+
+
+def m_embed_other(t):
+    p = f'{t}/config/settings_data.json'; d = jload(p)
+    cur = d['presets'][d['current']] if isinstance(d['current'], str) else d['current']
+    cur.setdefault('blocks', {})['otra_app_embed'] = {'type': 'shopify://apps/otra-app/blocks/embed/00000000-0000-4000-8000-000000000000', 'disabled': False, 'settings': {}}
+    jsave(p, d)
+
+
+def ok_jm_removed(t):
+    for tpl in ('index', 'product'):
+        p, d, sec = jm_section(t, tpl)
+        sec.pop('blocks'); sec.pop('block_order'); jsave(p, d)
+
+
 MUTATIONS = [
     ('falta templates/index.json', m_remove('templates/index.json')),
     ('falta layout/theme.liquid', m_remove('layout/theme.liquid')),
@@ -208,7 +277,14 @@ MUTATIONS = [
     ('index.json: block_order con id inexistente', m_block_order),
     ('index.json: order con id inexistente', m_order),
     ('index.json: clave duplicada', m_dup_key),
-    ('index.json: referencia a bloque de app', m_app_block),
+    ('index.json: referencia a bloque de app no autorizado', m_app_block),
+    ('Judge.me: Review Widget con opiniones de muestra (sample_data)', m_jm_sample),
+    ('Judge.me: otro bloque de app dentro de «GARELON Opiniones»', m_jm_other_app),
+    ('Judge.me: Review Widget con un UUID distinto del verificado', m_jm_wrong_uuid),
+    ('Judge.me: dos Review Widgets en la misma sección', m_jm_duplicate),
+    ('Judge.me: Review Widget fuera de «GARELON Opiniones»', m_jm_wrong_section),
+    ('Judge.me: ajuste del widget no verificado', m_jm_unknown_setting),
+    ('settings_data: App Embed distinto de Judge.me Core', m_embed_other),
     ('index.json: imagen de Files que puede no existir', m_image_ref),
     ('schema: nombre de bloque > 25 bytes', schema_mutation(long_block_name)),
     ('schema: default de texto vacío', schema_mutation(empty_text_default)),
@@ -224,6 +300,7 @@ MUTATIONS = [
 # Cambios válidos que NO deben dar error (sin falsos positivos).
 VALID = [
     ('«Envío gratis» desactivado y garantía cambiada a «Envío con seguimiento»', ok_free_shipping_off_coherent),
+    ('sin el Review Widget de Judge.me (tema instalable igualmente)', ok_jm_removed),
 ]
 
 

@@ -33,8 +33,10 @@ module.exports = async function (browser) {
   ok('E13 jerarquía de títulos: 1 H1 (portada) y H2 por sección', heads.filter(h => h === 1).length === 1 && heads[0] === 1 && heads.filter(h => h === 2).length >= 7, heads.join(''));
   const imgs = [...m.matchAll(/<img\b[^>]*>/g)].map(x => x[0]);
   ok('E14 imágenes del contenido: todas con alt, width y height; solo la portada eager', imgs.length >= 6 && imgs.every(i => /alt="[^"]+"/.test(i) && /width="\d+"/.test(i) && /height="\d+"/.test(i)) && imgs.filter(i => /loading="eager"/.test(i)).length === 1 && imgs.filter(i => !/loading="eager"/.test(i)).every(i => /loading="lazy"/.test(i)), imgs.filter(i => !/alt="[^"]+"/.test(i)).slice(0, 2));
-  const idx = fs.readFileSync(T.THEME + '/templates/index.json', 'utf8');
-  ok('E15 index.json sin precios, SKU, ids de variante, referencias a apps ni imágenes de Files', !/€|\d+[.,]\d{2}\s*(€|EUR)|"sku"|variant_id|shopify:\/\//.test(idx));
+  // Ronda M (D30, decisión del propietario): el Review Widget oficial de Judge.me es la única referencia de app
+  // permitida en index.json; se descuenta y cualquier otra «shopify://» sigue fallando.
+  const idx = fs.readFileSync(T.THEME + '/templates/index.json', 'utf8').split('shopify://apps/judge-me-reviews/blocks/review_widget/61ccd3b1-a9f2-4160-9fe9-4fec8413e5d8').join('');
+  ok('E15 index.json sin precios, SKU, ids de variante, referencias a apps (salvo el Review Widget de Judge.me, D30) ni imágenes de Files', !/€|\d+[.,]\d{2}\s*(€|EUR)|"sku"|variant_id|shopify:\/\//.test(idx));
   ok('E16 sin enlaces vacíos ni a /collections en la home', !/href=""|href="#"(?![\w-])|href="\/collections/.test(r.html.replace(/<template[\s\S]*?<\/template>/g, '')));
 
   // Navegador: FAQ con teclado, menú móvil con anclas, responsive.

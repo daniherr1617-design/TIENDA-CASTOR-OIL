@@ -19,7 +19,9 @@ module.exports = async function (browser) {
   const img = (hero.match(/<img[^>]*>/) || [''])[0];
   ok('C6 imagen de portada: eager + fetchpriority high + srcset + sizes + width/height + alt', /loading="eager"/.test(img) && /fetchpriority="high"/.test(img) && /srcset="[^"]*480w[^"]*720w[^"]*1080w"/.test(img) && /sizes="/.test(img) && /width="1080"/.test(img) && /height="1080"/.test(img) && /alt="Pulsera rosario/.test(img), img);
   ok('C7 solo una imagen con fetchpriority="high" en la home', count(r.html, /fetchpriority="high"/g) === 1, count(r.html, /fetchpriority="high"/g));
-  const idx = fs.readFileSync(T.THEME + '/templates/index.json', 'utf8');
+  // Ronda M (D30): se descuenta la única referencia de app autorizada, el Review Widget de Judge.me (su UUID
+  // contiene «4160», que el patrón de ids de variante tomaría por uno). Todo lo demás se sigue vigilando.
+  const idx = fs.readFileSync(T.THEME + '/templates/index.json', 'utf8').split('shopify://apps/judge-me-reviews/blocks/review_widget/61ccd3b1-a9f2-4160-9fe9-4fec8413e5d8').join('');
   ok('C8 ningún precio, SKU ni id de variante escrito en index.json', !/€|\d+[.,]\d{2}\s*(€|EUR)|"sku"|variant_id|"variant"|\b41\d\d\b/i.test(idx));
   for (const [w, h] of [[320, 640], [360, 740], [375, 667], [390, 844], [430, 932]]) {
     const { page, errs } = await openPage(browser, '/', { width: w, height: h });

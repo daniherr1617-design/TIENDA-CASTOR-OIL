@@ -9,6 +9,7 @@ const path = require('path');
 const { execSync, execFileSync } = require('child_process');
 const P = '/products/pulsera-rosario-virgen-maria';
 const BASE = 'fb4b850'; // HEAD antes de la ronda L
+const ROUND_HEAD = '3a78374'; // último commit del tema en la ronda L: L13-L17 se fijan a fb4b850..3a78374 (la ronda M toca plantillas)
 const REPO = fs.existsSync(THEME + '/.git');
 const NEW_SRC = 'NUEVA IMAGEN 3.png';
 const OLD_SRC = 'imagen 3.png';
@@ -22,6 +23,7 @@ const gallery = (html) => (html.match(/<div class="g-gallery"[\s\S]*?<\/ul>/) ||
 const slides = (g) => [...g.matchAll(/producto-(\w+)-\d+\.webp/g)].map(m => m[1]).filter((k, i, a) => a.indexOf(k) === i);
 const flat = (o, p = '', out = {}) => { for (const [k, v] of Object.entries(o)) (v && typeof v === 'object') ? flat(v, p + k + '.', out) : (out[p + k] = v); return out; };
 const atBase = (f) => execFileSync('git', ['-C', THEME, 'show', `${BASE}:${f}`], { maxBuffer: 64 * 1024 * 1024 });
+const atRound = (f) => execFileSync('git', ['-C', THEME, 'show', `${ROUND_HEAD}:${f}`], { maxBuffer: 64 * 1024 * 1024 });
 
 // Distancia media (0-255) en la zona de la cruz entre cada asset y la misma derivación hecha desde una fuente.
 function crossDistance(srcPath) {
@@ -104,19 +106,19 @@ print(json.dumps({f.split('/')[-1]: [Image.open(f).format, *Image.open(f).size] 
   ok('L12 «principal» y «detalle» salen de NUEVA IMAGEN 3.png (zona de la cruz: ≈ igual a la nueva, muy distinta de la antigua)',
     Object.keys(dNew).length === 5 && Object.values(dNew).every(v => v < 5) && Object.values(dOld).every(v => v > 12), { dNew, dOld });
 
-  // 6 · Alcance de la ronda L frente a fb4b850
-  const changed = execSync(`git -C ${THEME} diff --name-only ${BASE} -- assets config layout sections snippets templates`).toString().trim().split('\n').filter(Boolean).sort();
+  // 6 · Alcance de la ronda L: fb4b850..3a78374 (fijado al cerrar la ronda, como I/J/K)
+  const changed = execSync(`git -C ${THEME} diff --name-only ${BASE} ${ROUND_HEAD} -- assets config layout sections snippets templates`).toString().trim().split('\n').filter(Boolean).sort();
   ok('L13 archivos del tema tocados: solo los 5 WebP de principal/detalle y el alt de la portada', JSON.stringify(changed) === JSON.stringify(['assets/producto-detalle-480.webp', 'assets/producto-detalle-600.webp', 'assets/producto-principal-1080.webp', 'assets/producto-principal-480.webp', 'assets/producto-principal-720.webp', 'templates/index.json']), changed);
   const walk = (a, b, p, d) => { if (typeof a !== 'object' || a === null || typeof b !== 'object' || b === null) { if (JSON.stringify(a) !== JSON.stringify(b)) d.push(p); return d; }
     for (const k of new Set([...Object.keys(a), ...Object.keys(b)])) walk(a[k], b[k], p + '.' + k, d); return d; };
-  const di = walk(JSON.parse(atBase('templates/index.json')), JSON.parse(fs.readFileSync(`${THEME}/templates/index.json`, 'utf8')), '', []);
+  const di = walk(JSON.parse(atBase('templates/index.json')), JSON.parse(atRound('templates/index.json')), '', []);
   ok('L14 index.json: solo cambia el alt de la imagen de la portada (fidelidad)', JSON.stringify(di) === '[".sections.portada.settings.image_alt"]', di);
-  ok('L15 product.json sin cambios', atBase('templates/product.json').equals(fs.readFileSync(`${THEME}/templates/product.json`)));
+  ok('L15 product.json sin cambios', atBase('templates/product.json').equals(atRound('templates/product.json')));
   const others = fs.readdirSync(`${THEME}/assets`).filter(f => OTHER.some(k => f.startsWith(`producto-${k}-`)));
   ok('L16 resto de imágenes intacto: completa, infografía y oración (assets) y fuentes Imagen 1 / imagen 2 / imagen 4',
-    others.length === 10 && others.every(f => atBase(`assets/${f}`).equals(fs.readFileSync(`${THEME}/assets/${f}`))) &&
-    ['Imagen 1.png', 'imagen 2.png', 'imagen 4.png'].every(f => atBase(f).equals(fs.readFileSync(`${THEME}/${f}`))), others.length);
-  const locDiff = locs.map(f => { const a = flat(JSON.parse(atBase(`locales/${f}`))); const b = flat(JSON.parse(fs.readFileSync(`${THEME}/locales/${f}`, 'utf8')));
+    others.length === 10 && others.every(f => atBase(`assets/${f}`).equals(atRound(`assets/${f}`))) &&
+    ['Imagen 1.png', 'imagen 2.png', 'imagen 4.png'].every(f => atBase(f).equals(atRound(f))), others.length);
+  const locDiff = locs.map(f => { const a = flat(JSON.parse(atBase(`locales/${f}`))); const b = flat(JSON.parse(atRound(`locales/${f}`)));
     return [...new Set([...Object.keys(a), ...Object.keys(b)])].filter(k => a[k] !== b[k]); });
   ok('L17 locales: el único cambio es garelon.gallery.alt_principal', locDiff.every(d => JSON.stringify(d) === '["garelon.gallery.alt_principal"]'), locDiff.filter(d => d.length !== 1).slice(0, 2));
 };

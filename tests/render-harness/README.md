@@ -50,9 +50,10 @@ Para el Liquid estricto: `gem install liquid -v 5.14.0` (o, sin permisos de sist
 - **Precios:** inventados para la prueba, en céntimos. Nunca son los reales de la tienda.
 - **Ajustes forzables:** el ajuste global «Envío gratis» (`/__state?freeship=0|1`; vacío = el valor del tema) y los impuestos del carrito (`taxes=included|excluded|duties|both`).
 - **Tienda:** carrito (`/cart/add`, `/cart/change`, Section Rendering API), páginas, políticas, menús de una tienda nueva y bloque de app de opiniones (fixture).
+- **Bloques de app:** como en Shopify, un bloque versionado `shopify://apps/…` llega a Liquid con `block.type == '@app'`; `{% render block %}` pinta un fixture que deja a la vista qué bloque lo originó (`data-app-type`) y su `review_data`. El escenario `reviews` simula la app: `app`/`both` = Judge.me instalado (se pintan los bloques versionados; valoración sincronizada solo en `both`), `none`/`summary` = app ausente (Shopify no pinta sus bloques; `summary` conserva la valoración de los metafields).
 - **Routing como Shopify:** `/`, `/products/<handle>`, `/pages/<handle>`, `/policies/<x>`, `/cart`; el resto da la plantilla 404 con HTTP 404.
 
-`suite/tests.js` (fase A) y `suite/tests-B.js` … `tests-L.js` abren las páginas con Chromium y comprueban:
+`suite/tests.js` (fase A) y `suite/tests-B.js` … `tests-M.js` abren las páginas con Chromium y comprueban:
 
 - routing y 404;
 - cabecera, navegación, logo y pie;
@@ -62,6 +63,7 @@ Para el Liquid estricto: `gem install liquid -v 5.14.0` (o, sin permisos de sist
 - añadir al carrito con la cantidad 1;
 - ficha, compra fija, FAQ, opiniones y claims prohibidos;
 - imágenes y orden de galería, incluido de qué fuente sale cada asset (fase L: `principal` y `detalle` desde `NUEVA IMAGEN 3.png`);
+- Review Widget de Judge.me versionado en «GARELON Opiniones» (fase M, decisión D30): bloque y App Embed exactos, `garelon_check` lo acepta y rechaza cualquier otro, orden encabezado → widget → nota, sin resumen duplicado;
 - schemas, locales (31 idiomas) y alcance de los cambios de cada ronda;
 - accesibilidad básica: un H1, anclas, `alt`, contraste y foco;
 - sin errores JS;
@@ -75,7 +77,7 @@ Nada de esto demuestra que funcione en la tienda real:
 
 - el **checkout** de Shopify, los **pagos**, los impuestos ni las **tarifas de envío reales** (se configuran en Shopify Admin);
 - **DSers**, AliExpress ni el fulfillment;
-- **Judge.me** real: solo un fixture que imita un bloque de app;
+- **Judge.me** real: solo un fixture que imita un bloque de app (que el bloque versionado se instale, pinte las opiniones reales y que el App Embed quede activo solo se ve en `SHOPIFY PREVIEW`);
 - **Shopify Admin**, el editor de temas, los metafields reales, los mercados ni las traducciones de Shopify;
 - el render exacto de Shopify: `liquidjs` no es el motor de Shopify y los filtros están simulados.
 
@@ -92,7 +94,7 @@ Por eso, en los informes se distingue `PROBADO LOCALMENTE` / `ZIP DESCOMPRIMIDO`
 ## 8. Mantenimiento
 
 - **Pruebas de una ronda nueva:** se añaden en `suite/tests-<letra>.js` y la letra se añade a `PHASES` en `suite/tests.js`.
-- **Alcance de cada ronda:** las pruebas que comparan con git («archivos tocados», «plantillas intactas salvo…») se fijan al rango de commits de esa ronda (I25-I27 y J19-J21: hasta `955bcc3`; K23-K26: `c265802..974eadd`; L13-L17 comparan con `fb4b850`). Así no fallan cuando una ronda posterior cambia otros archivos, y la ronda nueva tiene su propia prueba de alcance.
+- **Alcance de cada ronda:** las pruebas que comparan con git («archivos tocados», «plantillas intactas salvo…») se fijan al rango de commits de esa ronda (I25-I27 y J19-J21: hasta `955bcc3`; K23-K26: `c265802..974eadd`; L13-L17: `fb4b850..3a78374`; M23-M26 comparan con `8d7e8fd`). Así no fallan cuando una ronda posterior cambia otros archivos, y la ronda nueva tiene su propia prueba de alcance.
 - **Cambio de producto:** muchas pruebas son específicas de la Pulsera Rosario (textos, claves de imagen, handle). Hay que adaptarlas en la migración (`docs/garelon/GARELON_MIGRATION_PROMPT_TEMPLATE.md`).
 - **Lo que no se versiona:** `node_modules/`, capturas, logs, trazas, ZIPs y resultados (`.gitignore`). Las capturas de comprobación visual se guardan fuera del repo.
 
@@ -105,7 +107,7 @@ tests/render-harness/
 ├── run.js              lanzador: servidor en un puerto libre + batería
 ├── validate.js         validación completa (5 pasos)
 ├── src/server.js       Shopify simulado (liquidjs)
-├── suite/tests.js      fase A + utilidades; tests-B.js … tests-L.js
+├── suite/tests.js      fase A + utilidades; tests-B.js … tests-M.js
 ├── fixtures/           stub de standard-events de Shopify, bloque de app de prueba, textos esperados de la FAQ
 └── checks/             theme-check.js (Theme Check con clasificación Dawn/GARELON), liquid-strict.rb
 ```

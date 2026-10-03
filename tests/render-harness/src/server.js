@@ -112,8 +112,9 @@ const kw = (a, k) => (a.find(x => Array.isArray(x) && x[0] === k) || [])[1];
 const fsys = { exists: async (f) => fs.existsSync(f), existsSync: (f) => fs.existsSync(f),
   readFile: async (f) => patch(f, fs.readFileSync(f, 'utf8')), readFileSync: (f) => patch(f, fs.readFileSync(f, 'utf8')),
   resolve: (root, file, ext) => path.resolve(root, path.extname(file) ? file : file + ext), contains: (root, file) => file.startsWith(path.resolve(root)), dirname: (f) => path.dirname(f), sep: path.sep };
-// SOLO TEST: {% render block %} de un bloque @app se sustituye por un fixture marcado como prueba.
-function patch(f, s) { return s.replace(/{%-?\s*render block\s*-?%}/g, "{% render 'test-app-block' %}"); }
+// SOLO TEST: {% render block %} de un bloque @app se sustituye por un fixture marcado como prueba
+// (recibe el bloque para dejar a la vista qué bloque de app versionado lo originó y con qué ajustes).
+function patch(f, s) { return s.replace(/{%-?\s*render block\s*-?%}/g, "{% render 'test-app-block', block: block %}"); }
 const engine = new Liquid({ fs: fsys, root: [`${T}/sections`, `${T}/snippets`, `${T}/layout`, FIXTURES], partials: [`${T}/snippets`, FIXTURES], extname: '.liquid', jsTruthy: false, strictFilters: true, strictVariables: false });
 const rawBlock = (name) => ({ parse(t, rem) { this.tpls = []; const s = this.liquid.parser.parseStream(rem); s.on(`tag:end${name}`, () => s.stop()).on('template', (tpl) => this.tpls.push(tpl)).on('end', () => { throw new Error(`tag ${name} sin cerrar`); }); s.start(); } });
 for (const t of ['schema', 'javascript', 'doc', 'stylesheet']) engine.registerTag(t, { ...rawBlock(t), render() { return ''; } });
@@ -192,8 +193,11 @@ function sectionData(id, type, vals, blocksIn, order) {
   const sc = schemaOf(type); const s = resolveSettings(sc.settings, vals, L.esSchema);
   const bdefs = Object.fromEntries((sc.blocks || []).map(b => [b.type, b]));
   const blocks = (order || []).filter(bid => blocksIn[bid] && !blocksIn[bid].disabled).map(bid => { const b = blocksIn[bid];
-    const bs = b.type === '@app' ? {} : resolveSettings((bdefs[b.type] || {}).settings, b.settings, L.esSchema);
-    return { id: bid, type: b.type, settings: bs, shopify_attributes: `data-shopify-editor-block='{"id":"${bid}","type":"${b.type}"}'` }; });
+    // Como Shopify: un bloque de app versionado (shopify://apps/…) llega a Liquid con block.type == '@app'.
+    const isApp = b.type === '@app' || b.type.startsWith('shopify://apps/');
+    const bs = isApp ? { ...(b.settings || {}) } : resolveSettings((bdefs[b.type] || {}).settings, b.settings, L.esSchema);
+    const type = isApp ? '@app' : b.type;
+    return { id: bid, type, app_type: isApp ? b.type : '', settings: bs, shopify_attributes: `data-shopify-editor-block='{"id":"${bid}","type":"${type}"}'` }; });
   return { id, settings: s, blocks, cls: sc.class || '', blocks_by_id: blocks };
 }
 let CURRENT = null;
@@ -208,9 +212,15 @@ function templateFile(pageType, suffix) { return `templates/${pageType}${suffix 
 async function renderTemplate(file, only) {
   const tpl = readJson(file); let out = '';
   for (const sid of tpl.order) { if (only && sid !== only) continue; const s = tpl.sections[sid]; if (s.disabled) continue;
-    const blocks = JSON.parse(JSON.stringify(s.blocks || {})); const order = [...(s.block_order || [])];
-    // SOLO TEST: simula que el dueño ha añadido el bloque de app de reseñas en la sección de opiniones.
-    if (s.type === 'garelon-reviews' && (state.reviews === 'app' || state.reviews === 'both')) { blocks.test_app = { type: '@app', settings: {} }; order.push('test_app'); }
+    const blocks = JSON.parse(JSON.stringify(s.blocks || {})); let order = [...(s.block_order || [])];
+    // SOLO TEST: reviews=app|both simula que la app de reseñas está instalada; none|summary, que no lo está
+    // (Shopify no pinta los bloques de una app ausente). Los bloques de app versionados en la plantilla
+    // (Judge.me, ronda M) se pintan solo con la app «instalada»; si la sección no trae ninguno, se simula
+    // que el dueño lo añadió desde el editor, como antes de la ronda M.
+    const appOn = state.reviews === 'app' || state.reviews === 'both';
+    const versioned = order.filter(bid => (blocks[bid] || {}).type && blocks[bid].type.startsWith('shopify://apps/'));
+    if (!appOn) order = order.filter(bid => !versioned.includes(bid));
+    if (s.type === 'garelon-reviews' && appOn && versioned.length === 0) { blocks.test_app = { type: '@app', settings: {} }; order.push('test_app'); }
     out += await renderSection(`template--1__${sid}`, s.type, s.settings, blocks, order); }
   return out;
 }

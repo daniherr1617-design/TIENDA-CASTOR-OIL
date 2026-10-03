@@ -1,6 +1,8 @@
 {%- comment -%}
   GARELON · Opiniones REALES. Fuentes, por prioridad:
-  1) el bloque de app de la app de reseñas (p. ej. Judge.me), que el dueño añade en el editor;
+  1) el bloque de app de la app de reseñas: el Review Widget oficial de Judge.me, versionado en
+     templates/index.json y templates/product.json (única excepción a R17, decisión D30). En Liquid
+     un bloque de app tiene block.type == '@app';
   2) la valoración estándar de Shopify que rellena la app (metafields reviews.rating y reviews.rating_count).
   Sin ninguna de las dos, el cliente no ve nada (ni sección, ni estrellas, ni «0 opiniones»).
   Con «Ocultar sin opiniones», el widget de la app tampoco se ve mientras la valoración
