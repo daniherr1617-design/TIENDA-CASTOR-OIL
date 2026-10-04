@@ -1,8 +1,8 @@
 # GARELON · PROMPT MAESTRO DEL PROYECTO (constitución operativa)
 
-> **Versión:** 3.3 · **Fecha:** 2026-10-03 · **Repositorio:** `daniherr1617-design/TIENDA-CASTOR-OIL` · **Rama fuente:** `claude/rosary-clean-rebuild` · **Commit fuente:** `a1b03ef`
+> **Versión:** 3.4 · **Fecha:** 2026-10-04 · **Repositorio:** `daniherr1617-design/TIENDA-CASTOR-OIL` · **Rama fuente:** `claude/rosary-clean-rebuild` · **Commit fuente:** `e27ae75`
 >
-> Snapshot generado desde `a1b03ef`. Ante discrepancias futuras manda el repositorio actual y, por encima de él, el producto real y las decisiones recientes del propietario (§3).
+> Snapshot generado desde `e27ae75`. Ante discrepancias futuras manda el repositorio actual y, por encima de él, el producto real y las decisiones recientes del propietario (§3).
 
 Este documento es la **constitución** de GARELON: qué es la marca, quién hace qué, qué fuentes mandan, qué reglas no se rompen nunca y cómo se trabaja. No describe el código en detalle (eso es `GARELON_MASTER_TEMPLATE.md`) ni guarda el estado del día (eso es `.claude/skills/garelon-ecommerce-operator/references/current-store-state.md`).
 
@@ -255,6 +255,8 @@ Optimizar la conversión **sí**; dark patterns **no** (R9).
 - Español de España, «tú», frases cortas, sin mayúsculas gritonas ni exclamaciones en serie.
 - Beneficio y significado antes que especificación; los datos secundarios (capacidad, plazos…) van en la FAQ o en las políticas, no en las zonas de venta.
 - Sin superlativos sin prueba («el mejor», «el regalo perfecto»).
+
+**Regalo:** Una sección de gifting puede comunicar de forma **genérica** que el producto es apropiado como regalo o detalle para momentos especiales. Las **ocasiones concretas** (bautizos, comuniones, Navidad, cumpleaños, bodas…) **solo se enumeran si el propietario las pide expresamente para ese producto** (D31). Hoy: «Para regalar» · «Un detalle para momentos que importan» · «Una joya con significado para regalar en un momento especial.», sin tarjetas.
 
 **Portada (hero):** explica producto y beneficio y lleva a la compra con **un solo CTA** (hoy «Elegir mi pulsera» → `/#comprar`). **No muestra «A partir de X €»**: el usuario descubre los precios en los packs.
 

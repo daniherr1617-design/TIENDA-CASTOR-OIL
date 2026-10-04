@@ -10,6 +10,7 @@
 - Tarjetas ordenadas y **simétricas**: mismo tamaño, centradas, sin desalineaciones por longitud de texto.
 - Confianza elegante: escudo, candado o check finos, en dorado sobre marfil.
 - Sin redundancias: un dato aparece una vez, donde decide (el precio dentro de cada tarjeta de pack).
+- **Regalo genérico (D31):** la idea de regalo con significado para un momento especial, sin enumerar ocasiones concretas (ni tarjetas, ni listas, ni en la FAQ) salvo que el propietario las pida para ese producto.
 - Paleta: blanco, marfil, crema, dorado, champagne, carbón. Nada de aspecto AliExpress o dropshipping barato.
 - Referencias de otras tiendas: aprende estructura, interacción, jerarquía y CRO. **No copies** diseños literalmente.
 

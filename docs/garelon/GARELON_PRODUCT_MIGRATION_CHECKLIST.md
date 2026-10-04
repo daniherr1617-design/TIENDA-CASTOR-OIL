@@ -1,8 +1,8 @@
 # GARELON · CHECKLIST DE MIGRACIÓN Y VERIFICACIÓN
 
-> **Versión:** 3.2 · **Fecha:** 2026-10-03 · **Repositorio:** `daniherr1617-design/TIENDA-CASTOR-OIL` · **Rama fuente:** `claude/rosary-clean-rebuild` · **Commit fuente:** `a1b03ef`
+> **Versión:** 3.3 · **Fecha:** 2026-10-04 · **Repositorio:** `daniherr1617-design/TIENDA-CASTOR-OIL` · **Rama fuente:** `claude/rosary-clean-rebuild` · **Commit fuente:** `e27ae75`
 >
-> Snapshot generado desde `a1b03ef`. Ante discrepancias futuras manda el repositorio actual. Si una comprobación ya no corresponde a la arquitectura real, se corrige este checklist (DOCUMENT_SYNC), no el tema.
+> Snapshot generado desde `e27ae75`. Ante discrepancias futuras manda el repositorio actual. Si una comprobación ya no corresponde a la arquitectura real, se corrige este checklist (DOCUMENT_SYNC), no el tema.
 
 **Marcadores:**
 - 🅲 **Claude Code / local:** se comprueba en el repositorio y en el ZIP descomprimido (batería versionada `tests/render-harness`, que simula Shopify con datos ficticios).
@@ -37,7 +37,8 @@ Cada punto se marca con el lugar donde se probó: `PROBADO LOCALMENTE`, `ZIP DES
 - [ ] 🅲 Sin scroll horizontal a 320, 360, 375, 390, 430, 768, 1024 y 1440 px.
 - [ ] 🅲 Cabecera móvil: menú · logo · carrito sin solapes.
 - [ ] 🅲 Portada: H1 y CTA en la primera pantalla del móvil; sin precio en la portada.
-- [ ] 🅲 Tarjetas de packs y de «Para regalar» simétricas; texto bajo los packs en una línea a 320 px.
+- [ ] 🅲 Tarjetas de packs simétricas (y las de cualquier sección con etiquetas); texto bajo los packs en una línea a 320 px.
+- [ ] 🅲 «Para regalar» (si se usa) y la FAQ de regalo: idea genérica, sin enumerar ocasiones concretas salvo petición expresa del propietario (D31); sin rejilla vacía.
 - [ ] 🅲 Objetivos táctiles ≥ 44 px; compra fija en la ficha móvil.
 - [ ] 🆂 Revisión visual en un móvil real.
 

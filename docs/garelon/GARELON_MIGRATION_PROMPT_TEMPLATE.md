@@ -1,8 +1,8 @@
 # GARELON · PLANTILLA DEL PROMPT DE MIGRACIÓN (brief + imágenes + repo → prompt para Claude Code)
 
-> **Versión:** 3.2 · **Fecha:** 2026-10-03 · **Repositorio:** `daniherr1617-design/TIENDA-CASTOR-OIL` · **Rama fuente:** `claude/rosary-clean-rebuild` · **Commit fuente:** `a1b03ef`
+> **Versión:** 3.3 · **Fecha:** 2026-10-04 · **Repositorio:** `daniherr1617-design/TIENDA-CASTOR-OIL` · **Rama fuente:** `claude/rosary-clean-rebuild` · **Commit fuente:** `e27ae75`
 >
-> Snapshot generado desde `a1b03ef`. Ante discrepancias futuras manda el repositorio actual: la fase F0 obliga a Claude Code a revalidarlo.
+> Snapshot generado desde `e27ae75`. Ante discrepancias futuras manda el repositorio actual: la fase F0 obliga a Claude Code a revalidarlo.
 
 **Quién lo usa:** ChatGPT (o el propietario) rellena los `{{…}}` con el brief (`GARELON_PRODUCT_BRIEF_TEMPLATE.md`) y el análisis de imágenes, y entrega a Claude Code el bloque «PROMPT FINAL». No depende de ningún producto concreto.
 
@@ -89,7 +89,8 @@ F2 · Imágenes
 
 F3 · Copy
   - Textos de portada, compra, confianza, packs, tranquilidad, opiniones, significado, detalles,
-    «Para regalar» u ocasiones (si aplica), FAQ, cierre, ficha y textos alternativos.
+    «Para regalar» (si aplica: idea genérica de regalo para un momento especial; ocasiones concretas
+    solo si el propietario las pide expresamente, D31), FAQ, cierre, ficha y textos alternativos.
   - Español de España, «tú», sin claims prohibidos ni urgencia falsa.
 
 F4 · Assets y puntos acoplados al producto (Master Template §7)

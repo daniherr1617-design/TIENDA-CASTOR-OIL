@@ -26,7 +26,7 @@ Todo el JavaScript de Dawn está sin tocar.
 | «Compra con tranquilidad» + sello | `sections/rich-text.liquid` (ajuste `garelon_badge`) |
 | Opiniones (Judge.me) | `sections/garelon-reviews.liquid` |
 | Imagen y texto | `sections/garelon-image-text.liquid` |
-| Detalles / «Para regalar» | `sections/garelon-details.liquid` (`layout: list` / `chips`) |
+| Detalles / «Para regalar» | `sections/garelon-details.liquid` (`layout: list` / `chips`; sin bloques = solo encabezado, sin rejilla. «Para regalar» hoy sin tarjetas, D31) |
 | FAQ | `sections/garelon-faq.liquid` |
 | Compra fija (ficha, móvil) | `sections/garelon-sticky-cta.liquid` + `assets/garelon.js` |
 | Cabecera y navegación | `sections/header.liquid`, `snippets/header-drawer.liquid`, `snippets/garelon-nav-items.liquid`, `sections/header-group.json` |

@@ -1,8 +1,8 @@
 # GARELON · MASTER TEMPLATE (arquitectura real del tema)
 
-> **Versión:** 3.2 · **Fecha:** 2026-10-03 · **Repositorio:** `daniherr1617-design/TIENDA-CASTOR-OIL` · **Rama fuente:** `claude/rosary-clean-rebuild` · **Commit fuente:** `a1b03ef`
+> **Versión:** 3.3 · **Fecha:** 2026-10-04 · **Repositorio:** `daniherr1617-design/TIENDA-CASTOR-OIL` · **Rama fuente:** `claude/rosary-clean-rebuild` · **Commit fuente:** `e27ae75`
 >
-> Snapshot generado desde `a1b03ef`. Ante discrepancias futuras manda el repositorio actual: revisa el código antes de actuar sobre lo que dice este documento.
+> Snapshot generado desde `e27ae75`. Ante discrepancias futuras manda el repositorio actual: revisa el código antes de actuar sobre lo que dice este documento.
 
 Este documento describe **cómo está construido el tema hoy** y **qué hay que tocar al cambiar de producto**. Sustituye a la arquitectura 1.x (secciones `garelon-trust-bar`, `garelon-benefits`, `garelon-packs`, `garelon-url`… de ramas anteriores), que ya no existe en el tema.
 
@@ -156,7 +156,9 @@ Bloque de significado o lifestyle con imagen del tema o del editor.
 
 ### 3.12 Detalles y «Para regalar» · `garelon-details`
 - `layout: list`: hechos verificables con icono e imagen (en la home, la infografía; en la ficha, el detalle). Con la infografía, una sola columna hasta 990 px.
-- `layout: chips`: tarjetas informativas iguales, no seleccionables. Móvil 2 × 3, desde 750 px 3 × 2 (máx. 760 px, centradas). Una fila mide lo que su tarjeta más alta.
+- `layout: chips`: tarjetas informativas iguales, no seleccionables. Móvil 2 columnas, desde 750 px 3 (máx. 760 px, centradas). Una fila mide lo que su tarjeta más alta. Disponible para futuros productos; hoy no se usa.
+- **Sin bloques, imagen ni nota:** la sección es solo su encabezado (antetítulo, título, entradilla). No se pinta la lista ni la rejilla, y el encabezado pierde su margen inferior: sin huecos.
+- **«Para regalar»** (`regalo` en la home): solo encabezado y entradilla, sin tarjetas de ocasiones. Una sección de gifting puede comunicar de forma **genérica** que el producto es apropiado como regalo o detalle para momentos especiales. Las **ocasiones concretas** (bautizos, comuniones, Navidad, cumpleaños, bodas…) **solo se enumeran si el propietario las pide expresamente para ese producto** (D31).
 
 ### 3.13 FAQ · `garelon-faq`
 Preguntas con `details`/`summary` (teclado nativo). Las respuestas sobre envío y devoluciones remiten a las políticas, no duplican condiciones.

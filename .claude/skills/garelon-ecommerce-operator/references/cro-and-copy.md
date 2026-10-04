@@ -34,6 +34,7 @@ Jerarquía visual · un CTA claro · packs con ahorro real · `compare_at_price`
 - Datos del proveedor atribuidos cuando haga falta («según el proveedor») o reformulados. Nada no verificado.
 - Copy emocional o de fe: simbólico, sin prometer protección, milagros, suerte ni efectos; sin miedo ni culpa.
 - Sin superlativos sin prueba («el mejor», «el regalo perfecto»).
+- **Regalo (D31):** Una sección de gifting puede comunicar de forma genérica que el producto es apropiado como regalo o detalle para momentos especiales. Las ocasiones concretas (bautizos, comuniones, Navidad, cumpleaños, bodas…) solo se enumeran si el propietario las pide expresamente para ese producto (D31). Ni tarjetas ni listas de ocasiones, tampoco escondidas en la FAQ.
 - Sin «fabricado/diseñado por GARELON».
 - Un dato, un sitio: no repetir el precio, las garantías ni la frase.
 
