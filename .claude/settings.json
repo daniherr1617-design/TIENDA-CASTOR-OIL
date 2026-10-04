@@ -1,0 +1,21 @@
+{
+  "env": {
+    "SHOPIFY_CLI_NO_ANALYTICS": "1",
+    "OPT_OUT_INSTRUMENTATION": "true",
+    "DO_NOT_TRACK": "1"
+  },
+  "hooks": {
+    "SessionStart": [
+      {
+        "matcher": "startup|resume",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "bash \"$CLAUDE_PROJECT_DIR/.claude/scripts/garelon-skills-bootstrap.sh\"",
+            "timeout": 900
+          }
+        ]
+      }
+    ]
+  }
+}
