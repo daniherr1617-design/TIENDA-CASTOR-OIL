@@ -1,6 +1,6 @@
 # GARELON · MASTER TEMPLATE (arquitectura real del tema)
 
-> **Versión:** 3.3 · **Fecha:** 2026-10-04 · **Repositorio:** `daniherr1617-design/TIENDA-CASTOR-OIL` · **Rama fuente:** `claude/rosary-clean-rebuild` · **Commit fuente:** `e27ae75`
+> **Versión:** 3.4 · **Fecha:** 2026-10-04 · **Repositorio:** `daniherr1617-design/TIENDA-CASTOR-OIL` · **Rama fuente:** `claude/rosary-clean-rebuild` · **Commit fuente:** `4ff2ea0`
 >
 > Snapshot generado desde `e27ae75`. Ante discrepancias futuras manda el repositorio actual: revisa el código antes de actuar sobre lo que dice este documento.
 
@@ -113,7 +113,7 @@ Formulario oficial de Dawn. Bloques típicos: título, valoración, precio, conf
 Sin JS. En móvil, scroll-snap: la infografía ocupa todo el ancho para que se lea; el resto deja asomar la siguiente. Desde 750 px, rejilla. Solo la primera imagen de la ficha es `eager`. La infografía enlaza a su versión grande para ampliarla. Los textos alternativos salen de `garelon.gallery.alt_<clave>`.
 
 ### 3.6 Confianza · bloque `garelon_trust` (`snippets/garelon-trust.liquid`)
-Frase destacada (una vez por página, junto a la compra) + hasta 4 garantías con icono (2 × 2 en móvil). Cada garantía solo aparece si su texto no está vacío. Los textos deben ser ciertos en Shopify (envío gratis, internacional…). Con el ajuste «Envío gratis» desactivado, `tools/garelon_check.py` da error si una garantía sigue diciendo «Envío gratis».
+Frase destacada (una vez por página, junto a la compra) + hasta 4 garantías con icono, en 2 columnas; con un número impar, la última ocupa la fila entera. Cada garantía solo aparece si su texto no está vacío (hoy 3: la 4.ª, «Envíos internacionales», está vacía por D32 y sin default en el schema). Los textos deben ser ciertos en Shopify (envío gratis, internacional…). Con el ajuste «Envío gratis» desactivado, `tools/garelon_check.py` da error si una garantía sigue diciendo «Envío gratis».
 
 ### 3.7 Elige tu oferta · bloque `garelon_offer` (`snippets/garelon-offer.liquid`)
 Tarjetas clicables que **son** los radios del `<variant-selects>` de Dawn: Dawn cambia la variante, el `id` del formulario, el precio, la URL (ficha), la disponibilidad y el botón. Teclado: Tab + flechas. El grupo se anuncia con el título del bloque.
@@ -170,7 +170,7 @@ Título, texto y botón hacia `/#comprar`.
 `main-product` + tranquilidad + opiniones + detalles + FAQ + compra fija (`garelon-sticky-cta`, solo móvil, visible cuando el botón real queda por encima de la pantalla, con el estado y el precio del botón real).
 
 ### 3.16 Pie · `footer` (Dawn + GARELON)
-Logo completo, descripción de marca, bloque «Ayuda» con enlace a contacto, enlaces legales en orden fijo y solo si existen (Contacto · Envíos · Devoluciones y reembolsos · Privacidad · Cookies · Términos · Aviso legal). Sin iconos de pago ni newsletter.
+Logo completo, descripción de marca, bloque «Ayuda» con enlace a contacto, enlaces legales en orden fijo y solo si existen (Contacto · Envíos · Devoluciones y reembolsos · Privacidad · Cookies · Términos · Aviso legal). Contacto = página `contacto` (o `contact`); sin ella, la política nativa «Información de contacto», nunca las dos. Cookies = página `politica-de-cookies` (o `cookies`). Aviso legal = política nativa `/policies/legal-notice` con contenido o, si no, página `aviso-legal`. Ningún texto legal en Liquid. Sin iconos de pago ni newsletter.
 
 ### 3.17 Carrito y nota de envío
 Cajón (`cart_type: drawer`) y `/cart` de Dawn: formulario, líneas, cantidades, subtotal y botón de pago sin cambios. Dos cambios GARELON: «Seguir comprando» → home, y la nota de impuestos y envío.

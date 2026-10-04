@@ -1,6 +1,6 @@
 # GARELON · PROMPT MAESTRO DEL PROYECTO (constitución operativa)
 
-> **Versión:** 3.4 · **Fecha:** 2026-10-04 · **Repositorio:** `daniherr1617-design/TIENDA-CASTOR-OIL` · **Rama fuente:** `claude/rosary-clean-rebuild` · **Commit fuente:** `e27ae75`
+> **Versión:** 3.5 · **Fecha:** 2026-10-04 · **Repositorio:** `daniherr1617-design/TIENDA-CASTOR-OIL` · **Rama fuente:** `claude/rosary-clean-rebuild` · **Commit fuente:** `4ff2ea0`
 >
 > Snapshot generado desde `e27ae75`. Ante discrepancias futuras manda el repositorio actual y, por encima de él, el producto real y las decisiones recientes del propietario (§3).
 
@@ -272,9 +272,10 @@ Optimizar la conversión **sí**; dark patterns **no** (R9).
 - `Envío gratis + seguimiento`
 - `Pago seguro`
 - `14 días para cambiar de opinión`
-- `Envíos internacionales`
 
-Si cambian en Shopify o en las políticas, mandan Shopify y las políticas, y el tema se actualiza.
+Si cambian en Shopify o en las políticas, mandan Shopify y las políticas, y el tema se actualiza. **«Envíos internacionales» no se promete (D32):** España es el mercado inicial y la política de envíos solo admite destinos habilitados en Shopify (Markets y Envío y entrega). Si el propietario los verifica, puede volver a escribirse en la 4.ª garantía; mientras, queda vacía.
+
+**Políticas legales:** su texto vive en Shopify (Configuración › Políticas; Cookies y, si hace falta, Aviso legal como páginas). El tema no copia condiciones ni datos del titular: las respuestas cortas remiten a `/policies/refund-policy` y `/policies/shipping-policy`, y no se escriben plazos ni ventanas de entrega fijas.
 
 **Envío:** hoy el envío es **gratis** (confirmado por el propietario). Un solo ajuste lo decide: Configuración del tema › Carrito › «Envío gratis» (activo). Con él, los packs, la ficha, el cajón del carrito y `/cart` dicen lo mismo: «Impuestos incluidos. Envío gratis.». Ya no aparece «envío calculado en la pantalla de pago». La información de impuestos y aranceles se conserva y no se añaden afirmaciones fiscales nuevas. Si el envío deja de ser gratuito: se desactiva ese ajuste (vuelven las notas de Shopify/Dawn) **y** se cambia la garantía «Envío gratis + seguimiento». El validador da error si una plantilla sigue prometiendo envío gratis con el ajuste desactivado. La tarifa real siempre se configura en Shopify Admin.
 

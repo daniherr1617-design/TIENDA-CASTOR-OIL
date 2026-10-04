@@ -24,7 +24,7 @@
 
 ## Confianza
 
-- Garantías actuales confirmadas: «Envío gratis + seguimiento» · «Pago seguro» · «14 días para cambiar de opinión» · «Envíos internacionales». Si cambian en Shopify o en las políticas, mandan ellas. Si el envío deja de ser gratis: desactiva el ajuste «Envío gratis» **y** cambia la garantía «Envío gratis + seguimiento» (`garelon_check` da error si una plantilla sigue prometiéndolo).
+- Garantías actuales: «Envío gratis + seguimiento» · «Pago seguro» · «14 días para cambiar de opinión». «Envíos internacionales» se retiró (D32): solo vuelve si el propietario verifica destinos en Shopify (Markets y Envío y entrega). Si cambian en Shopify o en las políticas, mandan ellas. Si el envío deja de ser gratis: desactiva el ajuste «Envío gratis» **y** cambia la garantía «Envío gratis + seguimiento» (`garelon_check` da error si una plantilla sigue prometiéndolo).
 - «Pago seguro» = checkout oficial de Shopify. Sin logos de pago dibujados a mano.
 - Un símbolo (escudo con check, candado) es decorativo (`aria-hidden`), nunca una certificación ni un sello de terceros.
 
@@ -34,4 +34,6 @@
 - Faltas de conformidad: **garantía legal aplicable**. Su duración concreta solo se publica tras comprobar las políticas reales.
 - Las condiciones (estado del producto, costes, excepciones) viven en las políticas de Shopify. No se copian de competidores.
 - Si una categoría futura está exceptuada del desistimiento (personalizados, precintados por higiene una vez abiertos…), no se usa «Compra con tranquilidad» con ese texto.
+- Las políticas (devoluciones, envíos, privacidad, términos, aviso legal) y la página de cookies viven en Shopify con los datos del titular; **no se copian al repo**. El pie enlaza las que existen (`garelon-legal-links`; aviso legal: política nativa o página `aviso-legal`).
+- Sin píxeles a mano: TikTok, Meta o GA4 solo por Shopify (Eventos de cliente o canal oficial) y con el banner de Customer Privacy configurado.
 - Datos de empresa: nunca se inventan. Modificar políticas legales requiere confirmación explícita del propietario.

@@ -1,6 +1,6 @@
 # GARELON · CHECKLIST DE MIGRACIÓN Y VERIFICACIÓN
 
-> **Versión:** 3.3 · **Fecha:** 2026-10-04 · **Repositorio:** `daniherr1617-design/TIENDA-CASTOR-OIL` · **Rama fuente:** `claude/rosary-clean-rebuild` · **Commit fuente:** `e27ae75`
+> **Versión:** 3.4 · **Fecha:** 2026-10-04 · **Repositorio:** `daniherr1617-design/TIENDA-CASTOR-OIL` · **Rama fuente:** `claude/rosary-clean-rebuild` · **Commit fuente:** `4ff2ea0`
 >
 > Snapshot generado desde `e27ae75`. Ante discrepancias futuras manda el repositorio actual. Si una comprobación ya no corresponde a la arquitectura real, se corrige este checklist (DOCUMENT_SYNC), no el tema.
 
@@ -68,7 +68,8 @@ Cada punto se marca con el lugar donde se probó: `PROBADO LOCALMENTE`, `ZIP DES
 ## 8. Confianza y legal
 - [ ] 🅲 «14 días para cambiar de opinión» se presenta como derecho de desistimiento, nunca como «garantía de 14 días».
 - [ ] 🅲 El sello de «Compra con tranquilidad» es decorativo (`aria-hidden`) y no simula una certificación.
-- [ ] 🆂 Políticas publicadas (devoluciones, envío, privacidad, términos, aviso legal) con datos reales de la empresa; el pie solo enlaza las que existen.
+- [ ] 🆂 Políticas publicadas (devoluciones, envío, privacidad, términos, aviso legal) con datos reales de la empresa, más la página `politica-de-cookies` (y `aviso-legal` si no hay política nativa); el pie solo enlaza las que existen.
+- [ ] 🅲 Sin promesas de envío internacional, plazos ni fechas de entrega fijas que Shopify y la política de envíos no respalden (`garelon_check` vigila fechas, «garantía de 14 días» y píxeles a mano).
 - [ ] 🅿 El producto admite desistimiento (no es una excepción legal) y las políticas lo reflejan.
 
 ## 9. Opiniones y Judge.me
