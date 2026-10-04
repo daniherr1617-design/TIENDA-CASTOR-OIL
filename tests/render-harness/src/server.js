@@ -15,7 +15,10 @@ const state = { mode: 'single', soldout: [], design: false, catalog: 'ok', conta
   noindex: false, reviews: 'none', accounts: true, cart: [], log: [], media: false,
   // Ronda K: freeship '' = valor del tema (settings_data), '1'/'0' fuerza el ajuste global «Envío gratis»;
   // taxes = included | excluded | duties (solo aranceles) | both (aranceles e impuestos incluidos).
-  freeship: '', taxes: 'included' };
+  freeship: '', taxes: 'included',
+  // Ronda N: chips = inyecta 6 etiquetas de prueba neutras en «Para regalar» (que en la tienda ya no tiene bloques, D31)
+  // para seguir probando el diseño «Etiquetas» de GARELON Detalles en futuros productos.
+  chips: false };
 const taxFlags = () => ({ taxes_included: state.taxes === 'included' || state.taxes === 'both', duties_included: state.taxes === 'duties' || state.taxes === 'both' });
 function scenario() {
   const m = state.mode; // precios SIMULADOS (SOLO TEST)
@@ -221,9 +224,12 @@ async function renderTemplate(file, only) {
     const versioned = order.filter(bid => (blocks[bid] || {}).type && blocks[bid].type.startsWith('shopify://apps/'));
     if (!appOn) order = order.filter(bid => !versioned.includes(bid));
     if (s.type === 'garelon-reviews' && appOn && versioned.length === 0) { blocks.test_app = { type: '@app', settings: {} }; order.push('test_app'); }
+    if (state.chips && sid === 'regalo' && s.type === 'garelon-details' && order.length === 0) TEST_CHIPS.forEach((t, i) => { blocks[`test_chip_${i + 1}`] = { type: 'item', settings: { icon: 'none', title: t } }; order.push(`test_chip_${i + 1}`); });
     out += await renderSection(`template--1__${sid}`, s.type, s.settings, blocks, order); }
   return out;
 }
+// SOLO TEST: etiquetas neutras (no son ocasiones de regalo); la última es larga para probar dos líneas.
+const TEST_CHIPS = ['Etiqueta 1', 'Etiqueta 2', 'Etiqueta 3', 'Etiqueta 4', 'Etiqueta 5', 'Etiqueta de prueba más larga'];
 const types = { '.css': 'text/css', '.js': 'text/javascript', '.webp': 'image/webp', '.png': 'image/png', '.svg': 'image/svg+xml', '.woff2': 'font/woff2', '.jpg': 'image/jpeg' };
 function route(p) {
   const prodHandle = (p.match(/^\/products\/([^/?#]+)/) || [])[1]; const pageHandle = (p.match(/^\/pages\/([^/?#]+)/) || [])[1]; const polHandle = (p.match(/^\/policies\/([^/?#]+)/) || [])[1];
@@ -243,9 +249,9 @@ http.createServer(async (req, res) => {
     if (p.startsWith('/assets/')) { const fp = path.join(T, decodeURIComponent(p)); return fs.readFile(fp, (e, d) => { if (e) { res.writeHead(404); return res.end(); } res.writeHead(200, { 'Content-Type': types[path.extname(fp)] || 'application/octet-stream' }); res.end(d); }); }
     if (p === '/__state') { const q = u.searchParams;
       for (const k of ['mode', 'catalog', 'contact', 'refund', 'shipping', 'cookies', 'reviews', 'freeship', 'taxes']) if (q.has(k)) state[k] = q.get(k);
-      for (const k of ['design', 'noindex', 'accounts', 'media']) if (q.has(k)) state[k] = q.get(k) === '1';
+      for (const k of ['design', 'noindex', 'accounts', 'media', 'chips']) if (q.has(k)) state[k] = q.get(k) === '1';
       if (q.has('soldout')) state.soldout = q.get('soldout').split(',').filter(Boolean).map(Number);
-      if (q.has('reset')) { state.cart = []; state.log = []; if (!q.has('freeship')) state.freeship = ''; if (!q.has('taxes')) state.taxes = 'included'; }
+      if (q.has('reset')) { state.cart = []; state.log = []; if (!q.has('freeship')) state.freeship = ''; if (!q.has('taxes')) state.taxes = 'included'; if (!q.has('chips')) state.chips = false; }
       if (q.has('reload')) L = loadSettings();
       res.writeHead(200, { 'Content-Type': 'application/json' }); return res.end(JSON.stringify(state)); }
     if (p === '/cart.js' || p === '/cart.json') { res.setHeader('Content-Type', 'application/json'); const c = cartDrop(); return res.end(JSON.stringify({ item_count: c.item_count, items: c.items.map(i => ({ id: i.id, quantity: i.quantity, variant_id: i.id })), total_price: c.total_price })); }

@@ -982,6 +982,10 @@ body {
 .g-details--chips .g-details__note {
   text-align: center;
 }
+/* Sección solo con encabezado (sin bloques, imagen ni nota): sin el margen que separaba la rejilla. */
+.g-details .g-head:last-child {
+  margin-bottom: 0;
+}
 @media screen and (min-width: 750px) {
   .g-details--media .g-details__grid {
     grid-template-columns: 1fr 1.1fr;

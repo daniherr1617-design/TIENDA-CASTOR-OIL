@@ -22,7 +22,8 @@ module.exports = async function (browser) {
   const facts = [...m.matchAll(/<h3 class="g-fact__title">([^<]+)<\/h3>/g)].map(x => x[1]);
   ok('E6 «Detalles de la pulsera»: los 5 hechos, sin coletillas del proveedor ni nota comercial', JSON.stringify(facts) === JSON.stringify(['Acero inoxidable', 'Medalla de la Virgen María', 'Cruz y cuentas tricolor', 'Longitud', 'Ajuste']) && /Aprox\. 20 cm \(7,87 pulgadas\)\./.test(m) && /Ajustable · 3 aros para regular la longitud\./.test(m) && !/según|proveedor|Cada unidad incluye/i.test(text((m.match(/id="detalles"[\s\S]*?<\/section>/) || [''])[0])), facts);
   const chips = [...m.matchAll(/<li class="g-chip"[^>]*>[\s\S]*?<span>([^<]+)<\/span>/g)].map(x => x[1]);
-  ok('E7 «Regalo»: 6 ocasiones', JSON.stringify(chips) === JSON.stringify(['Bautizo', 'Primera comunión', 'Confirmación', 'Navidad', 'Pascua', 'Otras ocasiones religiosas']), chips);
+  // Ronda N (D31, decisión del propietario): «Para regalar» ya no enumera ocasiones; solo encabezado y entradilla.
+  ok('E7 «Regalo»: sin etiquetas de ocasiones (D31), con su encabezado', chips.length === 0 && /id="regalo"/.test(m) && /Un detalle para momentos que importan/.test(m), chips);
   const qs = [...m.matchAll(/<h3 class="g-faq__q">([^<]+)<\/h3>/g)].map(x => x[1]);
   ok('E8 FAQ: las 9 preguntas en details/summary con H3', qs.length === 9 && JSON.stringify(qs) === JSON.stringify(FAQ.map(f => f[0])) && count(m, /<details class="g-faq__item"/g) === 9, qs);
   ok('E9 FAQ remite a envíos, devoluciones y contacto', /href="\/policies\/shipping-policy"/.test(m) && count(m, /href="\/policies\/refund-policy"/g) >= 3 && /href="\/pages\/contacto"/.test(m));

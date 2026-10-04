@@ -76,7 +76,9 @@ module.exports = async function (browser) {
   const tpl = fs.readFileSync(`${THEME}/templates/index.json`, 'utf8') + fs.readFileSync(`${THEME}/templates/product.json`, 'utf8');
   ok('H12 plantillas sin los textos de garantía antiguos', !OLDCHIPS.test(tpl));
 
-  // 3 · Para regalar
+  // 3 · Para regalar · diseño «Etiquetas». Desde la ronda N (D31) la tienda no tiene etiquetas: se prueban 6 etiquetas
+  // neutras inyectadas por el servidor (chips=1) para que el diseño siga cubierto para futuros productos.
+  await setState('chips=1');
   for (const w of [320, 360, 375, 390, 430, 768, 1024, 1440, 2560]) {
     const { page } = await openPage(browser, '/', { width: w, height: 900 });
     const g = await page.evaluate(() => {
@@ -97,10 +99,12 @@ module.exports = async function (browser) {
     ok(`H13 «Para regalar» ${w}px: ${mobile ? '2 columnas × 3 filas' : '3 columnas × 2 filas'}, tarjetas iguales, texto centrado y dentro, sin scroll horizontal`,
       g.n === 6 && g.cols === (mobile ? 2 : 3) && g.rows === (mobile ? 3 : 2) && g.ws.length === 1 && g.hs.length === 1 && g.inside && !g.clip && g.centered &&
       g.align.join() === 'center,center,center' && g.sw === g.vw && g.fs >= 14 && g.ulw <= 760 &&
-      JSON.stringify(g.first) === JSON.stringify(mobile ? ['Bautizo', 'Primera comunión'] : ['Bautizo', 'Primera comunión', 'Confirmación']), g);
+      JSON.stringify(g.first) === JSON.stringify(mobile ? ['Etiqueta 1', 'Etiqueta 2'] : ['Etiqueta 1', 'Etiqueta 2', 'Etiqueta 3']), g);
     if (w === 390) ok('H14 «Para regalar»: etiquetas informativas, no seleccionables (sin botones, enlaces, foco ni cursor de mano)', g.interactive === 0 && g.cursor !== 'pointer', g);
     await page.close();
   }
+  await setState('chips=0');
+
   r = await get('/');
   const det = (r.html.match(/id="detalles"[\s\S]*?<\/section>/) || [''])[0];
   ok('H15 «Detalles de la pulsera» sigue en lista (layout list sin cambios)', /class="g-facts"/.test(det) && count(det, /class="g-fact"/g) === 5 && !/g-chips/.test(det));

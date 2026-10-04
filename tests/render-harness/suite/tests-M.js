@@ -18,6 +18,8 @@ const NOTE = 'Incluye opiniones de compradores del mismo modelo, importadas medi
 
 const json = (f) => JSON.parse(fs.readFileSync(`${THEME}/${f}`, 'utf8'));
 const atBase = (f) => execSync(`git -C ${THEME} show ${BASE}:${f}`).toString();
+const ROUND_HEAD = 'a1b03ef'; // último commit del tema en la ronda M: M23-M26 se fijan a 8d7e8fd..a1b03ef (la ronda N toca plantillas)
+const atRound = (f) => execSync(`git -C ${THEME} show ${ROUND_HEAD}:${f}`).toString();
 const reviews = (html) => (html.match(/<section[^>]*class="g-reviews[\s\S]*?<\/section>/) || [''])[0];
 const appBlocks = (tpl) => Object.entries(tpl.sections).flatMap(([sid, s]) => Object.entries(s.blocks || {})
   .filter(([, b]) => /^shopify:\/\/|^@app$/.test(b.type)).map(([bid, b]) => ({ sid, stype: s.type, bid, b, inOrder: (s.block_order || []).includes(bid) })));
@@ -105,17 +107,17 @@ module.exports = async function (browser) {
     await page.close();
   }
 
-  // 7 · Alcance de la ronda M frente a 8d7e8fd (solo en el repo)
+  // 7 · Alcance de la ronda M: 8d7e8fd..a1b03ef (fijado al cerrar la ronda, como I/J/K/L; solo en el repo)
   if (!REPO) return;
-  const changed = execSync(`git -C ${THEME} diff --name-only ${BASE} -- assets config layout locales sections snippets templates`).toString().trim().split('\n').filter(Boolean).sort();
+  const changed = execSync(`git -C ${THEME} diff --name-only ${BASE} ${ROUND_HEAD} -- assets config layout locales sections snippets templates`).toString().trim().split('\n').filter(Boolean).sort();
   ok('M23 archivos del tema tocados: solo settings_data (App Embed), garelon-reviews (comentario) e index/product (widget)', JSON.stringify(changed) === JSON.stringify(['config/settings_data.json', 'sections/garelon-reviews.liquid', 'templates/index.json', 'templates/product.json']), changed);
   for (const f of ['templates/index.json', 'templates/product.json']) {
-    const d = walk(JSON.parse(atBase(f)), json(f), '', []);
+    const d = walk(JSON.parse(atBase(f)), JSON.parse(atRound(f)), '', []);
     ok(`M24 ${f}: solo se añaden blocks/block_order de «opiniones» (resto de la plantilla idéntico: portada, compra, packs, imágenes, FAQ…)`,
       d.length > 0 && d.every(p => /^\.sections\.opiniones\.(blocks|block_order)(\.|$)/.test(p)), d);
   }
-  const sdDiff = walk(JSON.parse(atBase('config/settings_data.json')), sd, '', []);
+  const sdDiff = walk(JSON.parse(atBase('config/settings_data.json')), JSON.parse(atRound('config/settings_data.json')), '', []);
   ok('M25 settings_data: solo se añade el App Embed (envío gratis, colores, carrito… sin cambios)', sdDiff.length > 0 && sdDiff.every(p => /^\.presets\.Dawn\.blocks(\.|$)/.test(p)), sdDiff);
   const strip = (x) => x.replace(/{%-?\s*comment\s*-?%}[\s\S]*?{%-?\s*endcomment\s*-?%}/g, '');
-  ok('M26 garelon-reviews.liquid: la lógica (resumen, summary_with_app, ocultar sin opiniones, nota) no cambia; solo el comentario', strip(atBase('sections/garelon-reviews.liquid')) === strip(liq));
+  ok('M26 garelon-reviews.liquid: la lógica (resumen, summary_with_app, ocultar sin opiniones, nota) no cambia; solo el comentario', strip(atBase('sections/garelon-reviews.liquid')) === strip(atRound('sections/garelon-reviews.liquid')));
 };

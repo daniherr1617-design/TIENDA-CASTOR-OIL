@@ -282,8 +282,8 @@
         "p6": {
           "type": "question",
           "settings": {
-            "question": "¿Para qué ocasiones puede ser un buen regalo?",
-            "answer": "<p>Puede ser un detalle con significado para un bautizo, una primera comunión, una confirmación, Navidad, Pascua u otras ocasiones religiosas.</p>"
+            "question": "¿Es una buena opción para regalar?",
+            "answer": "<p>Sí. Puede ser un detalle con significado para regalar en un momento especial.</p>"
           }
         },
         "p7": {

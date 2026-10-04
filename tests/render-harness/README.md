@@ -51,9 +51,10 @@ Para el Liquid estricto: `gem install liquid -v 5.14.0` (o, sin permisos de sist
 - **Ajustes forzables:** el ajuste global «Envío gratis» (`/__state?freeship=0|1`; vacío = el valor del tema) y los impuestos del carrito (`taxes=included|excluded|duties|both`).
 - **Tienda:** carrito (`/cart/add`, `/cart/change`, Section Rendering API), páginas, políticas, menús de una tienda nueva y bloque de app de opiniones (fixture).
 - **Bloques de app:** como en Shopify, un bloque versionado `shopify://apps/…` llega a Liquid con `block.type == '@app'`; `{% render block %}` pinta un fixture que deja a la vista qué bloque lo originó (`data-app-type`) y su `review_data`. El escenario `reviews` simula la app: `app`/`both` = Judge.me instalado (se pintan los bloques versionados; valoración sincronizada solo en `both`), `none`/`summary` = app ausente (Shopify no pinta sus bloques; `summary` conserva la valoración de los metafields).
+- **Etiquetas de prueba:** `/__state?chips=1` inyecta 6 etiquetas neutras («Etiqueta 1»…) en «Para regalar», que en la tienda ya no tiene bloques (D31), para seguir probando el diseño «Etiquetas» de GARELON Detalles.
 - **Routing como Shopify:** `/`, `/products/<handle>`, `/pages/<handle>`, `/policies/<x>`, `/cart`; el resto da la plantilla 404 con HTTP 404.
 
-`suite/tests.js` (fase A) y `suite/tests-B.js` … `tests-M.js` abren las páginas con Chromium y comprueban:
+`suite/tests.js` (fase A) y `suite/tests-B.js` … `tests-N.js` abren las páginas con Chromium y comprueban:
 
 - routing y 404;
 - cabecera, navegación, logo y pie;
@@ -64,6 +65,7 @@ Para el Liquid estricto: `gem install liquid -v 5.14.0` (o, sin permisos de sist
 - ficha, compra fija, FAQ, opiniones y claims prohibidos;
 - imágenes y orden de galería, incluido de qué fuente sale cada asset (fase L: `principal` y `detalle` desde `NUEVA IMAGEN 3.png`);
 - Review Widget de Judge.me versionado en «GARELON Opiniones» (fase M, decisión D30): bloque y App Embed exactos, `garelon_check` lo acepta y rechaza cualquier otro, orden encabezado → widget → nota, sin resumen duplicado;
+- «Para regalar» sin ocasiones concretas (fase N, decisión D31): solo encabezado y entradilla, sin rejilla vacía; FAQ de regalo genérica; 0 ocasiones en el storefront;
 - schemas, locales (31 idiomas) y alcance de los cambios de cada ronda;
 - accesibilidad básica: un H1, anclas, `alt`, contraste y foco;
 - sin errores JS;
@@ -94,7 +96,7 @@ Por eso, en los informes se distingue `PROBADO LOCALMENTE` / `ZIP DESCOMPRIMIDO`
 ## 8. Mantenimiento
 
 - **Pruebas de una ronda nueva:** se añaden en `suite/tests-<letra>.js` y la letra se añade a `PHASES` en `suite/tests.js`.
-- **Alcance de cada ronda:** las pruebas que comparan con git («archivos tocados», «plantillas intactas salvo…») se fijan al rango de commits de esa ronda (I25-I27 y J19-J21: hasta `955bcc3`; K23-K26: `c265802..974eadd`; L13-L17: `fb4b850..3a78374`; M23-M26 comparan con `8d7e8fd`). Así no fallan cuando una ronda posterior cambia otros archivos, y la ronda nueva tiene su propia prueba de alcance.
+- **Alcance de cada ronda:** las pruebas que comparan con git («archivos tocados», «plantillas intactas salvo…») se fijan al rango de commits de esa ronda (I25-I27 y J19-J21: hasta `955bcc3`; K23-K26: `c265802..974eadd`; L13-L17: `fb4b850..3a78374`; M23-M26: `8d7e8fd..a1b03ef`; N15-N18 comparan con `a15a2c3`). Así no fallan cuando una ronda posterior cambia otros archivos, y la ronda nueva tiene su propia prueba de alcance.
 - **Cambio de producto:** muchas pruebas son específicas de la Pulsera Rosario (textos, claves de imagen, handle). Hay que adaptarlas en la migración (`docs/garelon/GARELON_MIGRATION_PROMPT_TEMPLATE.md`).
 - **Lo que no se versiona:** `node_modules/`, capturas, logs, trazas, ZIPs y resultados (`.gitignore`). Las capturas de comprobación visual se guardan fuera del repo.
 
@@ -107,7 +109,7 @@ tests/render-harness/
 ├── run.js              lanzador: servidor en un puerto libre + batería
 ├── validate.js         validación completa (5 pasos)
 ├── src/server.js       Shopify simulado (liquidjs)
-├── suite/tests.js      fase A + utilidades; tests-B.js … tests-M.js
+├── suite/tests.js      fase A + utilidades; tests-B.js … tests-N.js
 ├── fixtures/           stub de standard-events de Shopify, bloque de app de prueba, textos esperados de la FAQ
 └── checks/             theme-check.js (Theme Check con clasificación Dawn/GARELON), liquid-strict.rb
 ```

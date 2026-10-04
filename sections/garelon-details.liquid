@@ -1,6 +1,8 @@
 {%- comment -%}
   GARELON · Lista de hechos verificables (con icono) o etiquetas, con imagen opcional y nota.
-  Se usa para «Detalles de la pulsera» (lista + imagen) y «Regalo» (etiquetas de ocasiones).
+  Se usa para «Detalles de la pulsera» (lista + imagen) y «Para regalar» (solo encabezado y entradilla).
+  Sin bloques, sin imagen y sin nota, la sección es solo su encabezado: no se pinta ni la lista ni la
+  rejilla (sin huecos). Con bloques, «Lista con icono» y «Etiquetas» funcionan igual que siempre.
 {%- endcomment -%}
 {%- liquid
   assign has_media = false
@@ -10,6 +12,14 @@
   assign media_text = false
   if section.settings.image == blank and section.settings.image_key == 'infografia'
     assign media_text = true
+  endif
+  assign has_items = false
+  if section.blocks.size > 0
+    assign has_items = true
+  endif
+  assign has_body = has_items
+  if section.settings.note != blank
+    assign has_body = true
   endif
 -%}
 <section
@@ -33,6 +43,7 @@
         <p class="g-head__text">{{ section.settings.text | escape }}</p>
       {%- endif -%}
     </header>
+    {%- if has_media or has_body -%}
     <div class="g-details__grid">
       {%- if has_media -%}
         <div class="g-details__media">
@@ -45,8 +56,10 @@
           -%}
         </div>
       {%- endif -%}
+      {%- if has_body -%}
       <div class="g-details__body">
-        {%- if section.settings.layout == 'chips' -%}
+        {%- if has_items == false -%}
+        {%- elsif section.settings.layout == 'chips' -%}
           <ul class="g-chips" role="list">
             {%- for block in section.blocks -%}
               <li class="g-chip" {{ block.shopify_attributes }}>
@@ -74,7 +87,9 @@
           <p class="g-details__note">{{ section.settings.note | escape }}</p>
         {%- endif -%}
       </div>
+      {%- endif -%}
     </div>
+    {%- endif -%}
   </div>
 </section>
 
