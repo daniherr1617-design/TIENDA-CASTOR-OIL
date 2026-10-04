@@ -52,6 +52,7 @@ Para el Liquid estricto: `gem install liquid -v 5.14.0` (o, sin permisos de sist
 - **Tienda:** carrito (`/cart/add`, `/cart/change`, Section Rendering API), páginas, políticas, menús de una tienda nueva y bloque de app de opiniones (fixture).
 - **Bloques de app:** como en Shopify, un bloque versionado `shopify://apps/…` llega a Liquid con `block.type == '@app'`; `{% render block %}` pinta un fixture que deja a la vista qué bloque lo originó (`data-app-type`) y su `review_data`. El escenario `reviews` simula la app: `app`/`both` = Judge.me instalado (se pintan los bloques versionados; valoración sincronizada solo en `both`), `none`/`summary` = app ausente (Shopify no pinta sus bloques; `summary` conserva la valoración de los metafields).
 - **Etiquetas de prueba:** `/__state?chips=1` inyecta 6 etiquetas neutras («Etiqueta 1»…) en «Para regalar», que en la tienda ya no tiene bloques (D31), para seguir probando el diseño «Etiquetas» de GARELON Detalles.
+- **Legal:** `/__state?legal=policy|page|none` (Aviso legal como política nativa, como página `aviso-legal` o ausente), `contactinfo=1` (política nativa «Información de contacto») y `cookies=none|ok|legacy` (página `politica-de-cookies` o el handle antiguo `cookies`). Las políticas simuladas llevan un texto de prueba, nunca las reales.
 - **Routing como Shopify:** `/`, `/products/<handle>`, `/pages/<handle>`, `/policies/<x>`, `/cart`; el resto da la plantilla 404 con HTTP 404.
 
 `suite/tests.js` (fase A) y `suite/tests-B.js` … `tests-N.js` abren las páginas con Chromium y comprueban:
@@ -66,6 +67,7 @@ Para el Liquid estricto: `gem install liquid -v 5.14.0` (o, sin permisos de sist
 - imágenes y orden de galería, incluido de qué fuente sale cada asset (fase L: `principal` y `detalle` desde `NUEVA IMAGEN 3.png`);
 - Review Widget de Judge.me versionado en «GARELON Opiniones» (fase M, decisión D30): bloque y App Embed exactos, `garelon_check` lo acepta y rechaza cualquier otro, orden encabezado → widget → nota, sin resumen duplicado;
 - «Para regalar» sin ocasiones concretas (fase N, decisión D31): solo encabezado y entradilla, sin rejilla vacía; FAQ de regalo genérica; 0 ocasiones en el storefront;
+- sincronización legal (fase O, decisión D32): «14 días» solo como desistimiento, sin «Envíos internacionales», sin fechas de entrega fijas ni píxeles a mano, FAQ y pestaña que remiten a las políticas, y enlaces legales del pie únicos, en rutas controladas y vivos;
 - schemas, locales (31 idiomas) y alcance de los cambios de cada ronda;
 - accesibilidad básica: un H1, anclas, `alt`, contraste y foco;
 - sin errores JS;

@@ -12,6 +12,9 @@ const readJson = (p) => JSON.parse(read(p).replace(/^\s*\/\*[\s\S]*?\*\//, ''));
 const HANDLE = 'pulsera-rosario-virgen-maria';
 
 const state = { mode: 'single', soldout: [], design: false, catalog: 'ok', contact: 'ok', refund: 'ok', shipping: 'ok', cookies: 'none',
+  // Legal: legal = policy (política nativa «Aviso legal») | page (página «aviso-legal») | none; contactinfo = política nativa
+  // «Información de contacto»; cookies = none | ok («politica-de-cookies») | legacy (handle antiguo «cookies»).
+  legal: 'policy', contactinfo: false,
   noindex: false, reviews: 'none', accounts: true, cart: [], log: [], media: false,
   // Ronda K: freeship '' = valor del tema (settings_data), '1'/'0' fuerza el ajuste global «Envío gratis»;
   // taxes = included | excluded | duties (solo aranceles) | both (aranceles e impuestos incluidos).
@@ -159,10 +162,13 @@ const filters = {
 };
 Object.entries(filters).forEach(([k, v]) => engine.registerFilter(k, v));
 
-const policyList = () => [['refund-policy', 'Política de reembolso', state.refund], ['privacy-policy', 'Política de privacidad', 'ok'], ['terms-of-service', 'Términos del servicio', 'ok'], ['shipping-policy', 'Política de envío', state.shipping], ['legal-notice', 'Aviso legal', 'ok']]
+const policyList = () => [['refund-policy', 'Política de reembolso', state.refund], ['privacy-policy', 'Política de privacidad', 'ok'], ['terms-of-service', 'Términos del servicio', 'ok'], ['shipping-policy', 'Política de envío', state.shipping], ['legal-notice', 'Aviso legal', state.legal === 'policy' ? 'ok' : 'none'],
+  ['contact-information', 'Información de contacto', state.contactinfo ? 'ok' : 'none']]
   .filter(([, , s]) => s === 'ok').map(([h, title]) => ({ url: `/policies/${h}`, title, body: '<p>Texto de prueba.</p>', handle: h }));
 function pagesObj() { const p = {}; if (state.contact === 'ok') p.contacto = { url: '/pages/contacto', title: 'Contacto', handle: 'contacto', content: '', template_suffix: 'contact' };
-  if (state.cookies === 'ok') p['politica-de-cookies'] = { url: '/pages/politica-de-cookies', title: 'Política de cookies', handle: 'politica-de-cookies', content: '<p>x</p>' }; return p; }
+  if (state.cookies === 'ok') p['politica-de-cookies'] = { url: '/pages/politica-de-cookies', title: 'Política de cookies', handle: 'politica-de-cookies', content: '<p>x</p>' };
+  if (state.cookies === 'legacy') p.cookies = { url: '/pages/cookies', title: 'Cookies', handle: 'cookies', content: '<p>x</p>' };
+  if (state.legal === 'page') p['aviso-legal'] = { url: '/pages/aviso-legal', title: 'Aviso legal', handle: 'aviso-legal', content: '<p>x</p>' }; return p; }
 // Menús que Shopify crea en una tienda nueva (simulados): el principal trae el Catálogo.
 const linklists = { 'main-menu': { handle: 'main-menu', title: 'Menú principal', links: [{ title: 'Inicio', url: '/', type: 'frontpage_link', links: [], levels: 0, active: false, current: false, child_active: false, child_current: false },
   { title: 'Catálogo', url: '/collections/all', type: 'catalog_link', links: [], levels: 0, active: false, current: false, child_active: false, child_current: false },
@@ -248,8 +254,8 @@ http.createServer(async (req, res) => {
     if (p.startsWith('/__fonts/')) { const fp = path.join(FONTS_DIR, p.slice(9)); return fs.readFile(fp, (e, d) => { if (e) { res.writeHead(404); return res.end(); } res.writeHead(200, { 'Content-Type': 'font/woff2' }); res.end(d); }); }
     if (p.startsWith('/assets/')) { const fp = path.join(T, decodeURIComponent(p)); return fs.readFile(fp, (e, d) => { if (e) { res.writeHead(404); return res.end(); } res.writeHead(200, { 'Content-Type': types[path.extname(fp)] || 'application/octet-stream' }); res.end(d); }); }
     if (p === '/__state') { const q = u.searchParams;
-      for (const k of ['mode', 'catalog', 'contact', 'refund', 'shipping', 'cookies', 'reviews', 'freeship', 'taxes']) if (q.has(k)) state[k] = q.get(k);
-      for (const k of ['design', 'noindex', 'accounts', 'media', 'chips']) if (q.has(k)) state[k] = q.get(k) === '1';
+      for (const k of ['mode', 'catalog', 'contact', 'refund', 'shipping', 'cookies', 'legal', 'reviews', 'freeship', 'taxes']) if (q.has(k)) state[k] = q.get(k);
+      for (const k of ['design', 'noindex', 'accounts', 'media', 'chips', 'contactinfo']) if (q.has(k)) state[k] = q.get(k) === '1';
       if (q.has('soldout')) state.soldout = q.get('soldout').split(',').filter(Boolean).map(Number);
       if (q.has('reset')) { state.cart = []; state.log = []; if (!q.has('freeship')) state.freeship = ''; if (!q.has('taxes')) state.taxes = 'included'; if (!q.has('chips')) state.chips = false; }
       if (q.has('reload')) L = loadSettings();

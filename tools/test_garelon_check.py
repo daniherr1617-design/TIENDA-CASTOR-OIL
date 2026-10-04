@@ -196,6 +196,20 @@ def ok_free_shipping_off_coherent(t):
         open(p, 'w', encoding='utf-8').write(s)
 
 
+def m_text(rel, old, new):
+    def f(t):
+        p = f'{t}/{rel}'
+        s = open(p, encoding='utf-8').read()
+        assert old in s, f'«{old}» no está en {rel}'
+        open(p, 'w', encoding='utf-8').write(s.replace(old, new, 1))
+    return f
+
+
+def m_pixel(t):
+    with open(f'{t}/layout/theme.liquid', 'a', encoding='utf-8') as fh:
+        fh.write("\n<script>!function(w){w.ttq=w.ttq||[];}(window);ttq.load('XXXX');ttq.page();</script>\n")
+
+
 # R17 · excepción controlada de Judge.me (D30): solo el Review Widget oficial, en «GARELON Opiniones»,
 # uno por sección y con datos reales; como App Embed, solo Judge.me Core.
 JM_UUID = '61ccd3b1-a9f2-4160-9fe9-4fec8413e5d8'
@@ -295,6 +309,13 @@ MUTATIONS = [
     ('traducción que falta en un idioma', m_missing_translation),
     ('schema: default «Más popular» (claim de ventas sin datos)', schema_mutation(sales_claim_default)),
     ('«Envío gratis» desactivado pero una garantía sigue prometiéndolo', m_free_shipping_off),
+    ('garantía «Garantía de 14 días» en lugar del desistimiento',
+     m_text('templates/index.json', '14 días para cambiar de opinión', 'Garantía de 14 días')),
+    ('«Devolución garantizada» en una respuesta de la FAQ',
+     m_text('templates/product.json', 'ejercer tu derecho de desistimiento', 'devolución garantizada')),
+    ('ventana de entrega fija («del 9 al 17 de octubre») en la FAQ',
+     m_text('templates/index.json', 'Consulta los plazos', 'Entrega del 9 al 17 de octubre. Consulta los plazos')),
+    ('píxel de TikTok inyectado a mano en theme.liquid', m_pixel),
 ]
 
 # Cambios válidos que NO deben dar error (sin falsos positivos).

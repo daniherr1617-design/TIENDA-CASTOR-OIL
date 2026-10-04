@@ -6,6 +6,7 @@ const fs = require('fs');
 const { execSync } = require('child_process');
 const P = '/products/pulsera-rosario-virgen-maria';
 const BASE = 'a15a2c3'; // HEAD antes de la ronda N
+const ROUND_HEAD = 'e27ae75'; // último commit del tema en la ronda N: N15-N18 se fijan a a15a2c3..e27ae75 (la ronda O toca plantillas)
 const REPO = fs.existsSync(THEME + '/.git');
 const WIDGET = 'shopify://apps/judge-me-reviews/blocks/review_widget/61ccd3b1-a9f2-4160-9fe9-4fec8413e5d8';
 const CORE = 'shopify://apps/judge-me-reviews/blocks/judgeme_core/61ccd3b1-a9f2-4160-9fe9-4fec8413e5d8';
@@ -19,6 +20,7 @@ const OCCASIONS = /bautiz|comuni[oó]n|confirmaci[oó]n|navidad|pascua|ocasiones
 
 const json = (f) => JSON.parse(fs.readFileSync(`${THEME}/${f}`, 'utf8'));
 const atBase = (f) => execSync(`git -C ${THEME} show ${BASE}:${f}`).toString();
+const atRound = (f) => execSync(`git -C ${THEME} show ${ROUND_HEAD}:${f}`).toString();
 const regalo = (html) => (html.match(/<section[^>]*id="regalo"[\s\S]*?<\/section>/) || [''])[0];
 const faqOf = (tpl) => Object.values(tpl.sections).filter(s => s.type === 'garelon-faq').flatMap(s => (s.block_order || []).map(b => s.blocks[b].settings));
 const walk = (a, b, p, d) => { if (typeof a !== 'object' || a === null || typeof b !== 'object' || b === null) { if (JSON.stringify(a) !== JSON.stringify(b)) d.push(p); return d; }
@@ -86,16 +88,17 @@ module.exports = async function (browser) {
     await page.close();
   }
 
-  // 7 · Alcance frente a a15a2c3 (solo en el repo)
+  // 7 · Alcance de la ronda N: a15a2c3..e27ae75 (fijado al cerrar la ronda, como M; solo en el repo)
   if (!REPO) return;
-  const changed = execSync(`git -C ${THEME} diff --name-only ${BASE} -- assets config layout locales sections snippets templates`).toString().trim().split('\n').filter(Boolean).sort();
+  const ridx = JSON.parse(atRound('templates/index.json')), rprod = JSON.parse(atRound('templates/product.json'));
+  const changed = execSync(`git -C ${THEME} diff --name-only ${BASE} ${ROUND_HEAD} -- assets config layout locales sections snippets templates`).toString().trim().split('\n').filter(Boolean).sort();
   ok('N15 archivos del tema tocados: garelon.css (una regla), garelon-details.liquid, index.json y product.json', JSON.stringify(changed) === JSON.stringify(['assets/garelon.css', 'sections/garelon-details.liquid', 'templates/index.json', 'templates/product.json']), changed);
   const faqPath = (tpl) => Object.entries(tpl.sections).filter(([, s]) => s.type === 'garelon-faq').flatMap(([sid, s]) => Object.entries(s.blocks).filter(([, b]) => /regal/i.test(b.settings.question || '')).map(([bid]) => `.sections.${sid}.blocks.${bid}.settings.`));
-  const di = walk(JSON.parse(atBase('templates/index.json')), idx, '', []); const fi = faqPath(idx)[0];
+  const di = walk(JSON.parse(atBase('templates/index.json')), ridx, '', []); const fi = faqPath(ridx)[0];
   ok('N16 index.json: solo cambian «regalo» (bloques y entradilla) y la FAQ de regalo; Judge.me, portada, compra, packs, imágenes… idénticos',
     di.length > 0 && di.every(p => /^\.sections\.regalo\.(blocks|block_order)(\.|$)/.test(p) || p === '.sections.regalo.settings.text' || p === fi + 'question' || p === fi + 'answer'), di);
-  const dp = walk(JSON.parse(atBase('templates/product.json')), prod, '', []); const fp = faqPath(prod)[0];
+  const dp = walk(JSON.parse(atBase('templates/product.json')), rprod, '', []); const fp = faqPath(rprod)[0];
   ok('N17 product.json: solo cambia la FAQ de regalo', JSON.stringify(dp.sort()) === JSON.stringify([fp + 'answer', fp + 'question']), dp);
-  const cssDiff = execSync(`git -C ${THEME} diff -U0 ${BASE} -- assets/garelon.css`).toString().split('\n').filter(l => /^[-+][^-+]/.test(l));
+  const cssDiff = execSync(`git -C ${THEME} diff -U0 ${BASE} ${ROUND_HEAD} -- assets/garelon.css`).toString().split('\n').filter(l => /^[-+][^-+]/.test(l));
   ok('N18 garelon.css: solo se añade la regla del encabezado sin rejilla (no se borra ni cambia nada)', cssDiff.every(l => l.startsWith('+')) && cssDiff.some(l => /\.g-details \.g-head:last-child/.test(l)), cssDiff);
 };

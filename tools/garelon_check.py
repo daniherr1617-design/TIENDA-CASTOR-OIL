@@ -590,6 +590,46 @@ def check_free_shipping(theme):
                 break
 
 
+# ---------------------------------------------------------------- claims legales y píxeles
+MONTHS = 'enero|febrero|marzo|abril|mayo|junio|julio|agosto|septiembre|octubre|noviembre|diciembre'
+LEGAL_CLAIMS = [
+    (re.compile(r'garant[ií]a\s+de\s+\d+\s*d[ií]as', re.I),
+     'los 14 días son el derecho de desistimiento, no una garantía'),
+    (re.compile(r'devoluci[oó]n(?:es)?\s+garantizadas?|sin\s+riesgos?\b|money[- ]back|risk[- ]free', re.I),
+     'claim de devolución sin respaldo en la política'),
+    (re.compile(rf'\b\d{{1,2}}\s*(?:al|y|-|–)\s*\d{{1,2}}\s+de\s+(?:{MONTHS})\b', re.I),
+     'ventana de entrega fija: los plazos los da la política de envíos o el checkout'),
+]
+PIXEL_RE = re.compile(r'\bfbq\s*\(|\bttq\.(?:load|page|track)\b|\bgtag\s*\(|googletagmanager\.com|'
+                      r'connect\.facebook\.net|analytics\.tiktok\.com|google-analytics\.com')
+
+
+def check_legal_claims(theme):
+    """Textos de la tienda (plantillas, grupos, secciones, snippets y locales en español): sin «garantía
+    de 14 días», «devolución garantizada», «sin riesgos» ni fechas de entrega fijas. Código del tema:
+    sin píxeles publicitarios inyectados a mano (van por Shopify › Eventos de cliente o el canal oficial)."""
+    files = []
+    for d in ('templates', 'sections', 'snippets', 'layout'):
+        for fn in sorted(os.listdir(os.path.join(theme.root, d))):
+            if fn.endswith(('.json', '.liquid')):
+                files.append(f'{d}/{fn}')
+    files += [f'locales/{fn}' for fn in sorted(os.listdir(os.path.join(theme.root, 'locales'))) if fn.startswith('es')]
+    for rel in files:
+        src = read(theme.root, rel)
+        for rx, why in LEGAL_CLAIMS:
+            m = rx.search(src)
+            if m:
+                err(rel, f'«{m.group(0)}»: {why}')
+    code = files + [f'assets/{fn}' for fn in sorted(os.listdir(os.path.join(theme.root, 'assets'))) if fn.endswith('.js')]
+    for rel in code:
+        if rel.startswith('locales/'):
+            continue
+        m = PIXEL_RE.search(read(theme.root, rel))
+        if m:
+            err(rel, f'píxel o analítica inyectados a mano («{m.group(0)}»): '
+                     'se instalan desde Shopify (Eventos de cliente o canal oficial), con consentimiento')
+
+
 # ---------------------------------------------------------------- liquid
 REF_PATTERNS = [
     (re.compile(r"{%-?\s*(?:render|include)\s+'([^']+)'"), 'snippets', '.liquid'),
@@ -732,6 +772,7 @@ def main(argv):
     check_image_keys(theme)
     check_locales(theme)
     check_free_shipping(theme)
+    check_legal_claims(theme)
 
     index = load_json(root, 'templates/index.json')
     if index is not None and not index.get('order'):

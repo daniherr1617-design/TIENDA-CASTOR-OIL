@@ -34,6 +34,20 @@ module.exports = async function (browser) {
   ok('B12 con página de cookies: Cookies entre Privacidad y Términos', JSON.stringify(legal()) === JSON.stringify(['Contacto', 'Envíos', 'Devoluciones y reembolsos', 'Privacidad', 'Cookies', 'Términos y condiciones', 'Aviso legal']), legal());
   await setState('cookies=none&refund=none&contact=none'); r = await get('/'); T._last = (r.html.match(/<footer[\s\S]*?<\/footer>/) || [''])[0];
   ok('B13 sin contacto ni política de devoluciones: no se enlazan (sin enlaces rotos)', !legal().includes('Contacto') && !legal().includes('Devoluciones y reembolsos'), legal());
+  await setState('legal=page&contactinfo=1&cookies=legacy&contact=ok&refund=ok'); r = await get('/'); T._last = (r.html.match(/<footer[\s\S]*?<\/footer>/) || [''])[0];
+  const hrefs = () => [...(T._last.match(/<ul class="policies[\s\S]*?<\/ul>/) || [''])[0].matchAll(/<a href="([^"]+)">/g)].map(m => m[1]);
+  ok('B15 sin política nativa «Aviso legal»: enlaza la página aviso-legal; cookies con el handle antiguo; «Información de contacto» no duplica Contacto',
+    JSON.stringify(legal()) === JSON.stringify(['Contacto', 'Envíos', 'Devoluciones y reembolsos', 'Privacidad', 'Cookies', 'Términos y condiciones', 'Aviso legal']) &&
+    hrefs().includes('/pages/aviso-legal') && hrefs().includes('/pages/cookies') && hrefs()[0] === '/pages/contacto' && !hrefs().includes('/policies/contact-information'), hrefs());
+  await setState('contact=none'); r = await get('/'); T._last = (r.html.match(/<footer[\s\S]*?<\/footer>/) || [''])[0];
+  ok('B16 sin página de contacto: la política «Información de contacto» ocupa el lugar de Contacto (una sola vez)',
+    hrefs()[0] === '/policies/contact-information' && legal()[0] === 'Contacto' && legal().filter(x => x === 'Contacto').length === 1 && new Set(hrefs()).size === hrefs().length, hrefs());
+  await setState('legal=none&contact=ok&contactinfo=0&cookies=none'); r = await get('/'); T._last = (r.html.match(/<footer[\s\S]*?<\/footer>/) || [''])[0];
+  ok('B17 sin aviso legal (ni política ni página): no se enlaza; las rutas legales salen de Shopify, sin enlaces rotos',
+    !legal().includes('Aviso legal') && !/legal-notice|aviso-legal/.test(T._last), legal());
+  for (const h of hrefs()) { const st = (await get(h)).status; if (st !== 200) ok(`B17 ${h} → 200`, false, st); }
+  await setState('legal=page'); for (const h of ['/pages/aviso-legal']) ok(`B18 ${h} → 200 cuando la página existe`, (await get(h)).status === 200);
+  await setState('legal=none'); ok('B18 /pages/aviso-legal → 404 cuando no existe', (await get('/pages/aviso-legal')).status === 404);
   await reset(); r = await get('/');
   ok('B14 pie sin iconos de pago, boletín ni «Seguir en Shop»', !/list-payment|newsletter-form|follow-on-shop|login_button/.test(footer));
   // Contraste de los esquemas (WCAG AA 4,5:1).

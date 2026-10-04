@@ -60,19 +60,21 @@ module.exports = async function (browser) {
   }
 
   // 2 · Confianza
-  const want = ['Envío gratis + seguimiento', 'Pago seguro', '14 días para cambiar de opinión', 'Envíos internacionales'];
+  // Desde la sincronización legal (D32) no se promete «Envíos internacionales»: España es el mercado inicial y los
+  // destinos internacionales no están verificados en Shopify. La 4.ª garantía queda vacía (no se pinta).
+  const want = ['Envío gratis + seguimiento', 'Pago seguro', '14 días para cambiar de opinión'];
   const OLDCHIPS = /Compra protegida|Envíos a España|Envío con seguimiento/;
   for (const u of ['/', P]) {
     r = await get(u);
     const chips = [...r.html.matchAll(/<li class="g-trust__chip">([\s\S]*?)<span>([^<]+)<\/span>/g)];
-    ok(`H9 ${u}: las 4 garantías definitivas, en orden, con sus iconos (envío, candado, devolución, globo)`,
-      JSON.stringify(chips.map(c => c[2])) === JSON.stringify(want) && /M3 7h11v9H3z/.test(chips[0][1]) && /M8\.5 10\.5V7\.5/.test(chips[1][1]) && /M9 7L5 11l4 4/.test(chips[2][1]) && /circle cx="12" cy="12" r="8\.5"/.test(chips[3][1]) &&
-      count(r.html, /<li class="g-trust__chip"><svg\s+class="g-icon"[^>]*stroke-width="1\.3"/g) === 4, chips.map(c => c[2]));
+    ok(`H9 ${u}: las 3 garantías definitivas, en orden, con sus iconos (envío, candado, devolución), sin «Envíos internacionales»`,
+      JSON.stringify(chips.map(c => c[2])) === JSON.stringify(want) && /M3 7h11v9H3z/.test(chips[0][1]) && /M8\.5 10\.5V7\.5/.test(chips[1][1]) && /M9 7L5 11l4 4/.test(chips[2][1]) &&
+      count(r.html, /<li class="g-trust__chip"><svg\s+class="g-icon"[^>]*stroke-width="1\.3"/g) === 3 && !/Envíos internacionales/.test(visible(r.html)), chips.map(c => c[2]));
     ok(`H10 ${u}: sin los textos antiguos («Compra protegida», «Envíos a España», «Envío con seguimiento»)`, !OLDCHIPS.test(visible(r.html)));
   }
   const defs = ['featured-product.liquid', 'main-product.liquid'].map(f => Object.fromEntries(schema(f).blocks.find(b => b.type === 'garelon_trust').settings.filter(s => s.id).map(s => [s.id, s.default])));
-  ok('H11 defaults del bloque «GARELON Confianza» (home y ficha) = textos definitivos, editables en el editor',
-    defs.every(d => d.chip_1_text === want[0] && d.chip_2_text === want[1] && d.chip_3_text === want[2] && d.chip_4_text === want[3] && d.chip_2_icon === 'candado' && d.chip_4_icon === 'globo'), defs);
+  ok('H11 defaults del bloque «GARELON Confianza» (home y ficha) = textos definitivos; la 4.ª garantía sin texto por defecto (editable)',
+    defs.every(d => d.chip_1_text === want[0] && d.chip_2_text === want[1] && d.chip_3_text === want[2] && d.chip_4_text === undefined && d.chip_2_icon === 'candado' && d.chip_4_icon === 'globo'), defs);
   const tpl = fs.readFileSync(`${THEME}/templates/index.json`, 'utf8') + fs.readFileSync(`${THEME}/templates/product.json`, 'utf8');
   ok('H12 plantillas sin los textos de garantía antiguos', !OLDCHIPS.test(tpl));
 
