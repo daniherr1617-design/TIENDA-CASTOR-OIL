@@ -1,6 +1,6 @@
 # GARELON · MASTER TEMPLATE (arquitectura real del tema)
 
-> **Versión:** 3.5 · **Fecha:** 2026-10-05 · **Repositorio:** `daniherr1617-design/TIENDA-CASTOR-OIL` · **Rama fuente:** `claude/rosary-clean-rebuild` · **Commit fuente:** `27c3904`
+> **Versión:** 3.6 · **Fecha:** 2026-10-05 · **Repositorio:** `daniherr1617-design/TIENDA-CASTOR-OIL` · **Rama fuente:** `claude/rosary-clean-rebuild` · **Commit fuente:** `f9eee51`
 >
 > Snapshot generado desde `e27ae75`. Ante discrepancias futuras manda el repositorio actual: revisa el código antes de actuar sobre lo que dice este documento.
 
@@ -204,8 +204,9 @@ Así no se pierde información fiscal ni se inventan afirmaciones nuevas. Si se 
 - **Nombre:** `assets/producto-<clave>-<ancho>.webp`. Las claves y sus anchos están en el `case` de `snippets/garelon-image.liquid`, y `tools/garelon_check.py` comprueba que existe cada ancho.
 - **Uso:** `{% render 'garelon-image', image: section.settings.image, key: '<clave>', alt: …, sizes: …, eager: … %}`. Si el editor tiene una imagen elegida, manda esa.
 - **Galerías:** `garelon_gallery_keys` en la compra de la home y en la ficha. El orden se decide por la historia comercial (Prompt Maestro §9) y queda en el snapshot.
-- **Infografías con texto:** enlace a la versión grande y ancho completo en móvil. WebP con calidad 90 (texto nítido); el mayor ancho es el de la fuente, nunca más (sin ampliar).
-- **Sustituir una fuente** (misma clave): la nueva imagen a la raíz, la antigua fuera del repo, y se regeneran todos los anchos de la clave. Hoy: `infografia` ← `NUEVA IMAGEN 1.png` (D33); `principal`/`detalle` ← `NUEVA IMAGEN 3.png` (D29).
+- **Infografías con texto:** enlace a la versión grande y ancho completo en móvil. **WebP lossless** (D34): el WebP con pérdida submuestrea el color y aclara líneas finas y textos. El mayor ancho es el de la fuente, nunca más (sin ampliar).
+- **Fuente inmutable de `infografia`:** `NUEVA IMAGEN 1.png`, con su SHA-256 fijado en `tools/garelon_infografia.py`. `--build` genera los anchos del snippet (reducción proporcional LANCZOS → WebP lossless) y `--check` comprueba fuente, proporción, píxeles por zonas, que no haya PNG y que no vuelva la fuente retirada. `build_zip.py` y `validate.js` lo ejecutan; ninguna otra imagen puede ser su fuente.
+- **Sustituir una fuente** (misma clave): la nueva imagen a la raíz, la antigua fuera del repo, y se regeneran todos los anchos de la clave. Para `infografia`, además: nuevo SHA-256 en `tools/garelon_infografia.py`, `--build` y entrada en el Decision Log. Hoy: `infografia` ← `NUEVA IMAGEN 1.png` (D33); `principal`/`detalle` ← `NUEVA IMAGEN 3.png` (D29).
 - **LCP:** solo la imagen de la portada (home) y la primera de la galería (ficha) son `eager`.
 - **Multimedia de Shopify:** puede traer imágenes del proveedor con claims no verificados. Por eso las plantillas usan `garelon_media: theme` hasta revisarla.
 

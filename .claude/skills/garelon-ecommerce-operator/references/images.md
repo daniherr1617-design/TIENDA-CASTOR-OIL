@@ -52,7 +52,7 @@ Ajusta según lo que la página enseñó justo antes: en la home, la portada ya 
 ## Pipeline técnico (Master §4)
 
 1. Fuente en la raíz del repo (fuera del ZIP).
-2. WebP cuadrados a varios anchos (480/720/1080; las infografías también a su ancho nativo para ampliar). Ejemplo con Pillow: `Image.open(src).convert('RGB').resize((w, w), Image.LANCZOS).save(dst, 'WEBP', quality=82, method=6)`, sin ampliar por encima del tamaño original.
+2. WebP cuadrados a varios anchos (480/720/1080; las infografías también a su ancho nativo para ampliar). Ejemplo con Pillow: `Image.open(src).convert('RGB').resize((w, w), Image.LANCZOS).save(dst, 'WEBP', quality=82, method=6)`, sin ampliar por encima del tamaño original. **Infografías con texto y líneas finas: WebP lossless** (`lossless=True, quality=100, method=6`), porque el WebP con pérdida submuestrea el color y aclara las líneas. La de hoy (`infografia` ← `NUEVA IMAGEN 1.png`, inmutable, D34) se genera y se comprueba solo con `tools/garelon_infografia.py --build` / `--check`.
 3. `assets/producto-<clave>-<ancho>.webp`.
 4. `when '<clave>'` con sus anchos en `snippets/garelon-image.liquid`.
 5. `when` en `snippets/garelon-gallery.liquid` + `garelon.gallery.alt_<clave>` en **todos** los locales.

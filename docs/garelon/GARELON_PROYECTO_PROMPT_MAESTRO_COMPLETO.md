@@ -1,6 +1,6 @@
 # GARELON · PROMPT MAESTRO DEL PROYECTO (constitución operativa)
 
-> **Versión:** 3.6 · **Fecha:** 2026-10-05 · **Repositorio:** `daniherr1617-design/TIENDA-CASTOR-OIL` · **Rama fuente:** `claude/rosary-clean-rebuild` · **Commit fuente:** `27c3904`
+> **Versión:** 3.7 · **Fecha:** 2026-10-05 · **Repositorio:** `daniherr1617-design/TIENDA-CASTOR-OIL` · **Rama fuente:** `claude/rosary-clean-rebuild` · **Commit fuente:** `f9eee51`
 >
 > Snapshot generado desde `e27ae75`. Ante discrepancias futuras manda el repositorio actual y, por encima de él, el producto real y las decisiones recientes del propietario (§3).
 
@@ -308,7 +308,7 @@ Si cambian en Shopify o en las políticas, mandan Shopify y las políticas, y el
 - **No asumir ni publicar:** 14K, chapado 14K, hipoalergénico, waterproof, «no se oxida», «no pierde color», milagros, suerte, protección espiritual garantizada, fabricación por GARELON.
 - **Packs:** un solo producto Shopify con la opción `Pack` = `1 pulsera` · `2 pulseras` · `3 pulseras` (variantes reales, cantidad 1). Pack de 3 = 3 pulseras físicas = 3 unidades compradas al proveedor.
 - **Proveedor:** DSers + AliExpress (no AutoDS). Fulfillment inicial manual.
-- **Imágenes aprobadas por el propietario:** `NUEVA IMAGEN 1.png`, `imagen 2.png`, `NUEVA IMAGEN 3.png`, `imagen 4.png`. No se vuelven a descartar. La antigua `Imagen 1.png` (flechas incorrectas en la infografía) se retiró y no se restaura (D33). La antigua `imagen 3.png` (cruz colgante) no es fiel al producto y no se usa.
+- **Imágenes aprobadas por el propietario:** `NUEVA IMAGEN 1.png`, `imagen 2.png`, `NUEVA IMAGEN 3.png`, `imagen 4.png`. No se vuelven a descartar. La antigua `Imagen 1.png` (flechas incorrectas en la infografía) se retiró y no se restaura (D33). `NUEVA IMAGEN 1.png` es **inmutable**: solo se reduce en proporción y se codifica en WebP lossless, sin IA, recorte, retoque ni reinterpretación (D34, `tools/garelon_infografia.py`). La antigua `imagen 3.png` (cruz colgante) no es fiel al producto y no se usa.
 - **Tienda:** ya funciona en Shopify sobre Dawn 16.0.0 + capa GARELON. El 404 histórico de la home quedó resuelto con la reconstrucción limpia y no es un problema actual.
 
 ---
