@@ -52,10 +52,11 @@ Para el Liquid estricto: `gem install liquid -v 5.14.0` (o, sin permisos de sist
 - **Tienda:** carrito (`/cart/add`, `/cart/change`, Section Rendering API), páginas, políticas, menús de una tienda nueva y bloque de app de opiniones (fixture).
 - **Bloques de app:** como en Shopify, un bloque versionado `shopify://apps/…` llega a Liquid con `block.type == '@app'`; `{% render block %}` pinta un fixture que deja a la vista qué bloque lo originó (`data-app-type`) y su `review_data`. El escenario `reviews` simula la app: `app`/`both` = Judge.me instalado (se pintan los bloques versionados; valoración sincronizada solo en `both`), `none`/`summary` = app ausente (Shopify no pinta sus bloques; `summary` conserva la valoración de los metafields).
 - **Etiquetas de prueba:** `/__state?chips=1` inyecta 6 etiquetas neutras («Etiqueta 1»…) en «Para regalar», que en la tienda ya no tiene bloques (D31), para seguir probando el diseño «Etiquetas» de GARELON Detalles.
+- **Contacto:** `/__state?contact=ok|legacy|plain|none`: página `contacto` con la plantilla `contact` (normal), página `contact` (la que Shopify crea en una tienda nueva), página `contacto` con la plantilla predeterminada, o sin página. `POST /contact` imita a Shopify: con el email vacío o inválido vuelve a pintar la página con `form.errors`; si es válido redirige a `?contact_posted=true`. **No se envía ningún correo.**
 - **Legal:** `/__state?legal=policy|page|none` (Aviso legal como política nativa, como página `aviso-legal` o ausente), `contactinfo=1` (política nativa «Información de contacto») y `cookies=none|ok|legacy` (página `politica-de-cookies` o el handle antiguo `cookies`). Las políticas simuladas llevan un texto de prueba, nunca las reales.
 - **Routing como Shopify:** `/`, `/products/<handle>`, `/pages/<handle>`, `/policies/<x>`, `/cart`; el resto da la plantilla 404 con HTTP 404.
 
-`suite/tests.js` (fase A) y `suite/tests-B.js` … `tests-N.js` abren las páginas con Chromium y comprueban:
+`suite/tests.js` (fase A) y `suite/tests-B.js` … `tests-P.js` abren las páginas con Chromium y comprueban:
 
 - routing y 404;
 - cabecera, navegación, logo y pie;
@@ -68,6 +69,7 @@ Para el Liquid estricto: `gem install liquid -v 5.14.0` (o, sin permisos de sist
 - Review Widget de Judge.me versionado en «GARELON Opiniones» (fase M, decisión D30): bloque y App Embed exactos, `garelon_check` lo acepta y rechaza cualquier otro, orden encabezado → widget → nota, sin resumen duplicado;
 - «Para regalar» sin ocasiones concretas (fase N, decisión D31): solo encabezado y entradilla, sin rejilla vacía; FAQ de regalo genérica; 0 ocasiones en el storefront;
 - sincronización legal (fase O, decisión D32): «14 días» solo como desistimiento, sin «Envíos internacionales», sin fechas de entrega fijas ni píxeles a mano, FAQ y pestaña que remiten a las políticas, y enlaces legales del pie únicos, en rutas controladas y vivos;
+- infografía «Detalles de la pulsera» y Contacto (fase P): `NUEVA IMAGEN 1.png` como fuente de `infografia` (WebP 480/720/1080/1254, sin ampliar, fiel a la fuente, sin PNG servido, `srcset` adecuado en móvil y escritorio); formulario nativo `{% form 'contact' %}` con estados de error y éxito; enlaces a Contacto (cabecera, menú móvil, «Ayuda», FAQ y pie) que siguen a la página real (`contacto`, `contact` o la política «Información de contacto») sin 404; foco visible, objetivos ≥ 44 px y sin scroll horizontal;
 - schemas, locales (31 idiomas) y alcance de los cambios de cada ronda;
 - accesibilidad básica: un H1, anclas, `alt`, contraste y foco;
 - sin errores JS;

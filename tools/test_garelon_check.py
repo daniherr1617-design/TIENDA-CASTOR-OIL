@@ -316,6 +316,12 @@ MUTATIONS = [
     ('ventana de entrega fija («del 9 al 17 de octubre») en la FAQ',
      m_text('templates/index.json', 'Consulta los plazos', 'Entrega del 9 al 17 de octubre. Consulta los plazos')),
     ('píxel de TikTok inyectado a mano en theme.liquid', m_pixel),
+    ('plantilla de contacto sin el formulario nativo',
+     m_text('templates/page.contact.json', '"type": "contact-form"', '"type": "rich-text"')),
+    ('enlace fijo a /pages/contacto en un snippet (404 si la página es «contact»)',
+     m_text('snippets/garelon-nav-items.liquid', 'href="{{ url }}"', 'href="/pages/contacto"')),
+    ('FAQ pintando la respuesta sin resolver el enlace de contacto',
+     m_text('sections/garelon-faq.liquid', "{% render 'garelon-contact-rte', html: block.settings.answer %}", '{{ block.settings.answer }}')),
 ]
 
 # Cambios válidos que NO deben dar error (sin falsos positivos).

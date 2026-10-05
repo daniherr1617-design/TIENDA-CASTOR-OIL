@@ -8,6 +8,7 @@ const fs = require('fs');
 const { execSync } = require('child_process');
 const P = '/products/pulsera-rosario-virgen-maria';
 const BASE = 'a83f700'; // HEAD antes de la ronda O
+const ROUND_HEAD = '4ff2ea0'; // último commit del tema en la ronda O: O10-O12 se fijan a a83f700..4ff2ea0 (la ronda P toca el tema)
 const REPO = fs.existsSync(THEME + '/.git');
 const MONTHS = 'enero|febrero|marzo|abril|mayo|junio|julio|agosto|septiembre|octubre|noviembre|diciembre';
 const BANNED = new RegExp(`garant[ií]a de \\d+ d[ií]as|devoluci[oó]n(es)? garantizada|sin riesgos?\\b|env[ií]os internacionales|a todo el mundo|\\b\\d{1,2} (al|y|-|–) \\d{1,2} de (${MONTHS})\\b`, 'i');
@@ -16,6 +17,7 @@ const LEGAL_ROUTES = ['/policies/shipping-policy', '/policies/refund-policy', '/
   '/policies/contact-information', '/pages/contacto', '/pages/politica-de-cookies', '/pages/aviso-legal'];
 const visible = (html) => text(html.replace(/<template[\s\S]*?<\/template>/g, '').replace(/<script[\s\S]*?<\/script>/g, ''));
 const json = (f) => JSON.parse(fs.readFileSync(`${THEME}/${f}`, 'utf8'));
+const atRound = (f) => JSON.parse(execSync(`git -C ${THEME} show ${ROUND_HEAD}:${f}`).toString());
 const walk = (a, b, p, d) => { if (typeof a !== 'object' || a === null || typeof b !== 'object' || b === null) { if (JSON.stringify(a) !== JSON.stringify(b)) d.push(p); return d; }
   for (const k of new Set([...Object.keys(a), ...Object.keys(b)])) walk(a[k], b[k], p + '.' + k, d); return d; };
 
@@ -54,15 +56,15 @@ module.exports = async function phaseO() {
   ok('O9 pie: una política vacía en Shopify no se enlaza (sin 404 desde el pie)', !/refund-policy|shipping-policy/.test(ul2));
   await reset();
 
-  // 4 · Alcance frente a a83f700 (solo en el repo; se fija al cerrar la ronda, como M y N).
+  // 4 · Alcance a83f700..4ff2ea0 (solo en el repo; fijado al cerrar la ronda, como M y N).
   if (!REPO) return;
-  const changed = execSync(`git -C ${THEME} diff --name-only ${BASE} -- assets config layout locales sections snippets templates`).toString().trim().split('\n').filter(Boolean).sort();
+  const changed = execSync(`git -C ${THEME} diff --name-only ${BASE} ${ROUND_HEAD} -- assets config layout locales sections snippets templates`).toString().trim().split('\n').filter(Boolean).sort();
   ok('O10 archivos del tema tocados: garelon.css, defaults de la 4.ª garantía (home/ficha), garelon-legal-links e index/product', JSON.stringify(changed) === JSON.stringify(
     ['assets/garelon.css', 'sections/featured-product.liquid', 'sections/main-product.liquid', 'snippets/garelon-legal-links.liquid', 'templates/index.json', 'templates/product.json']), changed);
   for (const f of ['templates/index.json', 'templates/product.json']) {
-    const d = walk(JSON.parse(execSync(`git -C ${THEME} show ${BASE}:${f}`).toString()), json(f), '', []);
+    const d = walk(JSON.parse(execSync(`git -C ${THEME} show ${BASE}:${f}`).toString()), atRound(f), '', []);
     ok(`O11 ${f}: solo se vacía la garantía «Envíos internacionales» (packs, precios, imágenes, Judge.me, FAQ… idénticos)`, d.length === 1 && /\.blocks\.confianza\.settings\.chip_4_text$/.test(d[0]), d);
   }
-  const cssDiff = execSync(`git -C ${THEME} diff -U0 ${BASE} -- assets/garelon.css`).toString().split('\n').filter(l => /^[-+][^-+]/.test(l));
+  const cssDiff = execSync(`git -C ${THEME} diff -U0 ${BASE} ${ROUND_HEAD} -- assets/garelon.css`).toString().split('\n').filter(l => /^[-+][^-+]/.test(l));
   ok('O12 garelon.css: solo se añade la regla de la garantía impar a lo ancho', cssDiff.length > 0 && cssDiff.every(l => l.startsWith('+')) && cssDiff.some(l => /g-trust__chip:last-child:nth-child\(odd\)/.test(l)), cssDiff);
 };

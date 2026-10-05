@@ -1,0 +1,24 @@
+{%- comment -%}
+  GARELON · URL de la única página de contacto, buscada por handle en la tienda real (nunca un ID).
+  Orden: página «contacto» (handle previsto, R22) → página «contact» (la que Shopify crea por
+  defecto en una tienda nueva) → política nativa «Información de contacto» si tiene contenido →
+  vacío (no hay contacto: quien llama no pinta el enlace).
+
+  Uso: {%- capture contact_url -%}{% render 'garelon-contact-url' %}{%- endcapture -%}
+{%- endcomment -%}
+{%- liquid
+  assign contact_page = pages['contacto']
+  if contact_page == blank
+    assign contact_page = pages['contact']
+  endif
+  if contact_page != blank
+    echo contact_page.url
+  else
+    for policy in shop.policies
+      if policy != blank and policy.url contains '/policies/contact-information'
+        echo policy.url
+        break
+      endif
+    endfor
+  endif
+-%}

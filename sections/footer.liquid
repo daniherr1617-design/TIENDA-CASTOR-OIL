@@ -84,7 +84,8 @@
                     {% render block %}
                   {%- when 'text' -%}
                     <div class="footer-block__details-content rte">
-                      {{ block.settings.subtext }}
+                      {%- comment -%} GARELON: el enlace a contacto apunta a la página que exista. {%- endcomment -%}
+                      {% render 'garelon-contact-rte', html: block.settings.subtext %}
                     </div>
                   {%- when 'link_list' -%}
                     {%- if block.settings.menu != blank -%}

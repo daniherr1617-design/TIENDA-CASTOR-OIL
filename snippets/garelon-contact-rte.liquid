@@ -1,0 +1,17 @@
+{%- comment -%}
+  GARELON · Texto enriquecido (FAQ, bloque «Ayuda» del pie) con los enlaces a /pages/contacto o
+  /pages/contact apuntando a la página de contacto que exista de verdad (garelon-contact-url).
+  Si la tienda no tiene contacto, el enlace pierde el href y queda como texto (sin 404).
+
+  Uso: {% render 'garelon-contact-rte', html: block.settings.answer %}
+{%- endcomment -%}
+{%- liquid
+  capture contact_url
+    render 'garelon-contact-url'
+  endcapture
+  assign contact_href = ''
+  if contact_url != blank
+    assign contact_href = 'href="' | append: contact_url | append: '"'
+  endif
+  echo html | replace: 'href="/pages/contacto"', contact_href | replace: 'href="/pages/contact"', contact_href
+-%}

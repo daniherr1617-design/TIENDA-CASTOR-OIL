@@ -27,7 +27,7 @@
             <h3 class="g-faq__q">{{ block.settings.question | escape }}</h3>
             <span class="g-faq__mark" aria-hidden="true"></span>
           </summary>
-          <div class="g-faq__answer rte">{{ block.settings.answer }}</div>
+          <div class="g-faq__answer rte">{% render 'garelon-contact-rte', html: block.settings.answer %}</div>
         </details>
       {%- endfor -%}
     </div>

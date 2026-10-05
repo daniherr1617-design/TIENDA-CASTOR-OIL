@@ -630,6 +630,35 @@ def check_legal_claims(theme):
                      'se instalan desde Shopify (Eventos de cliente o canal oficial), con consentimiento')
 
 
+# ---------------------------------------------------------------- contacto
+CONTACT_HREF = re.compile(r'href="/pages/contact(?:o)?"')
+CONTACT_RTE = (('sections/garelon-faq.liquid', 'block.settings.answer'), ('sections/footer.liquid', 'block.settings.subtext'))
+
+
+def check_contact(theme):
+    """R22 · Una sola página de contacto con el formulario nativo de Shopify ({% form 'contact' %}).
+    La página real puede llamarse «contacto» o «contact» (la que crea una tienda nueva): ningún código del
+    tema enlaza a una ruta fija; la cabecera usa garelon-contact-url y los textos enriquecidos (FAQ, «Ayuda»
+    del pie) pasan por garelon-contact-rte. Sin esto, un enlace fijo da 404 en la tienda real."""
+    tpl = load_json(theme.root, 'templates/page.contact.json') if os.path.exists(os.path.join(theme.root, 'templates/page.contact.json')) else None
+    if not tpl or not any(sec.get('type') == 'contact-form' for sec in tpl.get('sections', {}).values()):
+        err('templates/page.contact.json', 'la plantilla «contact» debe incluir la sección contact-form (formulario nativo)')
+    if not re.search(r"{%-?\s*form\s+'contact'", read(theme.root, 'sections/contact-form.liquid')):
+        err('sections/contact-form.liquid', "falta {% form 'contact' %}: el contacto usa el formulario nativo de Shopify")
+    for d in ('layout', 'sections', 'snippets'):
+        for fn in sorted(os.listdir(os.path.join(theme.root, d))):
+            if fn.endswith('.liquid') and fn != 'garelon-contact-rte.liquid':  # el snippet que reescribe esos enlaces
+                m = CONTACT_HREF.search(read(theme.root, f'{d}/{fn}'))
+                if m:
+                    err(f'{d}/{fn}', f'enlace fijo «{m.group(0)}»: usa garelon-contact-url (la página real puede ser «contacto» o «contact»)')
+    for rel, setting in CONTACT_RTE:
+        src = read(theme.root, rel)
+        if re.search(r'{{-?\s*' + re.escape(setting) + r'\s*-?}}', src) or f"'garelon-contact-rte', html: {setting}" not in src:
+            err(rel, f'{setting} debe pintarse con garelon-contact-rte (enlace a la página de contacto real)')
+    if "render 'garelon-contact-url'" not in read(theme.root, 'snippets/garelon-nav-items.liquid'):
+        err('snippets/garelon-nav-items.liquid', 'el enlace «Contacto» de la cabecera debe resolverse con garelon-contact-url')
+
+
 # ---------------------------------------------------------------- liquid
 REF_PATTERNS = [
     (re.compile(r"{%-?\s*(?:render|include)\s+'([^']+)'"), 'snippets', '.liquid'),
@@ -773,6 +802,7 @@ def main(argv):
     check_locales(theme)
     check_free_shipping(theme)
     check_legal_claims(theme)
+    check_contact(theme)
 
     index = load_json(root, 'templates/index.json')
     if index is not None and not index.get('order'):

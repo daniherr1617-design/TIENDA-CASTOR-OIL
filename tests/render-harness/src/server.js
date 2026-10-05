@@ -129,7 +129,7 @@ engine.registerTag('form', { parse(tk, rem) { this.args = tk.args; this.tpls = [
   * render(ctx, em) { const type = (this.args.match(/^'([^']+)'/) || [])[1]; const idVar = (this.args.match(/id:\s*([\w.]+)/) || [])[1]; const idLit = (this.args.match(/id:\s*'([^']+)'/) || [])[1];
     const idv = idLit || (idVar ? ctx.getSync(idVar.split('.')) : ''); const cls = (this.args.match(/class:\s*'([^']+)'/) || [])[1] || '';
     const action = type === 'product' ? '/cart/add' : type === 'contact' ? '/contact' : type === 'cart' ? '/cart' : '/' + type;
-    ctx.push({ form: { errors: null, posted_successfully: false, id: idv } });
+    ctx.push({ form: type === 'contact' ? { ...FORM, id: idv } : { errors: null, posted_successfully: false, id: idv } });
     em.write(`<form method="post" action="${action}" id="${idv || ''}" accept-charset="UTF-8" class="${cls}" enctype="multipart/form-data" novalidate="novalidate"><input type="hidden" name="form_type" value="${type}"><input type="hidden" name="utf8" value="✓">`);
     yield this.liquid.renderer.renderTemplates(this.tpls, ctx, em); em.write('</form>'); ctx.pop(); } });
 engine.registerTag('sections', { parse(tk) { this.group = tk.args.replace(/['"]/g, '').trim(); }, * render(ctx, em) { em.write(yield renderGroup(this.group)); } });
@@ -162,10 +162,18 @@ const filters = {
 };
 Object.entries(filters).forEach(([k, v]) => engine.registerFilter(k, v));
 
+// SOLO TEST · Estado del formulario de contacto de la petición en curso, como lo deja Shopify: tras un envío válido
+// redirige a la página con ?contact_posted=true (form.posted_successfully?); con el email vacío o inválido vuelve a
+// pintar la página con form.errors. No se envía ningún correo: eso solo puede comprobarse en Shopify real.
+let FORM = { errors: null, posted_successfully: false };
 const policyList = () => [['refund-policy', 'Política de reembolso', state.refund], ['privacy-policy', 'Política de privacidad', 'ok'], ['terms-of-service', 'Términos del servicio', 'ok'], ['shipping-policy', 'Política de envío', state.shipping], ['legal-notice', 'Aviso legal', state.legal === 'policy' ? 'ok' : 'none'],
   ['contact-information', 'Información de contacto', state.contactinfo ? 'ok' : 'none']]
   .filter(([, , s]) => s === 'ok').map(([h, title]) => ({ url: `/policies/${h}`, title, body: '<p>Texto de prueba.</p>', handle: h }));
+// Contacto: ok = página «contacto» con la plantilla «contact» | legacy = página «contact» (la que Shopify crea en una
+// tienda nueva) con la plantilla «contact» | plain = página «contacto» con la plantilla predeterminada | none = sin página.
 function pagesObj() { const p = {}; if (state.contact === 'ok') p.contacto = { url: '/pages/contacto', title: 'Contacto', handle: 'contacto', content: '', template_suffix: 'contact' };
+  if (state.contact === 'legacy') p.contact = { url: '/pages/contact', title: 'Contacto', handle: 'contact', content: '', template_suffix: 'contact' };
+  if (state.contact === 'plain') p.contacto = { url: '/pages/contacto', title: 'Contacto', handle: 'contacto', content: '', template_suffix: null };
   if (state.cookies === 'ok') p['politica-de-cookies'] = { url: '/pages/politica-de-cookies', title: 'Política de cookies', handle: 'politica-de-cookies', content: '<p>x</p>' };
   if (state.cookies === 'legacy') p.cookies = { url: '/pages/cookies', title: 'Cookies', handle: 'cookies', content: '<p>x</p>' };
   if (state.legal === 'page') p['aviso-legal'] = { url: '/pages/aviso-legal', title: 'Aviso legal', handle: 'aviso-legal', content: '<p>x</p>' }; return p; }
@@ -250,7 +258,8 @@ function route(p) {
 }
 http.createServer(async (req, res) => {
   try {
-    const u = new URL(req.url, 'http://localhost'); const p = u.pathname;
+    const u = new URL(req.url, 'http://localhost'); let p = u.pathname;
+    { const ok = u.searchParams.get('contact_posted') === 'true'; FORM = { errors: null, posted_successfully: ok, 'posted_successfully?': ok }; }
     if (p.startsWith('/__fonts/')) { const fp = path.join(FONTS_DIR, p.slice(9)); return fs.readFile(fp, (e, d) => { if (e) { res.writeHead(404); return res.end(); } res.writeHead(200, { 'Content-Type': 'font/woff2' }); res.end(d); }); }
     if (p.startsWith('/assets/')) { const fp = path.join(T, decodeURIComponent(p)); return fs.readFile(fp, (e, d) => { if (e) { res.writeHead(404); return res.end(); } res.writeHead(200, { 'Content-Type': types[path.extname(fp)] || 'application/octet-stream' }); res.end(d); }); }
     if (p === '/__state') { const q = u.searchParams;
@@ -279,6 +288,18 @@ http.createServer(async (req, res) => {
       CURRENT = globals({ pageType: 'cart', pathname: '/cart' }, buildProduct(null)); const sections = {};
       for (const sid of String(body.sections || '').split(',').filter(Boolean)) sections[sid] = await renderSection(sid, sid, {}, {}, []);
       const c = cartDrop(); res.setHeader('Content-Type', 'application/json'); return res.end(JSON.stringify({ item_count: c.item_count, items: c.items.map(i => ({ id: i.id, quantity: i.quantity })), total_price: c.total_price, sections }));
+    }
+    if (p === '/contact' && req.method === 'POST') {
+      const chunks = []; for await (const c of req) chunks.push(c);
+      const fd = await new Response(Buffer.concat(chunks), { headers: { 'content-type': req.headers['content-type'] } }).formData();
+      const entry = {}; for (const [k, v] of fd.entries()) entry[k] = v; state.log.push(entry);
+      // Tras un error la URL queda en /contact (como en Shopify): el siguiente envío vuelve a la última página de contacto.
+      let back = new URL(req.headers.referer || 'http://localhost/', 'http://localhost').pathname;
+      if (back === '/contact') back = state.contactBack || '/'; else state.contactBack = back;
+      if (fd.get('form_type') === 'contact' && /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(String(fd.get('contact[email]') || ''))) {
+        res.writeHead(302, { Location: back + '?contact_posted=true#ContactForm' }); return res.end(); }
+      FORM = { errors: Object.assign(['email'], { messages: { email: 'no es válido.' }, translated_fields: { email: 'Correo electrónico' } }), posted_successfully: false, 'posted_successfully?': false, email: fd.get('contact[email]') };
+      p = back;
     }
     const r = route(p); let selected = u.searchParams.has('variant') ? Number(u.searchParams.get('variant')) : null;
     const ovIds = u.searchParams.has('option_values') ? u.searchParams.get('option_values').split(',').filter(Boolean).map(Number) : null;

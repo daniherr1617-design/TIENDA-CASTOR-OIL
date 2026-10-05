@@ -3,17 +3,24 @@
   Personalizar › Cabecera › «Navegación GARELON». Sustituyen al menú del Admin, que en una
   tienda nueva incluye «Catálogo» (tienda de un solo producto: no se muestra).
 
+  Un destino /pages/contacto o /pages/contact apunta a la página de contacto que exista de verdad
+  (garelon-contact-url); si la tienda no tiene ninguna, el enlace no se pinta (sin 404).
+
   Parámetros:
   - mode: 'inline' (escritorio) | 'drawer' (menú móvil)
 
   Uso (dentro de un <ul>): {% render 'garelon-nav-items', mode: 'drawer' %}
 {%- endcomment -%}
+{%- capture contact_url -%}{% render 'garelon-contact-url' %}{%- endcapture -%}
 {%- for i in (1..4) -%}
   {%- liquid
     assign label_key = 'nav_link_' | append: i | append: '_label'
     assign url_key = 'nav_link_' | append: i | append: '_url'
     assign label = section.settings[label_key]
     assign url = section.settings[url_key]
+    if url == '/pages/contacto' or url == '/pages/contact'
+      assign url = contact_url
+    endif
     assign is_current = false
     if url == request.path
       assign is_current = true

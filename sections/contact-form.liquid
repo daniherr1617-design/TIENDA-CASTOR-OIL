@@ -1,3 +1,18 @@
+{%- comment -%}
+  GARELON: con «Solo en la página de contacto» activado (plantilla page.json), el formulario solo se
+  pinta en la página con handle «contacto» o «contact». Así funciona aunque en el Admin la página
+  tenga la plantilla predeterminada en vez de «contact». En page.contact.json se pinta siempre.
+{%- endcomment -%}
+{%- liquid
+  assign garelon_show_form = true
+  if section.settings.garelon_contact_only
+    assign garelon_show_form = false
+    if page.handle == 'contacto' or page.handle == 'contact'
+      assign garelon_show_form = true
+    endif
+  endif
+-%}
+{%- if garelon_show_form -%}
 {{ 'section-contact-form.css' | asset_url | stylesheet_tag }}
 
 {%- style -%}
@@ -134,6 +149,7 @@
     {%- endform -%}
   </div>
 </div>
+{%- endif -%}
 
 {% schema %}
 {
@@ -183,6 +199,13 @@
       "id": "color_scheme",
       "label": "t:sections.all.colors.label",
       "default": "scheme-1"
+    },
+    {
+      "type": "checkbox",
+      "id": "garelon_contact_only",
+      "default": false,
+      "label": "Solo en la página de contacto",
+      "info": "GARELON: muestra el formulario solo en la página con handle «contacto» (o «contact»). Úsalo en la plantilla de página predeterminada."
     },
     {
       "type": "header",

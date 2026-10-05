@@ -42,6 +42,8 @@ Barra superior («Una joya para llevar contigo o regalar») → cabecera (Inicio
 
 **Verificación del propietario:** `Imagen 1.png` e `imagen 4.png` corresponden al producto real y están aprobadas para uso en la tienda. Sustituye a la revisión anterior, que las había descartado por una supuesta diferencia en la cruz: esa conclusión era incorrecta y **no debe volver a usarse para excluirlas**.
 
+**Actualización (ronda P, 2026-10-05):** el propietario corrigió las flechas de la infografía. `NUEVA IMAGEN 1.png` sustituye a `Imagen 1.png` (retirada del repositorio) como fuente de `producto-infografia`; misma clave, mismos anchos y mismos sitios.
+
 Se usan **5 imágenes (4 archivos + 1 recorte)**, todas sin retocar: solo redimensionadas a WebP. Orden de las galerías (revisado en los retoques finales): ficha `completa,principal,detalle,infografia,oracion` (producto entero → puesta en la muñeca → detalle de medalla, cruz y cuentas → infografía → contexto de oración); home `completa,detalle,infografia,principal,oracion` (la portada, justo encima, ya enseña `principal`, así que la compra adelanta el detalle y la infografía con medidas y cierre). La galería usa por defecto estas imágenes del tema, porque la multimedia que importa DSers puede traer la de 14K. Cuando la multimedia del producto esté revisada, el ajuste «Imágenes» de la compra y de la ficha puede pasar a «Multimedia de Shopify».
 
 ## 4. Packs
