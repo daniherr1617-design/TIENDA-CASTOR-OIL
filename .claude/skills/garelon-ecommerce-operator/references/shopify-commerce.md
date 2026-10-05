@@ -10,7 +10,7 @@
 | Tarifas de envío | Admin › Envío y entrega | Solo comunica: ajuste «Envío gratis» del tema (Configuración del tema › Carrito) activo solo si la tarifa real es gratuita |
 | Políticas | Admin › Políticas | Enlaza solo las que existen |
 | Pagos y checkout | Admin › Pagos / Checkout | No se toca |
-| Contacto | Admin › Páginas (handle `contacto`) | Enlaza |
+| Contacto | Admin › Páginas (handle `contacto`, plantilla `contact`) | Enlaza a la página real (`contacto` o `contact`) y pinta el formulario nativo; el envío del correo solo se prueba en Shopify real |
 | Producto ↔ proveedor y pedidos | `{{SUPPLIER_INTEGRATION}}` (actual: DSers + AliExpress; fulfillment manual) | Sin código del proveedor |
 | Opiniones | Judge.me | Muestra el Review Widget versionado (D30) o, sin la app, la valoración |
 | Píxeles y eventos | Admin › Eventos de cliente / canales | No inyecta nada a mano |

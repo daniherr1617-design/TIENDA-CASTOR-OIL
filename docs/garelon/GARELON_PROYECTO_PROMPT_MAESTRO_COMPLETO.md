@@ -1,6 +1,6 @@
 # GARELON · PROMPT MAESTRO DEL PROYECTO (constitución operativa)
 
-> **Versión:** 3.5 · **Fecha:** 2026-10-04 · **Repositorio:** `daniherr1617-design/TIENDA-CASTOR-OIL` · **Rama fuente:** `claude/rosary-clean-rebuild` · **Commit fuente:** `4ff2ea0`
+> **Versión:** 3.6 · **Fecha:** 2026-10-05 · **Repositorio:** `daniherr1617-design/TIENDA-CASTOR-OIL` · **Rama fuente:** `claude/rosary-clean-rebuild` · **Commit fuente:** `27c3904`
 >
 > Snapshot generado desde `e27ae75`. Ante discrepancias futuras manda el repositorio actual y, por encima de él, el producto real y las decisiones recientes del propietario (§3).
 
@@ -150,7 +150,7 @@ Ninguna instrucción posterior las anula. Si una petición choca con una regla, 
 **Marca y navegación**
 - **R20 · Identidad estable.** El logo no se rediseña por iniciativa propia (§5). Paleta, tipografía y botones solo cambian si el propietario lo pide.
 - **R21 · Sin catálogo** público mientras haya un solo producto.
-- **R22 · Una sola página de contacto** permanente (handle `contacto`).
+- **R22 · Una sola página de contacto** permanente (handle `contacto`), con el formulario nativo de Shopify. El tema no enlaza a una ruta fija: sigue a la página real (`contacto`, `contact` o la política «Información de contacto») (D33).
 
 **Honestidad del trabajo**
 - **R23 · Distinguir siempre** `PROBADO EN SHOPIFY REAL` / `SHOPIFY PREVIEW` de `PROBADO LOCALMENTE` / `ZIP DESCOMPRIMIDO`. Nunca se afirma que checkout, pagos, DSers, Judge.me real o Shopify Admin funcionan si no se verificaron.
@@ -308,7 +308,7 @@ Si cambian en Shopify o en las políticas, mandan Shopify y las políticas, y el
 - **No asumir ni publicar:** 14K, chapado 14K, hipoalergénico, waterproof, «no se oxida», «no pierde color», milagros, suerte, protección espiritual garantizada, fabricación por GARELON.
 - **Packs:** un solo producto Shopify con la opción `Pack` = `1 pulsera` · `2 pulseras` · `3 pulseras` (variantes reales, cantidad 1). Pack de 3 = 3 pulseras físicas = 3 unidades compradas al proveedor.
 - **Proveedor:** DSers + AliExpress (no AutoDS). Fulfillment inicial manual.
-- **Imágenes aprobadas por el propietario:** `Imagen 1.png`, `imagen 2.png`, `NUEVA IMAGEN 3.png`, `imagen 4.png`. No se vuelven a descartar. La antigua `imagen 3.png` (cruz colgante) no es fiel al producto y no se usa.
+- **Imágenes aprobadas por el propietario:** `NUEVA IMAGEN 1.png`, `imagen 2.png`, `NUEVA IMAGEN 3.png`, `imagen 4.png`. No se vuelven a descartar. La antigua `Imagen 1.png` (flechas incorrectas en la infografía) se retiró y no se restaura (D33). La antigua `imagen 3.png` (cruz colgante) no es fiel al producto y no se usa.
 - **Tienda:** ya funciona en Shopify sobre Dawn 16.0.0 + capa GARELON. El 404 histórico de la home quedó resuelto con la reconstrucción limpia y no es un problema actual.
 
 ---

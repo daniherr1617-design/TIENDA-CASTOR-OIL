@@ -1,6 +1,6 @@
 # GARELON · CHECKLIST DE MIGRACIÓN Y VERIFICACIÓN
 
-> **Versión:** 3.4 · **Fecha:** 2026-10-04 · **Repositorio:** `daniherr1617-design/TIENDA-CASTOR-OIL` · **Rama fuente:** `claude/rosary-clean-rebuild` · **Commit fuente:** `4ff2ea0`
+> **Versión:** 3.5 · **Fecha:** 2026-10-05 · **Repositorio:** `daniherr1617-design/TIENDA-CASTOR-OIL` · **Rama fuente:** `claude/rosary-clean-rebuild` · **Commit fuente:** `27c3904`
 >
 > Snapshot generado desde `e27ae75`. Ante discrepancias futuras manda el repositorio actual. Si una comprobación ya no corresponde a la arquitectura real, se corrige este checklist (DOCUMENT_SYNC), no el tema.
 
@@ -112,7 +112,8 @@ Cada punto se marca con el lugar donde se probó: `PROBADO LOCALMENTE`, `ZIP DES
 
 ## 16. Routing e instalabilidad
 - [ ] 🅲 `GET /` → 200 (plantilla index), con y sin producto publicado.
-- [ ] 🅲 Ficha → 200; ruta inexistente → 404 limpia; `/cart` → 200; contacto → 200.
+- [ ] 🅲 Ficha → 200; ruta inexistente → 404 limpia; `/cart` → 200; contacto → 200 con el formulario nativo, y todos los enlaces a Contacto (cabecera, menú móvil, «Ayuda», FAQ, pie) siguen a la página real sin 404 (`garelon_check` y fase P).
+- [ ] 🆂 Página de contacto en Admin › Páginas: handle `contacto` y plantilla `contact`; envío de prueba recibido en el email de la tienda.
 - [ ] 🅲 `templates/index.json` sin bloques de app (salvo el Review Widget de Judge.me, D30), imágenes de Files ni recursos de la tienda; nombres de schema ≤ 25 bytes.
 - [ ] 🆂 Tras subir el tema: la home y Personalizar › Página de inicio abren sin 404.
 

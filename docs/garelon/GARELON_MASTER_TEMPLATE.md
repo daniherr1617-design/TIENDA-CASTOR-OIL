@@ -1,6 +1,6 @@
 # GARELON · MASTER TEMPLATE (arquitectura real del tema)
 
-> **Versión:** 3.4 · **Fecha:** 2026-10-04 · **Repositorio:** `daniherr1617-design/TIENDA-CASTOR-OIL` · **Rama fuente:** `claude/rosary-clean-rebuild` · **Commit fuente:** `4ff2ea0`
+> **Versión:** 3.5 · **Fecha:** 2026-10-05 · **Repositorio:** `daniherr1617-design/TIENDA-CASTOR-OIL` · **Rama fuente:** `claude/rosary-clean-rebuild` · **Commit fuente:** `27c3904`
 >
 > Snapshot generado desde `e27ae75`. Ante discrepancias futuras manda el repositorio actual: revisa el código antes de actuar sobre lo que dice este documento.
 
@@ -170,7 +170,7 @@ Título, texto y botón hacia `/#comprar`.
 `main-product` + tranquilidad + opiniones + detalles + FAQ + compra fija (`garelon-sticky-cta`, solo móvil, visible cuando el botón real queda por encima de la pantalla, con el estado y el precio del botón real).
 
 ### 3.16 Pie · `footer` (Dawn + GARELON)
-Logo completo, descripción de marca, bloque «Ayuda» con enlace a contacto, enlaces legales en orden fijo y solo si existen (Contacto · Envíos · Devoluciones y reembolsos · Privacidad · Cookies · Términos · Aviso legal). Contacto = página `contacto` (o `contact`); sin ella, la política nativa «Información de contacto», nunca las dos. Cookies = página `politica-de-cookies` (o `cookies`). Aviso legal = política nativa `/policies/legal-notice` con contenido o, si no, página `aviso-legal`. Ningún texto legal en Liquid. Sin iconos de pago ni newsletter.
+Logo completo, descripción de marca, bloque «Ayuda» con enlace a contacto, enlaces legales en orden fijo y solo si existen (Contacto · Envíos · Devoluciones y reembolsos · Privacidad · Cookies · Términos · Aviso legal). Contacto = página `contacto` (o `contact`); sin ella, la política nativa «Información de contacto», nunca las dos. Esa misma resolución (`snippets/garelon-contact-url.liquid`) la usan la cabecera, el menú móvil y, mediante `snippets/garelon-contact-rte.liquid`, los enlaces `/pages/contacto` del bloque «Ayuda» y de las FAQ: sin página de contacto, el enlace no se pinta o queda como texto (nunca un 404). Cookies = página `politica-de-cookies` (o `cookies`). Aviso legal = política nativa `/policies/legal-notice` con contenido o, si no, página `aviso-legal`. Ningún texto legal en Liquid. Sin iconos de pago ni newsletter.
 
 ### 3.17 Carrito y nota de envío
 Cajón (`cart_type: drawer`) y `/cart` de Dawn: formulario, líneas, cantidades, subtotal y botón de pago sin cambios. Dos cambios GARELON: «Seguir comprando» → home, y la nota de impuestos y envío.
@@ -194,7 +194,7 @@ Cajón (`cart_type: drawer`) y `/cart` de Dawn: formulario, líneas, cantidades,
 Así no se pierde información fiscal ni se inventan afirmaciones nuevas. Si se desactiva el envío gratis, cambia también la garantía «Envío gratis + seguimiento» (§3.6). Sin upsells, casillas premarcadas ni productos añadidos automáticamente.
 
 ### 3.18 Otras plantillas
-`404.json` (Dawn, «Seguir comprando» → home), `page.contact.json` (página `contacto` del Admin), `cart.json`, `search.json`, `password.json`, `collection.json`, `list-collections.json`, `blog.json`, `article.json`, `page.json`, `gift_card.liquid`, todas de Dawn.
+`404.json` (Dawn, «Seguir comprando» → home), `page.contact.json` (página `contacto` del Admin; formulario nativo de Dawn `contact-form`, `{% form 'contact' %}`), `page.json` (además incluye `contact-form` con `garelon_contact_only`: el formulario aparece solo en la página `contacto`/`contact` aunque en el Admin tenga la plantilla predeterminada), `cart.json`, `search.json`, `password.json`, `collection.json`, `list-collections.json`, `blog.json`, `article.json`, `page.json`, `gift_card.liquid`, todas de Dawn.
 
 ---
 
@@ -204,7 +204,8 @@ Así no se pierde información fiscal ni se inventan afirmaciones nuevas. Si se 
 - **Nombre:** `assets/producto-<clave>-<ancho>.webp`. Las claves y sus anchos están en el `case` de `snippets/garelon-image.liquid`, y `tools/garelon_check.py` comprueba que existe cada ancho.
 - **Uso:** `{% render 'garelon-image', image: section.settings.image, key: '<clave>', alt: …, sizes: …, eager: … %}`. Si el editor tiene una imagen elegida, manda esa.
 - **Galerías:** `garelon_gallery_keys` en la compra de la home y en la ficha. El orden se decide por la historia comercial (Prompt Maestro §9) y queda en el snapshot.
-- **Infografías con texto:** enlace a la versión grande y ancho completo en móvil.
+- **Infografías con texto:** enlace a la versión grande y ancho completo en móvil. WebP con calidad 90 (texto nítido); el mayor ancho es el de la fuente, nunca más (sin ampliar).
+- **Sustituir una fuente** (misma clave): la nueva imagen a la raíz, la antigua fuera del repo, y se regeneran todos los anchos de la clave. Hoy: `infografia` ← `NUEVA IMAGEN 1.png` (D33); `principal`/`detalle` ← `NUEVA IMAGEN 3.png` (D29).
 - **LCP:** solo la imagen de la portada (home) y la primera de la galería (ficha) son `eager`.
 - **Multimedia de Shopify:** puede traer imágenes del proveedor con claims no verificados. Por eso las plantillas usan `garelon_media: theme` hasta revisarla.
 
