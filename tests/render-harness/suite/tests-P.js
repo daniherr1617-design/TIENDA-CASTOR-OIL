@@ -38,8 +38,9 @@ import sys, json, os
 from PIL import Image
 print(json.dumps({w: [Image.open(f'{sys.argv[1]}/assets/producto-infografia-{w}.webp').format, *Image.open(f'{sys.argv[1]}/assets/producto-infografia-{w}.webp').size,
   os.path.getsize(f'{sys.argv[1]}/assets/producto-infografia-{w}.webp')] for w in json.loads(sys.argv[2])}))`, THEME, JSON.stringify(WIDTHS)]).toString());
-  ok('P2 «infografia» con los anchos del snippet (480/720/1080/1254): WebP, cuadrados, al ancho de su nombre y < 260 KB',
-    WIDTHS.join() === '480,720,1080,1254' && WIDTHS.every(w => { const d = info[w]; return d[0] === 'WEBP' && d[1] === w && d[2] === w && d[3] < 260 * 1024; }), info);
+  // Peso: < 260 KB con la calidad 90 de la ronda P; desde la ronda Q (D34) son lossless y el límite es 1,5 MB (fase Q).
+  ok('P2 «infografia» con los anchos del snippet (480/720/1080/1254): WebP, cuadrados, al ancho de su nombre y < 1,5 MB',
+    WIDTHS.join() === '480,720,1080,1254' && WIDTHS.every(w => { const d = info[w]; return d[0] === 'WEBP' && d[1] === w && d[2] === w && d[3] < 1.5 * 1024 * 1024; }), info);
   ok('P3 sin PNG/JPG de la infografía en assets/ (el tema solo lleva WebP)', fs.readdirSync(`${THEME}/assets`).filter(f => /infografia/.test(f) && !/\.webp$/.test(f)).length === 0);
   if (REPO) {
     // Fidelidad: cada WebP es la fuente nueva reducida con LANCZOS (sin ampliar: el mayor ancho = el ancho de la fuente).

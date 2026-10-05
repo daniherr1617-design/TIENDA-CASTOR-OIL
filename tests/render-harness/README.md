@@ -6,7 +6,7 @@
 
 - **Node.js ≥ 20** (probado con 22) y npm.
 - **Chromium** para Playwright (se usa `playwright-core`, sin descargas automáticas).
-- **Python 3** para `tools/garelon_check.py` (sin dependencias).
+- **Python 3** para `tools/garelon_check.py` (sin dependencias) y **Pillow** para `tools/garelon_infografia.py` y las comparaciones de imagen.
 - **Ruby ≥ 3** con la gema `liquid` 5.14.0, solo para el parseo Liquid estricto.
 - **git con historial**: algunas pruebas comparan plantillas con commits anteriores (`git show <commit>:…`). Un clon con `--depth 1` no basta; el clon por defecto, o `--depth 50`, sí.
 
@@ -70,6 +70,7 @@ Para el Liquid estricto: `gem install liquid -v 5.14.0` (o, sin permisos de sist
 - «Para regalar» sin ocasiones concretas (fase N, decisión D31): solo encabezado y entradilla, sin rejilla vacía; FAQ de regalo genérica; 0 ocasiones en el storefront;
 - sincronización legal (fase O, decisión D32): «14 días» solo como desistimiento, sin «Envíos internacionales», sin fechas de entrega fijas ni píxeles a mano, FAQ y pestaña que remiten a las políticas, y enlaces legales del pie únicos, en rutas controladas y vivos;
 - infografía «Detalles de la pulsera» y Contacto (fase P): `NUEVA IMAGEN 1.png` como fuente de `infografia` (WebP 480/720/1080/1254, sin ampliar, fiel a la fuente, sin PNG servido, `srcset` adecuado en móvil y escritorio); formulario nativo `{% form 'contact' %}` con estados de error y éxito; enlaces a Contacto (cabecera, menú móvil, «Ayuda», FAQ y pie) que siguen a la página real (`contacto`, `contact` o la política «Información de contacto») sin 404; foco visible, objetivos ≥ 44 px y sin scroll horizontal;
+- infografía inmutable (fase Q, decisión D34): `NUEVA IMAGEN 1.png` intacta (SHA-256 fijo), WebP lossless que salen solo de ella (`tools/garelon_infografia.py`: el de 1254 px idéntico píxel a píxel y los menores su reducción exacta, misma proporción, sin recorte ni ampliación, sin PNG), autoprueba con 12 alteraciones, y en el navegador, a los 8 anchos y en las tres posiciones, la imagen entera y lo que se ve igual que la fuente en cada zona (con un control negativo que demuestra que un recorte del 2 % se detecta);
 - schemas, locales (31 idiomas) y alcance de los cambios de cada ronda;
 - accesibilidad básica: un H1, anclas, `alt`, contraste y foco;
 - sin errores JS;

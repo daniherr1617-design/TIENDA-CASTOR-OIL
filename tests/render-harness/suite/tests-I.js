@@ -24,9 +24,14 @@ module.exports = async function (browser) {
     if (!fs.existsSync(f)) { bad.push(`falta ${f}`); continue; }
     const b = fs.readFileSync(f);
     if (b.toString('ascii', 0, 4) !== 'RIFF' || b.toString('ascii', 8, 12) !== 'WEBP') bad.push(`${k}-${w} no es WebP`);
-    if (b.length > 260 * 1024) bad.push(`${k}-${w} pesa ${b.length}`);
+    // La infografía (texto y líneas finas) va en WebP lossless desde la ronda Q (D34): copia exacta de la fuente,
+    // con su propio presupuesto (< 1,5 MB, más ligera que la fuente PNG). Las fotos siguen < 260 KB.
+    if (k === 'infografia') {
+      if (b.toString('ascii', 12, 16) !== 'VP8L') bad.push(`${k}-${w} no es lossless`);
+      if (b.length > 1.5 * 1024 * 1024) bad.push(`${k}-${w} pesa ${b.length}`);
+    } else if (b.length > 260 * 1024) bad.push(`${k}-${w} pesa ${b.length}`);
   }
-  ok('I1 assets WebP de «completa» (480/720/1080) e «infografia» (480/720/1080/1254) existen, son WebP y pesan < 260 KB', bad.length === 0, bad);
+  ok('I1 assets WebP de «completa» (480/720/1080, < 260 KB) e «infografia» (480/720/1080/1254, lossless < 1,5 MB) existen y son WebP', bad.length === 0, bad);
   const dims = execSync(`python3 -c "
 from PIL import Image;import glob
 print(';'.join(f.split('/')[-1]+'='+'x'.join(map(str,Image.open(f).size)) for f in sorted(glob.glob('${THEME}/assets/producto-[ci]*.webp'))))"`).toString().trim();
