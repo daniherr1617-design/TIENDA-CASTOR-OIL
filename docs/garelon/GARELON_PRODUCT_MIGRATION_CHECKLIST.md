@@ -1,6 +1,6 @@
 # GARELON · CHECKLIST DE MIGRACIÓN Y VERIFICACIÓN
 
-> **Versión:** 3.7 · **Fecha:** 2026-10-06 · **Repositorio:** `daniherr1617-design/TIENDA-CASTOR-OIL` · **Rama fuente:** `claude/rosary-clean-rebuild` · **Commit fuente:** `894ec79`
+> **Versión:** 3.8 · **Fecha:** 2026-10-06 · **Repositorio:** `daniherr1617-design/TIENDA-CASTOR-OIL` · **Rama fuente:** `claude/rosary-clean-rebuild` · **Commit fuente:** `e08077b`
 >
 > Snapshot generado desde `e27ae75`. Ante discrepancias futuras manda el repositorio actual. Si una comprobación ya no corresponde a la arquitectura real, se corrige este checklist (DOCUMENT_SYNC), no el tema.
 
@@ -24,7 +24,7 @@ Cada punto se marca con el lugar donde se probó: `PROBADO LOCALMENTE`, `ZIP DES
 - [ ] 🅲 Los assets `producto-*` son solo redimensionados, recortados sin ampliar o convertidos; no hay producto alterado.
 - [ ] 🅲 Cada clave tiene todos sus anchos (`tools/garelon_check.py`) y un texto alternativo en español fiel a la imagen.
 - [ ] 🅲 Infografía con texto: WebP lossless que salen solo de su fuente aprobada, sin recorte ni ampliación (`python3 tools/garelon_infografia.py`; con fuente nueva, SHA-256 actualizado, familia con versión nueva y `--build`).
-- [ ] 🅿 Infografía en la vista previa: abrir «Ampliar» (o la imagen en una pestaña nueva); la URL es de la familia versionada vigente (hoy `producto-infografia-v2-`) y la imagen descargada pasa `tools/garelon_infografia.py --identify`.
+- [ ] 🅿 Infografía en la vista previa: abrir «Ampliar» (o la imagen en una pestaña nueva); la URL es de la familia versionada vigente (hoy `producto-infografia-v3-`) y la imagen descargada pasa `tools/garelon_infografia.py --identify`.
 - [ ] 🅲 Orden de galería razonado en la home y en la ficha, sin repetir lo que la portada acaba de enseñar.
 - [ ] 🅲 Solo la imagen LCP es `eager`.
 - [ ] 🅿 Las imágenes mejoradas no cambian el producto (verificación del propietario).
