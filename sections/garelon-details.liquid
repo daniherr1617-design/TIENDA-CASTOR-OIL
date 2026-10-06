@@ -10,7 +10,7 @@
     assign has_media = true
   endif
   assign media_text = false
-  if section.settings.image == blank and section.settings.image_key == 'infografia'
+  if section.settings.image_key == 'infografia'
     assign media_text = true
   endif
   assign has_items = false
@@ -128,7 +128,8 @@
     {
       "type": "image_picker",
       "id": "image",
-      "label": "Imagen"
+      "label": "Imagen",
+      "info": "Con la infografía del tema se usa siempre la aprobada (esta imagen no la sustituye)."
     },
     {
       "type": "select",

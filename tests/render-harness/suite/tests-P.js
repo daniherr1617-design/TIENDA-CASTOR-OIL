@@ -13,6 +13,10 @@ const crypto = require('crypto');
 const { execSync, execFileSync } = require('child_process');
 const P = '/products/pulsera-rosario-virgen-maria';
 const BASE = '34c8ae7'; // HEAD antes de la ronda P
+// Último commit de la ronda P (tema 27c3904 + docs): el alcance P29-P31 y P5 se fijan a 34c8ae7..9bba79b, porque la
+// ronda R (D35) renombra la infografía a producto-infografia-v2-* y saca la lupa de encima de la imagen.
+const ROUND_HEAD = '9bba79b';
+const ASSET = T.assetBase('infografia'); // familia actual de la infografía (producto-infografia-v2 desde la ronda R)
 const REPO = fs.existsSync(THEME + '/.git');
 const NEW_SRC = 'NUEVA IMAGEN 1.png';
 const NEW_SRC_SHA256 = '3795161cabb89ae32b7a4d9ac9acb8b770dc76f62c5795817743a9a6ddb3db0e'; // subida por el propietario a main (4365050)
@@ -36,8 +40,8 @@ module.exports = async function phaseP(browser) {
   const info = JSON.parse(execFileSync('python3', ['-c', `
 import sys, json, os
 from PIL import Image
-print(json.dumps({w: [Image.open(f'{sys.argv[1]}/assets/producto-infografia-{w}.webp').format, *Image.open(f'{sys.argv[1]}/assets/producto-infografia-{w}.webp').size,
-  os.path.getsize(f'{sys.argv[1]}/assets/producto-infografia-{w}.webp')] for w in json.loads(sys.argv[2])}))`, THEME, JSON.stringify(WIDTHS)]).toString());
+print(json.dumps({w: [Image.open(f'{sys.argv[1]}/assets/{sys.argv[3]}-{w}.webp').format, *Image.open(f'{sys.argv[1]}/assets/{sys.argv[3]}-{w}.webp').size,
+  os.path.getsize(f'{sys.argv[1]}/assets/{sys.argv[3]}-{w}.webp')] for w in json.loads(sys.argv[2])}))`, THEME, JSON.stringify(WIDTHS), ASSET]).toString());
   // Peso: < 260 KB con la calidad 90 de la ronda P; desde la ronda Q (D34) son lossless y el límite es 1,5 MB (fase Q).
   ok('P2 «infografia» con los anchos del snippet (480/720/1080/1254): WebP, cuadrados, al ancho de su nombre y < 1,5 MB',
     WIDTHS.join() === '480,720,1080,1254' && WIDTHS.every(w => { const d = info[w]; return d[0] === 'WEBP' && d[1] === w && d[2] === w && d[3] < 1.5 * 1024 * 1024; }), info);
@@ -49,18 +53,20 @@ import sys, json
 from PIL import Image, ImageChops, ImageStat
 src = Image.open(sys.argv[1]).convert('RGB'); out = {'src': src.size[0]}
 for w in json.loads(sys.argv[3]):
-    cur = Image.open(f'{sys.argv[2]}/assets/producto-infografia-{w}.webp').convert('RGB')
+    cur = Image.open(f'{sys.argv[2]}/assets/{sys.argv[4]}-{w}.webp').convert('RGB')
     ref = src if w == src.size[0] else src.resize((w, w), Image.LANCZOS)
     out[w] = round(sum(ImageStat.Stat(ImageChops.difference(cur, ref)).mean) / 3, 2)
-print(json.dumps(out))`, `${THEME}/${NEW_SRC}`, THEME, JSON.stringify(WIDTHS)]).toString());
+print(json.dumps(out))`, `${THEME}/${NEW_SRC}`, THEME, JSON.stringify(WIDTHS), ASSET]).toString());
     // Umbral 4/255: el ruido normal de WebP con pérdida (calidad 90) da 2-3; cualquier retoque, recorte o desplazamiento da mucho más.
     ok('P4 cada WebP sale de la fuente nueva sin retoques (diferencia media < 4/255, solo compresión) y sin ampliar (ancho mayor = ancho de la fuente)',
       fid.src === Math.max(...WIDTHS) && WIDTHS.every(w => fid[w] < 4), fid);
     const changedAssets = WIDTHS.filter(w => execSync(`git -C ${THEME} rev-parse ${BASE}:assets/producto-infografia-${w}.webp`).toString().trim() !==
-      execSync(`git -C ${THEME} hash-object assets/producto-infografia-${w}.webp`).toString().trim());
+      execSync(`git -C ${THEME} rev-parse ${ROUND_HEAD}:assets/producto-infografia-${w}.webp`).toString().trim());
     ok('P5 los 4 WebP de la infografía se regeneraron (ninguno es el de la imagen antigua)', changedAssets.length === WIDTHS.length, changedAssets);
-    const refs = execSync(`git -C ${THEME} grep -l -F "${OLD_SRC}" -- assets config layout locales sections snippets templates tools || true`).toString().trim();
-    ok('P6 ninguna referencia activa a «Imagen 1.png» en el tema ni en tools/', refs === '', refs);
+    // Los guardianes de la infografía (ronda Q/R) nombran «Imagen 1.png» precisamente para impedir que vuelva: no son uso activo.
+    const refs = execSync(`git -C ${THEME} grep -l -F "${OLD_SRC}" -- assets config layout locales sections snippets templates tools ':(exclude)tools/garelon_infografia.py' ':(exclude)tools/test_garelon_infografia.py' || true`).toString().trim();
+    const guards = ['tools/garelon_infografia.py', 'tools/test_garelon_infografia.py'].every(f => /OLD_SOURCES|retirada/.test(fs.readFileSync(`${THEME}/${f}`, 'utf8')));
+    ok('P6 ninguna referencia activa a «Imagen 1.png» en el tema ni en tools/ (solo la nombran los comprobadores que la bloquean)', refs === '' && guards, refs);
   }
 
   // 2 · Render de la infografía: home (galería + Detalles) y ficha (galería)
@@ -69,8 +75,8 @@ print(json.dumps(out))`, `${THEME}/${NEW_SRC}`, THEME, JSON.stringify(WIDTHS)]).
     const imgs = [...r.html.matchAll(/<img[^>]*producto-infografia[^>]*>/g)].map(m => m[0]);
     const srcsets = imgs.map(i => (i.match(/srcset="([^"]+)"/) || [])[1] || '');
     ok(`P7 ${u}: la infografía se sirve solo como WebP con srcset 480/720/1080/1254, sizes, width/height (sin CLS) y su alt`, imgs.length === (u === '/' ? 2 : 1) &&
-      imgs.every(i => /src="\/assets\/producto-infografia-1254\.webp"/.test(i) && /sizes="[^"]+"/.test(i) && /width="1254"/.test(i) && /height="1254"/.test(i) && i.includes(`alt="${esc(es.alt_infografia)}"`)) &&
-      srcsets.every(s => s === WIDTHS.map(w => `/assets/producto-infografia-${w}.webp ${w}w`).join(', ')), imgs);
+      imgs.every(i => i.includes(`src="/assets/${ASSET}-1254.webp"`) && /sizes="[^"]+"/.test(i) && /width="1254"/.test(i) && /height="1254"/.test(i) && i.includes(`alt="${esc(es.alt_infografia)}"`)) &&
+      srcsets.every(s => s === WIDTHS.map(w => `/assets/${ASSET}-${w}.webp ${w}w`).join(', ')), imgs);
     ok(`P8 ${u}: ningún asset de producto en PNG/JPG`, !/producto-[a-z]+-\d+\.(png|jpe?g)/.test(r.html));
   }
   ok('P9 alt de la infografía fiel a la imagen nueva (medalla, cruz, cuentas tricolor, cierre, largo ajustable, medida y regalo) y sin claims',
@@ -194,18 +200,17 @@ print(json.dumps(out))`, `${THEME}/${NEW_SRC}`, THEME, JSON.stringify(WIDTHS)]).
     await page.close();
   }
 
-  // 8 · Alcance frente a 34c8ae7 (solo en el repo)
+  // 8 · Alcance de la ronda P: 34c8ae7..9bba79b (solo en el repo)
   if (!REPO) return;
   const DIRS = 'assets config layout locales sections snippets templates';
-  const changed = [...new Set((execSync(`git -C ${THEME} diff --name-only ${BASE} -- ${DIRS}`).toString() + execSync(`git -C ${THEME} ls-files --others --exclude-standard -- ${DIRS}`).toString())
-    .trim().split('\n').filter(Boolean))].sort();
+  const changed = execSync(`git -C ${THEME} diff --name-only ${BASE} ${ROUND_HEAD} -- ${DIRS}`).toString().trim().split('\n').filter(Boolean).sort();
   const EXPECT = ['assets/garelon.css', ...WIDTHS.map(w => `assets/producto-infografia-${w}.webp`), 'sections/contact-form.liquid', 'sections/footer.liquid', 'sections/garelon-faq.liquid',
     'snippets/garelon-contact-rte.liquid', 'snippets/garelon-contact-url.liquid', 'snippets/garelon-nav-items.liquid', 'templates/page.contact.json', 'templates/page.json'].sort();
   ok('P29 archivos del tema tocados: infografía WebP, contacto (secciones, snippets, plantillas de página) y garelon.css', JSON.stringify(changed) === JSON.stringify(EXPECT), changed);
   const same = ['templates/index.json', 'templates/product.json', 'sections/header-group.json', 'sections/footer-group.json', 'config/settings_data.json', 'snippets/garelon-image.liquid', 'snippets/garelon-gallery.liquid']
-    .filter(f => execSync(`git -C ${THEME} diff --name-only ${BASE} -- ${f}`).toString().trim() !== '');
+    .filter(f => execSync(`git -C ${THEME} diff --name-only ${BASE} ${ROUND_HEAD} -- ${f}`).toString().trim() !== '');
   ok('P30 producto, packs, precios, Judge.me, galerías, cabecera y pie (JSON) idénticos', same.length === 0, same);
-  const removed = (f) => execSync(`git -C ${THEME} diff -U0 ${BASE} -- ${f}`).toString().split('\n').filter(l => /^-[^-]/.test(l));
+  const removed = (f) => execSync(`git -C ${THEME} diff -U0 ${BASE} ${ROUND_HEAD} -- ${f}`).toString().split('\n').filter(l => /^-[^-]/.test(l));
   ok('P31 garelon.css y el formulario de Dawn solo ganan líneas (nada del formulario nativo se quita)', removed('assets/garelon.css').length === 0 && removed('sections/contact-form.liquid').length === 0,
     [...removed('assets/garelon.css'), ...removed('sections/contact-form.liquid')]);
 };

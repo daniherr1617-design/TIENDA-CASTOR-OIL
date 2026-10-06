@@ -20,7 +20,7 @@ const OTHER = ['completa', 'infografia', 'oracion'];
 const snippet = fs.readFileSync(`${THEME}/snippets/garelon-image.liquid`, 'utf8');
 const widthsOf = (k) => ((snippet.match(new RegExp(`when '${k}'\\s*assign widths = '([\\d,]+)'`)) || [])[1] || '').split(',').filter(Boolean);
 const gallery = (html) => (html.match(/<div class="g-gallery"[\s\S]*?<\/ul>/) || [''])[0];
-const slides = (g) => [...g.matchAll(/producto-(\w+)-\d+\.webp/g)].map(m => m[1]).filter((k, i, a) => a.indexOf(k) === i);
+const slides = (g) => [...g.matchAll(/producto-(\w+)(?:-v\d+)?-\d+\.webp/g)].map(m => m[1]).filter((k, i, a) => a.indexOf(k) === i);
 const flat = (o, p = '', out = {}) => { for (const [k, v] of Object.entries(o)) (v && typeof v === 'object') ? flat(v, p + k + '.', out) : (out[p + k] = v); return out; };
 const atBase = (f) => execFileSync('git', ['-C', THEME, 'show', `${BASE}:${f}`], { maxBuffer: 64 * 1024 * 1024 });
 const atRound = (f) => execFileSync('git', ['-C', THEME, 'show', `${ROUND_HEAD}:${f}`], { maxBuffer: 64 * 1024 * 1024 });
@@ -114,7 +114,8 @@ print(json.dumps({f.split('/')[-1]: [Image.open(f).format, *Image.open(f).size] 
   const di = walk(JSON.parse(atBase('templates/index.json')), JSON.parse(atRound('templates/index.json')), '', []);
   ok('L14 index.json: solo cambia el alt de la imagen de la portada (fidelidad)', JSON.stringify(di) === '[".sections.portada.settings.image_alt"]', di);
   ok('L15 product.json sin cambios', atBase('templates/product.json').equals(atRound('templates/product.json')));
-  const others = fs.readdirSync(`${THEME}/assets`).filter(f => OTHER.some(k => f.startsWith(`producto-${k}-`)));
+  // Lista de assets de la ronda L (no del árbol de trabajo: la ronda R renombra la infografía a producto-infografia-v2-*).
+  const others = execSync(`git -C ${THEME} ls-tree --name-only ${ROUND_HEAD} assets/`).toString().trim().split('\n').map(f => f.replace('assets/', '')).filter(f => OTHER.some(k => f.startsWith(`producto-${k}-`)));
   ok('L16 resto de imágenes intacto: completa, infografía y oración (assets) y fuentes Imagen 1 / imagen 2 / imagen 4',
     others.length === 10 && others.every(f => atBase(`assets/${f}`).equals(atRound(`assets/${f}`))) &&
     ['Imagen 1.png', 'imagen 2.png', 'imagen 4.png'].every(f => atBase(f).equals(atRound(f))), others.length);

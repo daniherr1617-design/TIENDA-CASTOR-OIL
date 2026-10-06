@@ -260,8 +260,11 @@ body {
   background: rgba(42, 38, 34, 0.04);
 }
 .g-gallery__slide--wide {
-  /* La infografía lleva texto: en móvil ocupa todo el ancho para poder leerse. */
+  /* La infografía lleva texto: en móvil ocupa todo el ancho para poder leerse.
+     Se ve entera (D35): sin esquinas redondeadas que recorten sus esquinas. */
   flex-basis: 100%;
+  border-radius: 0;
+  background: none;
 }
 .g-gallery__img {
   display: block;
@@ -287,19 +290,18 @@ body {
   color: inherit;
 }
 .g-zoom__hint {
-  /* Solo icono, en la esquina superior derecha (flores): no tapa el texto de la infografía. */
-  position: absolute;
-  top: 0.6rem;
-  right: 0.6rem;
-  display: grid;
-  place-items: center;
-  width: 3.2rem;
-  height: 3.2rem;
-  border-radius: 50%;
-  background: rgba(255, 255, 255, 0.92);
-  border: 1px solid var(--g-gold-line);
+  /* Debajo de la imagen, nunca encima (D35): no tapa ningún píxel de la infografía. */
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  gap: 0.4rem;
+  min-height: 2.4rem;
+  padding: 0.6rem 0.2rem 0;
+  font-size: 1.3rem;
+  line-height: 1.2;
   color: var(--g-ink);
-  pointer-events: none;
+  text-decoration: underline;
+  text-underline-offset: 0.2rem;
 }
 .g-zoom:focus-visible {
   outline: 2px solid var(--g-accent);
@@ -875,6 +877,10 @@ body {
   max-width: 48rem;
   width: 100%;
   margin: 0 auto;
+}
+.g-details--media-text .g-details__media {
+  /* Infografía: se ve entera, sin esquinas redondeadas que recorten sus esquinas (D35). */
+  border-radius: 0;
 }
 .g-details__img {
   display: block;

@@ -10,12 +10,20 @@ reescribe. El único proceso permitido es:
 Sin IA, sin recorte, sin reencuadre, sin filtros y sin ampliar. Los anchos salen del snippet
 `snippets/garelon-image.liquid` (when 'infografia'), no de esta herramienta.
 
+Familia versionada (D35): assets/producto-infografia-v2-<ancho>.webp. La familia anterior
+(producto-infografia-<ancho>.webp, con el mismo nombre para la imagen antigua «Imagen 1.png» y para
+la versión con pérdida) está retirada: ni sus archivos ni sus referencias pueden volver al tema, y
+el contenido de sus versiones antiguas se reconoce por su SHA-256 (RETIRED_SHA256).
+
 Uso:
-  python3 tools/garelon_infografia.py --build           genera assets/producto-infografia-<ancho>.webp
+  python3 tools/garelon_infografia.py --build           genera assets/producto-infografia-v2-<ancho>.webp
   python3 tools/garelon_infografia.py                   comprueba el repositorio (lo mismo que --check)
   python3 tools/garelon_infografia.py --check --theme CARPETA [--source PNG]
                                                         comprueba otra copia del tema (p. ej. el ZIP
                                                         descomprimido) contra la fuente del repo
+  python3 tools/garelon_infografia.py --identify IMAGEN [IMAGEN…]
+                                                        dice si una imagen (p. ej. descargada de la tienda)
+                                                        es «NUEVA IMAGEN 1.png» o una versión antigua
 
 Si el propietario sustituye la fuente, hay que actualizar SOURCE_SHA256 aquí, regenerar con
 --build y registrarlo en el Decision Log. Ninguna otra imagen (antiguas, de Git, de otras ramas)
@@ -36,6 +44,20 @@ SOURCE = 'NUEVA IMAGEN 1.png'
 SOURCE_SHA256 = '3795161cabb89ae32b7a4d9ac9acb8b770dc76f62c5795817743a9a6ddb3db0e'  # main 4365050, aprobada
 SOURCE_SIZE = (1254, 1254)
 OLD_SOURCES = ['Imagen 1.png']  # retiradas: nunca pueden volver a ser fuente
+ASSET = 'producto-%s-v2' % KEY  # familia versionada (D35): nombre nuevo, sin caché ni referencias antiguas
+# Familia anterior, retirada: mismo nombre para contenidos distintos. Sus versiones del historial de Git
+# (solo el SHA-256; los archivos no se recuperan) no pueden volver al tema con ningún nombre.
+OLD_FAMILY = re.compile(r'producto-%s-(?!v2\b)' % KEY)
+RETIRED_SHA256 = {
+    'bdc7392adff6dd1fa5913ee52a3ee3a0b49ce59929d0b3c9e1ff6aef0c46abb4': 'producto-infografia-480.webp de «Imagen 1.png» (57ba415, flechas antiguas)',
+    '2f921fe7ca7a2346d3f3fb0e74893940765b8c16522d39dd7b3aea341b6a6c79': 'producto-infografia-720.webp de «Imagen 1.png» (57ba415, flechas antiguas)',
+    '1c6b594a79a5a4d08e70fa9f051f082184e0d33344e2cfb009ce34f4b5b27ff1': 'producto-infografia-1080.webp de «Imagen 1.png» (57ba415, flechas antiguas)',
+    'e9ac0491fea35ddaecb38a69d40d9fde35fbd73d2ed3474c8d46fc3a28d60ff7': 'producto-infografia-1254.webp de «Imagen 1.png» (57ba415, flechas antiguas)',
+    'c8aea2efb409a3242860ffa5cb721c08c426e122b5522e5be112c6c14fafa8dd': 'producto-infografia-480.webp con pérdida (27c3904, calidad 90)',
+    'a1e5988ab5fcceabfcdd99cfc29370ad9bb1b46a09b4d2d9fc28d29ad8d8d738': 'producto-infografia-720.webp con pérdida (27c3904, calidad 90)',
+    '53ec1fcfe1a47ce5dd35494ac13f1ec65182d67dd04b18585a53101a169c8f63': 'producto-infografia-1080.webp con pérdida (27c3904, calidad 90)',
+    '0ff73dd250542fcb68876936972b0f05515a730ce1c35f751aa7203f9455dc04': 'producto-infografia-1254.webp con pérdida (27c3904, calidad 90)',
+}
 ENCODE = dict(lossless=True, quality=100, method=6)  # lossless: sin submuestreo de color en líneas y textos
 
 # Zonas de la composición (fracciones del lado) que deben seguir exactamente en su sitio.
@@ -53,6 +75,10 @@ REGIONS = {
     'círculo ampliado de la cadena ajustable': (0.53, 0.65, 0.72, 0.85),
     'círculo ampliado del regalo': (0.77, 0.65, 0.96, 0.85),
     'etiquetas inferiores': (0.02, 0.84, 0.98, 0.96),
+    'esquina superior izquierda (cinta)': (0.00, 0.00, 0.08, 0.08),
+    'esquina superior derecha (flores)': (0.86, 0.00, 1.00, 0.14),
+    'esquina inferior izquierda': (0.00, 0.92, 0.08, 1.00),
+    'esquina inferior derecha': (0.92, 0.92, 1.00, 1.00),
 }
 # Tolerancias: lossless con el mismo Pillow da 0; el margen solo absorbe redondeos de otra versión
 # de Pillow al reducir. Un recorte, desplazamiento, retoque o una fuente distinta da mucho más.
@@ -69,12 +95,19 @@ def sha256(path):
     return h.hexdigest()
 
 
+def snippet_text(theme):
+    return open(os.path.join(theme, 'snippets', 'garelon-image.liquid'), encoding='utf-8').read()
+
+
 def widths(theme):
-    snippet = open(os.path.join(theme, 'snippets', 'garelon-image.liquid'), encoding='utf-8').read()
-    m = re.search(r"when '%s'\s*assign widths = '([\d,]+)'" % KEY, snippet)
+    m = re.search(r"when '%s'\s*assign widths = '([\d,]+)'" % KEY, snippet_text(theme))
     if not m:
         raise SystemExit("garelon-image.liquid no define los anchos de 'infografia'")
     return [int(w) for w in m.group(1).split(',')]
+
+
+def asset_name(w):
+    return f'{ASSET}-{w}.webp'
 
 
 def reference(src, w):
@@ -108,7 +141,7 @@ def build():
     if max(ws) > src.width:
         raise SystemExit(f'Anchos {ws}: ampliaría por encima de {src.width} px')
     for w in ws:
-        dst = os.path.join(ROOT, 'assets', f'producto-{KEY}-{w}.webp')
+        dst = os.path.join(ROOT, 'assets', asset_name(w))
         buf = io.BytesIO()
         reference(src, w).save(buf, 'WEBP', **ENCODE)
         with open(dst, 'wb') as f:
@@ -125,7 +158,7 @@ def check(theme, source):
     src, digest = load_source(source)
     ws = widths(theme)
     assets = os.path.join(theme, 'assets')
-    expected = {f'producto-{KEY}-{w}.webp' for w in ws}
+    expected = {asset_name(w) for w in ws}
     present = {f for f in os.listdir(assets) if KEY in f}
     if present != expected:
         errors.append(f'assets de la clave {KEY}: sobran {sorted(present - expected)}, faltan {sorted(expected - present)}')
@@ -133,7 +166,7 @@ def check(theme, source):
         errors.append(f'el ancho mayor {max(ws)} supera la fuente ({src.width}): ampliaría')
     report = []
     for w in ws:
-        p = os.path.join(assets, f'producto-{KEY}-{w}.webp')
+        p = os.path.join(assets, asset_name(w))
         if not os.path.isfile(p):
             continue
         raw = open(p, 'rb').read()
@@ -161,22 +194,84 @@ def check(theme, source):
     for old in OLD_SOURCES:
         if os.path.exists(os.path.join(os.path.dirname(os.path.abspath(source)), old)):
             errors.append(f'la fuente retirada «{old}» ha vuelto al repositorio')
-    for d in ['config', 'layout', 'locales', 'sections', 'snippets', 'templates']:
+    for fn in sorted(os.listdir(assets)):
+        if sha256(os.path.join(assets, fn)) in RETIRED_SHA256:
+            errors.append(f'assets/{fn}: es una versión retirada ({RETIRED_SHA256[sha256(os.path.join(assets, fn))]})')
+    snippet = snippet_text(theme)
+    if not re.search(r"if key == '%s'\s*assign asset = '%s'" % (KEY, ASSET), snippet):
+        errors.append(f"garelon-image.liquid: la clave '{KEY}' no usa la familia versionada {ASSET}-<ancho>.webp")
+    if not re.search(r"if image != blank and key != '%s'\s*assign use_editor = true" % KEY, snippet):
+        errors.append(f"garelon-image.liquid: una imagen del editor podría sustituir a la infografía aprobada")
+    for d in ['config', 'layout', 'locales', 'sections', 'snippets', 'templates', 'blocks']:
         for dp, _, fns in os.walk(os.path.join(theme, d)):
             for fn in fns:
                 text = open(os.path.join(dp, fn), encoding='utf-8', errors='replace').read()
                 if re.search(r'producto-infografia[^"\'\s]*\.(png|jpe?g)', text) or any(o in text for o in OLD_SOURCES):
                     errors.append(f'{os.path.join(dp, fn)}: referencia a un PNG/JPG o a la fuente retirada')
+                if OLD_FAMILY.search(text):
+                    errors.append(f'{os.path.join(dp, fn)}: referencia a la familia retirada producto-{KEY}-<ancho> (debe ser {ASSET}-<ancho>)')
     print(f'Fuente: {source}  {src.width}x{src.height}  SHA-256 {digest}')
     print('\n'.join(report))
     if errors:
         print('ERRORES:\n  ' + '\n  '.join(errors))
         return 1
-    print(f'OK: {len(ws)} WebP lossless de «{KEY}» que salen solo de «{SOURCE}», sin recorte ni ampliación')
+    print(f'OK: {len(ws)} WebP lossless {ASSET}-<ancho> que salen solo de «{SOURCE}», sin recorte ni ampliación; '
+          'ni la familia retirada ni sus versiones antiguas están en el tema')
     return 0
 
 
+def identify(files, source):
+    """Para una imagen sacada de la tienda (o de cualquier sitio): ¿es «NUEVA IMAGEN 1.png»?
+
+    0 = byte a byte uno de los WebP del tema, o píxel a píxel la fuente reducida (certificado);
+    1 = misma composición recomprimida (diferencias de compresión, ninguna zona distinta): no se
+        puede certificar línea a línea, hay que usar el WebP original;
+    2 = versión retirada, proporción distinta (recorte, deformación) o contenido distinto.
+    """
+    src, _ = load_source(source)
+    ours = {}
+    for w in widths(ROOT):
+        p = os.path.join(ROOT, 'assets', asset_name(w))
+        if os.path.isfile(p):
+            ours[sha256(p)] = asset_name(w)
+    worst = 0
+    for f in files:
+        digest = sha256(f)
+        im = Image.open(f)
+        im.load()
+        im = im.convert('RGB')
+        if digest in ours:
+            verdict, code = f'ES «{SOURCE}»: byte a byte assets/{ours[digest]}', 0
+        elif digest in RETIRED_SHA256:
+            verdict, code = f'VERSIÓN RETIRADA: {RETIRED_SHA256[digest]}', 2
+        elif im.width * src.height != im.height * src.width:
+            verdict, code = f'NO es la infografía aprobada: proporción {im.width}x{im.height} (recortada o deformada)', 2
+        else:
+            # A su mismo tamaño: la fuente reducida (o, solo para comparar, ampliada) con LANCZOS.
+            ref = src if im.size == src.size else src.resize(im.size, Image.LANCZOS)
+            total = mean_diff(im, ref)
+            peak = max(e[1] for e in ImageChops.difference(im, ref).getextrema())
+            regions = {}
+            for name, (x0, y0, x1, y1) in REGIONS.items():
+                box = (round(x0 * im.width), round(y0 * im.height), round(x1 * im.width), round(y1 * im.height))
+                regions[name] = mean_diff(im.crop(box), ref.crop(box))
+            bad = [f'{n} ({d:.1f})' for n, d in regions.items() if d > 10]
+            if total <= MAX_MEAN and peak <= MAX_PIXEL and max(regions.values()) <= MAX_REGION_MEAN:
+                verdict, code = f'ES «{SOURCE}»: píxel a píxel (diferencia media {total:.2f}/255)', 0
+            elif total <= 4 and not bad:
+                verdict, code = (f'misma composición que «{SOURCE}», pero recomprimida (diferencia media {total:.2f}/255): '
+                                 'no se puede certificar línea a línea; usa el WebP original'), 1
+            else:
+                verdict, code = f'NO coincide con «{SOURCE}» (diferencia media {total:.2f}/255; zonas distintas: {bad or "en toda la imagen"})', 2
+        worst = max(worst, code)
+        print(f'{f}: {im.width}x{im.height}, SHA-256 {digest[:16]}… → {verdict}')
+    return worst
+
+
 def main(argv):
+    if '--identify' in argv:
+        files = [a for a in argv[argv.index('--identify') + 1:] if not a.startswith('--')]
+        return identify(files, os.path.join(ROOT, SOURCE))
     if '--build' in argv:
         build()
         return check(ROOT, os.path.join(ROOT, SOURCE))

@@ -4,7 +4,7 @@ const { chromium } = require('playwright-core');
 const fs = require('fs'); const path = require('path');
 const THEME = path.resolve(process.env.THEME || path.join(__dirname, '..', '..', '..'));
 const B = 'http://localhost:' + (process.env.PORT || 8810);
-const PHASES = 'ABCDEFGHIJKLMNOPQ'; const PH = PHASES.indexOf(process.env.PHASE || PHASES.slice(-1));
+const PHASES = 'ABCDEFGHIJKLMNOPQR'; const PH = PHASES.indexOf(process.env.PHASE || PHASES.slice(-1));
 const at = (p) => PHASES.indexOf(p) <= PH;
 const results = []; const ok = (n, c, i) => results.push([c ? 'PASS' : 'FAIL', n, i === undefined ? '' : JSON.stringify(i).slice(0, 300)]);
 const setState = (q) => fetch(`${B}/__state?${q}`).then(r => r.json());
@@ -35,7 +35,14 @@ async function launchChromium() {
     return chromium.launch({ executablePath: found });
   }
 }
-module.exports = { at, ok, get, setState, reset, count, text, B, THEME, SCRATCH, openPage };
+// Nombre base de los WebP de una clave: producto-<clave>, salvo una familia versionada en garelon-image
+// (infografia → producto-infografia-v2, D35).
+function assetBase(key) {
+  const snip = fs.readFileSync(path.join(THEME, 'snippets', 'garelon-image.liquid'), 'utf8');
+  const m = snip.match(new RegExp(`if key == '${key}'\\s*assign asset = '([\\w-]+)'`));
+  return m ? m[1] : `producto-${key}`;
+}
+module.exports = { at, ok, get, setState, reset, count, text, B, THEME, SCRATCH, openPage, assetBase };
 
 async function phaseA(browser) {
   await reset();

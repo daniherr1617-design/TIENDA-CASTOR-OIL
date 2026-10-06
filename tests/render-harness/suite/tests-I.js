@@ -9,7 +9,7 @@ const BASE = 'aaf47b0';
 const ROUND_HEAD = '955bcc3';
 const es = JSON.parse(fs.readFileSync(`${THEME}/locales/es.json`, 'utf8')).garelon.gallery;
 const gallery = (html) => (html.match(/<div class="g-gallery"[\s\S]*?<\/ul>/) || [''])[0];
-const slides = (g) => [...g.matchAll(/producto-(\w+)-\d+\.webp/g)].map(m => m[1]).filter((k, i, a) => a.indexOf(k) === i);
+const slides = (g) => [...g.matchAll(/producto-(\w+)(?:-v\d+)?-\d+\.webp/g)].map(m => m[1]).filter((k, i, a) => a.indexOf(k) === i);
 const esc = (s) => s.replace(/&/g, '&amp;').replace(/"/g, '&quot;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
 const WEBP = { completa: [480, 720, 1080], infografia: [480, 720, 1080, 1254] };
 const VPS = [320, 360, 375, 390, 430, 768, 1024, 1440];
@@ -20,7 +20,7 @@ module.exports = async function (browser) {
   // 1 · Assets
   const bad = [];
   for (const [k, ws] of Object.entries(WEBP)) for (const w of ws) {
-    const f = `${THEME}/assets/producto-${k}-${w}.webp`;
+    const f = `${THEME}/assets/${T.assetBase(k)}-${w}.webp`;
     if (!fs.existsSync(f)) { bad.push(`falta ${f}`); continue; }
     const b = fs.readFileSync(f);
     if (b.toString('ascii', 0, 4) !== 'RIFF' || b.toString('ascii', 8, 12) !== 'WEBP') bad.push(`${k}-${w} no es WebP`);
@@ -53,10 +53,10 @@ print(';'.join(f.split('/')[-1]+'='+'x'.join(map(str,Image.open(f).size)) for f 
   ok('I7 galería de compra (home): completa → detalle → infografía → principal → oración', JSON.stringify(slides(hg)) === JSON.stringify(['completa', 'detalle', 'infografia', 'principal', 'oracion']), slides(hg));
   ok('I8 galería home: alt de imagen 4 e Imagen 1 presentes', hg.includes(`alt="${esc(es.alt_completa)}"`) && hg.includes(`alt="${esc(es.alt_infografia)}"`) && !/alt=""/.test(hg));
   const det = (r.html.match(/<section\s+id="detalles"[\s\S]*?<\/section>/) || [''])[0];
-  ok('I9 «Detalles de la pulsera» usa la infografía (Imagen 1) con su alt; los 5 hechos siguen', /producto-infografia-1254\.webp/.test(det) && !/producto-detalle-/.test(det) && /alt="Infografía «Detalles de la pulsera»/.test(det) && count(det, /class="g-fact"/g) === 5);
-  ok('I10 infografía ampliable: enlace a la versión de 1254 px en pestaña nueva, con texto accesible', count(r.html, /<a\s+class="g-zoom"\s+href="\/assets\/producto-infografia-1254\.webp"\s+target="_blank"\s+rel="noopener"/g) === 2 && count(r.html, /class="visually-hidden">Ver ampliada/g) === 2);
+  ok('I9 «Detalles de la pulsera» usa la infografía (Imagen 1) con su alt; los 5 hechos siguen', /producto-infografia-v2-1254\.webp/.test(det) && !/producto-detalle-/.test(det) && /alt="Infografía «Detalles de la pulsera»/.test(det) && count(det, /class="g-fact"/g) === 5);
+  ok('I10 infografía ampliable: enlace a la versión de 1254 px en pestaña nueva, con texto accesible', count(r.html, /<a\s+class="g-zoom"\s+href="\/assets\/producto-infografia-v2-1254\.webp"\s+target="_blank"\s+rel="noopener"/g) === 2 && count(r.html, /class="visually-hidden">Ver ampliada/g) === 2);
   ok('I11 Imagen 1 solo en galería + Detalles (sin más duplicados en la home)', count(r.html, /<img[^>]*src="[^"]*producto-infografia/g) === 2 && count(r.html, /<img[^>]*src="[^"]*producto-completa/g) === 1);
-  const urls = [...new Set([...r.html.matchAll(/\/assets\/producto-(?:completa|infografia)-\d+\.webp/g)].map(m => m[0]))];
+  const urls = [...new Set([...r.html.matchAll(/\/assets\/producto-(?:completa|infografia-v2)-\d+\.webp/g)].map(m => m[0]))];
   const st = await Promise.all(urls.map(u => fetch(B + u).then(x => x.status + ' ' + x.headers.get('content-type'))));
   ok('I12 todas las URL de las imágenes nuevas (srcset y enlace) responden 200 image/webp', urls.length === 7 && st.every(s => /^200 image\/webp/.test(s)), st);
 

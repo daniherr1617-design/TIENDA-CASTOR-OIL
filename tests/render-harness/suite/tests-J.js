@@ -14,7 +14,7 @@ const form = (html) => (html.match(/<product-info[\s\S]*?<\/product-info>/) || [
 const taxOf = (html) => text((html.match(/<p class="g-offer__tax">[\s\S]*?<\/p>/) || [''])[0]).trim();
 const tranq = (html) => (html.match(/id="shopify-section-[^"]*__tranquilidad"[\s\S]*?(?=id="shopify-section-)/) || [''])[0];
 const gallery = (html) => (html.match(/<div class="g-gallery"[\s\S]*?<\/ul>/) || [''])[0];
-const slides = (g) => [...g.matchAll(/producto-(\w+)-\d+\.webp/g)].map(m => m[1]).filter((k, i, a) => a.indexOf(k) === i);
+const slides = (g) => [...g.matchAll(/producto-(\w+)(?:-v\d+)?-\d+\.webp/g)].map(m => m[1]).filter((k, i, a) => a.indexOf(k) === i);
 const VPS = [320, 360, 375, 390, 430, 768, 1024, 1440];
 
 module.exports = async function (browser) {

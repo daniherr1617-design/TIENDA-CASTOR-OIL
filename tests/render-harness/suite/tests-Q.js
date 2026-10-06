@@ -3,9 +3,12 @@
 // (tools/garelon_infografia.py): el de 1254 px es idéntico píxel a píxel y los menores son su reducción exacta.
 // En el navegador se muestra entera (sin recorte ni deformación) y, a los 8 anchos, lo que se ve coincide con la
 // fuente en todas las zonas de la composición (título, medalla, cruz, pulsera, círculo central, medida, círculos
-// ampliados y etiquetas). Un control negativo (la fuente recortada un 2 %) demuestra que la comparación lo detectaría.
+// ampliados, etiquetas y, desde la ronda R, las cuatro esquinas). Un control negativo (la fuente recortada un 2 %)
+// demuestra que la comparación lo detectaría. Ronda R (D35): familia producto-infografia-v2-*, la lupa ya no va encima
+// y el marco no redondea (recortaba) las esquinas, así que la captura se compara entera, sin ocultar nada.
 const T = require('./tests.js');
 const { ok, reset, openPage, THEME } = T;
+const ASSET = T.assetBase('infografia');
 const fs = require('fs');
 const os = require('os');
 const path = require('path');
@@ -41,7 +44,7 @@ def score(shot, base):
     # El navegador encaja la imagen al píxel entero: se busca el desplazamiento de la captura (±1 px, a cuartos de píxel).
     # Solo traslada: un recorte, un cambio de escala o un elemento movido no se pueden compensar así.
     W, H = shot.size
-    inner = tuple(round(v) for v in (0.04 * W, 0.04 * H, 0.96 * W, 0.96 * H))  # sin las esquinas redondeadas del marco
+    inner = tuple(round(v) for v in (0.04 * W, 0.04 * H, 0.96 * W, 0.96 * H))  # para alinear; las esquinas se miden en REGIONS
     best = None
     for i in range(-4, 5):
         for j in range(-4, 5):
@@ -74,8 +77,8 @@ module.exports = async function phaseQ(browser) {
   const tool = spawnSync('python3', [TOOL, '--check', '--theme', THEME, '--source', SRC], { encoding: 'utf8' });
   ok(`Q3 tools/garelon_infografia.py: los WebP ${IS_REPO ? 'del repo' : 'de esta copia del tema'} salen solo de la fuente (lossless, misma proporción, sin recorte ni ampliación, píxeles idénticos)`,
     tool.status === 0, (tool.stdout + tool.stderr).trim().split('\n').slice(-6));
-  const kinds = WIDTHS.map(w => { const b = fs.readFileSync(`${THEME}/assets/producto-infografia-${w}.webp`); return b.toString('ascii', 12, 16); });
-  ok('Q4 los 4 anchos del snippet (480/720/1080/1254) son WebP lossless (VP8L)', WIDTHS.join() === '480,720,1080,1254' && kinds.every(k => k === 'VP8L'), kinds);
+  const kinds = WIDTHS.map(w => { const b = fs.readFileSync(`${THEME}/assets/${ASSET}-${w}.webp`); return b.toString('ascii', 12, 16); });
+  ok(`Q4 los 4 anchos del snippet (480/720/1080/1254) son WebP lossless (VP8L) de la familia ${ASSET}`, WIDTHS.join() === '480,720,1080,1254' && kinds.every(k => k === 'VP8L'), kinds);
   if (IS_REPO) {
     const self = spawnSync('python3', [path.join(REPO_ROOT, 'tools', 'test_garelon_infografia.py')], { encoding: 'utf8' });
     ok('Q5 autoprueba del comprobador: recorte, desplazamiento, línea movida, filtro, pérdida, PNG, otra fuente, ampliación… se detectan',
@@ -88,8 +91,7 @@ module.exports = async function phaseQ(browser) {
   for (const w of VPS) {
     for (const [name, u, sel] of SPOTS) {
       const { page, errs } = await openPage(browser, u, { width: w, height: w < 750 ? 844 : 900 });
-      // Solo para la captura: oculta la lupa (icono superpuesto, no es parte de la imagen).
-      await page.addStyleTag({ content: '.g-zoom__hint{visibility:hidden!important}' });
+      // Nada se oculta para la captura: lo que se compara es exactamente lo que ve el cliente (lupa incluida, si tapara algo).
       const d = await page.evaluate(async (sel) => {
         const i = document.querySelector(sel); i.loading = 'eager'; i.scrollIntoView({ block: 'center', inline: 'center' });
         await i.decode().catch(() => {}); await new Promise(r => setTimeout(r, 300));
@@ -103,14 +105,14 @@ module.exports = async function phaseQ(browser) {
       await page.close();
     }
   }
-  const badGeo = geo.filter(({ d, errs }) => !(/^producto-infografia-\d+\.webp$/.test(d.cur) && d.nw === d.nh && Math.abs(d.w / d.h - d.nw / d.nh) < 0.01 && d.inside && errs.length === 0));
+  const badGeo = geo.filter(({ d, errs }) => !(new RegExp(`^${ASSET}-\\d+\\.webp$`).test(d.cur) && d.nw === d.nh && Math.abs(d.w / d.h - d.nw / d.nh) < 0.01 && d.inside && errs.length === 0));
   ok('Q6 a 320/360/375/390/430/768/1024/1440 px, en Detalles y en las dos galerías: WebP de la infografía, caja con la proporción de la imagen (sin recorte ni deformación) y entera dentro de su marco',
     geo.length === VPS.length * SPOTS.length && badGeo.length === 0, badGeo.slice(0, 3));
   const cmp = JSON.parse(execFileSync('python3', ['-c', COMPARE, path.dirname(TOOL), SRC, ...shots.flatMap(s => [s.file, String(s.dw), String(s.dh)])]).toString());
   const rows = shots.map(s => ({ w: s.w, name: s.name, ...cmp[s.file] }));
   const badVis = rows.filter(r => !(r.ok.mean <= MAX_MEAN && r.ok.worst <= MAX_REGION && Math.abs(r.ok.offset[0]) <= 1 && Math.abs(r.ok.offset[1]) <= 1));
   const weakCtl = rows.filter(r => !(r.control.mean > MAX_MEAN && r.control.worst > MAX_REGION));
-  ok(`Q7 lo que se ve coincide con «NUEVA IMAGEN 1.png» en todas las zonas (media ≤ ${MAX_MEAN}/255, peor zona ≤ ${MAX_REGION}/255) en las ${rows.length} capturas`,
+  ok(`Q7 lo que se ve coincide con «NUEVA IMAGEN 1.png» en todas las zonas, esquinas incluidas, sin nada encima (media ≤ ${MAX_MEAN}/255, peor zona ≤ ${MAX_REGION}/255) en las ${rows.length} capturas`,
     rows.length === VPS.length * SPOTS.length && badVis.length === 0,
     badVis.length ? badVis.slice(0, 3) : { peor_media: Math.max(...rows.map(r => r.ok.mean)), peor_zona: Math.max(...rows.map(r => r.ok.worst)) });
   ok('Q8 control negativo: la misma comparación contra la fuente recortada un 2 % falla en todas las capturas (la prueba detecta un recorte o desplazamiento)',

@@ -2,10 +2,13 @@
 """Autoprueba de tools/garelon_infografia.py: cada alteración de la infografía debe FALLAR.
 
 Copia el tema y la fuente a una carpeta temporal, aplica una mutación (recorte, línea movida,
-filtro, compresión con pérdida, PNG servido, otra fuente, ampliación…) y comprueba que el
-comprobador devuelve error. La copia intacta debe pasar. Nunca toca la fuente del repositorio.
+filtro, compresión con pérdida, PNG servido, otra fuente, ampliación, familia retirada, imagen del
+editor…) y comprueba que el comprobador devuelve error. La copia intacta debe pasar. También
+prueba --identify (la fuente reducida se reconoce; un recorte o una versión con pérdida, no).
+Nunca toca la fuente del repositorio.
 Uso: python3 tools/test_garelon_infografia.py
 """
+import hashlib
 import os
 import shutil
 import subprocess
@@ -21,7 +24,7 @@ SOURCE = 'NUEVA IMAGEN 1.png'
 
 
 def asset(t, w):
-    return f'{t}/theme/assets/producto-infografia-{w}.webp'
+    return f'{t}/theme/assets/producto-infografia-v2-{w}.webp'
 
 
 def resave(t, w, fn, **kw):
@@ -86,6 +89,38 @@ def m_png_ref(t):
     open(p, 'a', encoding='utf-8').write("\n{{ 'producto-infografia-1254.png' | asset_url }}\n")
 
 
+def m_old_family_file(t):
+    shutil.copy(asset(t, 480), f'{t}/theme/assets/producto-infografia-480.webp')
+
+
+def m_old_family_ref(t):
+    p = f'{t}/theme/sections/garelon-details.liquid'
+    open(p, 'a', encoding='utf-8').write("\n{{ 'producto-infografia-1254.webp' | asset_url }}\n")
+
+
+def edit_snippet(t, old, new):
+    p = f'{t}/theme/snippets/garelon-image.liquid'
+    s = open(p, encoding='utf-8').read()
+    assert old in s
+    open(p, 'w', encoding='utf-8').write(s.replace(old, new))
+
+
+def m_unversioned(t):
+    edit_snippet(t, "    assign asset = 'producto-infografia-v2'\n", '')
+
+
+def m_editor_override(t):
+    edit_snippet(t, "if image != blank and key != 'infografia'", 'if image != blank')
+
+
+def m_retired(t):
+    # Una versión antigua (por su SHA-256) con cualquier nombre. Sin recuperar archivos de Git: se simula
+    # registrando como retirado el SHA-256 de un archivo de prueba.
+    p = f'{t}/theme/assets/copia-antigua.webp'
+    Image.new('RGB', (8, 8), (200, 160, 90)).save(p, 'WEBP', lossless=True)
+    return hashlib.sha256(open(p, 'rb').read()).hexdigest()
+
+
 MUTATIONS = [
     ('recorte (12 px por lado, reencuadrado)', m_crop),
     ('desplazamiento de 3 px', m_shift),
@@ -99,12 +134,27 @@ MUTATIONS = [
     ('otra fuente (SHA-256 distinto)', m_other_source),
     ('la fuente retirada «Imagen 1.png» vuelve', m_old_source),
     ('referencia a un PNG de la infografía', m_png_ref),
+    ('vuelve un archivo de la familia retirada (producto-infografia-480.webp)', m_old_family_file),
+    ('referencia a la familia retirada (producto-infografia-1254.webp)', m_old_family_ref),
+    ('el snippet deja de usar la familia versionada', m_unversioned),
+    ('la imagen del editor vuelve a poder sustituir a la infografía', m_editor_override),
+    ('una versión retirada (por SHA-256) con otro nombre', m_retired),
 ]
 
 
-def run(t):
+def run(t, retired=None):
+    if retired:
+        code = ('import sys; sys.dont_write_bytecode = True; sys.path.insert(0, sys.argv[1]); import garelon_infografia as g; '
+                "g.RETIRED_SHA256[sys.argv[2]] = 'versión retirada (prueba)'; sys.exit(g.check(sys.argv[3], sys.argv[4]))")
+        return subprocess.run([sys.executable, '-c', code, HERE, retired, f'{t}/theme', f'{t}/{SOURCE}'],
+                              capture_output=True, text=True).returncode
     return subprocess.run([sys.executable, os.path.join(HERE, 'garelon_infografia.py'), '--check',
                            '--theme', f'{t}/theme', '--source', f'{t}/{SOURCE}'],
+                          capture_output=True, text=True).returncode
+
+
+def identify(f):
+    return subprocess.run([sys.executable, os.path.join(HERE, 'garelon_infografia.py'), '--identify', f],
                           capture_output=True, text=True).returncode
 
 
@@ -125,12 +175,27 @@ def main():
     fails += not good
     for name, fn in MUTATIONS:
         t = fresh()
-        fn(t)
-        caught = run(t) != 0
+        retired = fn(t)
+        caught = run(t, retired) != 0
         shutil.rmtree(t)
         print(('✓' if caught else '✗') + f' {name}: detectado')
         fails += not caught
-    total = len(MUTATIONS) + 1
+    # --identify: lo que se descargue de la tienda se reconoce (0), o no (1 con pérdida, 2 distinto).
+    t = fresh()
+    a = asset(t, 1254)
+    Image.open(a).convert('RGB').crop((25, 25, 1229, 1229)).save(f'{t}/recorte.png')
+    Image.open(asset(t, 720)).convert('RGB').save(f'{t}/perdida.webp', 'WEBP', quality=80)
+    Image.open(asset(t, 480)).save(f'{t}/copia.png')  # mismos píxeles, otros bytes (p. ej. una captura sin escalar)
+    checks = [('--identify reconoce el WebP de 1254 (ES la fuente)', identify(a) == 0),
+              ('--identify reconoce el WebP de 480 (ES la fuente)', identify(asset(t, 480)) == 0),
+              ('--identify certifica una copia píxel a píxel con otros bytes (PNG)', identify(f'{t}/copia.png') == 0),
+              ('--identify marca la versión con pérdida (no píxel a píxel)', identify(f'{t}/perdida.webp') == 1),
+              ('--identify rechaza un recorte', identify(f'{t}/recorte.png') == 2)]
+    shutil.rmtree(t)
+    for name, good in checks:
+        print(('✓' if good else '✗') + f' {name}')
+        fails += not good
+    total = len(MUTATIONS) + 1 + len(checks)
     print(f'{total - fails}/{total}')
     return 1 if fails else 0
 

@@ -141,6 +141,8 @@ const filters = {
   asset_url: (x) => `/assets/${x}`, asset_img_url: (x) => `/assets/${x}`, image_url: (i) => imgUrl(i), img_url: (i) => imgUrl(i), file_url: (x) => `/files/${x}`,
   image_tag: (u, ...a) => { const at = a.filter(Array.isArray).filter(([k]) => !['widths', 'preload'].includes(k)).map(([k, v]) => `${k}="${v}"`).join(' '); return `<img src="${u}" ${at}>`; },
   t: (key, ...a) => tr(L.es, key, a), money, money_with_currency: (c) => money(c) + ' EUR', money_without_currency: (c) => (Number(c) / 100).toFixed(2).replace('.', ','), money_amount: (c) => (Number(c) / 100).toFixed(2).replace('.', ','),
+  // SOLO TEST: filtros de multimedia de Shopify (vídeo/3D) para poder pintar la multimedia simulada (media=1).
+  external_video_url: () => '', external_video_tag: () => '', video_tag: () => '', model_viewer_tag: () => '', media_tag: () => '',
   placeholder_svg_tag: (n, cls) => `<svg class="${cls || ''}" data-placeholder="${n}" viewBox="0 0 4 3"></svg>`,
   inline_asset_content: (x) => { try { return fs.readFileSync(`${T}/assets/${x}`, 'utf8'); } catch (e) { return ''; } },
   link_to: (txt, url) => `<a href="${url}">${txt}</a>`, login_button: () => '', stylesheet_tag: (u) => `<link rel="stylesheet" href="${u}" media="all">`, script_tag: (u) => `<script src="${u}"></script>`,
@@ -238,8 +240,13 @@ async function renderTemplate(file, only) {
     const versioned = order.filter(bid => (blocks[bid] || {}).type && blocks[bid].type.startsWith('shopify://apps/'));
     if (!appOn) order = order.filter(bid => !versioned.includes(bid));
     if (s.type === 'garelon-reviews' && appOn && versioned.length === 0) { blocks.test_app = { type: '@app', settings: {} }; order.push('test_app'); }
+    // SOLO TEST (ronda R): editorimg=1 simula que el dueño eligió en el editor una imagen de Files (la antigua
+    // «Imagen 1») en las secciones con imagen del tema: Shopify la pasa como objeto imagen en settings.image.
+    let vals = s.settings;
+    if (state.editorimg && ['garelon-details', 'garelon-hero', 'garelon-image-text'].includes(s.type) && (s.settings || {}).image_key && s.settings.image_key !== 'none')
+      vals = { ...s.settings, image: new MediaImage({ src: '/files/Imagen_1.png', width: 1254, height: 1254, aspect_ratio: 1, alt: 'Imagen del editor (simulada)', id: 990 }) };
     if (state.chips && sid === 'regalo' && s.type === 'garelon-details' && order.length === 0) TEST_CHIPS.forEach((t, i) => { blocks[`test_chip_${i + 1}`] = { type: 'item', settings: { icon: 'none', title: t } }; order.push(`test_chip_${i + 1}`); });
-    out += await renderSection(`template--1__${sid}`, s.type, s.settings, blocks, order); }
+    out += await renderSection(`template--1__${sid}`, s.type, vals, blocks, order); }
   return out;
 }
 // SOLO TEST: etiquetas neutras (no son ocasiones de regalo); la última es larga para probar dos líneas.
@@ -264,9 +271,9 @@ http.createServer(async (req, res) => {
     if (p.startsWith('/assets/')) { const fp = path.join(T, decodeURIComponent(p)); return fs.readFile(fp, (e, d) => { if (e) { res.writeHead(404); return res.end(); } res.writeHead(200, { 'Content-Type': types[path.extname(fp)] || 'application/octet-stream' }); res.end(d); }); }
     if (p === '/__state') { const q = u.searchParams;
       for (const k of ['mode', 'catalog', 'contact', 'refund', 'shipping', 'cookies', 'legal', 'reviews', 'freeship', 'taxes']) if (q.has(k)) state[k] = q.get(k);
-      for (const k of ['design', 'noindex', 'accounts', 'media', 'chips', 'contactinfo']) if (q.has(k)) state[k] = q.get(k) === '1';
+      for (const k of ['design', 'noindex', 'accounts', 'media', 'chips', 'contactinfo', 'editorimg']) if (q.has(k)) state[k] = q.get(k) === '1';
       if (q.has('soldout')) state.soldout = q.get('soldout').split(',').filter(Boolean).map(Number);
-      if (q.has('reset')) { state.cart = []; state.log = []; if (!q.has('freeship')) state.freeship = ''; if (!q.has('taxes')) state.taxes = 'included'; if (!q.has('chips')) state.chips = false; }
+      if (q.has('reset')) { state.cart = []; state.log = []; if (!q.has('freeship')) state.freeship = ''; if (!q.has('taxes')) state.taxes = 'included'; if (!q.has('chips')) state.chips = false; if (!q.has('editorimg')) state.editorimg = false; }
       if (q.has('reload')) L = loadSettings();
       res.writeHead(200, { 'Content-Type': 'application/json' }); return res.end(JSON.stringify(state)); }
     if (p === '/cart.js' || p === '/cart.json') { res.setHeader('Content-Type', 'application/json'); const c = cartDrop(); return res.end(JSON.stringify({ item_count: c.item_count, items: c.items.map(i => ({ id: i.id, quantity: i.quantity, variant_id: i.id })), total_price: c.total_price })); }

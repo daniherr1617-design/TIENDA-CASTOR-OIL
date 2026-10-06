@@ -696,9 +696,12 @@ def check_image_keys(theme):
     keys = {}
     for key, widths in re.findall(r"when '([\w-]+)'\s*assign widths = '([\d,]+)'", src):
         keys[key] = widths.split(',')
+        # Familia versionada de una clave (p. ej. infografia → producto-infografia-v2, D35); si no, producto-<clave>.
+        m = re.search(r"if key == '%s'\s*assign asset = '([\w-]+)'" % re.escape(key), src)
+        base = m.group(1) if m else f'producto-{key}'
         for w in keys[key]:
-            if not os.path.exists(os.path.join(theme.root, 'assets', f'producto-{key}-{w}.webp')):
-                err(rel, f'falta assets/producto-{key}-{w}.webp')
+            if not os.path.exists(os.path.join(theme.root, 'assets', f'{base}-{w}.webp')):
+                err(rel, f'falta assets/{base}-{w}.webp')
     if not keys:
         err(rel, 'no se encontraron claves de imagen')
     for st_type, sc in theme.sections.items():
