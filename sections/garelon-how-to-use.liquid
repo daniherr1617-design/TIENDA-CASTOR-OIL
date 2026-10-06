@@ -3,6 +3,10 @@
   if section.settings.image == blank and section.settings.fallback_image == 'none'
     assign has_media = false
   endif
+  assign cards = true
+  if section.settings.steps_style == 'list'
+    assign cards = false
+  endif
 -%}
 
 <div
@@ -20,6 +24,9 @@
       {%- if section.settings.heading != blank -%}
         <h2 class="g-h2">{{ section.settings.heading | escape }}</h2>
       {%- endif -%}
+      {%- if section.settings.text != blank -%}
+        <div class="g-lead">{{ section.settings.text }}</div>
+      {%- endif -%}
     </div>
 
     <div class="g-steps__layout{% if has_media %} g-steps__layout--media{% endif %}">
@@ -34,12 +41,15 @@
               class: 'g-media__img'
             -%}
           </div>
+          {%- if section.settings.image_caption != blank -%}
+            <p class="g-media__caption">{{ section.settings.image_caption | escape }}</p>
+          {%- endif -%}
         </div>
       {%- endif -%}
 
       <div class="g-steps__content">
         {%- if section.blocks.size > 0 -%}
-          <ol class="g-steps__list{% if has_media %} g-steps__list--stacked{% endif %}">
+          <ol class="g-steps__list{% if cards %} g-steps__list--cards{% endif %}">
             {%- for block in section.blocks -%}
               <li class="g-steps__item" {{ block.shopify_attributes }}>
                 {%- if section.settings.show_images and block.settings.image != blank -%}
@@ -51,6 +61,8 @@
                       class: 'g-steps__img'
                     -%}
                   </div>
+                {%- elsif cards and block.settings.icon != 'none' -%}
+                  <span class="g-steps__icon">{%- render 'garelon-icon', icon: block.settings.icon -%}</span>
                 {%- endif -%}
                 <div class="g-steps__body">
                   <p class="g-steps__number" aria-hidden="true">
@@ -70,7 +82,10 @@
         {%- endif -%}
 
         {%- if section.settings.note != blank -%}
-          <p class="g-note{% unless has_media %} g-note--center{% endunless %}">{{ section.settings.note | escape }}</p>
+          <p class="g-note g-steps__note">
+            {%- render 'garelon-icon', icon: 'candle' -%}
+            <span>{{ section.settings.note | escape }}</span>
+          </p>
         {%- endif -%}
       </div>
     </div>
@@ -82,49 +97,72 @@
   "name": "GARELON Cómo usarlo",
   "tag": "section",
   "class": "section",
-  "max_blocks": 5,
+  "max_blocks": 6,
   "settings": [
     {
       "type": "text",
       "id": "eyebrow",
       "label": "Antetítulo",
-      "default": "Cómo usarlo"
+      "default": "Cómo funciona"
     },
     {
       "type": "text",
       "id": "heading",
       "label": "Título",
-      "default": "3 pasos. Menos de un minuto."
+      "default": "Cómo se usa"
+    },
+    {
+      "type": "richtext",
+      "id": "text",
+      "label": "Entradilla (opcional)"
+    },
+    {
+      "type": "select",
+      "id": "steps_style",
+      "label": "Pasos",
+      "options": [
+        { "value": "cards", "label": "Tarjetas con icono" },
+        { "value": "list", "label": "Lista" }
+      ],
+      "default": "cards"
     },
     {
       "type": "image_picker",
       "id": "image",
-      "label": "Imagen de la sección",
-      "info": "Vacía = la imagen del tema elegida abajo."
+      "label": "Imagen de la sección (opcional)",
+      "info": "Vacía = la imagen del tema elegida abajo. Solo fotos del producto REAL."
     },
     {
       "type": "select",
       "id": "fallback_image",
       "label": "Imagen del tema si no eliges ninguna",
       "options": [
-        { "value": "img04-uso", "label": "IMAGEN 4 · Cómo usarlo (3 pasos)" },
-        { "value": "img07-roller", "label": "IMAGEN 7 · Técnica de masaje con roller" },
+        { "value": "principal", "label": "Imagen principal (taza roja)" },
+        { "value": "roja", "label": "Taza roja de cerca" },
+        { "value": "colores", "label": "Los tres colores" },
+        { "value": "blanco", "label": "Taza blanca" },
+        { "value": "marron", "label": "Taza marrón" },
+        { "value": "usos", "label": "Tres tazas con acompañamientos" },
         { "value": "none", "label": "Ninguna (solo los pasos)" }
       ],
-      "default": "img04-uso"
+      "default": "none"
+    },
+    {
+      "type": "text",
+      "id": "image_caption",
+      "label": "Pie de imagen (opcional)"
     },
     {
       "type": "checkbox",
       "id": "show_images",
       "label": "Mostrar la imagen de cada paso",
-      "info": "Solo en los pasos a los que les hayas elegido una imagen.",
+      "info": "Solo en los pasos a los que les hayas elegido una imagen (sustituye al icono).",
       "default": false
     },
     {
       "type": "text",
       "id": "note",
-      "label": "Nota de precaución (opcional)",
-      "default": "Solo para uso externo. Evita el contacto directo con los ojos. Si notas cualquier molestia, interrumpe su uso."
+      "label": "Nota de precaución (opcional)"
     },
     {
       "type": "color_scheme",
@@ -136,7 +174,7 @@
       "type": "text",
       "id": "anchor",
       "label": "ID de ancla",
-      "default": "como-usarlo"
+      "default": "como-funciona"
     },
     {
       "type": "range",
@@ -165,6 +203,42 @@
       "name": "Paso",
       "settings": [
         {
+          "type": "select",
+          "id": "icon",
+          "label": "Icono",
+          "options": [
+                  { "value": "none", "label": "Ninguno" },
+                  { "value": "mug", "label": "Taza" },
+                  { "value": "fork", "label": "Tenedor" },
+                  { "value": "candle", "label": "Vela" },
+                  { "value": "flame", "label": "Llama" },
+                  { "value": "melt", "label": "Calor" },
+                  { "value": "stir", "label": "Remover" },
+                  { "value": "chocolate", "label": "Chocolate" },
+                  { "value": "cheese", "label": "Queso" },
+                  { "value": "strawberry", "label": "Fresa" },
+                  { "value": "fruit", "label": "Fruta" },
+                  { "value": "bread", "label": "Pan" },
+                  { "value": "waffle", "label": "Gofre" },
+                  { "value": "measure", "label": "Capacidad" },
+                  { "value": "microwave", "label": "Microondas" },
+                  { "value": "box", "label": "Caja" },
+                  { "value": "colors", "label": "Colores" },
+                  { "value": "heart", "label": "Corazón" },
+                  { "value": "gift", "label": "Regalo" },
+                  { "value": "users", "label": "Compartir" },
+                  { "value": "home", "label": "Casa" },
+                  { "value": "moon", "label": "Noche" },
+                  { "value": "sparkle", "label": "Destello" },
+                  { "value": "clock", "label": "Reloj" },
+                  { "value": "truck", "label": "Envío" },
+                  { "value": "return", "label": "Devolución" },
+                  { "value": "chat", "label": "Contacto" },
+                  { "value": "check", "label": "Check" }
+          ],
+          "default": "check"
+        },
+        {
           "type": "image_picker",
           "id": "image",
           "label": "Imagen del paso (opcional)",
@@ -174,19 +248,19 @@
           "type": "text",
           "id": "label",
           "label": "Número visible",
-          "default": "01"
+          "default": "1"
         },
         {
           "type": "text",
           "id": "title",
           "label": "Título",
-          "default": "Limpia"
+          "default": "Paso"
         },
         {
           "type": "textarea",
           "id": "text",
           "label": "Texto",
-          "default": "Limpia y seca bien el rostro y el contorno de ojos."
+          "default": "Describe este paso en una frase."
         }
       ]
     }
@@ -195,9 +269,9 @@
     {
       "name": "GARELON Cómo usarlo",
       "blocks": [
-        { "type": "step", "settings": { "label": "01", "title": "Limpia", "text": "Limpia y seca bien el rostro y el contorno de ojos." } },
-        { "type": "step", "settings": { "label": "02", "title": "Aplica", "text": "Presiona y desliza suavemente el roller para que salga el sérum y distribúyelo por el contorno." } },
-        { "type": "step", "settings": { "label": "03", "title": "Masajea", "text": "Masajea con suavidad con la bola metálica para favorecer la distribución del sérum." } }
+        { "type": "step", "settings": { "label": "1", "title": "Paso 1" } },
+        { "type": "step", "settings": { "label": "2", "title": "Paso 2" } },
+        { "type": "step", "settings": { "label": "3", "title": "Paso 3" } }
       ]
     }
   ]

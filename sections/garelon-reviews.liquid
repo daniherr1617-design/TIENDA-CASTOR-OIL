@@ -122,7 +122,7 @@
           <li>Bloque de app de reseñas: ninguno. Añádelo con «Añadir bloque › Apps».</li>
           <li>
             {%- if review_product == blank -%}
-              Producto de la valoración media: sin elegir. En la página de inicio, elige el sérum.
+              Producto de la valoración media: sin elegir. En la página de inicio, elige el producto.
             {%- else -%}
               Producto de la valoración media: {{ review_product.title | escape }}.
             {%- endif -%}
@@ -188,7 +188,7 @@
       "type": "product",
       "id": "product",
       "label": "Producto de la valoración media",
-      "info": "En la ficha de producto se usa el producto de la página. En la página de inicio, elige el sérum."
+      "info": "En la ficha de producto se usa el producto de la página. En la página de inicio, elige el producto."
     },
     {
       "type": "color_scheme",

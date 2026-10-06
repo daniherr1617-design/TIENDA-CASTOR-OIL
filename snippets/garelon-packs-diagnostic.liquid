@@ -1,0 +1,65 @@
+{%- comment -%}
+  GARELON · Aviso de configuración de Color × Pack, SOLO en el editor de temas.
+  Lo pinta snippets/garelon-packs.liquid dentro de {% if request.design_mode %}: el cliente nunca lo ve.
+
+  Accepts:
+  - product: {Object}
+  - block: {Object} bloque garelon_packs
+  - pack_issue: {String} motivo por el que no se pueden pintar los packs ('' = ninguno)
+  - pack_issue_value: {String} valor de Shopify que causa el problema
+  - pack_notice: {String} aviso que no bloquea ('order')
+  - pack_mode: {Boolean} los packs se pintan
+  - combinations: {Number} combinaciones posibles de las opciones
+  - product_unassigned: {Boolean} la sección no tiene producto elegido
+{%- endcomment -%}
+{%- if pack_issue != '' or pack_notice != '' or product_unassigned or pack_mode and product.variants.size < combinations -%}
+  <div class="g-packs-diagnostic" role="note">
+    {%- if pack_issue != '' -%}
+      <p class="g-packs-diagnostic__title">Configuración de Shopify pendiente o incorrecta para packs</p>
+      <p>
+        Las tarjetas de packs no se muestran para «{{ product.title | escape }}» y se usa el selector estándar.
+        {%- case pack_issue -%}
+          {%- when 'single_variant' %}
+            El producto solo tiene una variante. Crea la opción «Pack» con los valores «1 unidad», «2 unidades» y
+            «3 unidades» (en ese orden) y, si el producto tiene colores, la opción «Color» con sus colores. Pon el
+            precio de cada combinación.
+          {%- when 'option_name' %}
+            El producto no tiene ninguna opción llamada «{{ block.settings.option_name | escape }}». Revisa el ajuste
+            «Nombre de la opción de Shopify» o déjalo vacío.
+          {%- when 'multi_option' %}
+            No se sabe qué opción es la de packs. Llámala «Pack» (valores «1 unidad», «2 unidades», «3 unidades») o
+            escribe su nombre en «Nombre de la opción de Shopify».
+          {%- when 'pack_units' %}
+            «Unidades de cada pack» no tiene tantos números como valores tiene la opción.
+          {%- when 'units' %}
+            El valor «{{ pack_issue_value | escape }}» no contiene el número de unidades. Renómbralo, p. ej.
+            «2 unidades».
+          {%- when 'duplicate' %}
+            El valor «{{ pack_issue_value | escape }}» repite un número de unidades de otro pack.
+          {%- when 'no_single' %}
+            Falta el pack de «1 unidad»: es la referencia para calcular el ahorro de los demás packs.
+        {%- endcase -%}
+      </p>
+    {%- endif -%}
+    {%- if pack_notice == 'order' -%}
+      <p>
+        Ordena los valores de la opción como «1 unidad», «2 unidades», «3 unidades» para que «1 unidad» salga
+        seleccionada por defecto.
+      </p>
+    {%- endif -%}
+    {%- if pack_mode and product.variants.size < combinations -%}
+      <p>
+        Faltan combinaciones: el producto tiene {{ product.variants.size }} variantes de {{ combinations }} posibles.
+        Crea en Shopify todas las combinaciones de {{ product.options | join: ' × ' | escape }} que vayas a vender;
+        las que no existan se muestran como «No disponible».
+      </p>
+    {%- endif -%}
+    {%- if product_unassigned -%}
+      <p>
+        Esta sección no tiene producto elegido y muestra el primero del catálogo («{{ product.title | escape }}»).
+        Elige el producto en el ajuste «Producto» de la sección.
+      </p>
+    {%- endif -%}
+    <p class="g-packs-diagnostic__foot">Aviso visible solo en el editor de temas.</p>
+  </div>
+{%- endif -%}

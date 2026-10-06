@@ -10,80 +10,80 @@
     "faq": {
       "type": "garelon-faq",
       "blocks": {
-        "q-que-es": {
+        "q-incluye": {
           "type": "question",
           "settings": {
-            "question": "¿Qué es el sérum de contorno de ojos de GARELON?",
-            "answer": "<p>Es un sérum para el contorno de ojos con aceite de ricino y aplicador roller metálico, en un frasco de vidrio ámbar de 10 ml. GARELON es la tienda desde la que lo comercializamos: el producto procede de un fabricante externo, por lo que en el frasco y en la caja verás la marca original del fabricante.</p>"
+            "question": "¿Qué incluye cada taza?",
+            "answer": "<p>Cada unidad incluye una Taza Fondue de cerámica y un tenedor tipo fondue. La vela no está incluida.</p>"
           }
         },
         "q-como": {
           "type": "question",
           "settings": {
             "question": "¿Cómo se utiliza?",
-            "answer": "<p>1. Limpia y seca bien el rostro y el contorno de ojos.<br>2. Desliza suavemente el roller por la zona del contorno para que salga el producto.<br>3. Masajea con movimientos suaves usando la bola metálica hasta distribuir el sérum.</p>"
+            "answer": "<p>Coloca una vela en el hueco inferior, añade chocolate o queso y enciéndela. El calor ayuda a fundirlo o mantenerlo caliente. Remueve de vez en cuando y utiliza el tenedor con tus acompañamientos. No dejes la vela encendida sin vigilancia.</p>"
           }
         },
-        "q-frecuencia": {
+        "q-queso": {
           "type": "question",
           "settings": {
-            "question": "¿Con qué frecuencia puedo incorporarlo a mi rutina?",
-            "answer": "<p>Está pensado para formar parte de tu rutina diaria de cuidado. Aplícalo siempre sobre la piel limpia y seca y sigue las indicaciones del envase. Si notas cualquier molestia, interrumpe su uso.</p>"
+            "question": "¿Puedo usarla con queso?",
+            "answer": "<p>Sí. Puedes preparar una fondue individual de chocolate o de queso.</p>"
           }
         },
-        "q-cantidad": {
+        "q-microondas": {
           "type": "question",
           "settings": {
-            "question": "¿Cuánto producto contiene?",
-            "answer": "<p>Cada frasco contiene 10 ml (0.34 fl oz).</p>"
+            "question": "¿Es apta para microondas?",
+            "answer": "<p>Según la información facilitada por el proveedor, sí.</p>"
           }
         },
-        "q-donde": {
+        "q-capacidad": {
           "type": "question",
           "settings": {
-            "question": "¿Dónde debo aplicarlo?",
-            "answer": "<p>En la zona del contorno de ojos, deslizando el roller con suavidad. Evita el contacto directo con los ojos. Solo para uso externo.</p>"
+            "question": "¿Qué capacidad tiene?",
+            "answer": "<p>130 ml.</p>"
           }
         },
-        "q-ingredientes": {
+        "q-colores": {
           "type": "question",
           "settings": {
-            "question": "¿Qué ingredientes contiene?",
-            "answer": "<p>Según la información facilitada por el proveedor: aceite de ricino (Ricinus Communis Seed Oil), Acetyl Tripeptide-1, colágeno (Collagen), extracto de Boswellia Serrata y agua (Aqua). Consulta siempre el envase del producto.</p>"
+            "question": "¿Qué colores hay?",
+            "answer": "<p>Rojo, blanco y marrón.</p>"
+          }
+        },
+        "q-packs": {
+          "type": "question",
+          "settings": {
+            "question": "¿Qué incluyen los packs?",
+            "answer": "<p>1, 2 o 3 tazas del mismo color. Cada taza incluye su tenedor de fondue y no se mezclan colores dentro de un pack. El precio de cada pack es el que ves al elegirlo y, si su precio por unidad es más bajo, verás cuánto ahorras frente a comprar las mismas unidades por separado.</p>"
           }
         },
         "q-envio": {
           "type": "question",
           "settings": {
             "question": "¿Cuándo recibiré mi pedido?",
-            "answer": "<p>Preparamos tu pedido en un plazo estimado de 1–3 días y la entrega estimada en España es de aproximadamente 8–16 días. Son plazos orientativos: pueden variar según el destino y el transporte. Encontrarás los detalles en nuestra <a href=\"/policies/shipping-policy\" title=\"Política de envío\">política de envío</a> y durante el proceso de compra.</p>"
+            "answer": "<p>Puedes consultar los plazos y condiciones de entrega actualizados en nuestra <a href=\"/policies/shipping-policy\" title=\"Política de envío\">política de envío</a>.</p>"
           }
         },
-        "q-dudas": {
+        "q-danada": {
           "type": "question",
           "settings": {
-            "question": "¿Qué ocurre si tengo una duda con mi pedido?",
-            "answer": "<p>Escríbenos desde nuestra <a href=\"/pages/contacto\" title=\"Contacto\">página de contacto</a> indicando tu número de pedido y te responderemos lo antes posible. Puedes consultar también nuestra <a href=\"/policies/refund-policy\" title=\"Política de devoluciones\">política de devoluciones</a>.</p>"
-          }
-        },
-        "q-packs": {
-          "type": "question",
-          "settings": {
-            "question": "¿Qué incluye cada pack?",
-            "answer": "<p>Cada pack incluye el número de unidades indicado: 1, 2 o 3 sérums iguales de 10 ml. El precio de cada pack es el que ves al elegirlo. Si un pack tiene un precio por unidad más bajo, verás cuánto ahorras frente a comprar las mismas unidades por separado.</p>"
+            "question": "¿Qué hago si llega dañada o tengo una duda con mi pedido?",
+            "answer": "<p>Escríbenos desde nuestra <a href=\"/pages/contacto\" title=\"Contacto\">página de contacto</a> con tu número de pedido y, si llega dañada, una foto del producto y del paquete. Te indicaremos los pasos según nuestra <a href=\"/policies/refund-policy\" title=\"Política de devoluciones\">política de devoluciones y reembolsos</a>.</p>"
           }
         }
       },
       "block_order": [
-        "q-que-es",
+        "q-incluye",
         "q-como",
-        "q-frecuencia",
-        "q-cantidad",
+        "q-queso",
+        "q-microondas",
+        "q-capacidad",
+        "q-colores",
         "q-packs",
-        "q-donde",
-        "q-ingredientes",
         "q-envio",
-        "q-dudas"
+        "q-danada"
       ],
       "settings": {
         "eyebrow": "",

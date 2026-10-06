@@ -1,5 +1,7 @@
 # GARELON · Cambios de la ronda 3 (imágenes nuevas, home, navegación y cabecera móvil)
 
+> **Documento histórico · baseline GARELON Sérum** (rama `baseline/garelon-serum`, commit `f08f9bb`). Describe la tienda del sérum de contorno de ojos, no la Taza Fondue actual. La migración a la taza está en `GARELON-CAMBIOS-FONDUE.md`.
+
 Usa esta guía si **ya tienes el theme GARELON instalado**. No cambia colores, tipografías, botones, carrito ni pie de página: sustituye el sistema de imágenes y ajusta navegación, cabecera móvil, barra superior y enlaces.
 
 Qué incluye:

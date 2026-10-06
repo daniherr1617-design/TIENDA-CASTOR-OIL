@@ -20,9 +20,11 @@
       {%- if section.settings.show_isotype -%}
         <img
           class="g-final__isotype"
-          src="{{ 'garelon-isotipo-96.webp' | asset_url }}"
-          width="36"
-          height="39"
+          src="{{ 'garelon-fondue-logo-96.webp' | asset_url }}"
+          srcset="{{ 'garelon-fondue-logo-96.webp' | asset_url }} 96w, {{ 'garelon-fondue-logo-192.webp' | asset_url }} 192w"
+          sizes="56px"
+          width="56"
+          height="56"
           alt=""
           loading="lazy"
         >
@@ -48,7 +50,7 @@
           {%- render 'garelon-fallback-image',
             image: section.settings.image,
             fallback: section.settings.fallback_image,
-            alt: 'Sérum para el contorno de ojos con aplicador roller y su caja',
+            alt: product.title,
             sizes: '(min-width: 990px) 560px, (min-width: 750px) 48vw, calc(100vw - 3rem)',
             class: 'g-media__img'
           -%}
@@ -76,8 +78,8 @@
       "label": "Imagen del tema si no eliges ninguna",
       "options": [
         { "value": "none", "label": "Ninguna (solo texto, centrado)" },
-        { "value": "img01-producto", "label": "IMAGEN 1 · Producto (frasco, caja y tapón)" },
-        { "value": "img10-presentacion", "label": "IMAGEN 10 · Presentación y beneficios" }
+        { "value": "principal", "label": "Imagen principal del producto" },
+        { "value": "colores", "label": "Los colores disponibles" }
       ],
       "default": "none"
     },
@@ -91,7 +93,7 @@
       "type": "text",
       "id": "heading",
       "label": "Título",
-      "default": "Tu rutina empieza con un pequeño gesto"
+      "default": "Tu próxima compra empieza aquí"
     },
     {
       "type": "richtext",
@@ -108,7 +110,7 @@
       "type": "text",
       "id": "button_label",
       "label": "Texto del botón",
-      "default": "Comprar el sérum"
+      "default": "Comprar ahora"
     },
     {
       "type": "url",

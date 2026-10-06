@@ -6,12 +6,12 @@
     "final_cta": {
       "type": "garelon-final-cta",
       "settings": {
-        "fallback_image": "img01-producto",
+        "fallback_image": "principal",
         "show_isotype": true,
-        "heading": "Volvamos a tu rutina",
-        "text": "<p>La página que buscas no existe o ha cambiado de dirección.</p>",
+        "heading": "Aquí no hay chocolate que fundir",
+        "text": "<p>Vuelve a la tienda y encuentra tu Taza Fondue.</p>",
         "show_price": false,
-        "button_label": "Ver el sérum",
+        "button_label": "Volver a la tienda",
         "color_scheme": "scheme-2",
         "anchor": "",
         "padding_top": 48,
