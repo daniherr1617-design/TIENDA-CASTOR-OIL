@@ -3,20 +3,22 @@
 
 La ÚNICA fuente autorizada de la clave `infografia` es «NUEVA IMAGEN 1.png» (raíz del repo,
 subida y aprobada por el propietario). Es inmutable: esta herramienta solo la lee, nunca la
-reescribe. El único proceso permitido es:
+reescribe. Su versión vigente es la que fija SOURCE_SHA256 (snapshot aprobado actual, D36: sin las
+líneas indicadoras, que el propietario quitó a propósito). El único proceso permitido es:
 
     NUEVA IMAGEN 1.png → reducción proporcional (LANCZOS, solo si el ancho es menor) → WebP lossless
 
 Sin IA, sin recorte, sin reencuadre, sin filtros y sin ampliar. Los anchos salen del snippet
 `snippets/garelon-image.liquid` (when 'infografia'), no de esta herramienta.
 
-Familia versionada (D35): assets/producto-infografia-v2-<ancho>.webp. La familia anterior
-(producto-infografia-<ancho>.webp, con el mismo nombre para la imagen antigua «Imagen 1.png» y para
-la versión con pérdida) está retirada: ni sus archivos ni sus referencias pueden volver al tema, y
-el contenido de sus versiones antiguas se reconoce por su SHA-256 (RETIRED_SHA256).
+Familia versionada (D35, D36): assets/producto-infografia-v3-<ancho>.webp. Cada versión de la fuente
+tiene su propia familia, con un nombre (y una URL) que no se repite. Las familias anteriores
+(producto-infografia-<ancho>.webp y producto-infografia-v2-<ancho>.webp) están retiradas: ni sus
+archivos ni sus referencias pueden volver al tema, y el contenido de sus versiones se reconoce por su
+SHA-256 (RETIRED_SHA256). Las versiones anteriores de la fuente, también (RETIRED_SOURCE_SHA256).
 
 Uso:
-  python3 tools/garelon_infografia.py --build           genera assets/producto-infografia-v2-<ancho>.webp
+  python3 tools/garelon_infografia.py --build           genera assets/producto-infografia-v3-<ancho>.webp
   python3 tools/garelon_infografia.py                   comprueba el repositorio (lo mismo que --check)
   python3 tools/garelon_infografia.py --check --theme CARPETA [--source PNG]
                                                         comprueba otra copia del tema (p. ej. el ZIP
@@ -25,9 +27,10 @@ Uso:
                                                         dice si una imagen (p. ej. descargada de la tienda)
                                                         es «NUEVA IMAGEN 1.png» o una versión antigua
 
-Si el propietario sustituye la fuente, hay que actualizar SOURCE_SHA256 aquí, regenerar con
---build y registrarlo en el Decision Log. Ninguna otra imagen (antiguas, de Git, de otras ramas)
-puede usarse como fuente.
+Si el propietario sustituye la fuente: pasar el SHA-256 actual a RETIRED_SOURCE_SHA256 y la familia
+actual a RETIRED_SHA256, poner el nuevo SOURCE_SHA256, subir la versión de la familia (v4…),
+regenerar con --build y registrarlo en el Decision Log. Ninguna otra imagen (antiguas, de Git, de
+otras ramas) puede usarse como fuente.
 """
 import hashlib
 import io
@@ -35,19 +38,26 @@ import os
 import re
 import sys
 
-from PIL import Image, ImageChops, ImageStat
+from PIL import Image, ImageChops, ImageFilter, ImageStat
 
 HERE = os.path.dirname(os.path.abspath(__file__))
 ROOT = os.path.dirname(HERE)
 KEY = 'infografia'
 SOURCE = 'NUEVA IMAGEN 1.png'
-SOURCE_SHA256 = '3795161cabb89ae32b7a4d9ac9acb8b770dc76f62c5795817743a9a6ddb3db0e'  # main 4365050, aprobada
+# Snapshot aprobado actual (D36, 2026-10-06): la versión sin líneas indicadoras que el propietario subió a main
+# (a173b6a, con el nombre «IMAGENN 1.png»), copiada byte a byte como «NUEVA IMAGEN 1.png».
+SOURCE_SHA256 = '0e0ad4ea3ce30ddad5e66408ce3f37d8b85808655556248533dc00c6bc0700eb'
+# Versiones anteriores de «NUEVA IMAGEN 1.png»: retiradas, nunca pueden volver a ser fuente.
+RETIRED_SOURCE_SHA256 = {
+    '3795161cabb89ae32b7a4d9ac9acb8b770dc76f62c5795817743a9a6ddb3db0e': 'versión anterior (main 4365050, D33-D35, con líneas indicadoras)',
+}
 SOURCE_SIZE = (1254, 1254)
 OLD_SOURCES = ['Imagen 1.png']  # retiradas: nunca pueden volver a ser fuente
-ASSET = 'producto-%s-v2' % KEY  # familia versionada (D35): nombre nuevo, sin caché ni referencias antiguas
-# Familia anterior, retirada: mismo nombre para contenidos distintos. Sus versiones del historial de Git
+VERSION = 'v3'
+ASSET = 'producto-%s-%s' % (KEY, VERSION)  # familia versionada (D35, D36): nombre nuevo, sin caché ni referencias antiguas
+# Familias anteriores, retiradas (producto-infografia-<ancho> y producto-infografia-v2-<ancho>). Sus versiones
 # (solo el SHA-256; los archivos no se recuperan) no pueden volver al tema con ningún nombre.
-OLD_FAMILY = re.compile(r'producto-%s-(?!v2\b)' % KEY)
+OLD_FAMILY = re.compile(r'producto-%s-(?!%s\b)' % (KEY, VERSION))
 RETIRED_SHA256 = {
     'bdc7392adff6dd1fa5913ee52a3ee3a0b49ce59929d0b3c9e1ff6aef0c46abb4': 'producto-infografia-480.webp de «Imagen 1.png» (57ba415, flechas antiguas)',
     '2f921fe7ca7a2346d3f3fb0e74893940765b8c16522d39dd7b3aea341b6a6c79': 'producto-infografia-720.webp de «Imagen 1.png» (57ba415, flechas antiguas)',
@@ -57,6 +67,10 @@ RETIRED_SHA256 = {
     'a1e5988ab5fcceabfcdd99cfc29370ad9bb1b46a09b4d2d9fc28d29ad8d8d738': 'producto-infografia-720.webp con pérdida (27c3904, calidad 90)',
     '53ec1fcfe1a47ce5dd35494ac13f1ec65182d67dd04b18585a53101a169c8f63': 'producto-infografia-1080.webp con pérdida (27c3904, calidad 90)',
     '0ff73dd250542fcb68876936972b0f05515a730ce1c35f751aa7203f9455dc04': 'producto-infografia-1254.webp con pérdida (27c3904, calidad 90)',
+    'a903932c55442ac1cf8b5d7524b3595e9bc6511dffb62227966d94ea6cd9c917': 'producto-infografia-v2-480.webp de la fuente anterior (894ec79, con líneas indicadoras)',
+    '707fd828d158ac2211b61bf2d800dc08d86c9197a50e55d8c5682e9e86b80195': 'producto-infografia-v2-720.webp de la fuente anterior (894ec79, con líneas indicadoras)',
+    '1dc83de577d2140a864001b93665787add2dbd07a33a53edc51a7caaaeb0c89e': 'producto-infografia-v2-1080.webp de la fuente anterior (894ec79, con líneas indicadoras)',
+    '956073f8ca2f8775550fd30820ac4a009703e211efd33660168d385ea2f5b530': 'producto-infografia-v2-1254.webp de la fuente anterior (894ec79, con líneas indicadoras)',
 }
 ENCODE = dict(lossless=True, quality=100, method=6)  # lossless: sin submuestreo de color en líneas y textos
 
@@ -68,7 +82,7 @@ REGIONS = {
     'etiqueta «Medalla de la Virgen María»': (0.02, 0.36, 0.20, 0.51),
     'etiqueta «Cruz de Jesús»': (0.80, 0.36, 0.97, 0.50),
     'pulsera (cierre, cuentas, cadena, medalla, cruz)': (0.24, 0.17, 0.75, 0.64),
-    'círculo central punteado': (0.32, 0.29, 0.69, 0.50),
+    'centro de la pulsera': (0.32, 0.29, 0.69, 0.50),
     'texto «Aprox. 20 cm / 7,87 in»': (0.37, 0.38, 0.64, 0.43),
     'círculo ampliado de las cuentas': (0.05, 0.65, 0.24, 0.85),
     'círculo ampliado del cierre': (0.29, 0.65, 0.48, 0.85),
@@ -85,6 +99,12 @@ REGIONS = {
 MAX_MEAN = 0.5
 MAX_PIXEL = 16  # una flecha o línea desplazada deja diferencias de ~100/255 en sus píxeles
 MAX_REGION_MEAN = 1.0
+# Diferencias concentradas (algo añadido, quitado o movido: una línea, un punto, un texto): la diferencia en gris,
+# con un filtro de mediana 3x3 que borra el ruido suelto de la compresión, por encima de 40/255. Calibrado con la
+# fuente actual: recomprimida con pérdida (WebP o JPEG, calidad 60-90, 480-1254 px) da 0 por cada 10 000 píxeles;
+# la misma imagen con unas líneas finas de más da 24-65. No depende de dónde estén esas líneas.
+STRUCT_LEVEL = 40
+MAX_STRUCT = 1.0  # por cada 10 000 píxeles
 
 
 def sha256(path):
@@ -117,10 +137,19 @@ def reference(src, w):
     return src.resize((w, round(src.height * w / src.width)), Image.LANCZOS)
 
 
+def structural(a, b):
+    """Píxeles (por cada 10 000) con una diferencia concentrada entre a y b: ver STRUCT_LEVEL."""
+    d = ImageChops.difference(a, b).convert('L').filter(ImageFilter.MedianFilter(3))
+    return sum(d.histogram()[STRUCT_LEVEL:]) * 1e4 / (a.width * a.height)
+
+
 def load_source(path):
     if not os.path.isfile(path):
         raise SystemExit(f'FALTA la fuente aprobada: {path}')
     digest = sha256(path)
+    if digest in RETIRED_SOURCE_SHA256:
+        raise SystemExit(f'La fuente {path} es una versión RETIRADA ({RETIRED_SOURCE_SHA256[digest]}, SHA-256 {digest}); '
+                         f'la aprobada es {SOURCE_SHA256}')
     if digest != SOURCE_SHA256:
         raise SystemExit(f'La fuente {path} no es la aprobada (SHA-256 {digest}, esperado {SOURCE_SHA256})')
     src = Image.open(path)
@@ -186,8 +215,10 @@ def check(theme, source):
             box = (round(x0 * w), round(y0 * w), round(x1 * w), round(y1 * w))
             if mean_diff(im.crop(box), ref.crop(box)) > MAX_REGION_MEAN:
                 bad.append(name)
-        if total > MAX_MEAN or peak > MAX_PIXEL or bad:
-            errors.append(f'{p}: no coincide con {SOURCE} (diferencia media {total:.3f}, máxima {peak}; zonas distintas: {bad})')
+        struct = structural(im, ref)
+        if total > MAX_MEAN or peak > MAX_PIXEL or bad or struct > MAX_STRUCT:
+            errors.append(f'{p}: no coincide con {SOURCE} (diferencia media {total:.3f}, máxima {peak}; zonas distintas: {bad}; '
+                          f'diferencias concentradas {struct:.2f}/10 000 px)')
         if w == src.width and ImageChops.difference(im, src).getbbox() is not None:
             errors.append(f'{p}: al ancho de la fuente debe ser idéntico píxel a píxel')
         report.append(f'  {w}x{w}  {len(raw):>9} bytes  diferencia media {total:.3f}, máxima {peak}/255')
@@ -224,9 +255,10 @@ def identify(files, source):
     """Para una imagen sacada de la tienda (o de cualquier sitio): ¿es «NUEVA IMAGEN 1.png»?
 
     0 = byte a byte uno de los WebP del tema, o píxel a píxel la fuente reducida (certificado);
-    1 = misma composición recomprimida (diferencias de compresión, ninguna zona distinta): no se
-        puede certificar línea a línea, hay que usar el WebP original;
-    2 = versión retirada, proporción distinta (recorte, deformación) o contenido distinto.
+    1 = misma composición recomprimida (solo ruido de compresión: ninguna zona distinta y ninguna
+        diferencia concentrada): no se certifica byte a byte, hay que usar el WebP original;
+    2 = versión retirada, proporción distinta (recorte, deformación) o contenido distinto (algo
+        añadido, quitado o movido, como unas líneas indicadoras).
     """
     src, _ = load_source(source)
     ours = {}
@@ -244,6 +276,8 @@ def identify(files, source):
             verdict, code = f'ES «{SOURCE}»: byte a byte assets/{ours[digest]}', 0
         elif digest in RETIRED_SHA256:
             verdict, code = f'VERSIÓN RETIRADA: {RETIRED_SHA256[digest]}', 2
+        elif digest in RETIRED_SOURCE_SHA256:
+            verdict, code = f'FUENTE RETIRADA: «{SOURCE}» {RETIRED_SOURCE_SHA256[digest]}', 2
         elif im.width * src.height != im.height * src.width:
             verdict, code = f'NO es la infografía aprobada: proporción {im.width}x{im.height} (recortada o deformada)', 2
         else:
@@ -256,13 +290,15 @@ def identify(files, source):
                 box = (round(x0 * im.width), round(y0 * im.height), round(x1 * im.width), round(y1 * im.height))
                 regions[name] = mean_diff(im.crop(box), ref.crop(box))
             bad = [f'{n} ({d:.1f})' for n, d in regions.items() if d > 10]
-            if total <= MAX_MEAN and peak <= MAX_PIXEL and max(regions.values()) <= MAX_REGION_MEAN:
+            struct = structural(im, ref)
+            if total <= MAX_MEAN and peak <= MAX_PIXEL and max(regions.values()) <= MAX_REGION_MEAN and struct <= MAX_STRUCT:
                 verdict, code = f'ES «{SOURCE}»: píxel a píxel (diferencia media {total:.2f}/255)', 0
-            elif total <= 4 and not bad:
-                verdict, code = (f'misma composición que «{SOURCE}», pero recomprimida (diferencia media {total:.2f}/255): '
-                                 'no se puede certificar línea a línea; usa el WebP original'), 1
+            elif total <= 4 and not bad and struct <= MAX_STRUCT:
+                verdict, code = (f'misma composición que «{SOURCE}», pero recomprimida (diferencia media {total:.2f}/255, '
+                                 'sin diferencias concentradas): no se certifica byte a byte; usa el WebP original'), 1
             else:
-                verdict, code = f'NO coincide con «{SOURCE}» (diferencia media {total:.2f}/255; zonas distintas: {bad or "en toda la imagen"})', 2
+                verdict, code = (f'NO coincide con «{SOURCE}» (diferencia media {total:.2f}/255; zonas distintas: {bad or "ninguna"}; '
+                                 f'diferencias concentradas {struct:.1f}/10 000 px: algo añadido, quitado o movido)'), 2
         worst = max(worst, code)
         print(f'{f}: {im.width}x{im.height}, SHA-256 {digest[:16]}… → {verdict}')
     return worst

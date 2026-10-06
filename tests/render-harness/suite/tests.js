@@ -4,7 +4,7 @@ const { chromium } = require('playwright-core');
 const fs = require('fs'); const path = require('path');
 const THEME = path.resolve(process.env.THEME || path.join(__dirname, '..', '..', '..'));
 const B = 'http://localhost:' + (process.env.PORT || 8810);
-const PHASES = 'ABCDEFGHIJKLMNOPQR'; const PH = PHASES.indexOf(process.env.PHASE || PHASES.slice(-1));
+const PHASES = 'ABCDEFGHIJKLMNOPQRS'; const PH = PHASES.indexOf(process.env.PHASE || PHASES.slice(-1));
 const at = (p) => PHASES.indexOf(p) <= PH;
 const results = []; const ok = (n, c, i) => results.push([c ? 'PASS' : 'FAIL', n, i === undefined ? '' : JSON.stringify(i).slice(0, 300)]);
 const setState = (q) => fetch(`${B}/__state?${q}`).then(r => r.json());
@@ -36,13 +36,19 @@ async function launchChromium() {
   }
 }
 // Nombre base de los WebP de una clave: producto-<clave>, salvo una familia versionada en garelon-image
-// (infografia → producto-infografia-v2, D35).
+// (infografia → producto-infografia-v3 desde la ronda S, D36; v2 en la ronda R, D35).
 function assetBase(key) {
   const snip = fs.readFileSync(path.join(THEME, 'snippets', 'garelon-image.liquid'), 'utf8');
   const m = snip.match(new RegExp(`if key == '${key}'\\s*assign asset = '([\\w-]+)'`));
   return m ? m[1] : `producto-${key}`;
 }
-module.exports = { at, ok, get, setState, reset, count, text, B, THEME, SCRATCH, openPage, assetBase };
+// SHA-256 de la versión aprobada vigente de «NUEVA IMAGEN 1.png»: la fija tools/garelon_infografia.py (SOURCE_SHA256).
+// El propietario puede sustituir la fuente (D36); los tests leen la vigente en vez de fijar una versión antigua.
+function approvedSourceSha() {
+  const tool = fs.readFileSync(path.resolve(__dirname, '..', '..', '..', 'tools', 'garelon_infografia.py'), 'utf8');
+  return (tool.match(/^SOURCE_SHA256 = '([0-9a-f]{64})'/m) || [])[1];
+}
+module.exports = { at, ok, get, setState, reset, count, text, B, THEME, SCRATCH, openPage, assetBase, approvedSourceSha };
 
 async function phaseA(browser) {
   await reset();

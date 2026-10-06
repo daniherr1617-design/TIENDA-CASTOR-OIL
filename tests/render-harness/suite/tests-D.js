@@ -13,7 +13,7 @@ module.exports = async function (browser) {
   ok('D1 home: portada → compra (#comprar)', order[0] === 'portada' && order[1] === 'compra' && /<section\s+id="comprar"/.test(r.html), order);
   let s = section(r.html);
   ok('D2 una sola variante: sin selector, sin tabla de packs y sin aviso para el cliente', !/variant-selects|g-packs|g-offer|g-editor-note/.test(s));
-  ok('D3 galería con las 5 imágenes del tema (completa → detalle → infografía → principal → oración), lazy, con alt', count(s, /class="g-gallery__slide[ "]/g) === 5 && /producto-completa-1080[\s\S]*producto-detalle-600[\s\S]*producto-infografia-v2-1254[\s\S]*producto-principal-1080[\s\S]*producto-oracion-1080/.test(s) && count(s, /loading="lazy"/g) >= 5 && !/alt=""/.test((s.match(/<div class="g-gallery"[\s\S]*?<\/ul>/) || [''])[0]));
+  ok('D3 galería con las 5 imágenes del tema (completa → detalle → infografía → principal → oración), lazy, con alt', count(s, /class="g-gallery__slide[ "]/g) === 5 && /producto-completa-1080[\s\S]*producto-detalle-600[\s\S]*producto-infografia-v\d+-1254[\s\S]*producto-principal-1080[\s\S]*producto-oracion-1080/.test(s) && count(s, /loading="lazy"/g) >= 5 && !/alt=""/.test((s.match(/<div class="g-gallery"[\s\S]*?<\/ul>/) || [''])[0]));
   ok('D4 frase de fe una sola vez en la página, antes del botón', count(r.html, /Un símbolo de tu fe, contigo cada día\./g) === 1 && s.indexOf('g-trust__phrase') > 0 && s.indexOf('g-trust__phrase') < s.indexOf('ProductSubmitButton'));
   ok('D5 título del producto como H2 (el H1 es la portada) y botón de pago dinámico', /<h2 class="product__title h1"/.test(s) && /shopify-payment-button/.test(s));
   ok('D6 sin selector de cantidad (cada pack = una variante con cantidad 1)', !/quantity-input|name="quantity"/.test(s));

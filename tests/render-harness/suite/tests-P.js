@@ -16,10 +16,11 @@ const BASE = '34c8ae7'; // HEAD antes de la ronda P
 // Último commit de la ronda P (tema 27c3904 + docs): el alcance P29-P31 y P5 se fijan a 34c8ae7..9bba79b, porque la
 // ronda R (D35) renombra la infografía a producto-infografia-v2-* y saca la lupa de encima de la imagen.
 const ROUND_HEAD = '9bba79b';
-const ASSET = T.assetBase('infografia'); // familia actual de la infografía (producto-infografia-v2 desde la ronda R)
+const ASSET = T.assetBase('infografia'); // familia actual de la infografía (v2 en la ronda R, v3 desde la ronda S)
 const REPO = fs.existsSync(THEME + '/.git');
 const NEW_SRC = 'NUEVA IMAGEN 1.png';
-const NEW_SRC_SHA256 = '3795161cabb89ae32b7a4d9ac9acb8b770dc76f62c5795817743a9a6ddb3db0e'; // subida por el propietario a main (4365050)
+// Versión aprobada vigente (la de la ronda P era 3795161c…; el propietario la sustituyó en la ronda S, D36).
+const NEW_SRC_SHA256 = T.approvedSourceSha();
 const OLD_SRC = 'Imagen 1.png';
 const VPS = [320, 360, 375, 390, 430, 768, 1024, 1440];
 const es = JSON.parse(fs.readFileSync(`${THEME}/locales/es.json`, 'utf8')).garelon.gallery;
@@ -34,7 +35,7 @@ module.exports = async function phaseP(browser) {
   // 1 · Fuente y assets de la infografía
   if (REPO) {
     const src = `${THEME}/${NEW_SRC}`;
-    ok('P1 fuente nueva «NUEVA IMAGEN 1.png» en el repo (la subida por el propietario) y la antigua «Imagen 1.png» retirada',
+    ok('P1 fuente «NUEVA IMAGEN 1.png» en el repo (la versión aprobada vigente) y la antigua «Imagen 1.png» retirada',
       fs.existsSync(src) && crypto.createHash('sha256').update(fs.readFileSync(src)).digest('hex') === NEW_SRC_SHA256 && !fs.existsSync(`${THEME}/${OLD_SRC}`));
   }
   const info = JSON.parse(execFileSync('python3', ['-c', `

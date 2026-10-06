@@ -2,8 +2,8 @@
 """GARELON · genera el ZIP del tema SOLO si pasa la validación de instalabilidad.
 
 1. Ejecuta tools/garelon_check.py sobre el repositorio y tools/garelon_infografia.py (la infografía
-   es solo la familia producto-infografia-v2-*, que sale de «NUEVA IMAGEN 1.png» en WebP lossless,
-   sin recorte; ni la familia retirada ni sus versiones antiguas). Si algo falla, no hay ZIP.
+   es solo la familia producto-infografia-v3-*, que sale de «NUEVA IMAGEN 1.png» en WebP lossless,
+   sin recorte; ni las familias retiradas ni sus versiones antiguas). Si algo falla, no hay ZIP.
 2. Empaqueta únicamente assets/ config/ layout/ locales/ sections/ snippets/ templates/
    en la raíz del ZIP (sin carpeta contenedora, sin ocultos, sin .md, sin docs ni tools).
    Fechas fijas: el mismo árbol da siempre el mismo SHA-256.

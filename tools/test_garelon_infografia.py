@@ -3,8 +3,10 @@
 
 Copia el tema y la fuente a una carpeta temporal, aplica una mutación (recorte, línea movida,
 filtro, compresión con pérdida, PNG servido, otra fuente, ampliación, familia retirada, imagen del
-editor…) y comprueba que el comprobador devuelve error. La copia intacta debe pasar. También
-prueba --identify (la fuente reducida se reconoce; un recorte o una versión con pérdida, no).
+editor, la fuente anterior…) y comprueba que el comprobador devuelve error. La copia intacta debe
+pasar. También prueba --identify (la fuente reducida se reconoce; un recorte, una versión con pérdida
+o una con líneas añadidas, no). Las líneas que añaden estas pruebas son mutaciones sobre copias
+temporales: no reconstruyen nada de la fuente.
 Nunca toca la fuente del repositorio.
 Uso: python3 tools/test_garelon_infografia.py
 """
@@ -24,7 +26,7 @@ SOURCE = 'NUEVA IMAGEN 1.png'
 
 
 def asset(t, w):
-    return f'{t}/theme/assets/producto-infografia-v2-{w}.webp'
+    return f'{t}/theme/assets/producto-infografia-v3-{w}.webp'
 
 
 def resave(t, w, fn, **kw):
@@ -105,8 +107,27 @@ def edit_snippet(t, old, new):
     open(p, 'w', encoding='utf-8').write(s.replace(old, new))
 
 
+def m_v2_file(t):
+    shutil.copy(asset(t, 480), f'{t}/theme/assets/producto-infografia-v2-480.webp')
+
+
+def m_v2_ref(t):
+    p = f'{t}/theme/sections/garelon-details.liquid'
+    open(p, 'a', encoding='utf-8').write("\n{{ 'producto-infografia-v2-1254.webp' | asset_url }}\n")
+
+
+def m_snippet_v2(t):
+    edit_snippet(t, "assign asset = 'producto-infografia-v3'", "assign asset = 'producto-infografia-v2'")
+
+
+def m_retired_source(t):
+    # La versión anterior de la fuente vuelve como «NUEVA IMAGEN 1.png». Sin recuperarla de Git: se simula
+    # registrando como fuente retirada el SHA-256 de la copia de prueba.
+    return ('source', hashlib.sha256(open(f'{t}/{SOURCE}', 'rb').read()).hexdigest())
+
+
 def m_unversioned(t):
-    edit_snippet(t, "    assign asset = 'producto-infografia-v2'\n", '')
+    edit_snippet(t, "    assign asset = 'producto-infografia-v3'\n", '')
 
 
 def m_editor_override(t):
@@ -139,14 +160,20 @@ MUTATIONS = [
     ('el snippet deja de usar la familia versionada', m_unversioned),
     ('la imagen del editor vuelve a poder sustituir a la infografía', m_editor_override),
     ('una versión retirada (por SHA-256) con otro nombre', m_retired),
+    ('vuelve un archivo de la familia v2 (producto-infografia-v2-480.webp)', m_v2_file),
+    ('referencia a la familia v2 (producto-infografia-v2-1254.webp)', m_v2_ref),
+    ('el snippet vuelve a la familia v2', m_snippet_v2),
+    ('la versión anterior de «NUEVA IMAGEN 1.png» (SHA-256 retirado) vuelve como fuente', m_retired_source),
 ]
 
 
 def run(t, retired=None):
     if retired:
+        table = 'RETIRED_SOURCE_SHA256' if isinstance(retired, tuple) else 'RETIRED_SHA256'
+        digest = retired[1] if isinstance(retired, tuple) else retired
         code = ('import sys; sys.dont_write_bytecode = True; sys.path.insert(0, sys.argv[1]); import garelon_infografia as g; '
-                "g.RETIRED_SHA256[sys.argv[2]] = 'versión retirada (prueba)'; sys.exit(g.check(sys.argv[3], sys.argv[4]))")
-        return subprocess.run([sys.executable, '-c', code, HERE, retired, f'{t}/theme', f'{t}/{SOURCE}'],
+                f"g.{table}[sys.argv[2]] = 'versión retirada (prueba)'; sys.exit(g.check(sys.argv[3], sys.argv[4]))")
+        return subprocess.run([sys.executable, '-c', code, HERE, digest, f'{t}/theme', f'{t}/{SOURCE}'],
                               capture_output=True, text=True).returncode
     return subprocess.run([sys.executable, os.path.join(HERE, 'garelon_infografia.py'), '--check',
                            '--theme', f'{t}/theme', '--source', f'{t}/{SOURCE}'],
@@ -186,11 +213,20 @@ def main():
     Image.open(a).convert('RGB').crop((25, 25, 1229, 1229)).save(f'{t}/recorte.png')
     Image.open(asset(t, 720)).convert('RGB').save(f'{t}/perdida.webp', 'WEBP', quality=80)
     Image.open(asset(t, 480)).save(f'{t}/copia.png')  # mismos píxeles, otros bytes (p. ej. una captura sin escalar)
+    # Unas líneas finas de más (como las indicadoras que el propietario quitó), en una copia temporal con pérdida:
+    # no basta con «parecerse»; las diferencias concentradas la delatan.
+    im = Image.open(asset(t, 720)).convert('RGB')
+    d = ImageDraw.Draw(im)
+    d.line((140, 140, 330, 330), fill=(196, 150, 60), width=2)
+    d.line((560, 160, 420, 260), fill=(196, 150, 60), width=2)
+    d.ellipse((322, 322, 334, 334), fill=(255, 255, 255))
+    im.save(f'{t}/lineas.webp', 'WEBP', quality=90)
     checks = [('--identify reconoce el WebP de 1254 (ES la fuente)', identify(a) == 0),
               ('--identify reconoce el WebP de 480 (ES la fuente)', identify(asset(t, 480)) == 0),
               ('--identify certifica una copia píxel a píxel con otros bytes (PNG)', identify(f'{t}/copia.png') == 0),
               ('--identify marca la versión con pérdida (no píxel a píxel)', identify(f'{t}/perdida.webp') == 1),
-              ('--identify rechaza un recorte', identify(f'{t}/recorte.png') == 2)]
+              ('--identify rechaza un recorte', identify(f'{t}/recorte.png') == 2),
+              ('--identify rechaza una copia con líneas añadidas, aunque esté recomprimida', identify(f'{t}/lineas.webp') == 2)]
     shutil.rmtree(t)
     for name, good in checks:
         print(('✓' if good else '✗') + f' {name}')

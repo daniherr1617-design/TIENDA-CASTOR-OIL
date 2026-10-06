@@ -1,10 +1,10 @@
 // SOLO TEST · Fase Q: la infografía es «NUEVA IMAGEN 1.png» tal cual, solo redimensionada y codificada en WebP.
-// La fuente es inmutable (SHA-256 fijo). Los WebP de la clave `infografia` son lossless y salen solo de ella
+// La fuente es inmutable (SHA-256 de la versión aprobada vigente, que fija tools/garelon_infografia.py). Los WebP de la clave `infografia` son lossless y salen solo de ella
 // (tools/garelon_infografia.py): el de 1254 px es idéntico píxel a píxel y los menores son su reducción exacta.
 // En el navegador se muestra entera (sin recorte ni deformación) y, a los 8 anchos, lo que se ve coincide con la
-// fuente en todas las zonas de la composición (título, medalla, cruz, pulsera, círculo central, medida, círculos
+// fuente en todas las zonas de la composición (título, medalla, cruz, pulsera, centro, medida, círculos
 // ampliados, etiquetas y, desde la ronda R, las cuatro esquinas). Un control negativo (la fuente recortada un 2 %)
-// demuestra que la comparación lo detectaría. Ronda R (D35): familia producto-infografia-v2-*, la lupa ya no va encima
+// demuestra que la comparación lo detectaría. Ronda R (D35): familia versionada (v3 desde la ronda S), la lupa ya no va encima
 // y el marco no redondea (recortaba) las esquinas, así que la captura se compara entera, sin ocultar nada.
 const T = require('./tests.js');
 const { ok, reset, openPage, THEME } = T;
@@ -17,7 +17,7 @@ const { execFileSync, spawnSync } = require('child_process');
 const REPO_ROOT = path.resolve(__dirname, '..', '..', '..');
 const IS_REPO = path.resolve(THEME) === REPO_ROOT;
 const SRC = path.join(REPO_ROOT, 'NUEVA IMAGEN 1.png');
-const SRC_SHA256 = '3795161cabb89ae32b7a4d9ac9acb8b770dc76f62c5795817743a9a6ddb3db0e';
+const SRC_SHA256 = T.approvedSourceSha(); // versión aprobada vigente (D36)
 const TOOL = path.join(REPO_ROOT, 'tools', 'garelon_infografia.py');
 const P = '/products/pulsera-rosario-virgen-maria';
 const VPS = [320, 360, 375, 390, 430, 768, 1024, 1440];
@@ -69,7 +69,7 @@ module.exports = async function phaseQ(browser) {
   await reset();
   // 1 · Fuente inmutable y WebP generados solo desde ella
   const srcOk = fs.existsSync(SRC) && crypto.createHash('sha256').update(fs.readFileSync(SRC)).digest('hex') === SRC_SHA256;
-  ok('Q1 fuente «NUEVA IMAGEN 1.png» presente e intacta (SHA-256 aprobado 3795161c…)', srcOk);
+  ok(`Q1 fuente «NUEVA IMAGEN 1.png» presente e intacta (SHA-256 aprobado vigente ${String(SRC_SHA256).slice(0, 8)}…)`, srcOk);
   if (IS_REPO) {
     const dirty = spawnSync('git', ['-C', REPO_ROOT, 'status', '--porcelain', '--', 'NUEVA IMAGEN 1.png'], { encoding: 'utf8' }).stdout.trim();
     ok('Q2 la fuente no tiene cambios sin confirmar en Git (nadie la ha reescrito)', dirty === '', dirty);

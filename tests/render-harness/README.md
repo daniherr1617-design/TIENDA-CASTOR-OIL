@@ -56,7 +56,7 @@ Para el Liquid estricto: `gem install liquid -v 5.14.0` (o, sin permisos de sist
 - **Legal:** `/__state?legal=policy|page|none` (Aviso legal como política nativa, como página `aviso-legal` o ausente), `contactinfo=1` (política nativa «Información de contacto») y `cookies=none|ok|legacy` (página `politica-de-cookies` o el handle antiguo `cookies`). Las políticas simuladas llevan un texto de prueba, nunca las reales.
 - **Routing como Shopify:** `/`, `/products/<handle>`, `/pages/<handle>`, `/policies/<x>`, `/cart`; el resto da la plantilla 404 con HTTP 404.
 
-`suite/tests.js` (fase A) y `suite/tests-B.js` … `tests-R.js` abren las páginas con Chromium y comprueban:
+`suite/tests.js` (fase A) y `suite/tests-B.js` … `tests-S.js` abren las páginas con Chromium y comprueban:
 
 - routing y 404;
 - cabecera, navegación, logo y pie;
@@ -71,7 +71,8 @@ Para el Liquid estricto: `gem install liquid -v 5.14.0` (o, sin permisos de sist
 - sincronización legal (fase O, decisión D32): «14 días» solo como desistimiento, sin «Envíos internacionales», sin fechas de entrega fijas ni píxeles a mano, FAQ y pestaña que remiten a las políticas, y enlaces legales del pie únicos, en rutas controladas y vivos;
 - infografía «Detalles de la pulsera» y Contacto (fase P): `NUEVA IMAGEN 1.png` como fuente de `infografia` (WebP 480/720/1080/1254, sin ampliar, fiel a la fuente, sin PNG servido, `srcset` adecuado en móvil y escritorio); formulario nativo `{% form 'contact' %}` con estados de error y éxito; enlaces a Contacto (cabecera, menú móvil, «Ayuda», FAQ y pie) que siguen a la página real (`contacto`, `contact` o la política «Información de contacto») sin 404; foco visible, objetivos ≥ 44 px y sin scroll horizontal;
 - infografía inmutable (fase Q, decisión D34): `NUEVA IMAGEN 1.png` intacta (SHA-256 fijo), WebP lossless que salen solo de ella (`tools/garelon_infografia.py`: el de 1254 px idéntico píxel a píxel y los menores su reducción exacta, misma proporción, sin recorte ni ampliación, sin PNG), autoprueba con 12 alteraciones, y en el navegador, a los 8 anchos y en las tres posiciones, la imagen entera y lo que se ve igual que la fuente en cada zona (con un control negativo que demuestra que un recorte del 2 % se detecta);
-- un solo camino para la infografía (fase R, decisión D35): solo la familia versionada `producto-infografia-v2-<ancho>.webp` en `assets/` (ni la familia antigua ni ninguna de sus 8 versiones retiradas, por SHA-256, con ningún nombre), ninguna referencia a la antigua, la galería de la home, «Detalles», la galería de la ficha y el enlace para ampliar sirven esa familia (los mismos bytes que el tema), una imagen elegida en el editor no la sustituye (`editorimg=1`, con control) ni la multimedia del producto la cambia (`media=1`), y a los 8 anchos se ve entera, sin esquinas recortadas y sin nada encima; `tools/garelon_infografia.py --identify` certifica lo descargado;
+- un solo camino para la infografía (fase R, decisión D35): solo la familia versionada vigente (`producto-infografia-v2-<ancho>.webp` en la ronda R; `v3` desde la fase S) en `assets/` (ni la familia antigua ni ninguna de sus 8 versiones retiradas, por SHA-256, con ningún nombre), ninguna referencia a la antigua, la galería de la home, «Detalles», la galería de la ficha y el enlace para ampliar sirven esa familia (los mismos bytes que el tema), una imagen elegida en el editor no la sustituye (`editorimg=1`, con control) ni la multimedia del producto la cambia (`media=1`), y a los 8 anchos se ve entera, sin esquinas recortadas y sin nada encima; `tools/garelon_infografia.py --identify` certifica lo descargado;
+- fuente nueva sin líneas indicadoras (fase S, decisión D36): `NUEVA IMAGEN 1.png` es la versión vigente que subió el propietario (byte a byte la de `main` `a173b6a`), la anterior (`3795161c…`) queda retirada, solo `producto-infografia-v3-<ancho>.webp` en el tema y ninguna referencia a la familia antigua ni a la v2; a los 8 anchos, en la galería de la home, «Detalles», la galería de la ficha y la imagen ampliada, el mismo `<img>` repintado con la fuente reducida da exactamente los mismos píxeles en pantalla, con un control negativo (la fuente con líneas de más) que demuestra que algo añadido se detectaría;
 - schemas, locales (31 idiomas) y alcance de los cambios de cada ronda;
 - accesibilidad básica: un H1, anclas, `alt`, contraste y foco;
 - sin errores JS;
@@ -115,7 +116,7 @@ tests/render-harness/
 ├── run.js              lanzador: servidor en un puerto libre + batería
 ├── validate.js         validación completa (5 pasos)
 ├── src/server.js       Shopify simulado (liquidjs)
-├── suite/tests.js      fase A + utilidades; tests-B.js … tests-N.js
+├── suite/tests.js      fase A + utilidades; tests-B.js … tests-S.js
 ├── fixtures/           stub de standard-events de Shopify, bloque de app de prueba, textos esperados de la FAQ
 └── checks/             theme-check.js (Theme Check con clasificación Dawn/GARELON), liquid-strict.rb
 ```

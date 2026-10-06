@@ -4,8 +4,9 @@
 // incorrectas), la versión con pérdida y la buena, así que un tema subido antes no se distinguía por la URL;
 // 2) una imagen elegida en el editor (Files) sustituía a la del tema en «Detalles»; 3) el marco redondeado
 // recortaba las cuatro esquinas de la imagen y la lupa tapaba la esquina superior derecha.
-// Ahora: producto-infografia-v2-<ancho>.webp en los tres sitios (galería de la home, «Detalles» y galería de la
-// ficha) y en el enlace para ampliar, la imagen del editor no la sustituye y se ve entera, sin nada encima.
+// Ahora: la familia versionada (producto-infografia-v2-<ancho>.webp en la ronda R; v3 desde la ronda S, D36) en los tres
+// sitios (galería de la home, «Detalles» y galería de la ficha) y en el enlace para ampliar, la imagen del editor no la
+// sustituye y se ve entera, sin nada encima. Las comprobaciones leen la familia vigente del snippet.
 const T = require('./tests.js');
 const { ok, get, setState, reset, count, openPage, B, THEME } = T;
 const fs = require('fs');
@@ -21,7 +22,8 @@ const VPS = [320, 360, 375, 390, 430, 768, 1024, 1440];
 const ASSET = T.assetBase('infografia');
 const snippet = fs.readFileSync(`${THEME}/snippets/garelon-image.liquid`, 'utf8');
 const WIDTHS = ((snippet.match(/when 'infografia'\s*assign widths = '([\d,]+)'/) || [])[1] || '').split(',').filter(Boolean).map(Number);
-const OLD = /producto-infografia-(?!v2\b)/; // familia retirada (cualquier nombre producto-infografia-* que no sea v2)
+const VER = (ASSET.match(/-(v\d+)$/) || [])[1] || '';
+const OLD = new RegExp(`producto-infografia-(?!${VER}\\b)`); // familias retiradas (cualquier producto-infografia-* que no sea la vigente)
 const sha = (b) => crypto.createHash('sha256').update(b).digest('hex');
 const RETIRED = JSON.parse(execFileSync('python3', ['-c',
   'import sys, json; sys.dont_write_bytecode = True; sys.path.insert(0, sys.argv[1]); import garelon_infografia as g; print(json.dumps(sorted(g.RETIRED_SHA256)))',
@@ -39,16 +41,16 @@ module.exports = async function phaseR(browser) {
   const files = fs.readdirSync(`${THEME}/assets`);
   const inf = files.filter(f => f.includes('infografia')).sort();
   ok(`R1 assets/: solo la familia ${ASSET}-<ancho>.webp (${WIDTHS.join('/')}), sin ningún producto-infografia-<ancho>.webp antiguo`,
-    ASSET === 'producto-infografia-v2' && JSON.stringify(inf) === JSON.stringify(WIDTHS.map(w => `${ASSET}-${w}.webp`).sort()), inf);
+    /^producto-infografia-v\d+$/.test(ASSET) && JSON.stringify(inf) === JSON.stringify(WIDTHS.map(w => `${ASSET}-${w}.webp`).sort()), inf);
   const retiredHere = files.filter(f => RETIRED.includes(sha(fs.readFileSync(`${THEME}/assets/${f}`))));
-  ok(`R2 ninguna de las ${RETIRED.length} versiones antiguas (Imagen 1 y con pérdida, por SHA-256) está en assets/ con ningún nombre`, RETIRED.length === 8 && retiredHere.length === 0, retiredHere);
+  ok(`R2 ninguna de las ${RETIRED.length} versiones antiguas (Imagen 1, con pérdida y, desde la ronda S, la v2; por SHA-256) está en assets/ con ningún nombre`, RETIRED.length >= 8 && retiredHere.length === 0, retiredHere);
   const refs = [];
   for (const d of ['config', 'layout', 'locales', 'sections', 'snippets', 'templates']) {
     for (const f of fs.readdirSync(`${THEME}/${d}`)) if (OLD.test(fs.readFileSync(`${THEME}/${d}/${f}`, 'utf8'))) refs.push(`${d}/${f}`);
   }
   ok('R3 ninguna referencia a la familia antigua en el tema (snippets, secciones, plantillas, JSON, locales, layout, config)', refs.length === 0, refs);
   ok('R4 garelon-image: la clave infografia usa siempre la familia versionada y la imagen del editor no la sustituye',
-    /if key == 'infografia'\s*assign asset = 'producto-infografia-v2'/.test(snippet) && /if image != blank and key != 'infografia'\s*assign use_editor = true/.test(snippet));
+    new RegExp(`if key == 'infografia'\\s*assign asset = '${ASSET}'`).test(snippet) && /^producto-infografia-v\d+$/.test(ASSET) && /if image != blank and key != 'infografia'\s*assign use_editor = true/.test(snippet));
 
   // 2 · Render: todos los caminos (galería home, Detalles, galería ficha, enlace para ampliar) → la misma familia
   const expectSrcset = WIDTHS.map(w => `/assets/${ASSET}-${w}.webp ${w}w`).join(', ');

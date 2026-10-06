@@ -1,6 +1,7 @@
 // SOLO TEST · Fase I: imágenes aprobadas por el propietario (imagen 4 → «completa», Imagen 1 → «infografia»).
 const T = require('./tests.js');
 const { ok, get, setState, reset, count, text, openPage, B, THEME } = T;
+const INF = T.assetBase('infografia'); // familia actual de la infografía (versionada desde la ronda R)
 const fs = require('fs');
 const { execSync } = require('child_process');
 const P = '/products/pulsera-rosario-virgen-maria';
@@ -53,10 +54,10 @@ print(';'.join(f.split('/')[-1]+'='+'x'.join(map(str,Image.open(f).size)) for f 
   ok('I7 galería de compra (home): completa → detalle → infografía → principal → oración', JSON.stringify(slides(hg)) === JSON.stringify(['completa', 'detalle', 'infografia', 'principal', 'oracion']), slides(hg));
   ok('I8 galería home: alt de imagen 4 e Imagen 1 presentes', hg.includes(`alt="${esc(es.alt_completa)}"`) && hg.includes(`alt="${esc(es.alt_infografia)}"`) && !/alt=""/.test(hg));
   const det = (r.html.match(/<section\s+id="detalles"[\s\S]*?<\/section>/) || [''])[0];
-  ok('I9 «Detalles de la pulsera» usa la infografía (Imagen 1) con su alt; los 5 hechos siguen', /producto-infografia-v2-1254\.webp/.test(det) && !/producto-detalle-/.test(det) && /alt="Infografía «Detalles de la pulsera»/.test(det) && count(det, /class="g-fact"/g) === 5);
-  ok('I10 infografía ampliable: enlace a la versión de 1254 px en pestaña nueva, con texto accesible', count(r.html, /<a\s+class="g-zoom"\s+href="\/assets\/producto-infografia-v2-1254\.webp"\s+target="_blank"\s+rel="noopener"/g) === 2 && count(r.html, /class="visually-hidden">Ver ampliada/g) === 2);
+  ok('I9 «Detalles de la pulsera» usa la infografía (Imagen 1) con su alt; los 5 hechos siguen', det.includes(`${INF}-1254.webp`) && !/producto-detalle-/.test(det) && /alt="Infografía «Detalles de la pulsera»/.test(det) && count(det, /class="g-fact"/g) === 5);
+  ok('I10 infografía ampliable: enlace a la versión de 1254 px en pestaña nueva, con texto accesible', count(r.html, new RegExp(`<a\\s+class="g-zoom"\\s+href="/assets/${INF}-1254\\.webp"\\s+target="_blank"\\s+rel="noopener"`, 'g')) === 2 && count(r.html, /class="visually-hidden">Ver ampliada/g) === 2);
   ok('I11 Imagen 1 solo en galería + Detalles (sin más duplicados en la home)', count(r.html, /<img[^>]*src="[^"]*producto-infografia/g) === 2 && count(r.html, /<img[^>]*src="[^"]*producto-completa/g) === 1);
-  const urls = [...new Set([...r.html.matchAll(/\/assets\/producto-(?:completa|infografia-v2)-\d+\.webp/g)].map(m => m[0]))];
+  const urls = [...new Set([...r.html.matchAll(new RegExp(`/assets/(?:producto-completa|${INF})-\\d+\\.webp`, 'g'))].map(m => m[0]))];
   const st = await Promise.all(urls.map(u => fetch(B + u).then(x => x.status + ' ' + x.headers.get('content-type'))));
   ok('I12 todas las URL de las imágenes nuevas (srcset y enlace) responden 200 image/webp', urls.length === 7 && st.every(s => /^200 image\/webp/.test(s)), st);
 
