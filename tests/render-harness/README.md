@@ -56,7 +56,7 @@ Para el Liquid estricto: `gem install liquid -v 5.14.0` (o, sin permisos de sist
 - **Legal:** `/__state?legal=policy|page|none` (Aviso legal como política nativa, como página `aviso-legal` o ausente), `contactinfo=1` (política nativa «Información de contacto») y `cookies=none|ok|legacy` (página `politica-de-cookies` o el handle antiguo `cookies`). Las políticas simuladas llevan un texto de prueba, nunca las reales.
 - **Routing como Shopify:** `/`, `/products/<handle>`, `/pages/<handle>`, `/policies/<x>`, `/cart`; el resto da la plantilla 404 con HTTP 404.
 
-`suite/tests.js` (fase A) y `suite/tests-B.js` … `tests-P.js` abren las páginas con Chromium y comprueban:
+`suite/tests.js` (fase A) y `suite/tests-B.js` … `tests-R.js` abren las páginas con Chromium y comprueban:
 
 - routing y 404;
 - cabecera, navegación, logo y pie;

@@ -1,19 +1,19 @@
 # Estado actual de la tienda · SNAPSHOT
 
 <!-- snapshot-header:start -->
-> **SNAPSHOT, no verdad eterna.** Generado el 2026-10-05 desde `daniherr1617-design/TIENDA-CASTOR-OIL`, rama `claude/rosary-clean-rebuild`, **commit `f9eee51`** (último commit que cambió el tema).
+> **SNAPSHOT, no verdad eterna.** Generado el 2026-10-06 desde `daniherr1617-design/TIENDA-CASTOR-OIL`, rama `claude/rosary-clean-rebuild`, **commit `894ec79`** (último commit que cambió el tema).
 <!-- snapshot-header:end -->
 >
 > Antes de una tarea importante, revalida lo relevante: `python3 .claude/skills/garelon-ecommerce-operator/scripts/garelon_store_snapshot.py`. Si el repo y este archivo difieren, **manda el repo** y este archivo se regenera (DOCUMENT_SYNC). `tools/garelon_docs_check.py` avisa si el tema ha cambiado después de este commit.
 
-<!-- snapshot-commit: f9eee51 -->
+<!-- snapshot-commit: 894ec79 -->
 
 ## 1. Datos leídos del repositorio (generados por el script)
 
 <!-- snapshot:start -->
-- **Generado:** 2026-10-05 20:28 UTC
-- **Repositorio:** `daniherr1617-design/TIENDA-CASTOR-OIL` · **rama:** `claude/rosary-clean-rebuild` · **HEAD:** `f9eee51` (2026-10-05) «Regenerar infografía WebP desde fuente aprobada»
-- **Último commit que cambió el tema:** `f9eee51` (2026-10-05)
+- **Generado:** 2026-10-06 07:58 UTC
+- **Repositorio:** `daniherr1617-design/TIENDA-CASTOR-OIL` · **rama:** `claude/rosary-clean-rebuild` · **HEAD:** `894ec79` (2026-10-06) «Infografía: familia versionada producto-infografia-v2 desde la fuente aprobada»
+- **Último commit que cambió el tema:** `894ec79` (2026-10-06)
 - **Carpetas del tema sin cambios pendientes:** sí
 - **Tema:** GARELON (Dawn) 16.0.0 · base Dawn en el commit `b2adb07`
 - **Conteos (carpetas del tema):** assets 214, config 2, layout 2, locales 51, sections 54, snippets 51, templates 13
@@ -36,13 +36,13 @@
 - **Navegación:** Inicio (`/`) · Detalles (`/#detalles`) · Preguntas frecuentes (`/#preguntas-frecuentes`) · Contacto (`/pages/contacto`) · búsqueda en cabecera: False
 - **Barra superior:** «Una joya para llevar contigo o regalar»
 - **Pie:** bloques brand_information, text; iconos de pago: False; newsletter: False
-- **Imágenes del tema por clave:** `principal` (480/720/1080), `oracion` (480/720/1080), `completa` (480/720/1080), `infografia` (480/720/1080/1254), `detalle` (480/600)
+- **Imágenes del tema por clave:** `principal` (480/720/1080), `oracion` (480/720/1080), `completa` (480/720/1080), `infografia` (480/720/1080/1254 · INCOMPLETA), `detalle` (480/600)
 - **Imágenes fuente en la raíz (fuera del ZIP):** `LOGO DEFINITIVO.png`, `Logo y marca.png`, `Logo.png`, `NUEVA IMAGEN 1.png`, `NUEVA IMAGEN 3.png`, `imagen 2.png`, `imagen 4.png`
 - **Ajustes globales:** fuentes lora_n4 + inter_n4, carrito `drawer`, ancho 1200, radio de botón 40, búsqueda predictiva False
 - **Esquemas de color:** scheme-1 fondo #FFFFFF / texto #2A2622 / botón #86672F, scheme-2 fondo #FAF7F2 / texto #2A2622 / botón #86672F, scheme-3 fondo #F3ECDF / texto #2A2622 / botón #2A2622, scheme-4 fondo #FFFFFF / texto #2A2622 / botón #86672F, scheme-5 fondo #F7F1E6 / texto #2A2622 / botón #86672F
 - **Locales con textos `garelon.*`:** 31
 - **Herramientas en `tools/`:** `build_zip.py`, `garelon_check.py`, `garelon_docs_check.py`, `garelon_infografia.py`, `test_garelon_check.py`, `test_garelon_docs_check.py`, `test_garelon_infografia.py`
-- **Batería de render versionada:** `tests/render-harness` · fases A-Q · dependencias fijadas: `@fontsource/inter` 5.3.0, `@fontsource/lora` 5.3.0, `@shopify/theme-check-node` 3.30.1, `liquidjs` 10.29.0, `playwright-core` 1.63.0 · con `package-lock.json`
+- **Batería de render versionada:** `tests/render-harness` · fases A-R · dependencias fijadas: `@fontsource/inter` 5.3.0, `@fontsource/lora` 5.3.0, `@shopify/theme-check-node` 3.30.1, `liquidjs` 10.29.0, `playwright-core` 1.63.0 · con `package-lock.json`
 <!-- snapshot:end -->
 
 ## 2. Lectura humana del estado
@@ -60,7 +60,7 @@
 - **Geometría verificada por el propietario:** la cruz forma parte de la pulsera y la cadena se une a ella por los dos extremos de su eje largo. No cuelga ninguna cruz, cadena ni cuenta. No se vuelve a cuestionar salvo petición expresa.
   - `oracion` ← `imagen 2.png`
   - `completa` ← `imagen 4.png` (pulsera entera sobre marfil)
-  - `infografia` ← `NUEVA IMAGEN 1.png` (infografía «Detalles de la pulsera» con las flechas corregidas; desde `27c3904`, D33). **Fuente inmutable (D34):** WebP lossless a 480/720/1080/1254 desde `f9eee51`; el de 1254 es idéntico píxel a píxel y ninguno se amplía. Pesan 263 KB / 550 KB / 1,16 MB / 1,45 MB. Se generan y comprueban solo con `tools/garelon_infografia.py`
+  - `infografia` ← `NUEVA IMAGEN 1.png` (infografía «Detalles de la pulsera» con las flechas corregidas; desde `27c3904`, D33). **Fuente inmutable (D34):** WebP lossless, el de 1254 idéntico píxel a píxel y ninguno ampliado. **Familia versionada (D35, desde `894ec79`):** `producto-infografia-v2-480/720/1080/1254.webp` (263 KB / 550 KB / 1,16 MB / 1,45 MB); la familia `producto-infografia-<ancho>.webp` está retirada. Se ve en la galería de la home, en «Detalles» de la home, en la galería de la ficha y en «Ampliar». Una imagen elegida en el editor no la sustituye. Se generan, comprueban e identifican solo con `tools/garelon_infografia.py`
   - La antigua `Imagen 1.png` (flechas incorrectas) se retiró del repositorio. No volver a usarla ni restaurarla.
 - **Logo:** isotipo dorado + wordmark negro (`LOGO DEFINITIVO.png` → `assets/garelon-logo-negro-*.webp`). Isotipo dorado en el favicon y en el icono de iOS.
 - **Para regalar (D31, desde `e27ae75`):** solo encabezado: «Para regalar» · «Un detalle para momentos que importan» · «Una joya con significado para regalar en un momento especial.». Sin tarjetas de ocasiones (las seis antiguas se retiraron). FAQ: «¿Es una buena opción para regalar?» / «Sí. Puede ser un detalle con significado para regalar en un momento especial.» (home y ficha). 0 ocasiones concretas en el storefront.
@@ -82,25 +82,26 @@
 
 ## 4. Pruebas: última línea base conocida
 
-Medida el 2026-10-05 en el commit `27c3904`, en este entorno, con `node tests/render-harness/validate.js` (instalación: `cd tests/render-harness && npm ci`; ver `tests/render-harness/README.md`):
+Medida el 2026-10-06 en el commit `894ec79` en este entorno, con `node tests/render-harness/validate.js` (instalación: `cd tests/render-harness && npm ci`; ver `tests/render-harness/README.md`):
 - `tools/garelon_check.py`: OK.
 - `tools/test_garelon_check.py`: 39/39 (incluye las mutaciones de Judge.me, de claims legales y píxeles, D32, y de contacto, D33).
-- `tools/garelon_infografia.py`: OK (4 WebP lossless idénticos a la fuente reducida); `tools/test_garelon_infografia.py`: 13/13 (D34).
+- `tools/garelon_infografia.py`: OK (familia `producto-infografia-v2`, 4 WebP lossless idénticos a la fuente reducida); `tools/test_garelon_infografia.py`: 23/23 (D34, D35).
 - Theme Check (`@shopify/theme-check-node` 3.30.1): 0 errores y 9 avisos, los 9 `BASELINE DAWN` (mismos avisos que Dawn 16.0.0 oficial) y 0 `GARELON`.
 - Liquid (Ruby, gema `liquid` 5.14.0) estricto: 0 errores.
-- Batería de render **versionada** (`tests/render-harness`, fases A-Q: routing, packs, carrito, cajón, imágenes y su fuente, Review Widget de Judge.me versionado, «Para regalar» sin ocasiones, sincronización legal, infografía nueva y Contacto, infografía inmutable comparada en el navegador, responsive a 320/360/375/390/430/768/1024/1440, accesibilidad básica): 620/620 en el repo y 578/578 en el ZIP descomprimido (las 42 restantes necesitan git o `tools/`).
+- Batería de render **versionada** (`tests/render-harness`, fases A-Q: routing, packs, carrito, cajón, imágenes y su fuente, Review Widget de Judge.me versionado, «Para regalar» sin ocasiones, sincronización legal, infografía nueva y Contacto, infografía inmutable comparada en el navegador, infografía por un único camino (familia v2, editor, multimedia, sin recorte ni nada encima), responsive a 320/360/375/390/430/768/1024/1440, accesibilidad básica): 638/638 en el repo y 595/595 en el ZIP descomprimido (las 43 restantes necesitan git o `tools/`).
 - En rondas anteriores, la misma validación pasó también desde un clon limpio del repositorio con `npm ci`.
 
 **Limitaciones:** todo es `PROBADO LOCALMENTE` / `ZIP DESCOMPRIMIDO`. No se han probado aquí la vista previa ni la tienda publicada, el checkout, los pagos, DSers, el widget real de Judge.me (ni que el bloque versionado y el App Embed queden activos al subir el tema) ni los metafields reales.
 
 ## 5. Observaciones abiertas (no son cambios hechos)
 
-- El ZIP `GARELON-PULSERA-ROSARIO-CLEAN-v1.12-INFOGRAFIA-LOSSLESS.zip` (commit `f9eee51`, incluye también lo de la v1.6 a la v1.11) está pendiente de que el propietario lo suba a Shopify. Qué versión está publicada: `NO DISPONIBLE` desde aquí.
-- La multimedia del producto en Shopify Admin puede seguir teniendo la foto antigua con la cruz colgante: el tema no la usa (`garelon_media: theme`), pero conviene sustituirla allí también (y en anuncios o feeds).
+- El ZIP `GARELON-PULSERA-ROSARIO-CLEAN-v1.13-INFOGRAFIA-V2.zip` (commit `894ec79`, incluye también lo de la v1.6 a la v1.12) está pendiente de que el propietario lo suba a Shopify. Qué versión está publicada: `NO DISPONIBLE` desde aquí. Un tema subido antes de la v1.13 sirve la infografía con la familia antigua (`producto-infografia-<ancho>.webp`): según el ZIP, la de «Imagen 1.png» (flechas antiguas, hasta la v1.10), la de calidad 90 (v1.11) o la lossless (v1.12).
+- La multimedia del producto en Shopify Admin puede seguir teniendo la foto antigua con la cruz colgante o la infografía antigua: las galerías del tema no la usan (`garelon_media: theme`), pero Shopify sí la usa en el carrito, el checkout, los correos, las vistas previas al compartir (og:image), los datos estructurados, la búsqueda y los feeds o anuncios. Conviene sustituirla allí también. Desde aquí no se puede ver.
 - Contacto (D33): el tema sigue a la página real (`contacto`, `contact` o la política «Información de contacto»). En Shopify Admin: página con handle `contacto` y plantilla `contact`, y un envío de prueba recibido en el email de la tienda. El envío real del correo solo se puede comprobar en Shopify real.
 - Políticas (D32): el propietario pega sus textos en Shopify (Configuración › Políticas; páginas `politica-de-cookies` y, si no hay política nativa, `aviso-legal`). Antes de anuncios: banner de Customer Privacy para España/EEE y sin píxeles hasta configurarlos con consentimiento. Destinos internacionales: `NO DISPONIBLE`; si se verifican, puede volver la 4.ª garantía.
-- Tras subir la v1.12, en `SHOPIFY PREVIEW`:
-  - la infografía igual que `NUEVA IMAGEN 1.png` en la home (galería y «Detalles»), en la ficha y al ampliarla;
+- Tras subir la v1.13, en `SHOPIFY PREVIEW`:
+  - en la home (galería y «Detalles») y en la ficha, «Ampliar» abre una URL con `producto-infografia-v2-1254.webp`; si sale `producto-infografia-1254.webp` (sin `v2`), se está viendo un tema antiguo;
+  - la imagen descargada desde «Ampliar» pasa `python3 tools/garelon_infografia.py --identify` (byte a byte la de 1254);
   - App Embed de Judge.me activo;
   - en la home, producto elegido en el Review Widget (una vez);
   - tarjetas y fotos reales, sin valoración duplicada y nota de origen debajo, en home y ficha.

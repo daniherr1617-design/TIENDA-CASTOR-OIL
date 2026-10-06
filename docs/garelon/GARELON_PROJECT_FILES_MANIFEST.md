@@ -23,11 +23,11 @@ Son los que se suben al proyecto de ChatGPT (`GARELON-PROJECT-DOCS-LATEST.zip`, 
 <!-- manifest:start -->
 | Documento | Versión | Fecha | Commit fuente | Líneas | SHA-256 |
 |---|---|---|---|---|---|
-| `GARELON_PROYECTO_PROMPT_MAESTRO_COMPLETO.md` | 3.7 | 2026-10-05 | `f9eee51` | 388 | `cd228dc455412f084bccc1f78b0fae40a1efc79b68e75e3081fe80f026de5dbe` |
-| `GARELON_MASTER_TEMPLATE.md` | 3.6 | 2026-10-05 | `f9eee51` | 343 | `7f6d51cdcb81a5b48231a54805759843063ccde5f1c25777a870f47af470a432` |
+| `GARELON_PROYECTO_PROMPT_MAESTRO_COMPLETO.md` | 3.8 | 2026-10-06 | `894ec79` | 388 | `96d712f538c451dd8e57c96919f33ad0810a28b149dd1f6a74d81c93fad2d6a7` |
+| `GARELON_MASTER_TEMPLATE.md` | 3.7 | 2026-10-06 | `894ec79` | 343 | `e21177ee19cd4c0b08fba170ddaa1ed22241966d1f5405c1b51c09ed41a5addd` |
 | `GARELON_PRODUCT_BRIEF_TEMPLATE.md` | 3.1 | 2026-10-03 | `974eadd` | 139 | `7e8baf9b60b5b09c1cadf7a710ebd016bcf788bf7a525d738431c5d11defccca` |
 | `GARELON_MIGRATION_PROMPT_TEMPLATE.md` | 3.3 | 2026-10-04 | `e27ae75` | 161 | `fd006bc091fdd94ca723cf3f38306870d1daf6bf956c27eb311f96c438cc0fb5` |
-| `GARELON_PRODUCT_MIGRATION_CHECKLIST.md` | 3.6 | 2026-10-05 | `f9eee51` | 144 | `8e18716c2d7627e50482e361d8cb3ef29c2fce78cb10259e0f95b3c8642a3a41` |
+| `GARELON_PRODUCT_MIGRATION_CHECKLIST.md` | 3.7 | 2026-10-06 | `894ec79` | 145 | `d25c2169e3e6c886242f669c80b0142205ee560d458003559664ded0444ae878` |
 <!-- manifest:end -->
 
 ## 3. Documentos de apoyo (no van en el ZIP del proyecto)
