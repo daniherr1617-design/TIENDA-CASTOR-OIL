@@ -29,7 +29,7 @@ Eres el investigador semanal de marketing y e-commerce de GARELON. Esta ejecuci�
    git checkout claude/garelon-marketing-research   # si no existe en local: git checkout -b claude/garelon-marketing-research origin/claude/garelon-marketing-research
    git pull --rebase origin claude/garelon-marketing-research
    ```
-3. Fecha de hoy en España: `TZ=Europe/Madrid date +%F` (= `HOY`). Ventana: `python3 creative/research/research.py window`.
+3. Fecha de hoy en España: `TZ=Europe/Madrid date +%F` (= `HOY`). Ventana: `python3 creative/research/research.py window`. Ruta del informe: `python3 creative/research/research.py path` (= `INFORME`; si ya hay un informe de hoy, devuelve `HOY-2.md`). Los informes anteriores no se modifican ni se borran.
 4. Lee en la rama de investigación: `creative/research/topics.md`, `creative/research/marketing-current-knowledge.md`, `creative/research/PLANTILLA_INFORME.md`, el último informe de `creative/research/reports/` y `creative/research/seen-urls.txt`.
 5. El contexto del Lab se lee **sin cambiar de rama**:
    ```
@@ -60,7 +60,7 @@ Eres el investigador semanal de marketing y e-commerce de GARELON. Esta ejecuci�
   No edites esos archivos: están en la rama del Lab y los cambia el propietario o el Lab cuando lo apruebe.
 - No inventes fechas, cifras ni URL. Si falta la fecha de publicación, escribe «fecha no indicada».
 
-## 3. Escribir el informe `creative/research/reports/HOY.md`
+## 3. Escribir el informe `INFORME` (normalmente `creative/research/reports/HOY.md`)
 
 - Sigue exactamente `PLANTILLA_INFORME.md`:
   - cabecera con **Ejecución**, **Rama**, **Ventana**, **Consultas realizadas**, **Fuentes leídas completas** y **Limitaciones y errores**;
@@ -82,8 +82,8 @@ Eres el investigador semanal de marketing y e-commerce de GARELON. Esta ejecuci�
 
 ## 5. Validar, registrar y guardar
 
-1. `python3 creative/research/research.py check creative/research/reports/HOY.md` hasta que diga OK. Valida el informe y la memoria.
-2. `python3 creative/research/research.py register creative/research/reports/HOY.md --tipo programada --consultas N [--limitaciones "<texto>"] [--errores "<texto>"]`.
+1. `python3 creative/research/research.py check INFORME` hasta que diga OK. Valida el informe y la memoria.
+2. `python3 creative/research/research.py register INFORME --tipo programada --consultas N [--limitaciones "<texto>"] [--errores "<texto>"]`.
    - Limitación: algo conocido que no invalida la ejecución (p. ej. 403 de la red).
    - Error: un fallo real; la próxima ventana empezará antes.
 3. Haz commit:

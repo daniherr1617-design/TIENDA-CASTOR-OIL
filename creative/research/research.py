@@ -2,6 +2,7 @@
 """Utilidades de la investigación semanal (solo lectura/escritura de archivos locales; sin red).
 
   research.py window                      ventana de búsqueda: desde la última ejecución correcta hasta hoy
+  research.py path                        ruta del informe de hoy (reports/HOY.md, o HOY-2.md… si ya existe)
   research.py check  reports/AAAA-MM-DD.md   valida el informe (formato, evidencia, límites) y la memoria
   research.py preflight                   antes del push: rama de investigación, solo creative/research/, sin merges
   research.py register reports/AAAA-MM-DD.md --tipo programada|manual --consultas N [--limitaciones "..."] [--errores "..."]
@@ -96,6 +97,15 @@ def cmd_window(_a):
     else:
         since = today - dt.timedelta(days=BASELINE_DAYS)
         print(f"{since.isoformat()} {today.isoformat()} (primera ejecución: línea base de {BASELINE_DAYS} días)")
+
+
+def cmd_path(_a):
+    """Ruta libre para el informe de hoy: nunca se sobrescribe un informe anterior."""
+    today = dt.datetime.now(TZ).date().isoformat()
+    path, n = HERE / "reports" / f"{today}.md", 2
+    while path.exists():
+        path, n = HERE / "reports" / f"{today}-{n}.md", n + 1
+    print(path.relative_to(REPO))
 
 
 def split_sections(text: str, level: str = "## ") -> dict[str, str]:
@@ -283,6 +293,12 @@ def cmd_preflight(_a):
         outside = sorted(p for p in changed if p and not p.startswith(ALLOWED_PREFIX))
         if outside:
             errors.append("Cambios fuera de creative/research/: " + ", ".join(outside[:10]))
+        # Los informes publicados no se reescriben ni se borran: cada ejecución añade el suyo.
+        touched = set(git("diff", "--name-only", "--diff-filter=MDR", f"{base}..HEAD", "--", f"{ALLOWED_PREFIX}reports/").split())
+        touched |= {ln[3:] for ln in git("status", "--porcelain", "--", f"{ALLOWED_PREFIX}reports/").splitlines()
+                    if ln[:2].strip() in ("M", "D", "R", "MM", "AM")}
+        if touched:
+            errors.append("Informes anteriores modificados o borrados (usar research.py path): " + ", ".join(sorted(touched)[:5]))
     except subprocess.CalledProcessError as e:  # noqa: PERF203
         errors.append(f"git falló: {' '.join(e.cmd[3:])}: {e.stderr.strip()[:200]}")
     for e in errors:
@@ -339,6 +355,7 @@ def main():
     p = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
     sub = p.add_subparsers(dest="cmd", required=True)
     sub.add_parser("window").set_defaults(fn=cmd_window)
+    sub.add_parser("path").set_defaults(fn=cmd_path)
     s = sub.add_parser("check"); s.add_argument("report"); s.set_defaults(fn=cmd_check)
     sub.add_parser("preflight").set_defaults(fn=cmd_preflight)
     s = sub.add_parser("register"); s.add_argument("report")

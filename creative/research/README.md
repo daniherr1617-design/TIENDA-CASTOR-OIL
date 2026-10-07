@@ -39,12 +39,13 @@ Si la sesión fija se archivara o borrara, hay que crear otra con el repositorio
 | `runs.csv` | Registro de cada ejecución: fecha, tipo, ventana, informe, consultas, fuentes, novedades (🔴/🟠), cuántas están verificadas en fuente original, si se actualizó la memoria, errores y estado |
 | `seen-urls.txt` | Fuentes ya citadas (para no repetir noticias) |
 | `topics.md` | Temas, jerarquía de evidencia, etiquetas de verificación y banco de consultas |
-| `research.py` | Comandos de la investigación: `window` · `check` · `preflight` · `register` (abajo) |
+| `research.py` | Comandos de la investigación: `window` · `path` · `check` · `preflight` · `register` (abajo) |
 
 `research.py`:
 - `window`: desde cuándo buscar.
+- `path`: ruta del informe de hoy. Si ya hay uno (p. ej. una ejecución manual el mismo día), devuelve `AAAA-MM-DD-2.md`: un informe publicado nunca se sobrescribe.
 - `check`: valida el informe y la memoria. Comprueba las etiquetas, que lo «verificado» se haya leído de verdad, el máximo de 8 novedades, 5 recomendaciones y 5 tests, y la rama.
-- `preflight`: comprobaciones antes de cada push.
+- `preflight`: comprobaciones antes de cada push (rama, solo `creative/research/`, sin merges ni force-push, sin modificar ni borrar informes anteriores).
 - `register`: registra la ejecución.
 
 ## Limitación conocida: lectura de fuentes
