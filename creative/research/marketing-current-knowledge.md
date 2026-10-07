@@ -1,6 +1,6 @@
 # Conocimiento de marketing vigente · GARELON
 
-> **Última actualización:** 2026-10-07 (reclasificación con el modelo de evidencia nuevo; contenido de `reports/2026-10-07.md` y de la consulta del Lab sobre copy, hashtags y etiquetas de IA; corrección posterior: ninguna obligación de etiquetado de IA se da por confirmada sin fuente oficial).
+> **Última actualización:** 2026-10-07 (segunda ejecución del día, `reports/2026-10-07-2.md`: K-REG-01 actualizada y K-ECO-03 nueva).
 >
 > Aquí solo queda lo que **sigue siendo útil y vigente** para GARELON. Lo que se queda viejo o se contradice **no convive** con lo nuevo: sale del cuerpo y pasa al «Historial de cambios», que explica qué decía antes, qué dice ahora y por qué.
 
@@ -232,16 +232,24 @@ Un resumen de buscador **nunca** cuenta como verificación. A 2026-10-07 **ningu
 - **Estado:** vigente
 - **Impacto GARELON:** comprobar con un pedido real de AliExpress el coste y el plazo antes de fijar el CPA de break-even.
 
+### [K-ECO-03] Shopify retira los script tags
+- **Tema:** Shopify · seguimiento y apps
+- **Fecha:** sin altas ni cambios desde el 2026-10-01; dejan de ejecutarse el 2027-03-01 · comprobado 2026-10-07
+- **Fuente:** shopify.dev (changelog), zectox.is-a.dev
+- **Evidencia:** Oficial · FUENTE OFICIAL NO ACCESIBLE DIRECTAMENTE
+- **Estado:** vigente
+- **Impacto GARELON:** los píxeles de Meta y TikTok deben ir como web pixel o app embed. Comprobarlo en Shopify Admin antes de lanzar; si alguno usa script tag, dejaría de medir en marzo de 2027.
+
 ## 8. Regulación UE y España
 
 ### [K-REG-01] Ley de IA, art. 50: avisar del contenido generado con IA
 - **Tema:** Regulación UE · IA
-- **Fecha:** aplicable desde el 2026-08-02 · comprobado 2026-10-07
-- **Fuente:** walls.io, solidlabs.com
-- **Evidencia:** Medio especializado (agregador) · FUENTE SECUNDARIA (texto oficial y guía de la Comisión sin leer). No es asesoramiento jurídico
+- **Fecha:** aplicable desde el 2026-08-02; guías finales de la Comisión del 2026-07-20 · comprobado 2026-10-07
+- **Fuente:** digital-strategy.ec.europa.eu (Código de prácticas y guías del art. 50), paulweiss.com, walls.io, solidlabs.com
+- **Evidencia:** Oficial · FUENTE OFICIAL NO ACCESIBLE DIRECTAMENTE (URL oficial identificada, no se ha podido abrir). No es asesoramiento jurídico
 - **Estado:** vigente
-- **Afirmación (según fuentes secundarias; texto oficial sin leer):** el contenido generado o manipulado con IA que parezca auténtico debería avisarse de forma visible o audible. Las etiquetas automáticas de las plataformas no bastarían por sí solas.
-- **Impacto GARELON:** registrar el origen de cada material (ya lo hace `lab ingest --origen`) y decidir el aviso anuncio a anuncio.
+- **Afirmación (según resúmenes; texto oficial sin leer):** el contenido generado o manipulado con IA que parezca auténtico debe avisarse. Las guías (no vinculantes) piden que el aviso sea claro y distinguible, a más tardar en la primera exposición y accesible. El Código de prácticas es voluntario; su sección 2 trata del etiquetado de deepfakes por quien los publica. Las etiquetas automáticas de las plataformas no bastarían por sí solas.
+- **Impacto GARELON:** registrar el origen de cada material (ya lo hace `lab ingest --origen`) y decidir el aviso anuncio a anuncio; con material realista, valorar un aviso visible al inicio del vídeo.
 
 ### [K-REG-02] Digital Fairness Act
 - **Tema:** Regulación UE · dark patterns
@@ -295,3 +303,5 @@ Cuando una entrada cambia de criterio, se explica aquí: qué decía antes, qué
 | 2026-10-07 | K-TT-05 (algoritmo de TikTok en EE. UU. reentrenado por la joint venture desde el 2026-01-22) | `✔` (MEDIO, 9to5mac) | **Retirada** | El ✔ no estaba justificado (fuente secundaria) y no tiene efecto en la UE: no es útil para GARELON |
 | 2026-10-07 | K-TT-03 | «Etiqueta obligatoria…» (se afirmaba como regla) | Obligación según fuentes secundarias, sin verificar en fuente oficial; el Lab la recomienda por prudencia | Corrección del propietario: ninguna obligación legal o de plataforma se da por confirmada sin fuente oficial |
 | 2026-10-07 | Todas | Estado `✔ / ~ / ✘` y evidencia OFICIAL…COMUNIDAD | Tipo de fuente + 5 etiquetas de verificación + estado vigente/dudoso | Ajustes del propietario al sistema semanal |
+| 2026-10-07 | K-REG-01 | Medio especializado · FUENTE SECUNDARIA; «guía de la Comisión sin leer» | Oficial · FUENTE OFICIAL NO ACCESIBLE DIRECTAMENTE; guías finales del 2026-07-20 y Código de prácticas | Se identificó la URL oficial (digital-strategy.ec.europa.eu), aunque no se pudo abrir (`reports/2026-10-07-2.md`) |
+| 2026-10-07 | K-ECO-03 | — | Entrada nueva | Deprecación de los script tags de Shopify (`reports/2026-10-07-2.md`) |

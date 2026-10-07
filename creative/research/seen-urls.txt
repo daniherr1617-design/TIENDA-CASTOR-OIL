@@ -29,3 +29,7 @@ https://www.socialmediatoday.com/news/tiktok-unveils-ai-powered-updates-at-adver
 https://www.solidlabs.com/eu-ai-act-article-50 2026-10-07
 https://www.usefastlane.ai/blog/instagram-reels-algorithm-2026 2026-10-07
 https://www.zentric.digital/insights/meta-ads-attribution-settings-guide 2026-10-07
+https://digital-strategy.ec.europa.eu/en/faqs/code-practice-transparency-ai-generated-content 2026-10-07-2
+https://shopify.dev/changelog/online-store-script-tags-deprecation 2026-10-07-2
+https://www.paulweiss.com/insights/client-memos/eu-finalises-transparency-rules-for-ai-generated-content 2026-10-07-2
+https://zectox.is-a.dev/blog/shopify-scripttag-deprecation-migration-guide-2026 2026-10-07-2
