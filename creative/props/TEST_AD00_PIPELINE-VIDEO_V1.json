@@ -1,0 +1,48 @@
+{
+  "id": "TEST_AD00_PIPELINE-VIDEO_V1",
+  "_nota": "PRUEBA TÉCNICA: clip sintético 16:9 → 9:16 con silencios eliminados por 'lab cuts'. Comprueba recorte, sincronía de audio y zoom.",
+  "platform": "universal",
+  "debugLabel": "PRUEBA TÉCNICA",
+  "segments": [
+    {
+      "type": "video",
+      "src": "01_intermedio/TEST_SINTETICO_01/work.mp4",
+      "from": 0.52,
+      "to": 2.08,
+      "enter": "cut"
+    },
+    {
+      "type": "video",
+      "src": "01_intermedio/TEST_SINTETICO_01/work.mp4",
+      "from": 3.12,
+      "to": 5.88,
+      "enter": "punch"
+    },
+    {
+      "type": "video",
+      "src": "01_intermedio/TEST_SINTETICO_01/work.mp4",
+      "from": 7.42,
+      "to": 9.08,
+      "enter": "punch"
+    }
+  ],
+  "hook": {
+    "text": "Prueba de cortes",
+    "highlight": [
+      "cortes"
+    ],
+    "start": 0,
+    "end": 1.5
+  },
+  "punches": [
+    {
+      "at": 3.0,
+      "scale": 1.1,
+      "duration": 0.4
+    }
+  ],
+  "cta": {
+    "text": "Fin de la prueba",
+    "start": 5.0
+  }
+}

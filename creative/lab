@@ -1,0 +1,6 @@
+#!/usr/bin/env bash
+# Atajo: ./creative/lab <comando> … (usa el entorno Python del laboratorio si existe)
+DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+PY="$DIR/.venv/bin/python"
+[ -x "$PY" ] || PY=python3
+exec "$PY" -I "$DIR/scripts/lab.py" "$@"

@@ -1,0 +1,11 @@
+# Material pesado y regenerable: nunca en git
+media/
+.venv/
+.cache/
+remotion/node_modules/
+remotion/out/
+*.mp4
+*.mov
+*.wav
+*.m4a
+__pycache__/

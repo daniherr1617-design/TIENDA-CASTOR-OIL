@@ -1,0 +1,11 @@
+{
+  "_fuente": "config/settings_data.json del tema (esquemas de color) y owner-preferences.md",
+  "ivory": "#FAF7F2",
+  "cream": "#F3ECDF",
+  "gold": "#86672F",
+  "goldLight": "#E8C77A",
+  "charcoal": "#2A2622",
+  "white": "#FFFFFF",
+  "fontSans": "Inter",
+  "fontSerif": "Lora"
+}

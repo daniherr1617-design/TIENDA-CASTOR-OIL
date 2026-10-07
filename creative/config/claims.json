@@ -1,0 +1,27 @@
+{
+  "_producto": "Pulsera Rosario Virgen María Dorada (Prompt Maestro §13, rama claude/rosary-clean-rebuild)",
+  "_uso": "lab check <props.json> busca estos patrones en todos los textos del anuncio. 'error' bloquea; 'aviso' exige revisión humana.",
+  "confirmados": [
+    "rosario católico", "medalla de la Virgen María", "cruz integrada en la pulsera",
+    "cuentas de rosario tricolor", "acero inoxidable", "acabado dorado pulido",
+    "longitud aprox. 20 cm / 7,87 pulgadas", "ajuste mediante 3 aros"
+  ],
+  "reglas": [
+    {"nivel": "error", "patron": "14\\s*k|chapad[oa] (en )?oro|oro macizo", "motivo": "R3/§13: 14K u oro no confirmado"},
+    {"nivel": "error", "patron": "hipoalerg", "motivo": "§13: hipoalergénico no confirmado"},
+    {"nivel": "error", "patron": "waterproof|impermeable|resistente al agua|sumergible", "motivo": "§13: waterproof no confirmado"},
+    {"nivel": "error", "patron": "no se oxida|no pierde (el )?color|no se decolora|para siempre", "motivo": "§13: durabilidad no confirmada"},
+    {"nivel": "error", "patron": "milagr|suerte|te protege|protecci[oó]n|bendecid|sana|cura", "motivo": "R3/R13: claims espirituales o de efectos"},
+    {"nivel": "error", "patron": "fabricad[oa] por garelon|diseñad[oa] por garelon|cread[oa] por garelon|hecho por garelon", "motivo": "R2: GARELON no fabrica"},
+    {"nivel": "error", "patron": "[uú]ltimas? (\\d+ )?unidades|quedan \\d|solo quedan|personas (lo |la )?(est[aá]n )?(viendo|comprando|mirando)|termina en|solo hoy|[uú]ltim[oa]s? horas|agot[aá]ndose", "motivo": "R9: urgencia o escasez falsa"},
+    {"nivel": "error", "patron": "m[aá]s vendid|best ?seller|viral|n[uú]mero 1|n\\.?º ?1|el mejor|la mejor|el regalo perfecto", "motivo": "R9/copy: superlativo o dato de ventas sin prueba"},
+    {"nivel": "error", "patron": "★+|⭐+|\\d[,.]\\d ?/ ?5|\\d[,.]\\d estrellas|\\+? ?\\d[\\d.]* (clientes|compradores|pedidos|vendid)", "motivo": "R14: valoraciones o recuentos solo con dato real verificado el mismo día"},
+    {"nivel": "error", "patron": "garant[ií]a de 14|sin riesgos?|devoluci[oó]n garantizada|certificad", "motivo": "R10/R11: garantías inventadas"},
+    {"nivel": "error", "patron": "\\btu fe\\b|\\beres creyente|\\beres cat[oó]lic|\\btu religi", "motivo": "Política de Meta: no afirmar ni insinuar atributos personales del usuario (marketing-launch.md)"},
+    {"nivel": "error", "patron": "caja de regalo|estuche|packaging|envuelto para regalo", "motivo": "R1: packaging no confirmado"},
+    {"nivel": "aviso", "patron": "comuni[oó]n|bautiz|confirmaci[oó]n|navidad|reyes|cumplea|boda|d[ií]a de la madre|san valent", "motivo": "D31: ocasiones concretas solo si el propietario las pide para este anuncio"},
+    {"nivel": "aviso", "patron": "\\d+[,.]?\\d* ?€|gratis|env[ií]o", "motivo": "Precio/envío: debe coincidir con Shopify el día de publicación"},
+    {"nivel": "aviso", "patron": "circon|diamant|cristal|piedra", "motivo": "Material de la medalla no confirmado en §13"},
+    {"nivel": "aviso", "patron": "opini[oó]n|reseñ|testimonio|clientes dicen", "motivo": "R14/UGC: solo opiniones reales con permiso; guion no presentado como espontáneo"}
+  ]
+}

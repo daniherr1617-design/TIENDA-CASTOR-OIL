@@ -1,0 +1,178 @@
+{
+  "id": "ROSARIO_AD00_TEST-PRODUCTO_V1",
+  "_nota": "PRUEBA TÉCNICA de la plantilla, no es un anuncio para publicar. Solo imágenes aprobadas (sin la infografía: su icono de regalo sugiere un packaging no confirmado). Subtítulos temporizados a mano (no hay voz). Música y whoosh sintéticos de relleno.",
+  "platform": "universal",
+  "debugLabel": "PRUEBA TÉCNICA",
+  "segments": [
+    {
+      "type": "image",
+      "src": "00_originales/ROSARIO_IMG_MUNECA.png",
+      "duration": 2.6,
+      "zoom": [
+        1.18,
+        1.05
+      ],
+      "focusX": 0.5,
+      "focusY": 0.52
+    },
+    {
+      "type": "image",
+      "src": "00_originales/ROSARIO_IMG_COMPLETA.png",
+      "duration": 1.8,
+      "zoom": [
+        1.0,
+        1.12
+      ],
+      "focusX": 0.68,
+      "focusY": 0.72,
+      "enter": "punch"
+    },
+    {
+      "type": "image",
+      "src": "00_originales/ROSARIO_IMG_COMPLETA.png",
+      "duration": 1.6,
+      "zoom": [
+        1.25,
+        1.3
+      ],
+      "focusX": 0.17,
+      "focusY": 0.56,
+      "enter": "flash"
+    },
+    {
+      "type": "image",
+      "src": "00_originales/ROSARIO_IMG_ORACION.png",
+      "duration": 3.0,
+      "zoom": [
+        1.04,
+        1.14
+      ],
+      "focusX": 0.58,
+      "focusY": 0.6,
+      "enter": "fade"
+    },
+    {
+      "type": "image",
+      "src": "00_originales/ROSARIO_IMG_COMPLETA.png",
+      "duration": 3.0,
+      "fit": "contain",
+      "zoom": [
+        1.0,
+        1.04
+      ],
+      "enter": "slide-up",
+      "band": {
+        "top": 200,
+        "bottom": 900
+      }
+    }
+  ],
+  "hook": {
+    "text": "¿La has visto de cerca?",
+    "highlight": [
+      "cerca?"
+    ],
+    "start": 0,
+    "end": 2.5,
+    "position": "top"
+  },
+  "captions": {
+    "maxWords": 3,
+    "highlight": [
+      "Virgen",
+      "María.",
+      "dorado"
+    ],
+    "words": [
+      {
+        "text": "Medalla",
+        "start": 2.6,
+        "end": 3.1
+      },
+      {
+        "text": "de",
+        "start": 3.1,
+        "end": 3.25
+      },
+      {
+        "text": "la",
+        "start": 3.25,
+        "end": 3.4
+      },
+      {
+        "text": "Virgen",
+        "start": 3.4,
+        "end": 3.85
+      },
+      {
+        "text": "María.",
+        "start": 3.85,
+        "end": 4.4
+      },
+      {
+        "text": "Cruz",
+        "start": 4.4,
+        "end": 4.9
+      },
+      {
+        "text": "integrada.",
+        "start": 4.9,
+        "end": 6.0
+      },
+      {
+        "text": "Acero",
+        "start": 6.0,
+        "end": 6.5
+      },
+      {
+        "text": "inoxidable.",
+        "start": 6.5,
+        "end": 7.4
+      },
+      {
+        "text": "Acabado",
+        "start": 7.4,
+        "end": 7.9
+      },
+      {
+        "text": "dorado",
+        "start": 7.9,
+        "end": 8.4
+      },
+      {
+        "text": "pulido",
+        "start": 8.4,
+        "end": 9.0
+      }
+    ]
+  },
+  "punches": [
+    {
+      "at": 4.4,
+      "scale": 1.08,
+      "duration": 0.4
+    }
+  ],
+  "cta": {
+    "text": "Elige la tuya",
+    "sub": "Pulsera Rosario Virgen María",
+    "start": 9.0
+  },
+  "music": {
+    "src": "00_originales/TEST_MUSICA_RELLENO.wav",
+    "volume": 0.35,
+    "fadeOutSeconds": 1.0
+  },
+  "sfx": [
+    {
+      "src": "00_originales/TEST_SFX_WHOOSH.wav",
+      "at": 2.55,
+      "volume": 0.5
+    },
+    {
+      "src": "00_originales/TEST_SFX_WHOOSH.wav",
+      "at": 8.95,
+      "volume": 0.5
+    }
+  ]
+}
