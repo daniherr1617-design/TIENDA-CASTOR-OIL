@@ -1,6 +1,6 @@
 # Conocimiento de marketing vigente · GARELON
 
-> **Última actualización:** 2026-10-07 (`reports/2026-10-07.md`, línea base). Contiene **solo lo que sigue siendo relevante hoy**. Cuando algo cambia, se reescribe la entrada y lo anterior pasa a «Historial de cambios» con su motivo. Nunca dos entradas contradictorias sin explicación: si las fuentes no coinciden, va a «Contradicciones abiertas».
+> **Última actualización:** 2026-10-07 (`reports/2026-10-07.md`, línea base, y consulta del Lab sobre copy, hashtags y etiquetas de IA). Contiene **solo lo que sigue siendo relevante hoy**. Cuando algo cambia, se reescribe la entrada y lo anterior pasa a «Historial de cambios» con su motivo. Nunca dos entradas contradictorias sin explicación: si las fuentes no coinciden, va a «Contradicciones abiertas».
 >
 > Formato: `[ID] estado · afirmación · evidencia · desde · comprobado · fuente`. Estado: `✔` confirmado en fuente oficial · `~` solo fuentes secundarias · `✘` contradictorio. Evidencia: OFICIAL · ESTUDIO · MEDIO · AGREGADOR · COMUNIDAD.
 
@@ -24,7 +24,9 @@
 - **[K-TT-01] ~** Advertising Week 2026 (2026-10-05): Smart+ Creative Selection, Search Ads con Smart+, Buy Direct y Shopping Assistant (comercio agéntico; socios incluido Shopify), Agentic Leads, cambios en GMV Max y red de apps abierta a EE. UU. Disponibilidad en España: NO DISPONIBLE. · MEDIO · comprobado 2026-10-07 · socialmediatoday.com
   - **Implicación:** en los tests de una variable, aislar o desactivar Creative Selection.
 - **[K-TT-02] ~** Symphony genera vídeo con Dreamina Seedance 2.5 (hasta 30 s, gratis para anunciantes desde agosto de 2026). **No se usa para el producto (R1).** · OFICIAL/MEDIO · comprobado 2026-10-07 · ads.tiktok.com (blog), mediapost.com 2026-04-15
-- **[K-TT-03] ~** Política de TikTok para anuncios: hay que avisar del contenido total o sustancialmente generado por IA. · AGREGADOR · comprobado 2026-10-07 · solidlabs.com
+- **[K-TT-03] ~** Desde el **2026-07-21** las políticas de anuncios de TikTok exigen etiquetar el contenido generado o muy editado con IA: imagen, voz o personas y escenas realistas. Se hace con el interruptor AIGC al subir el anuncio. TikTok también lo detecta por metadatos C2PA, y saltárselo escala hasta la suspensión de la cuenta. · MEDIO/AGREGADOR · comprobado 2026-10-07 · commonthreadco.com, stellarsearch.co.uk
+  - **Implicación:** los vídeos base de Higgsfield llevan etiqueta de IA en TikTok (y aviso en Meta y la UE, K-REG-01). El Lab lo controla con `lab ingest --origen` y `lab check` del pack.
+- **[K-TT-06] ~** La búsqueda de TikTok usa lo que se dice, el texto en pantalla, la descripción y los hashtags. Pesan más las palabras clave en la descripción (primeros ~100 caracteres) y en el vídeo que acumular hashtags. Se recomiendan 3-5 hashtags; 20 o más cuentan como spam. · AGREGADOR · comprobado 2026-10-07 · capcut.com, metadatareactor.com
 - **[K-TT-04] ✔** TikTok Shop está en España desde diciembre de 2024 y se amplió a Austria, Bélgica, Países Bajos y Polonia el 2026-06-15. No es canal para GARELON mientras el envío venga de AliExpress (hipótesis sin verificar sobre los requisitos logísticos). · OFICIAL · comprobado 2026-10-07 · newsroom.tiktok.com
 - **[K-TT-05] ✔** EE. UU.: algoritmo reentrenado por la joint venture con datos de EE. UU. desde el 2026-01-22. Sin efecto conocido en la UE. · MEDIO · comprobado 2026-10-07 · 9to5mac.com 2026-01-23
 
@@ -32,6 +34,8 @@
 
 - **[K-REELS-01] ~** Señales de ranking citadas: tiempo de visualización, **envíos por alcance (DM)** y «me gusta» por alcance. Se añade la tasa de salto (skip rate). Máximo de 5 hashtags. Las cuentas que sobre todo republican contenido ajeno salen de las recomendaciones (desde 2026-04-30). · AGREGADOR · comprobado 2026-10-07 · metricool.com, usefastlane.ai
   - **Implicación:** arranque sin relleno (salto) y contenido que apetezca enviar (regalo genérico, D31). Contenido siempre original.
+- **[K-REELS-02] ~** El límite de 5 hashtags (desde diciembre de 2025) suma descripción y primer comentario. Instagram clasifica cada vez más por lo que ve, oye y lee en el vídeo y la descripción. · MEDIO · comprobado 2026-10-07 · socialmediatoday.com
+- **[K-YT-01] ~** YouTube Shorts: con más de 60 hashtags se ignoran todos; se muestran 3 junto al título; el título admite 100 caracteres. · AGREGADOR · comprobado 2026-10-07 · hashtagtools.io
 
 ## 5. Creatividad y testing
 
@@ -62,6 +66,7 @@
 ## 9. IA y herramientas para el Creative Engine
 
 - **[K-IA-01]** Sin cambios recomendados en Remotion + FFmpeg + faster-whisper. Las suites generativas (Symphony/Seedance, Muse) no son compatibles con R1 cuando tocan el producto. · comprobado 2026-10-07
+- **[K-IA-03] ~** Higgsfield (herramienta de vídeo base del propietario): el uso comercial de lo generado está permitido y es del usuario. A cambio, Higgsfield obtiene licencia para usar lo subido y lo generado para entrenar sus modelos. · OFICIAL (centro de ayuda) · comprobado 2026-10-07 · higgsfield.ai
 - **[K-IA-02] ~** MCP oficiales de anuncios: Meta (beta desde abril de 2026, `mcp.facebook.com/ads`) y TikTok (anunciado en mayo de 2026). Uso previsto: solo lectura de métricas y con aprobación. · MEDIO · comprobado 2026-10-07
 
 ## 10. Contradicciones abiertas
@@ -77,4 +82,5 @@ K-META-01 · K-META-02 · K-TT-01 · K-TT-03 · K-MED-03 · K-ECO-01 (aplicació
 | Fecha | Cambio | Motivo |
 |---|---|---|
 | 2026-10-07 | Creación (línea base) | Primera ejecución del sistema |
+| 2026-10-07 | K-TT-03 reescrito con la política de TikTok del 2026-07-21; nuevos K-TT-06, K-REELS-02, K-YT-01 y K-IA-03 | Consulta del Lab al ampliar su enfoque a copy, hashtags y vídeos base de Higgsfield |
 | 2026-10-07 | Corregido antes de publicar: «Muse Image en Advantage+ desde septiembre» → anunciado el 2026-07-07 y sin disponibilidad confirmada | La verificación contradijo a los agregadores |

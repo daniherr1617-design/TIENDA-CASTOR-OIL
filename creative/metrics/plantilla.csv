@@ -1,1 +1,1 @@
-fecha_inicio,fecha_fin,plataforma,ad_id,campana,conjunto,ventana_atribucion,gasto_eur,impresiones,alcance,frecuencia,reproducciones_2s_3s,thruplay_o_6s,p25,p50,p75,p100,tiempo_medio_s,clics_enlace,visitas_landing,add_to_cart,initiate_checkout,compras,ingresos_eur,notas
+creativo_id,fecha_inicio,fecha_fin,plataforma,ad_id,campana,conjunto,ventana_atribucion,gasto_eur,impresiones,alcance,frecuencia,reproducciones_2s_3s,thruplay_o_6s,p25,p50,p75,p100,tiempo_medio_s,clics_enlace,visitas_landing,add_to_cart,initiate_checkout,compras,ingresos_eur,notas

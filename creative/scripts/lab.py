@@ -1,11 +1,15 @@
 #!/usr/bin/env python3
 """GARELON Creative Lab: herramienta única para el flujo de vídeo.
 
-  lab ingest <archivo> --name NOMBRE   copia el original (solo lectura + SHA-256) y prepara la copia de trabajo
-  lab analyze NOMBRE                   silencios, cambios de plano, sonoridad y hojas de fotogramas
+  lab ingest <archivo> --name NOMBRE --origen ia|real|proveedor|editado-ia [--herramienta X]
+                                       copia el original (solo lectura + SHA-256 + origen) y prepara la copia de trabajo
+  lab analyze NOMBRE                   silencios, cambios de plano, sonoridad, hojas de fotogramas y tira del hook (0-3 s)
+  lab fidelity NOMBRE --ref IMG …      referencias del producto junto a fotogramas del vídeo (revisión de fidelidad)
   lab transcribe NOMBRE                transcripción local con faster-whisper (tiempos por palabra)
   lab cuts NOMBRE                      propone cortes sin silencios y reubica las palabras en la línea final
   lab check props/ID.json              claims prohibidos + coherencia de las props
+  lab pack props/ID.json               crea packs/ID.md (copy, descripciones, hashtags, hipótesis) a partir de las props
+  lab check packs/ID.md [--final]      claims + límites de cada plataforma + hashtags + etiqueta IA
   lab render props/ID.json             check → Remotion → sonoridad/faststart → QA → manifest
   lab qa archivo.mp4                   especificaciones, sonoridad y fotogramas con zonas seguras
 
@@ -36,6 +40,9 @@ CONFIG = ROOT / "config"
 REMOTION = ROOT / "remotion"
 CACHE = ROOT / ".cache" / "whisper"
 MANIFEST = ROOT / "manifest.csv"
+PACKS = ROOT / "packs"
+ORIGINS = {"ia": "generado con IA", "real": "grabación o foto real propia", "proveedor": "material del proveedor",
+           "editado-ia": "real retocado con IA"}
 
 VIDEO_EXT = {".mp4", ".mov", ".m4v", ".mkv", ".webm", ".avi"}
 IMAGE_EXT = {".png", ".jpg", ".jpeg", ".webp"}
@@ -100,6 +107,13 @@ def cmd_ingest(a):
         print(f"+ original: {dst.relative_to(ROOT)} (solo lectura)")
     digest = sha256(dst)
     (ORIG / f"{a.name}{ext}.sha256").write_text(f"{digest}  {dst.name}\n")
+    # Origen del material: decide la etiqueta de IA (TikTok, Meta, Ley de IA art. 50) y el nivel de revisión de fidelidad.
+    meta = {"nombre": a.name, "archivo": dst.name, "origen": a.origen, "herramienta": a.herramienta or "",
+            "ingestado": dt.datetime.now().isoformat(timespec="seconds"), "sha256": digest}
+    (ORIG / f"{a.name}.origen.json").write_text(json.dumps(meta, indent=2, ensure_ascii=False) + "\n")
+    print(f"  origen: {ORIGINS[a.origen]}{' (' + a.herramienta + ')' if a.herramienta else ''}")
+    if a.origen in ("ia", "editado-ia"):
+        print("  ⚠ material con IA: revisar fidelidad (lab fidelity) y activar la etiqueta de IA al publicar")
 
     if ext in IMAGE_EXT or ext in AUDIO_EXT:
         print(f"  sha256 {digest[:16]}…  (imagen/audio: se usa directamente desde 00_originales)")
@@ -168,7 +182,17 @@ def cmd_analyze(a):
           f"tile={cols}x{rows}:padding=4:color=white")
     run(["ffmpeg", "-hide_banner", "-loglevel", "error", "-y", "-i", str(work), "-vf", vf, "-an", "-fps_mode", "vfr",
          str(sheets / "sheet_%02d.jpg")])
-    res["sheets"] = sorted(p.name for p in sheets.glob("*.jpg"))
+    # Tira del hook: 0-3 s cada 0,25 s, donde se decide si el scroll se para.
+    hook_end = min(3.0, dur)
+    # Un fotograma por cada cuarto de segundo (a 30 fps 0,25 s no es un número entero de fotogramas).
+    vf = (rf"trim=end={hook_end},select='isnan(prev_t)+gt(floor((t+0.001)*4)\,floor((prev_t+0.001)*4))',scale=270:-2,"
+          r"drawtext=font='DejaVu Sans':fontsize=22:fontcolor=white:box=1:boxcolor=black@0.6:x=6:y=6:"
+          r"text='%{pts\:hms}',"
+          "tile=6x2:padding=4:color=white")
+    run(["ffmpeg", "-hide_banner", "-loglevel", "error", "-y", "-i", str(work), "-vf", vf, "-an", "-fps_mode", "vfr",
+         "-frames:v", "1", str(sheets / "hook_0-3s.jpg")])
+    res["sheets"] = sorted(p.name for p in sheets.glob("sheet_*.jpg"))
+    res["hook_sheet"] = "hook_0-3s.jpg"
     res["sheet_seconds_per_frame"] = step
     (d / "analysis.json").write_text(json.dumps(res, indent=2, ensure_ascii=False))
 
@@ -178,7 +202,7 @@ def cmd_analyze(a):
         if "loudness" in res:
             print(f"  sonoridad: {res['loudness']['integrated_lufs']} LUFS, pico {res['loudness']['true_peak_db']} dBTP")
     print(f"  cambios de plano: {res['scene_changes'] or 'ninguno'}")
-    print(f"  hojas: {len(res['sheets'])} en {sheets.relative_to(ROOT)} (1 fotograma cada {step}s)")
+    print(f"  hojas: {len(res['sheets'])} en {sheets.relative_to(ROOT)} (1 fotograma cada {step}s) + hook_0-3s.jpg")
 
 
 # ---------------------------------------------------------------- transcribe
@@ -340,7 +364,14 @@ def check_props(path: Path) -> tuple[list[str], list[str]]:
 
 
 def cmd_check(a):
-    errors, warns = check_props(Path(a.props))
+    path = Path(a.props)
+    info = []
+    if path.suffix == ".md":
+        errors, warns, info = check_pack(path, a.final)
+    else:
+        errors, warns = check_props(path)
+    for i in info:
+        print(f"  INFO   {i}")
     for w in warns:
         print(f"  AVISO  {w}")
     for e in errors:
@@ -348,6 +379,281 @@ def cmd_check(a):
     print("OK" if not errors else f"{len(errors)} errores")
     if errors:
         sys.exit(1)
+
+
+# ---------------------------------------------------------------- fidelity
+def cmd_fidelity(a):
+    """Referencias aprobadas del producto arriba y fotogramas del vídeo abajo, en una sola imagen.
+
+    Sirve para avisar si un vídeo (sobre todo generado con IA) cambia forma, piezas, colores o materiales.
+    """
+    d = workdir(a.name)
+    work = d / "work.mp4"
+    dur = duration(work)
+    refs = []
+    for r in a.ref:
+        f = Path(r)
+        if not f.exists():
+            hits = sorted(ORIG.glob(f"{r}.*"))
+            hits = [h for h in hits if h.suffix.lower() in IMAGE_EXT]
+            f = hits[0] if hits else f
+        if not f.exists():
+            sys.exit(f"No encuentro la referencia {r} (ruta o nombre en 00_originales)")
+        refs.append(f)
+    refs = refs[:4]
+    n = a.frames
+    times = [round(dur * (i + 0.5) / n, 2) for i in range(n)]
+    cell = "scale=270:480:force_original_aspect_ratio=decrease,pad=270:480:(ow-iw)/2:(oh-ih)/2:color=white"
+    label = "drawtext=font='DejaVu Sans':fontsize=24:fontcolor=white:box=1:boxcolor=black@0.7:x=6:y=6:text="
+    inputs, filt = [], []
+    for i, f in enumerate(refs):
+        inputs += ["-i", str(f)]
+        filt.append(f"[{i}:v]{cell},{label}'REF {i + 1}'[r{i}]")
+    for j, tt in enumerate(times):
+        k = len(refs) + j
+        inputs += ["-ss", str(tt), "-i", str(work)]
+        filt.append(f"[{k}:v]trim=end_frame=1,{cell},{label}'{tt}s'[v{j}]")
+    row = "".join(f"[r{i}]" for i in range(len(refs)))
+    filt.append(f"{row}hstack=inputs={len(refs)},pad=1080:480:0:0:color=0x2A2622[refs]" if len(refs) > 1
+                else "[r0]pad=1080:480:0:0:color=0x2A2622[refs]")
+    rows = []
+    for rix in range(0, n, 4):
+        ids = list(range(rix, min(rix + 4, n)))
+        name = f"fr{rix}"
+        src = "".join(f"[v{j}]" for j in ids)
+        filt.append(f"{src}hstack=inputs={len(ids)},pad=1080:480:0:0:color=white[{name}]" if len(ids) > 1
+                    else f"{src}pad=1080:480:0:0:color=white[{name}]")
+        rows.append(f"[{name}]")
+    filt.append(f"[refs]{''.join(rows)}vstack=inputs={1 + len(rows)}")
+    out = d / "sheets" / "fidelidad.jpg"
+    out.parent.mkdir(exist_ok=True)
+    run(["ffmpeg", "-hide_banner", "-loglevel", "error", "-y", *inputs, "-filter_complex", ";".join(filt),
+         "-frames:v", "1", str(out)])
+    print(f"{a.name}: {len(refs)} referencias + {n} fotogramas ({', '.join(f'{x}s' for x in times)})")
+    print(f"  → {out.relative_to(ROOT)}: comparar forma, piezas, colores, medalla, cruz, cierre y escala")
+
+
+# ---------------------------------------------------------------- pack
+PACK_TEMPLATE = """# {id}
+
+| Campo | Valor |
+|---|---|
+| Vídeo | `media/03_finales/{id}.mp4` |
+| Ángulo | PENDIENTE |
+| Variable que probamos | {variable} |
+| Control | PENDIENTE (ID del anuncio con el que se compara) |
+| Hipótesis | PENDIENTE (qué métrica debería mejorar y por qué) |
+| Métrica de decisión | PENDIENTE (hook rate · hold · CTR de enlace · CVR…) |
+| Plataformas | PENDIENTE (TikTok orgánico · TikTok Ads · Instagram Reels · Meta Ads · YouTube Shorts) |
+| Origen del material | {origen} |
+| Etiqueta IA | {etiqueta} |
+| Estado | borrador |
+
+## Hook
+
+{hook}
+
+## Texto del vídeo
+
+{texto}
+
+## CTA
+
+{cta}
+
+## TikTok orgánico
+
+**Descripción:** PENDIENTE (palabra clave que buscaría el cliente en los primeros 100 caracteres)
+**Hashtags:** PENDIENTE (3-5)
+
+## TikTok Ads
+
+**Texto del anuncio:** PENDIENTE (máx. 100 caracteres; en Spark Ads se usa la descripción del post orgánico)
+
+## Instagram Reels
+
+**Descripción:** PENDIENTE (lo importante en los primeros ~125 caracteres)
+**Hashtags:** PENDIENTE (máx. 5 entre descripción y primer comentario)
+
+## Meta Ads
+
+**Texto principal:** PENDIENTE (~125 caracteres visibles en el feed; en Reels se ve menos)
+**Título:** PENDIENTE (≤27 recomendado, 40 máx.)
+**Descripción:** PENDIENTE (≤27 recomendado, 30 máx.)
+
+## YouTube Shorts
+
+**Título:** PENDIENTE (máx. 100)
+**Descripción:** PENDIENTE
+**Hashtags:** PENDIENTE (3-5; se muestran 3 junto al título)
+
+## Comentario fijado
+
+PENDIENTE
+
+## Respuestas a comentarios
+
+PENDIENTE (preguntas previsibles → respuesta fiel a lo confirmado; lo no confirmado se responde «lo comprobamos y te decimos», sin inventar)
+
+## Variantes de descripción
+
+PENDIENTE (cada variante cambia una sola cosa: ángulo, primera frase o CTA)
+
+## Hashtags: por qué
+
+PENDIENTE (los principales, una línea cada uno: nicho · producto · intención · tendencia · amplio)
+
+## Antes de publicar
+
+- [ ] Precio y envío del copy = Shopify el día de publicación
+- [ ] Etiqueta IA: {etiqueta_corta}
+- [ ] Mejoras automáticas con IA desactivadas (Advantage+ Creative en Meta, Smart+ Creative en TikTok) y vista previa revisada en cada ubicación
+- [ ] Nombre del anuncio en la plataforma = `{id}`
+- [ ] Música de la biblioteca comercial de la plataforma o con licencia
+- [ ] Ninguna persona generada con IA presentada como cliente real ni dando testimonio
+
+## Notas internas
+
+(No se revisa con `lab check`.)
+"""
+
+
+def origin_of(src: str) -> dict | None:
+    parts = Path(src).parts
+    name = parts[1] if parts[0] == "01_intermedio" else Path(src).stem
+    f = ORIG / f"{name}.origen.json"
+    return json.loads(f.read_text()) if f.exists() else {"nombre": name, "origen": None}
+
+
+def cmd_pack(a):
+    path = Path(a.props).resolve()
+    props = json.loads(path.read_text())
+    ad_id = props["id"]
+    PACKS.mkdir(exist_ok=True)
+    out = PACKS / f"{ad_id}.md"
+    if out.exists() and not a.force:
+        sys.exit(f"{out.relative_to(ROOT)} ya existe (usa --force para regenerarlo desde las props)")
+    srcs = sorted({s["src"] for s in props["segments"]})
+    origins = [origin_of(s) for s in srcs]
+    lines, uses_ai, unknown = [], False, False
+    for o in origins:
+        if o["origen"] is None:
+            unknown = True
+            lines.append(f"{o['nombre']}: NO REGISTRADO")
+        else:
+            uses_ai |= o["origen"] in ("ia", "editado-ia")
+            lines.append(f"{o['nombre']}: {o['origen']}{' (' + o['herramienta'] + ')' if o.get('herramienta') else ''}")
+    if uses_ai:
+        etiqueta = "SÍ (material generado o retocado con IA)"
+        corta = "activar «contenido generado por IA» en TikTok; revisar «Información de IA» en Meta"
+    elif unknown:
+        etiqueta = "PENDIENTE (hay material sin origen registrado)"
+        corta = "decidir cuando se conozca el origen de todo el material"
+    else:
+        etiqueta = "NO (sin material generado con IA)"
+        corta = "no aplica"
+    m = re.match(r"^[A-Z0-9]+_AD\d+_([A-Z0-9]+)-([A-Z0-9-]+)_V\d+$", ad_id)
+    variable = f"{m.group(1).capitalize()} ({m.group(2).lower()})" if m else "PENDIENTE"
+    hook = props.get("hook", {}).get("text") or "PENDIENTE (hook visual: describir el primer plano)"
+    texts = [o["text"] for o in props.get("overlays", [])]
+    words = props.get("captions", {}).get("words", [])
+    if words:
+        texts.append("Subtítulos: " + " ".join(w["text"] for w in words))
+    cta = props.get("cta")
+    out.write_text(PACK_TEMPLATE.format(
+        id=ad_id, variable=variable, origen=" · ".join(lines), etiqueta=etiqueta, etiqueta_corta=corta, hook=hook,
+        texto="\n".join(f"- {x}" for x in texts) or "PENDIENTE",
+        cta=f"{cta['text']}" + (f" · {cta['sub']}" if cta.get("sub") else "") if cta else "PENDIENTE"))
+    print(f"+ {out.relative_to(ROOT)}  (origen: {' · '.join(lines)})")
+    print("  Rellenar los PENDIENTE y validar con: lab check " + str(out.relative_to(ROOT)) + " --final")
+
+
+INTERNAL_SECTIONS = ("Hashtags: por qué", "Antes de publicar", "Notas internas")
+HASHTAG_RE = re.compile(r"#[^\s#.,;:!?¿¡()]+")
+
+
+def check_pack(path: Path, final: bool) -> tuple[list[str], list[str], list[str]]:
+    text = path.read_text()
+    rules = json.loads((CONFIG / "claims.json").read_text())["reglas"]
+    plat = json.loads((CONFIG / "platforms.json").read_text())
+    errors, warns, info = [], [], []
+    parts = re.split(r"^## ", text, flags=re.M)
+    head, secs = parts[0], {p.splitlines()[0].strip(): p.split("\n", 1)[1] if "\n" in p else "" for p in parts[1:]}
+    table = {k.strip(): v.strip() for k, v in re.findall(r"^\|\s*([^|]+?)\s*\|\s*(.*?)\s*\|\s*$", head, flags=re.M)}
+
+    if not head.startswith(f"# {path.stem}"):
+        errors.append(f"El título debe ser «# {path.stem}» (= nombre del archivo y del anuncio)")
+    for k in ("Vídeo", "Ángulo", "Variable que probamos", "Hipótesis", "Origen del material", "Etiqueta IA"):
+        if k not in table:
+            errors.append(f"Falta la fila «{k}» en la tabla")
+    if re.search(r"\b(ia|editado-ia)\b", table.get("Origen del material", ""), re.I) and \
+            not table.get("Etiqueta IA", "").upper().startswith(("SÍ", "SI")):
+        errors.append("Hay material con IA y «Etiqueta IA» no es SÍ (TikTok y Meta lo exigen; Ley de IA art. 50)")
+    if "NO REGISTRADO" in table.get("Origen del material", ""):
+        (errors if final else warns).append("Origen del material NO REGISTRADO: no se puede decidir la etiqueta de IA")
+    if not (FINAL / f"{path.stem}.mp4").exists():
+        warns.append(f"No está media/03_finales/{path.stem}.mp4 en este contenedor (normal si es otra sesión)")
+
+    pend = [k for k, v in table.items() if "PENDIENTE" in v] + \
+           [s for s, body in secs.items() if s != "Notas internas" and "PENDIENTE" in body]
+    if pend:
+        (errors if final else warns).append(f"Por completar: {', '.join(pend)}")
+
+    for name, body in secs.items():
+        if name in INTERNAL_SECTIONS:
+            continue
+        for r in rules:
+            for m in re.finditer(r["patron"], body, re.I):
+                msg = f"{name}: «{m.group(0)}» → {r['motivo']}"
+                (errors if r["nivel"] == "error" else warns).append(msg)
+
+    why = secs.get("Hashtags: por qué", "").lower()
+    for name, spec in plat["secciones"].items():
+        body = secs.get(name)
+        if body is None:
+            continue
+        fields = {}
+        for m in re.finditer(r"^\*\*(.+?):\*\*[ \t]*(.*?)(?=^\*\*.+?:\*\*|\Z)", body, flags=re.M | re.S):
+            fields[m.group(1).strip()] = m.group(2).strip()
+        for fname, lim in spec.get("campos", {}).items():
+            val = fields.get(fname)
+            if val is None:
+                errors.append(f"{name}: falta el campo **{fname}:**")
+                continue
+            if "PENDIENTE" in val:
+                continue
+            full = val + (" " + fields["Hashtags"] if fname == spec.get("hashtags_en") and fields.get("Hashtags") else "")
+            n = len(full)
+            if lim.get("max") and n > lim["max"]:
+                errors.append(f"{name} · {fname}: {n} caracteres (máx. {lim['max']})")
+            elif lim.get("recomendado") and n > lim["recomendado"]:
+                warns.append(f"{name} · {fname}: {n} caracteres (recomendado ≤{lim['recomendado']}; se puede cortar)")
+            if lim.get("visible") and n > lim["visible"]:
+                info.append(f"{name} · {fname}: se ven ~{lim['visible']} de {n} caracteres antes de «más»")
+        hs_spec = spec.get("hashtags")
+        tags = [h for v in fields.values() if "PENDIENTE" not in v for h in HASHTAG_RE.findall(v)]
+        raw = fields.get("Hashtags", "")
+        if raw and "PENDIENTE" not in raw:
+            bad = [w for w in raw.split() if not w.startswith("#")]
+            if bad:
+                errors.append(f"{name}: en **Hashtags:** solo hashtags sin espacios (sobra: {' '.join(bad[:5])})")
+        if not hs_spec:
+            if tags:
+                warns.append(f"{name}: lleva hashtags ({' '.join(tags[:5])}); en este formato no aportan")
+            continue
+        low = [h.lower() for h in tags]
+        if len(set(low)) < len(low):
+            warns.append(f"{name}: hashtags repetidos")
+        if hs_spec.get("max") and len(tags) > hs_spec["max"]:
+            errors.append(f"{name}: {len(tags)} hashtags (máx. {hs_spec['max']}: {hs_spec.get('motivo', '')})")
+        lo, hi = hs_spec.get("recomendado", [0, 99])
+        if tags and not lo <= len(tags) <= hi and not (hs_spec.get("max") and len(tags) > hs_spec["max"]):
+            warns.append(f"{name}: {len(tags)} hashtags (recomendado {lo}-{hi})")
+        for h in tags:
+            if h[1:].lower() in plat["hashtags_genericos"] and h.lower() not in why:
+                warns.append(f"{name}: {h} es genérico; úsalo solo si «Hashtags: por qué» explica qué aporta")
+    return errors, warns, info
+
 
 
 # ---------------------------------------------------------------- render
@@ -465,7 +771,9 @@ def main():
     p = argparse.ArgumentParser(prog="lab", description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
     sub = p.add_subparsers(dest="cmd", required=True)
 
-    s = sub.add_parser("ingest"); s.add_argument("file"); s.add_argument("--name", required=True); s.set_defaults(fn=cmd_ingest)
+    s = sub.add_parser("ingest"); s.add_argument("file"); s.add_argument("--name", required=True)
+    s.add_argument("--origen", required=True, choices=list(ORIGINS), help="ia · real · proveedor · editado-ia")
+    s.add_argument("--herramienta", help="p. ej. Higgsfield (si es IA)"); s.set_defaults(fn=cmd_ingest)
     s = sub.add_parser("analyze"); s.add_argument("name")
     s.add_argument("--noise", type=float, default=-35, help="umbral de silencio en dB (def. -35)")
     s.add_argument("--min-silence", type=float, default=0.35, help="silencio mínimo en s (def. 0.35)")
@@ -479,7 +787,14 @@ def main():
     s.add_argument("--max-gap", type=float, default=0.3, help="pausa máxima que se conserva (s)")
     s.add_argument("--pad", type=float, default=0.08, help="margen alrededor de cada tramo (s)")
     s.set_defaults(fn=cmd_cuts)
-    s = sub.add_parser("check"); s.add_argument("props"); s.set_defaults(fn=cmd_check)
+    s = sub.add_parser("fidelity"); s.add_argument("name")
+    s.add_argument("--ref", nargs="+", required=True, help="imágenes aprobadas del producto (ruta o nombre en 00_originales)")
+    s.add_argument("--frames", type=int, default=8); s.set_defaults(fn=cmd_fidelity)
+    s = sub.add_parser("check"); s.add_argument("props", help="props/ID.json o packs/ID.md")
+    s.add_argument("--final", action="store_true", help="pack: los PENDIENTE pasan a ser errores")
+    s.set_defaults(fn=cmd_check)
+    s = sub.add_parser("pack"); s.add_argument("props"); s.add_argument("--force", action="store_true")
+    s.set_defaults(fn=cmd_pack)
     s = sub.add_parser("render"); s.add_argument("props"); s.add_argument("--concurrency", type=int)
     s.set_defaults(fn=cmd_render)
     s = sub.add_parser("qa"); s.add_argument("file"); s.add_argument("--platform", default="universal")

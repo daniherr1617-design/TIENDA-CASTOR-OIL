@@ -8,7 +8,7 @@ Nunca: lanzar, pausar ni editar campañas; gastar dinero ni cambiar presupuestos
 
 ## 1. Preparación
 
-1. Si el repositorio no está en el contenedor, añádelo (`add_repo` daniherr1617-design/TIENDA-CASTOR-OIL con `access: "push"`) y clónalo con el comando que devuelva.
+1. La Routine se ejecuta en una sesión fija que ya tiene el repositorio con permiso de push. Solo si no estuviera en el contenedor: `add_repo` daniherr1617-design/TIENDA-CASTOR-OIL con `access: "push"` y clonar con el comando que devuelva. Lo que haya en la conversación de semanas anteriores es contexto; lo vigente está en los archivos recién descargados.
 2. `git fetch origin claude/festive-clarke-jub9rm && git checkout claude/festive-clarke-jub9rm && git pull --rebase origin claude/festive-clarke-jub9rm`. El propietario autoriza expresamente commits y push **a esta rama y solo en `creative/research/`**.
 3. Fecha de hoy en España: `TZ=Europe/Madrid date +%F` (= `HOY`). Ventana: `python3 creative/research/research.py window`.
 4. Lee: `creative/research/topics.md`, `creative/research/marketing-current-knowledge.md`, el último informe de `creative/research/reports/` y `creative/research/seen-urls.txt`. Para el contexto de GARELON: `creative/CLAUDE.md`.
@@ -18,6 +18,7 @@ Nunca: lanzar, pausar ni editar campañas; gastar dinero ni cambiar presupuestos
 - Usa `WebSearch` (en `standard` por defecto; `extended` para novedades muy recientes o difíciles de encontrar). Lanza las búsquedas en paralelo por bloques: TikTok · Meta · Reels · creatividad y testing · e-commerce, Shopify y logística · IA y automatización · medición · regulación UE/España. Incluye mes y año en las consultas. Mínimo unas 15 búsquedas; las que hagan falta para cubrir todos los temas de `topics.md`.
 - **Solo es novedad lo publicado dentro de la ventana**, o una actualización real de algo ya conocido. Lo que ya esté en `marketing-current-knowledge.md` o en `seen-urls.txt` sin cambios no se repite.
 - Verifica cada 🔴 y 🟠 con una segunda búsqueda dirigida a la fuente oficial (TikTok o Meta). Intenta `WebFetch` sobre la URL oficial; si la red lo bloquea (403), anótalo y deja el estado `~`.
+- Revisa también si han cambiado los límites de copy y hashtags de `creative/config/platforms.json` y `creative/COPY.md`. **No los edites**: este encargo solo escribe en `creative/research/`. Si cambian, recomiéndalo en el informe con la fuente.
 - Jerarquía de fuentes y etiquetas: `topics.md`. Las cifras de blogs agregadores son «no verificadas». Reddit y comunidades solo como evidencia práctica.
 - No inventes fechas, cifras ni URL. Si falta la fecha de publicación, escribe «fecha no indicada».
 
@@ -43,4 +44,4 @@ Si la semana no trae nada relevante, dilo en la sección 1 y explica qué se bus
 
 ## 6. Mensaje final de la sesión
 
-En español, breve: ventana, número de novedades por color, los 🔴 en una línea cada uno, las recomendaciones, la ruta del informe y el commit. Sin ejecutar ninguna acción sobre campañas, tienda ni dinero.
+En español, breve: ventana, número de novedades por color, los 🔴 en una línea cada uno, las recomendaciones, la ruta del informe y el commit. Si hay herramienta de notificación push, envía ese resumen en una o dos líneas. Sin ejecutar ninguna acción sobre campañas, tienda ni dinero.

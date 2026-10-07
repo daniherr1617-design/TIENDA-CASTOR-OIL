@@ -1,0 +1,31 @@
+{
+  "_nota": "Límites de texto y hashtags que usa `lab check packs/ID.md`. Comprobado el 2026-10-07 con fuentes secundarias (ver COPY.md); la investigación semanal los revisa. max = límite duro (error) · recomendado = se puede cortar (aviso) · visible = caracteres antes de «más» (info).",
+  "secciones": {
+    "TikTok orgánico": {
+      "campos": {"Descripción": {"max": 4000, "visible": 100}},
+      "hashtags_en": "Descripción",
+      "hashtags": {"recomendado": [3, 5]}
+    },
+    "TikTok Ads": {
+      "campos": {"Texto del anuncio": {"max": 100}}
+    },
+    "Instagram Reels": {
+      "campos": {"Descripción": {"max": 2200, "visible": 125}},
+      "hashtags_en": "Descripción",
+      "hashtags": {"max": 5, "recomendado": [3, 5], "motivo": "límite de Instagram desde diciembre de 2025, descripción y primer comentario juntos"}
+    },
+    "Meta Ads": {
+      "campos": {
+        "Texto principal": {"visible": 125},
+        "Título": {"max": 40, "recomendado": 27},
+        "Descripción": {"max": 30, "recomendado": 27}
+      }
+    },
+    "YouTube Shorts": {
+      "campos": {"Título": {"max": 100}, "Descripción": {"max": 5000, "visible": 157}},
+      "hashtags_en": "Descripción",
+      "hashtags": {"max": 60, "recomendado": [3, 5], "motivo": "con más de 60, YouTube ignora todos"}
+    }
+  },
+  "hashtags_genericos": ["fyp", "foryou", "foryoupage", "fy", "parati", "paratii", "xyzbca", "viral", "viralvideo", "trending", "tendencia", "tendencias", "explore", "explorepage", "explorar", "reels", "reelsinstagram", "tiktok", "instagood", "shorts", "youtubeshorts"]
+}

@@ -1,6 +1,6 @@
 # GARELON Creative & Ads Lab
 
-Sistema mínimo para convertir material real del producto en anuncios verticales (TikTok, Reels, Meta, Shorts) razonados, reconstruibles y medibles. **No forma parte del tema Shopify** (`.shopifyignore` excluye esta carpeta y `tools/build_zip.py` solo empaqueta las carpetas del tema).
+Sistema mínimo para convertir los vídeos base del producto (grabados o generados con IA por el propietario, p. ej. con Higgsfield) en anuncios verticales (TikTok, Reels, Meta, Shorts) razonados, reconstruibles y medibles, cada uno con su pack de publicación (copy, descripciones, hashtags e hipótesis). **No forma parte del tema Shopify** (`.shopifyignore` excluye esta carpeta y `tools/build_zip.py` solo empaqueta las carpetas del tema).
 
 ## Instalación (cada sesión cloud nueva)
 
@@ -27,23 +27,29 @@ Sin ellos, todo lo demás funciona; solo `lab transcribe` falla con un 403.
 ## Flujo
 
 ```
-original ─ lab ingest ─▶ 00_originales (solo lectura + SHA-256) y 01_intermedio/<NOMBRE>/work.mp4 (30 fps)
-          lab analyze ─▶ silencios, cambios de plano, sonoridad, hojas de fotogramas cada 0,5 s
+original ─ lab ingest ─▶ 00_originales (solo lectura + SHA-256 + origen: ia/real/proveedor) y 01_intermedio/<NOMBRE>/work.mp4 (30 fps)
+          lab analyze ─▶ silencios, cambios de plano, sonoridad, hojas cada 0,5 s y tira del hook (0-3 s cada 0,25 s)
+         lab fidelity ─▶ referencias aprobadas del producto junto a fotogramas del vídeo (¿la IA cambió algo?)
        lab transcribe ─▶ transcript.json (palabras con tiempo) + .srt   [faster-whisper local]
              lab cuts ─▶ cuts.json: tramos sin silencios + palabras reubicadas en la línea final
    props/<ID>.json     ◀ decisión creativa: segmentos, hook, subtítulos, overlays, zooms, CTA, sonido
             lab check ─▶ claims prohibidos (config/claims.json) + coherencia
            lab render ─▶ Remotion → 02_renders → sonoridad −14 LUFS + faststart → 03_finales + QA + manifest.csv
+             lab pack ─▶ packs/<ID>.md: hook, textos, CTA, copy por plataforma, hashtags, comentarios, hipótesis
+  lab check pack --final ─▶ claims + límites de cada plataforma + hashtags + etiqueta de IA
 ```
 
 | Comando | Qué hace |
 |---|---|
-| `creative/lab ingest <archivo> --name ROSARIO_ORIGINAL_01` | Copia el original sin tocarlo, lo protege y prepara la copia de trabajo. Nunca sobrescribe un original con otro contenido |
-| `creative/lab analyze ROSARIO_ORIGINAL_01` | Primer sonido, silencios, cambios de plano, sonoridad y hojas de fotogramas con tiempo real |
+| `creative/lab ingest <archivo> --name ROSARIO_HIGGS_01 --origen ia --herramienta Higgsfield` | Copia el original sin tocarlo, lo protege, registra su origen (`ia` · `real` · `proveedor` · `editado-ia`) y prepara la copia de trabajo. Nunca sobrescribe un original con otro contenido |
+| `creative/lab analyze ROSARIO_HIGGS_01` | Primer sonido, silencios, cambios de plano, sonoridad, hojas de fotogramas con tiempo real y tira del hook |
+| `creative/lab fidelity ROSARIO_HIGGS_01 --ref ROSARIO_IMG_COMPLETA …` | Hoja de fidelidad: hasta 4 referencias aprobadas encima de 8 fotogramas del vídeo |
 | `creative/lab transcribe ROSARIO_ORIGINAL_01 [--model small]` | Transcripción local en español con tiempos por palabra |
 | `creative/lab cuts ROSARIO_ORIGINAL_01 [--max-gap 0.3]` | Propone cortes sin silencios (con transcripción o, si no hay, con `silencedetect`) |
 | `creative/lab check props/<ID>.json` | Bloquea claims prohibidos; avisa de precio, envío y ocasiones |
 | `creative/lab render props/<ID>.json` | Check → render → normalización → QA → manifest |
+| `creative/lab pack props/<ID>.json` | Crea `packs/<ID>.md` con lo que ya dicen las props (hook, textos, CTA, origen, etiqueta de IA) y el resto PENDIENTE |
+| `creative/lab check packs/<ID>.md [--final]` | Claims, límites de caracteres y hashtags de cada plataforma, genéricos sin justificar, etiqueta de IA. Con `--final`, lo pendiente es error |
 | `creative/lab qa <archivo.mp4>` | Especificaciones, sonoridad y fotogramas con la zona segura dibujada |
 
 Para previsualizar en local (con navegador): `cd creative/remotion && npm run studio`.
@@ -56,11 +62,15 @@ creative/
   config/brand.json        colores y fuentes del tema (marfil, dorado, carbón · Inter + Lora)
   config/safe-zones.json   márgenes por plataforma (meta · tiktok · universal)
   config/claims.json       claims confirmados y patrones prohibidos del producto actual
+  config/platforms.json    límites de texto y hashtags por plataforma (los aplica lab check)
   props/<ID>.json          receta completa de cada anuncio (versionada: permite reconstruirlo)
+  packs/<ID>.md            pack de publicación: copy, descripciones, hashtags, comentarios, ángulo, variable, hipótesis
+  COPY.md                  guía de copy, hashtags y etiqueta de IA por plataforma
   remotion/                plantilla única AdVertical (1080×1920, 30 fps)
   scripts/lab.py           herramienta de línea de comandos
   manifest.csv             registro de cada render final: id, SHA-256, duración, props, commit, fuentes
-  METRICAS.md · metrics/   análisis de campañas por anuncio
+  METRICAS.md · metrics/   análisis de campañas por anuncio (la columna creativo_id une métricas, pack y vídeo)
+  research/                investigación semanal automática y memoria de conocimiento vigente
   media/                   (fuera de git) 00_originales · 01_intermedio · 02_renders · 03_finales
 ```
 
@@ -68,9 +78,9 @@ creative/
 
 `<PRODUCTO>_AD<nn>_<VARIABLE>-<VALOR>_V<n>`. Ejemplos: `ROSARIO_AD01_HOOK-CURIOSIDAD_V1`, `ROSARIO_AD01_HOOK-DETALLE_V1`, `ROSARIO_AD01_CTA-ELIGE_V2`, `ROSARIO_AD02_UGC_V1`.
 
-- El **mismo ID** es el nombre del archivo de props, del MP4 final y **del anuncio en Meta o TikTok**: así las métricas se cruzan sin ambigüedad.
+- El **mismo ID** es el nombre del archivo de props, del pack, del MP4 final y **del anuncio en Meta o TikTok**: así las métricas se cruzan sin ambigüedad.
 - Dentro de un `AD<nn>` cada variante cambia **una sola variable** respecto al control `V1`; la variable va en el nombre.
-- Originales: `<PRODUCTO>_ORIGINAL_<nn>`, imágenes `<PRODUCTO>_IMG_<DESCRIPCIÓN>`.
+- Originales: `<PRODUCTO>_ORIGINAL_<nn>` (grabación), `<PRODUCTO>_HIGGS_<nn>` (Higgsfield), imágenes `<PRODUCTO>_IMG_<DESCRIPCIÓN>`.
 
 ## Plantilla AdVertical (props)
 
@@ -100,4 +110,5 @@ Producto fiel (R1) · sin «GARELON» sobre el producto · sin claims no confirm
 
 - Remotion: gratis para particulares y empresas de hasta 3 empleados (también uso comercial). A partir de 4, licencia de empresa.
 - FFmpeg, faster-whisper y modelos Whisper: gratuitos y locales. Sin APIs de pago.
+- Higgsfield (lo usa el propietario, fuera de este entorno): según su centro de ayuda, el uso comercial de lo generado está permitido y es tuyo. A cambio, concedes a Higgsfield licencia para usar lo que subes y generas para entrenar sus modelos. Revisa sus términos vigentes y no subas nada que no quieras ceder.
 - La música y los efectos de las pruebas (`TEST_*`) son sintéticos y solo sirven para probar. Para anuncios reales, usar la biblioteca comercial de cada plataforma o música con licencia.
