@@ -71,7 +71,7 @@ Búsqueda reciente de tendencias, sonidos, formatos, hooks, memes, hashtags, anu
   - Un snippet de buscador nunca es «confirmado».
   - Fuentes recientes y oficiales primero; citar enlaces y fechas.
 - Competidores: aprender patrones (hook, estructura, ritmo, ángulo) y crear versiones propias. No copiar creatividades.
-- Limitación: las webs de TikTok, Meta y los medios devuelven 403 desde aquí; solo hay resúmenes de búsqueda. Volúmenes de hashtags y sonidos en tendencia: NO DISPONIBLE salvo que el propietario pegue datos de Creative Center.
+- Limitación: las webs oficiales de TikTok, Meta, Instagram, Shopify y la UE, y la mayoría de medios, están bloqueadas por la red del entorno; solo hay resúmenes de búsqueda. Qué dominios hay que permitir y para qué: `research/README.md` § Red. Volúmenes de hashtags y sonidos en tendencia: NO DISPONIBLE salvo que el propietario pegue datos de Creative Center.
 
 ## Métricas
 

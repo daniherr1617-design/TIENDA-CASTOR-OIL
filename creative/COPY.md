@@ -22,7 +22,7 @@ Antes de usar una regla como criterio importante:
 2. Si no se puede, decir el nivel de evidencia junto a la recomendación.
 3. Dejar que la investigación semanal la revalide; con más de 60 días desde la fecha, `lab check` pide revalidarla.
 
-Hoy (2026-10-07) **ninguna regla está verificada en fuente oficial**: la red de este entorno bloquea ads.tiktok.com, facebook.com, support.google.com y eur-lex.europa.eu. Así que ninguna bloquea el pack; todas avisan con su nivel. Cambiar un nivel o un límite en `platforms.json` es un cambio del Lab: la investigación semanal lo **propone** y el propietario lo aprueba.
+Hoy (2026-10-07) **ninguna regla está verificada en fuente oficial**: la red de este entorno bloquea las webs oficiales de TikTok, Meta, Instagram, Shopify y la UE (lista exacta en `research/README.md` § Red). Así que ninguna bloquea el pack; todas avisan con su nivel. Cambiar un nivel o un límite en `platforms.json` es un cambio del Lab: la investigación semanal lo **propone** y el propietario lo aprueba.
 
 ## Principios
 
@@ -119,7 +119,7 @@ Si un vídeo usa material de IA (`lab ingest --origen ia`), el Lab **avisa** de 
 | TikTok orgánico | Opción «contenido generado por IA» al publicar | FUENTE SECUNDARIA · 2026-10-07 |
 | Meta (Instagram y anuncios) | Meta marca «Información de IA» por su cuenta (C2PA) y pide declarar personas y escenas realistas sintéticas | FUENTE SECUNDARIA · 2026-10-07 |
 | YouTube Shorts | YouTube pediría declarar el contenido realista alterado o sintético al subir | PENDIENTE DE VERIFICACIÓN · 2026-10-07 |
-| UE | Ley de IA, art. 50, desde el 2026-08-02: avisar del contenido realista generado o manipulado con IA. No es asesoramiento jurídico | FUENTE SECUNDARIA (eur-lex bloqueado; K-REG-01) · 2026-10-07 |
+| UE | Ley de IA, art. 50, desde el 2026-08-02: avisar del contenido realista generado o manipulado con IA. Guías de la Comisión (2026-07-20): aviso claro y distinguible, a más tardar en la primera exposición. No es asesoramiento jurídico | FUENTE OFICIAL NO ACCESIBLE DIRECTAMENTE (URL oficial identificada en digital-strategy.ec.europa.eu, bloqueada; K-REG-01) · 2026-10-07 |
 
 `lab pack` pone «Etiqueta IA: SÍ (recomendada…)» y lo explica en «Avisos de cumplimiento». Si el propietario decide NO, `lab check` avisa (no bloquea) y pide el motivo en «Notas internas». Si el origen no está registrado, el pack no pasa `--final` hasta registrarlo.
 

@@ -126,7 +126,7 @@ Elige la tuya · Pulsera Rosario Virgen María
 - YouTube Shorts · Descripción: descripción de hasta 5.000 caracteres · **FUENTE SECUNDARIA** · 2026-10-07
 - YouTube Shorts · Hashtags: con más de 60 hashtags YouTube ignora todos; 3-5 recomendados · **FUENTE SECUNDARIA** · 2026-10-07
 - YouTube Shorts · Etiqueta IA: YouTube pediría declarar el contenido realista alterado o sintético al subir; sin fuente comprobada en esta sesión · **PENDIENTE DE VERIFICACIÓN** · 2026-10-07
-- UE (Ley de IA, art. 50): desde el 2026-08-02, avisar del contenido realista generado o manipulado con IA; texto oficial sin leer (eur-lex bloqueado). No es asesoramiento jurídico · **FUENTE SECUNDARIA** · 2026-10-07
+- UE (Ley de IA, art. 50): desde el 2026-08-02, avisar del contenido realista generado o manipulado con IA; guías finales de la Comisión del 2026-07-20: aviso claro y distinguible, a más tardar en la primera exposición. URL oficial identificada (digital-strategy.ec.europa.eu) pero bloqueada por la red: no leída. No es asesoramiento jurídico · **FUENTE OFICIAL NO ACCESIBLE DIRECTAMENTE** · 2026-10-07
 - Zonas seguras (config/safe-zones.json): **FUENTE SECUNDARIA**; revisar la vista previa de cada ubicación
 - Nada de esto es permanente: lo revalida la investigación semanal. Regenerar con `lab rules packs/<ID>.md`
 

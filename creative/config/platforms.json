@@ -38,7 +38,7 @@
     "Instagram Reels": {"evidencia": "FUENTE SECUNDARIA", "fecha": "2026-10-07", "texto": "Meta marca «Información de IA» (C2PA) y pide declarar personas y escenas realistas sintéticas"},
     "Meta Ads": {"evidencia": "FUENTE SECUNDARIA", "fecha": "2026-10-07", "texto": "igual que Instagram; revisar la etiqueta en la vista previa del anuncio"},
     "YouTube Shorts": {"evidencia": "PENDIENTE DE VERIFICACIÓN", "fecha": "2026-10-07", "texto": "YouTube pediría declarar el contenido realista alterado o sintético al subir; sin fuente comprobada en esta sesión"},
-    "UE (Ley de IA, art. 50)": {"evidencia": "FUENTE SECUNDARIA", "fecha": "2026-10-07", "texto": "desde el 2026-08-02, avisar del contenido realista generado o manipulado con IA; texto oficial sin leer (eur-lex bloqueado). No es asesoramiento jurídico"}
+    "UE (Ley de IA, art. 50)": {"evidencia": "FUENTE OFICIAL NO ACCESIBLE DIRECTAMENTE", "fecha": "2026-10-07", "texto": "desde el 2026-08-02, avisar del contenido realista generado o manipulado con IA; guías finales de la Comisión del 2026-07-20: aviso claro y distinguible, a más tardar en la primera exposición. URL oficial identificada (digital-strategy.ec.europa.eu) pero bloqueada por la red: no leída. No es asesoramiento jurídico"}
   },
   "hashtags_genericos": ["fyp", "foryou", "foryoupage", "fy", "parati", "paratii", "xyzbca", "viral", "viralvideo", "trending", "tendencia", "tendencias", "explore", "explorepage", "explorar", "reels", "reelsinstagram", "tiktok", "instagood", "shorts", "youtubeshorts"]
 }
