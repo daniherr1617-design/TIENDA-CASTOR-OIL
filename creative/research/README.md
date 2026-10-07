@@ -26,9 +26,58 @@ Aunque en el futuro haya MCP de Meta o TikTok conectados, sigue siendo solo lect
 | Aviso | Las Routines con sesión fija no envían push ni email automáticos. El prompt pide a la sesión que envíe una notificación push con el resumen si tiene la herramienta. El resultado se ve en esa sesión y en el commit |
 | Coste | consume uso de tu plan de Claude, igual que una sesión normal. Sin APIs de pago ni claves |
 
-Ejecutarla a mano: pídelo en el chat del Lab («lanza la investigación semanal»). **No uses «Run now»**: abre una sesión nueva sin el repositorio y el push da 403.
+Ejecutarla a mano: pídelo en el chat del Lab («lanza la investigación semanal»). **No uses «Run now»** (ver abajo).
 
 Si la sesión del Lab se archivara o borrara, la Routine deja de funcionar: hay que volver a crearla desde una sesión que tenga el repositorio como fuente y en la que el propietario autorice la tarea. Una Routine no permite cambiar de sesión.
+
+### Routine válida
+
+| Routine | Estado |
+|---|---|
+| `trig_01JRh7Epo2St3s74j27tCVs6` · «GARELON · Investigación semanal de marketing» | **La única válida.** Lunes 07:51 (Madrid), entra en la sesión del Lab `session_01MMRMXUiX2ga2mN8skSovmG` |
+| `trig_011rUUuYFd1JvzyaE5WoMwG8` · «OBSOLETA · no usar…» | Desactivada. No se borra porque borrarla eliminaría también la sesión que abrió su «Run now», y esa sesión guarda un commit local sin publicar |
+
+Sesiones obsoletas (título «OBSOLETA…» y etiqueta `obsoleta`; no se usan):
+- `session_01E3g3iX9fMpmFKBHga4zecR`: antigua sesión fija. Nunca hizo cambios.
+- `session_01TzbkVskmicJJSkizUEyoUB`: la del «Run now» fallido (push 403). Conserva el commit local `c580510`, un informe del 2026-10-07 que sustituye `reports/2026-10-07-2.md`.
+
+### «Run now»: no usar
+
+Mientras «Run now» abra una sesión nueva sin el repositorio, **no se usa**: la investigación saldría bien, pero el push daría 403. Para ejecutarla a mano, pídelo en el chat del Lab. Si algún día la plataforma cambia este comportamiento, se vuelve a probar con `git push --dry-run` antes de confiar en él.
+
+### Red: dominios oficiales bloqueados
+
+A 2026-10-07, la política de red del entorno (Limited) rechaza con 403 todos estos dominios. Mientras sigan bloqueados, ninguna novedad ni regla puede quedar como VERIFICADO EN FUENTE ORIGINAL. Los permite el propietario en la configuración del entorno (Edit → Network access → Allowed domains, con «Allow package managers» marcado). Ni el Lab ni la Routine cambian la red.
+
+| Plataforma | Dominio | Para qué |
+|---|---|---|
+| TikTok | `ads.tiktok.com` | Centro de ayuda de TikTok Ads: políticas de anuncios (etiqueta AIGC), especificaciones, Creative Center |
+| TikTok | `www.tiktok.com` | Normas de la comunidad, centro de ayuda (`/support`), TikTok for Business, etiqueta de contenido IA en orgánico |
+| TikTok | `support.tiktok.com` | Enlaces antiguos del centro de ayuda (redirigen a `www.tiktok.com`) |
+| TikTok | `newsroom.tiktok.com` | Anuncios oficiales (TikTok Shop en Europa, funciones nuevas) |
+| TikTok | `seller-eu.tiktok.com` | Requisitos de vendedor de TikTok Shop en Europa (solo si se estudia Shop) |
+| Meta | `www.facebook.com` | Centro de ayuda para empresas (`/business/help`: Advantage+, especificaciones), Biblioteca de anuncios (`/ads/library`) |
+| Meta | `transparency.meta.com` | Normas publicitarias y políticas de IA de Meta |
+| Meta | `about.fb.com` | Newsroom de Meta |
+| Meta | `developers.facebook.com` | Documentación del píxel, la API de conversiones y la Marketing API |
+| Instagram | `help.instagram.com` | Límite de hashtags, etiqueta «Información de IA», funciones de Reels |
+| Instagram | `about.instagram.com` | Blog oficial y sección Creators (recomendaciones de Reels) |
+| Instagram | `www.instagram.com` | Publicaciones de @mosseri y @creators (algunas piden sesión iniciada) |
+| Shopify | `shopify.dev` | Changelog para desarrolladores (script tags, web pixels), documentación de apps y tema |
+| Shopify | `help.shopify.com` | Centro de ayuda (eventos de clientes y píxeles, mercados, impuestos) |
+| Shopify | `changelog.shopify.com` | Changelog para comerciantes |
+| Shopify | `www.shopify.com` | Noticias y Editions oficiales |
+| Shopify | `community.shopify.dev` | Avisos de deprecación en el foro oficial de desarrolladores |
+| UE | `eur-lex.europa.eu` | Textos oficiales: Ley de IA (Reglamento 2024/1689) y reglamentos de aduanas |
+| UE | `digital-strategy.ec.europa.eu` | Guías del art. 50 y Código de prácticas sobre contenido generado por IA |
+| UE | `commission.europa.eu` | Páginas generales de la Comisión |
+| UE | `ec.europa.eu` | Sala de prensa de la Comisión (`/commission/presscorner`) |
+| UE | `taxation-customs.ec.europa.eu` | Arancel de 3 € en envíos de menos de 150 € (K-ECO-02) |
+| Hugging Face | `huggingface.co` | Ficha y API del modelo de Whisper (`lab transcribe` del Lab; la investigación no lo usa) |
+| Hugging Face | `cdn-lfs.huggingface.co` · `cdn-lfs-us-1.huggingface.co` | Descarga de los archivos grandes del modelo (LFS) |
+| Hugging Face | `cas-bridge.xethub.hf.co` · `cas-server.xethub.hf.co` | Descarga con el cliente Xet, el que usan los modelos recientes |
+
+Con comodines, Hugging Face equivale a `huggingface.co`, `*.huggingface.co`, `hf.co` y `*.hf.co` (ver `creative/README.md`). Los medios especializados (socialmediatoday.com, ppc.land…) también están bloqueados, pero no hacen falta para verificar: la verificación es en la fuente oficial.
 
 ## Archivos
 
