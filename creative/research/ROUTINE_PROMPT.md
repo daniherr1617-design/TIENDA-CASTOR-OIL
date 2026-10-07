@@ -22,13 +22,18 @@ Eres el investigador semanal de marketing y e-commerce de GARELON. Esta ejecuci�
 
 ## 1. Preparación
 
-1. La Routine se ejecuta en una sesión fija que ya tiene el repositorio con permiso de push. Solo si no estuviera en el contenedor: `add_repo` daniherr1617-design/TIENDA-CASTOR-OIL con `access: "push"` y clonar con el comando que devuelva. Lo que haya en la conversación de semanas anteriores es contexto; lo vigente está en los archivos recién descargados.
-2. Prepara la rama:
+1. La Routine entra siempre en la misma sesión fija, la del Lab («GARELON video creativities y marketing»), que tiene el repositorio como fuente con permiso de push y donde el propietario autorizó esta tarea. **No** uses `add_repo`, no pidas ni concedas permisos, no crees otras sesiones ni busques rodeos. Si el push devuelve 403 u otro error de permisos: se registra como error, el commit se queda en local y se avisa. Lo que haya en la conversación de semanas anteriores es contexto; lo vigente está en los archivos recién descargados.
+2. Prepara la rama en una carpeta aparte (`git worktree`), para no cambiar la rama del Lab:
    ```
-   git fetch origin claude/garelon-marketing-research claude/festive-clarke-jub9rm
-   git checkout claude/garelon-marketing-research   # si no existe en local: git checkout -b claude/garelon-marketing-research origin/claude/garelon-marketing-research
-   git pull --rebase origin claude/garelon-marketing-research
+   cd /home/user/TIENDA-CASTOR-OIL && git fetch origin claude/garelon-marketing-research claude/festive-clarke-jub9rm
+   W=/home/user/garelon-research
+   if [ ! -d "$W" ]; then
+     if git show-ref -q --verify refs/heads/claude/garelon-marketing-research; then git worktree add "$W" claude/garelon-marketing-research
+     else git worktree add -b claude/garelon-marketing-research "$W" origin/claude/garelon-marketing-research; fi
+   fi
+   cd "$W" && git pull --rebase origin claude/garelon-marketing-research
    ```
+   Todo lo demás se ejecuta desde `$W`.
 3. Fecha de hoy en España: `TZ=Europe/Madrid date +%F` (= `HOY`). Ventana: `python3 creative/research/research.py window`. Ruta del informe: `python3 creative/research/research.py path` (= `INFORME`; si ya hay un informe de hoy, devuelve `HOY-2.md`). Los informes anteriores no se modifican ni se borran.
 4. Lee en la rama de investigación: `creative/research/topics.md`, `creative/research/marketing-current-knowledge.md`, `creative/research/PLANTILLA_INFORME.md`, el último informe de `creative/research/reports/` y `creative/research/seen-urls.txt`.
 5. El contexto del Lab se lee **sin cambiar de rama**:

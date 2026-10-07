@@ -16,18 +16,19 @@ Aunque en el futuro haya MCP de Meta o TikTok conectados, sigue siendo solo lect
 | | |
 |---|---|
 | Programación | **Lunes a las 07:51 (hora de Madrid)**, `CRON_TZ=Europe/Madrid 51 7 * * 1`. El minuto 51 evita la cola de las horas en punto |
-| Mecanismo | Routine de Claude Code «GARELON · Investigación semanal de marketing» (`trig_011rUUuYFd1JvzyaE5WoMwG8`). Cada lunes envía el encargo a una **sesión fija**, «GARELON · Investigación semanal (sesión fija de la Routine)» (`session_01E3g3iX9fMpmFKBHga4zecR`), que tiene el repositorio con permiso de push. Allí descarga su rama y trabaja con los archivos recién descargados |
+| Mecanismo | Routine de Claude Code «GARELON · Investigación semanal de marketing» (`trig_01JRh7Epo2St3s74j27tCVs6`). Cada lunes entra en una **sesión fija**: la del Lab, «GARELON video creativities y marketing» (`session_01MMRMXUiX2ga2mN8skSovmG`). Esa sesión tiene el repositorio como fuente con permiso de push y es donde el propietario autorizó la tarea. Trabaja en `/home/user/garelon-research` (un `git worktree` de la rama de investigación), así que la rama del Lab no cambia |
 | Rama | **`claude/garelon-marketing-research`**, dedicada a la investigación. Solo se hace commit y push ahí, y solo en `creative/research/`. Nunca toca `main` (tema Shopify), las ramas de producción ni la del Lab (`claude/festive-clarke-jub9rm`), que solo **lee** con `git show`. Antes de cada push, `research.py preflight` comprueba la rama, que no haya archivos fuera de `creative/research/`, que no haya merges y que no haga falta force-push. Si algo debe pasar a otra rama, el informe lo propone (sección 7) y se espera tu aprobación |
-| Por qué una sesión fija | La primera versión (2026-10-07) abría una sesión nueva en cada ejecución. En la prueba investigó bien, pero el push falló: `403 … not in this session's authorized repository set`, porque una sesión nueva no recibe el repositorio como fuente. La sesión fija se creó con el repositorio como fuente, y `git push --dry-run` funciona sin 403 |
+| Por qué esta sesión | Historial de 2026-10-07: (1) una sesión nueva por ejecución investigó bien, pero el push dio `403 … not in this session's authorized repository set`, porque las sesiones nuevas no reciben el repositorio; «Run now» también abre una sesión nueva. (2) Una sesión fija creada aparte tenía push, pero no ejecutaba la tarea: la había creado otra sesión, no el propietario, y no tomaba esos encargos como autorización. La sesión del Lab cumple las dos condiciones: tiene push y la autorización es del propietario. La Routine antigua (`trig_011rUUuYFd1JvzyaE5WoMwG8`) está desactivada |
+| Permisos | Nunca se usa `add_repo` ni se conceden permisos desde la Routine. Si el push falla por permisos, se registra el error y se avisa |
 | Instrucciones | `ROUTINE_PROMPT.md` (versionado en la rama de investigación). La Routine guarda además las reglas de seguridad en su propio prompt, para que un cambio en el repo no pueda relajarlas |
-| Conectores | **Ninguno**: la Routine no guarda conectores y la sesión fija no tiene herramientas de Meta, TikTok, Canva, Claude Docs ni Shopify. Además, el prompt prohíbe usarlos |
+| Conectores | **Ninguno**: la Routine no guarda conectores y el prompt prohíbe usar cualquier conector (Meta, TikTok, Canva, Claude Docs, Shopify) aunque la sesión los tenga |
 | Resultado | Commit en `claude/garelon-marketing-research`, solo dentro de `creative/research/` |
 | Aviso | Las Routines con sesión fija no envían push ni email automáticos. El prompt pide a la sesión que envíe una notificación push con el resumen si tiene la herramienta. El resultado se ve en esa sesión y en el commit |
 | Coste | consume uso de tu plan de Claude, igual que una sesión normal. Sin APIs de pago ni claves |
 
-Ejecutarla a mano: pídelo en el chat («lanza la investigación semanal») o usa «Run now» en la lista de Routines de claude.ai.
+Ejecutarla a mano: pídelo en el chat del Lab («lanza la investigación semanal»). **No uses «Run now»**: abre una sesión nueva sin el repositorio y el push da 403.
 
-Si la sesión fija se archivara o borrara, hay que crear otra con el repositorio como fuente y volver a crear la Routine apuntando a ella. La Routine no permite cambiar de sesión.
+Si la sesión del Lab se archivara o borrara, la Routine deja de funcionar: hay que volver a crearla desde una sesión que tenga el repositorio como fuente y en la que el propietario autorice la tarea. Una Routine no permite cambiar de sesión.
 
 ## Archivos
 
