@@ -1,6 +1,6 @@
 # Conocimiento de marketing vigente · GARELON
 
-> **Última actualización:** 2026-10-07 (segunda ejecución del día, `reports/2026-10-07-2.md`: K-REG-01 actualizada y K-ECO-03 nueva).
+> **Última actualización:** 2026-10-07 (red ampliada por el propietario: K-REG-01, K-ECO-03, K-TT-02 y K-TT-04 releídas en su fuente oficial y pasadas a `VERIFICADO EN FUENTE ORIGINAL`).
 >
 > Aquí solo queda lo que **sigue siendo útil y vigente** para GARELON. Lo que se queda viejo o se contradice **no convive** con lo nuevo: sale del cuerpo y pasa al «Historial de cambios», que explica qué decía antes, qué dice ahora y por qué.
 
@@ -23,7 +23,7 @@
 4. `COMUNIDAD / EXPERIENCIA DE ANUNCIANTES`: Reddit, X, foros o media buyers. Es evidencia práctica, no confirmación.
 5. `HIPÓTESIS / INTERPRETACIÓN`: conclusión nuestra pendiente de probar.
 
-Un resumen de buscador **nunca** cuenta como verificación. A 2026-10-07 **ninguna** entrada está verificada en su fuente original, porque la red del entorno bloquea las webs oficiales (ver `README.md`).
+Un resumen de buscador **nunca** cuenta como verificación. Desde el 2026-10-07, con la red ampliada por el propietario, sí se pueden abrir y leer las webs oficiales de TikTok (`ads.tiktok.com`, `newsroom.tiktok.com`), Shopify (`shopify.dev`) y la Comisión Europea (`digital-strategy.ec.europa.eu`): las entradas leídas allí están `VERIFICADO EN FUENTE ORIGINAL` con su URL y fecha. Siguen bloqueados `higgsfield.ai`, `about.fb.com`, `creators.instagram.com`, `business-api.tiktok.com`, `www.youtube.com` y los medios, y `eur-lex.europa.eu` responde con un desafío anti-bot (ver `README.md` § Red).
 
 ## 1. Lo que condiciona todo en GARELON
 
@@ -86,9 +86,10 @@ Un resumen de buscador **nunca** cuenta como verificación. A 2026-10-07 **ningu
 
 ### [K-TT-02] Symphony genera vídeo con Dreamina Seedance 2.5
 - **Tema:** TikTok · IA generativa de vídeo
-- **Fecha:** hasta 30 s desde agosto de 2026 · comprobado 2026-10-07
-- **Fuente:** ads.tiktok.com (blog), mediapost.com (2026-04-15)
-- **Evidencia:** Oficial · FUENTE OFICIAL NO ACCESIBLE DIRECTAMENTE
+- **Fecha:** entrada oficial del 2026-08-03 · leída en la fuente oficial el 2026-10-07
+- **Fuente:** [ads.tiktok.com/business/en/blog/transforming-video-creation-tiktok-symphony-dreamina-seedance](https://ads.tiktok.com/business/en/blog/transforming-video-creation-tiktok-symphony-dreamina-seedance) (leída el 2026-10-07), mediapost.com (2026-04-15)
+- **Evidencia:** Oficial · VERIFICADO EN FUENTE ORIGINAL
+- **Según la fuente oficial:** Symphony con Dreamina Seedance 2.5 genera hasta 30 s de vídeo (antes 15 s), acepta hasta 50 referencias multimodales (antes 9) y permite dirección creativa por marca de tiempo. Se despliega «a anunciantes de pago seleccionados en mercados seleccionados»: la disponibilidad en España no se afirma.
 - **Estado:** vigente
 - **Impacto GARELON:** no se usa para el producto (R1). Como mucho, planos sin producto y con aviso de IA.
 
@@ -103,9 +104,10 @@ Un resumen de buscador **nunca** cuenta como verificación. A 2026-10-07 **ningu
 
 ### [K-TT-04] TikTok Shop en España y ampliación europea
 - **Tema:** TikTok Shop · UE
-- **Fecha:** España desde diciembre de 2024; ampliación a AT, BE, NL y PL el 2026-06-15 · comprobado 2026-10-07
-- **Fuente:** newsroom.tiktok.com
-- **Evidencia:** Oficial · FUENTE OFICIAL NO ACCESIBLE DIRECTAMENTE
+- **Fecha:** nota oficial del 2026-05-28; ampliación a AT, BE, NL y PL desde el 15 de junio · leída en la fuente oficial el 2026-10-07
+- **Fuente:** [newsroom.tiktok.com/tiktok-shop-expands-across-europe](https://newsroom.tiktok.com/tiktok-shop-expands-across-europe?lang=en-150) (leída el 2026-10-07)
+- **Evidencia:** Oficial · VERIFICADO EN FUENTE ORIGINAL
+- **Según la fuente oficial:** desde el 15 de junio TikTok Shop está en Austria, Bélgica, Países Bajos y Polonia, que se suman a Francia, Alemania, Irlanda, Italia, **España** y Reino Unido. El lanzamiento en la UE fue «a finales de 2024 y principios de 2025» (la nota no da la fecha exacta de España) y existe «Sell Across Europe» para vender a otros mercados. La nota no detalla requisitos logísticos.
 - **Estado:** vigente
 - **Impacto GARELON:** no es canal mientras el envío venga de AliExpress. Los requisitos logísticos son una hipótesis sin verificar.
 
@@ -234,9 +236,10 @@ Un resumen de buscador **nunca** cuenta como verificación. A 2026-10-07 **ningu
 
 ### [K-ECO-03] Shopify retira los script tags
 - **Tema:** Shopify · seguimiento y apps
-- **Fecha:** sin altas ni cambios desde el 2026-10-01; dejan de ejecutarse el 2027-03-01 · comprobado 2026-10-07
-- **Fuente:** shopify.dev (changelog), zectox.is-a.dev
-- **Evidencia:** Oficial · FUENTE OFICIAL NO ACCESIBLE DIRECTAMENTE
+- **Fecha:** anuncio oficial del 2026-08-24; sin altas ni cambios desde el 2026-10-01; dejan de ejecutarse el 2027-03-01 · leída en la fuente oficial el 2026-10-07
+- **Fuente:** [shopify.dev/changelog/posts/online-store-script-tags-deprecation](https://shopify.dev/changelog/online-store-script-tags-deprecation) (leída el 2026-10-07), zectox.is-a.dev
+- **Evidencia:** Oficial · VERIFICADO EN FUENTE ORIGINAL
+- **Según la fuente oficial:** desde el 2026-10-01 `scriptTagCreate` y `scriptTagUpdate` devuelven un error de usuario en todas las versiones de la API (fijar una versión antigua no lo retrasa); los script tags existentes siguen funcionando hasta el 2027-03-01, cuando Shopify deja de inyectarlos en el storefront. Alternativas oficiales: app embed block (extensión de tema) o web pixel.
 - **Estado:** vigente
 - **Impacto GARELON:** los píxeles de Meta y TikTok deben ir como web pixel o app embed. Comprobarlo en Shopify Admin antes de lanzar; si alguno usa script tag, dejaría de medir en marzo de 2027.
 
@@ -244,12 +247,12 @@ Un resumen de buscador **nunca** cuenta como verificación. A 2026-10-07 **ningu
 
 ### [K-REG-01] Ley de IA, art. 50: avisar del contenido generado con IA
 - **Tema:** Regulación UE · IA
-- **Fecha:** aplicable desde el 2026-08-02; guías finales de la Comisión del 2026-07-20 · comprobado 2026-10-07
-- **Fuente:** digital-strategy.ec.europa.eu (Código de prácticas y guías del art. 50), paulweiss.com, walls.io, solidlabs.com
-- **Evidencia:** Oficial · FUENTE OFICIAL NO ACCESIBLE DIRECTAMENTE (URL oficial identificada, no se ha podido abrir). No es asesoramiento jurídico
+- **Fecha:** aplicable desde el 2026-08-02; guías de la Comisión C(2026) 5054 del 2026-07-20 · leídas en la fuente oficial el 2026-10-07
+- **Fuente:** [guías del art. 50 (PDF oficial, 51 páginas)](https://digital-strategy.ec.europa.eu/en/library/guidelines-transparency-obligations-providers-and-deployers-ai-systems) y [Código de prácticas sobre transparencia del contenido generado por IA](https://digital-strategy.ec.europa.eu/en/faqs/code-practice-transparency-ai-generated-content), ambas leídas el 2026-10-07
+- **Evidencia:** Oficial · VERIFICADO EN FUENTE ORIGINAL. No es asesoramiento jurídico
 - **Estado:** vigente
-- **Afirmación (según resúmenes; texto oficial sin leer):** el contenido generado o manipulado con IA que parezca auténtico debe avisarse. Las guías (no vinculantes) piden que el aviso sea claro y distinguible, a más tardar en la primera exposición y accesible. El Código de prácticas es voluntario; su sección 2 trata del etiquetado de deepfakes por quien los publica. Las etiquetas automáticas de las plataformas no bastarían por sí solas.
-- **Impacto GARELON:** registrar el origen de cada material (ya lo hace `lab ingest --origen`) y decidir el aviso anuncio a anuncio; con material realista, valorar un aviso visible al inicio del vídeo.
+- **Según la fuente oficial:** las obligaciones del art. 50 se aplican desde el 2026-08-02 (los sistemas puestos en el mercado antes tienen transición hasta el 2026-12-02). El art. 50.4 obliga a quien despliega un sistema que genera o manipula deepfakes a revelar que el contenido es artificial, y el art. 50.5 exige que la información se dé «de forma clara y distinguible, a más tardar en el momento de la primera interacción o exposición» y conforme a los requisitos de accesibilidad. El Código de prácticas es **voluntario** y no crea obligaciones nuevas: quien no lo firme debe demostrar el cumplimiento por otros medios equivalentes. Las guías incluyen ejemplos directamente aplicables a anuncios: **es deepfake** una imagen de IA de un producto que pueda engañar sobre su aspecto, características o uso reales (p. ej. que no parezca idéntico al real o parezca de más calidad), y también un vídeo con un avatar realista de una persona; **no es deepfake** un producto real sobre un fondo o entorno generado con IA mientras el anuncio no engañe sobre el producto, ni la corrección de color, el recorte, la compresión o la sustitución de fondos con fines estéticos (apdo. 116).
+- **Impacto GARELON:** registrar el origen de cada material (ya lo hace `lab ingest --origen`) y decidir el aviso anuncio a anuncio. Como R1 obliga a que el producto se vea tal cual, un fondo de IA con la pulsera real no sería deepfake según las guías; en cambio una pulsera generada o retocada con IA sí lo sería, y entonces el aviso debe verse desde la primera exposición, no solo en los metadatos.
 
 ### [K-REG-02] Digital Fairness Act
 - **Tema:** Regulación UE · dark patterns
@@ -296,6 +299,7 @@ Cuando una entrada cambia de criterio, se explica aquí: qué decía antes, qué
 | Fecha | Entrada | Antes | Ahora | Por qué |
 |---|---|---|---|---|
 | 2026-10-07 | Todo el documento | — | Creación (línea base) | Primera ejecución del sistema |
+| 2026-10-07 | K-REG-01 · K-ECO-03 · K-TT-02 · K-TT-04 | FUENTE OFICIAL NO ACCESIBLE DIRECTAMENTE | **VERIFICADO EN FUENTE ORIGINAL** (URL y fecha en cada entrada) | El propietario amplió la red del entorno: se abrieron y leyeron el PDF de las guías del art. 50, el changelog de shopify.dev, el blog de ads.tiktok.com y la nota de newsroom.tiktok.com. Se añade lo que dice literalmente cada fuente; donde no afirma algo (fecha de España en TikTok Shop, disponibilidad de Seedance 2.5) se marca así |
 | 2026-10-07 | K-META-02 | «Muse Image en Advantage+ desde septiembre» | Anunciado el 2026-07-07, sin disponibilidad confirmada (dudoso) | La verificación contradijo a los agregadores |
 | 2026-10-07 | K-TT-03 | Aviso genérico de IA en anuncios | Política del 2026-07-21: AIGC obligatorio, C2PA y posible suspensión | Consulta del Lab sobre los vídeos de Higgsfield |
 | 2026-10-07 | K-TT-06 · K-REELS-02 · K-YT-01 · K-IA-03 | — | Entradas nuevas | Ampliación del Lab a copy, hashtags y Higgsfield |
