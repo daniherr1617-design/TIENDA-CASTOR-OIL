@@ -49,6 +49,8 @@ Mientras «Run now» abra una sesión nueva sin el repositorio, **no se usa**: l
 
 A 2026-10-07, la política de red del entorno (Limited) rechaza con 403 todos estos dominios. Mientras sigan bloqueados, ninguna novedad ni regla puede quedar como VERIFICADO EN FUENTE ORIGINAL. Los permite el propietario en la configuración del entorno (Edit → Network access → Allowed domains, con «Allow package managers» marcado). Ni el Lab ni la Routine cambian la red.
 
+**Importante: el entorno correcto.** Una sesión no cambia de entorno. La sesión del Lab y de la Routine corre en el entorno **«Default»** (`env_016ofSMuy4TGBR5PaE3f3vqy`), así que los dominios hay que añadirlos **a ese entorno**. El 2026-10-07 se añadieron a un entorno nuevo, «GARELON Creative Lab» (`env_01UoQfNaTyBJ51L22cqGEe2j`), y desde esta sesión siguieron bloqueados: un entorno nuevo solo afecta a las sesiones que se crean en él. Si algún día el Lab pasa a otro entorno, hay que volver a crear la Routine desde una sesión de ese entorno.
+
 | Plataforma | Dominio | Para qué |
 |---|---|---|
 | TikTok | `ads.tiktok.com` | Centro de ayuda de TikTok Ads: políticas de anuncios (etiqueta AIGC), especificaciones, Creative Center |
