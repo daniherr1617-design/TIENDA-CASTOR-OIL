@@ -39,7 +39,7 @@ Si la sesión del Lab se archivara o borrara, la Routine deja de funcionar: hay 
 
 Sesiones obsoletas (título «OBSOLETA…» y etiqueta `obsoleta`; no se usan):
 - `session_01E3g3iX9fMpmFKBHga4zecR`: antigua sesión fija. Nunca hizo cambios.
-- `session_01TzbkVskmicJJSkizUEyoUB`: la del «Run now» fallido (push 403). Conserva el commit local `c580510`, un informe del 2026-10-07 que sustituye `reports/2026-10-07-2.md`.
+- `session_01TzbkVskmicJJSkizUEyoUB`: la del «Run now» fallido (push 403). Conserva el commit local `c580510`, un informe del 2026-10-07 ya sustituido por `reports/2026-10-07-2.md` (no hace falta recuperarlo).
 
 ### «Run now»: no usar
 
