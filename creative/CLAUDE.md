@@ -90,7 +90,7 @@ Uso inicial **solo de lectura**: leer métricas, analizar campañas, detectar pr
 
 ## Investigación semanal
 
-`research/` (ver su README): una Routine la ejecuta los lunes a las 07:51 (Madrid) en una sesión fija y escribe **solo** en la rama `claude/garelon-marketing-research`. Es exclusivamente investigación, análisis y actualización de conocimiento, y es solo lectura aunque haya MCP conectados.
+`research/` (ver su README): una Routine la ejecuta los lunes a las 07:51 (Madrid) en esta misma sesión del Lab (fija y con permiso de push), dentro de un `git worktree` aparte (`/home/user/garelon-research`), y escribe **solo** en la rama `claude/garelon-marketing-research`. La rama del Lab no cambia. «Run now» no se usa: abre una sesión sin el repositorio. Es exclusivamente investigación, análisis y actualización de conocimiento, y es solo lectura aunque haya MCP conectados.
 
 Desde esta rama:
 - No se edita la memoria de la investigación.
