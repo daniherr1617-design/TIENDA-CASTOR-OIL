@@ -1,2 +1,2 @@
-fecha_ejecucion,tipo,ventana_desde,ventana_hasta,informe,consultas,fuentes,novedades,rojas,naranjas,conocimiento_actualizado,limitaciones,errores,estado
-2026-10-07T14:59+02:00,manual,2026-09-07,2026-10-07,reports/2026-10-07.md,20,31,11,2,3,sí,Lectura directa de fuentes bloqueada por la red del entorno (403): solo resúmenes de WebSearch,ninguno,ok
+fecha_ejecucion,tipo,ventana_desde,ventana_hasta,informe,consultas,fuentes,novedades,rojas,naranjas,verificadas,conocimiento_actualizado,limitaciones,errores,estado
+2026-10-07T14:59+02:00,manual,2026-09-07,2026-10-07,reports/2026-10-07.md,20,31,11,2,3,0,sí,Lectura directa de fuentes bloqueada por la red del entorno (403): solo resúmenes de WebSearch,ninguno,ok

@@ -40,7 +40,7 @@ No hay listas fijas. Para cada vídeo se proponen 3-5 combinando:
 
 ### Datos de volumen y tendencia: limitación actual
 
-Desde este entorno **no se pueden leer** TikTok Creative Center (Trends y Keyword Insights) ni las páginas de hashtags: la red devuelve 403 y además son páginas dinámicas. La investigación se apoya en búsqueda web (resúmenes), en el análisis del vídeo y en el conocimiento vigente (`research/marketing-current-knowledge.md`). Cuando el volumen importe, la vía gratuita es:
+Desde este entorno **no se pueden leer** TikTok Creative Center (Trends y Keyword Insights) ni las páginas de hashtags: la red devuelve 403 y además son páginas dinámicas. La investigación se apoya en búsqueda web (resúmenes), en el análisis del vídeo y en el conocimiento vigente (`research/marketing-current-knowledge.md` de la rama `claude/garelon-marketing-research`). Cuando el volumen importe, la vía gratuita es:
 
 1. Creative Center → Trends → Hashtags, **región España**, sector y ordenado por 7 días. Pegar aquí una captura o la lista.
 2. Las sugerencias del buscador de TikTok e Instagram al escribir la palabra clave.

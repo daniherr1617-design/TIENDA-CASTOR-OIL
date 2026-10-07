@@ -14,7 +14,12 @@ vídeo existente → análisis → edición → hook → copy y descripciones �
 1. `creative/setup.sh` (el contenedor es efímero). Si el propietario va a enviar voz, `--model large-v3-turbo`.
 2. Reglas de producto y marca: `.claude/skills/garelon-ecommerce-operator/` y `docs/garelon/GARELON_PROYECTO_PROMPT_MAESTRO_COMPLETO.md` (§4 R1-R24, §13 producto). Si no están en la rama actual, leerlos desde la rama que los tenga (`git show <rama>:<ruta>`). Prioridad: producto real > confirmación reciente del propietario > repo > docs.
 3. `config/claims.json` resume lo confirmado y lo prohibido del producto actual. Si cambia el producto, se actualiza primero.
-4. Antes de proponer estrategia: `research/marketing-current-knowledge.md` (conocimiento vigente) y `COPY.md`.
+4. Antes de proponer estrategia, leer `COPY.md` y la memoria vigente. La memoria la mantiene la investigación semanal en su propia rama, así que la copia de esta puede estar atrasada:
+   ```
+   git fetch origin claude/garelon-marketing-research
+   git show origin/claude/garelon-marketing-research:creative/research/marketing-current-knowledge.md
+   ```
+   El último informe está en la misma rama, en `creative/research/reports/`.
 
 ## Material de partida
 
@@ -45,9 +50,13 @@ Los vídeos base los genera el propietario (p. ej. con **Higgsfield**). Claude t
 
 ## Investigación antes de publicar (cuando aporte)
 
-Búsqueda reciente de tendencias, sonidos, formatos, hooks, memes, hashtags, anuncios destacados, edición, UGC, competidores y funciones nuevas de TikTok, Meta e Instagram. Primero mirar lo que ya está en `research/marketing-current-knowledge.md`.
+Búsqueda reciente de tendencias, sonidos, formatos, hooks, memes, hashtags, anuncios destacados, edición, UGC, competidores y funciones nuevas de TikTok, Meta e Instagram. Primero mirar la memoria vigente (paso 4 de «Al empezar una sesión»).
 
-- Separar siempre: 1) confirmado, 2) recomendación oficial de la plataforma, 3) estudios o casos, 4) práctica de marketers, 5) hipótesis a probar. Fuentes recientes y oficiales primero; citar enlaces y fechas.
+- Mismo modelo de evidencia que la investigación semanal (`research/topics.md`):
+  - Jerarquía (quién lo dice): Oficial · Estudios y datasets · Medios especializados · Comunidad · Hipótesis.
+  - Etiqueta de verificación (cómo se ha comprobado): VERIFICADO EN FUENTE ORIGINAL · FUENTE OFICIAL NO ACCESIBLE DIRECTAMENTE · FUENTE SECUNDARIA · COMUNIDAD / EXPERIENCIA DE ANUNCIANTES · HIPÓTESIS / INTERPRETACIÓN.
+  - Un snippet de buscador nunca es «confirmado».
+  - Fuentes recientes y oficiales primero; citar enlaces y fechas.
 - Competidores: aprender patrones (hook, estructura, ritmo, ángulo) y crear versiones propias. No copiar creatividades.
 - Limitación: las webs de TikTok, Meta y los medios devuelven 403 desde aquí; solo hay resúmenes de búsqueda. Volúmenes de hashtags y sonidos en tendencia: NO DISPONIBLE salvo que el propietario pegue datos de Creative Center.
 
@@ -68,4 +77,8 @@ Uso inicial **solo de lectura**: leer métricas, analizar campañas, detectar pr
 
 ## Investigación semanal
 
-`research/` (ver su README): una Routine la ejecuta los lunes a las 07:51 (Madrid) en una sesión fija. Es la memoria vigente; los informes por fecha están en `research/reports/`.
+`research/` (ver su README): una Routine la ejecuta los lunes a las 07:51 (Madrid) en una sesión fija y escribe **solo** en la rama `claude/garelon-marketing-research`. Es exclusivamente investigación, análisis y actualización de conocimiento, y es solo lectura aunque haya MCP conectados.
+
+Desde esta rama:
+- No se edita la memoria de la investigación.
+- Si un hallazgo del Lab debe entrar en la memoria, o un cambio que propone el informe (p. ej. un límite de `config/platforms.json`) debe pasar al Lab, se propone al propietario y se espera su aprobación.

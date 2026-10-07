@@ -13,23 +13,31 @@
 | Medición | tracking · atribución · píxel y API de conversiones · privacidad (iOS, navegadores, consentimiento UE) · modelos de incrementalidad |
 | Regulación UE/España | políticas de TikTok y Meta · Ley de IA (etiquetado) · Digital Fairness Act / dark patterns · aduanas e IVA de importación · consumo |
 
-## Jerarquía de fuentes (manda la más alta)
+## Jerarquía de evidencia (manda la más alta)
 
-1. Documentación oficial de TikTok (ads.tiktok.com, newsroom.tiktok.com, business-api.tiktok.com).
-2. Documentación oficial de Meta (facebook.com/business, developers.facebook.com, about.fb.com, creators.instagram.com, transparency.meta.com).
-3. Blogs técnicos u oficiales (Shopify, Google, Remotion, organismos de la UE).
-4. Estudios y datasets de empresas reconocidas (Motion, eMarketer, informes con metodología publicada).
-5. Medios especializados (Social Media Today, PPC Land, TechCrunch, Adweek, Marketing Brew, Modern Retail).
-6. Comunidades (Reddit r/FacebookAds, r/TikTokAds…): **solo evidencia práctica, nunca confirmación**.
+Cada novedad se clasifica **por quién lo dice** (subsección del informe) y **por cómo lo hemos comprobado** (etiqueta de verificación).
 
-Los blogs agregadores o de herramientas («Every Meta change in 2026», landing pages de SaaS) son nivel 5 como mucho. Sus cifras («+22 % ROAS») son **no verificadas** salvo que citen metodología o una fuente primaria.
+| Nivel | Qué incluye | Etiquetas posibles |
+|---|---|---|
+| **Oficial** | TikTok (ads.tiktok.com, newsroom.tiktok.com, business-api.tiktok.com), Meta (facebook.com/business, developers.facebook.com, about.fb.com, transparency.meta.com), Instagram (creators.instagram.com, about.instagram.com), Shopify, Google/YouTube, UE y España (eur-lex, Comisión, BOE, AEPD) | VERIFICADO EN FUENTE ORIGINAL · FUENTE OFICIAL NO ACCESIBLE DIRECTAMENTE |
+| **Estudios y datasets** | Empresas reconocidas, benchmarks o análisis con metodología publicada (Motion, eMarketer, informes de plataformas o consultoras) | VERIFICADO EN FUENTE ORIGINAL · FUENTE SECUNDARIA |
+| **Medios especializados** | Social Media Today, PPC Land, TechCrunch, Adweek, Marketing Brew, Modern Retail… y también los blogs agregadores o de herramientas (sus cifras son «no verificadas») | FUENTE SECUNDARIA |
+| **Comunidad** | Reddit (r/FacebookAds, r/TikTokAds…), X, foros, media buyers | COMUNIDAD / EXPERIENCIA DE ANUNCIANTES |
+| **Hipótesis** | Conclusiones nuestras que todavía hay que probar | HIPÓTESIS / INTERPRETACIÓN |
 
-## Etiquetas obligatorias de cada novedad
+## Etiquetas de verificación
 
-- Impacto para GARELON: 🔴 importante · 🟠 interesante para probar · 🟢 informativa · ⚪ sin acción necesaria.
-- Evidencia: `OFICIAL` · `ESTUDIO` · `MEDIO` · `AGREGADOR` · `COMUNIDAD`.
-- Estado: `✔ confirmado en fuente oficial` · `~ solo fuentes secundarias` · `✘ contradictorio` (explicar).
-- Separar siempre: dato confirmado · recomendación oficial · estudio o caso · práctica de marketers · hipótesis a probar.
+1. `VERIFICADO EN FUENTE ORIGINAL`: la fuente original se ha **abierto y leído** con WebFetch en esta ejecución, y su URL figura en «Fuentes leídas completas».
+2. `FUENTE OFICIAL NO ACCESIBLE DIRECTAMENTE`: hay URL oficial, pero no se ha podido abrir (403, error o página vacía). Lo sabemos por resúmenes o por medios.
+3. `FUENTE SECUNDARIA`: solo medios o blogs.
+4. `COMUNIDAD / EXPERIENCIA DE ANUNCIANTES`: experiencia práctica, nunca confirmación.
+5. `HIPÓTESIS / INTERPRETACIÓN`: conclusión nuestra.
+
+**Un resumen o snippet de buscador nunca convierte una novedad en evidencia fuerte.** «Confirmado» y ✔ solo se usan con la etiqueta 1.
+
+## Importancia para GARELON
+
+🔴 importante (cambia algo que hacemos o un riesgo real) · 🟠 merece probarse o preparar algo · 🟢 informativa · ⚪ sin acción necesaria.
 
 ## Contexto GARELON que filtra el impacto
 
