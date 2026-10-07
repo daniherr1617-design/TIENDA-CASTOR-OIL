@@ -36,6 +36,7 @@ Eres el investigador semanal de marketing y e-commerce de GARELON. Esta ejecuci�
    git show origin/claude/festive-clarke-jub9rm:creative/CLAUDE.md
    git show origin/claude/festive-clarke-jub9rm:creative/COPY.md
    git show origin/claude/festive-clarke-jub9rm:creative/config/platforms.json
+   git show origin/claude/festive-clarke-jub9rm:creative/config/safe-zones.json
    ```
 
 ## 2. Investigar
@@ -52,7 +53,11 @@ Eres el investigador semanal de marketing y e-commerce de GARELON. Esta ejecuci�
 
   **Un resumen de buscador nunca es verificación**, y su contenido no se escribe como hecho confirmado.
 - **Jerarquía.** Clasifica cada novedad por quién lo dice: Oficial · Estudios y datasets · Medios especializados · Comunidad · Hipótesis (ver `topics.md`). Las cifras de agregadores son «no verificadas». Reddit, X y foros son experiencia de anunciantes, nunca confirmación.
-- **Límites de copy y hashtags.** Revisa si han cambiado los límites de `platforms.json` y `COPY.md`. No los edites: propón el cambio en la sección 7.
+- **Reglas de plataforma (revalidación).** Límites de caracteres, número de hashtags, formatos, zonas seguras, restricciones de copy y etiqueta de IA de `platforms.json`, `safe-zones.json` y `COPY.md` no son permanentes. Cada una lleva un nivel (VERIFICADA EN FUENTE OFICIAL · FUENTE OFICIAL NO ACCESIBLE DIRECTAMENTE · FUENTE SECUNDARIA · PENDIENTE DE VERIFICACIÓN) y una fecha. Cada semana:
+  1. busca si alguna ha cambiado;
+  2. intenta leer con `WebFetch` la documentación oficial de las que tengan más de 60 días o un nivel por debajo de VERIFICADA (empieza por la etiqueta de IA y el máximo de hashtags de Instagram);
+  3. en la sección 7, propón el valor, el nivel y la fecha nuevos (o solo la fecha, si se confirma lo mismo). Solo se propone VERIFICADA EN FUENTE OFICIAL si la URL está en «Fuentes leídas completas».
+  No edites esos archivos: están en la rama del Lab y los cambia el propietario o el Lab cuando lo apruebe.
 - No inventes fechas, cifras ni URL. Si falta la fecha de publicación, escribe «fecha no indicada».
 
 ## 3. Escribir el informe `creative/research/reports/HOY.md`

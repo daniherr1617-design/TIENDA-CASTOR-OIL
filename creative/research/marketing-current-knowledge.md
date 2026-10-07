@@ -1,6 +1,6 @@
 # Conocimiento de marketing vigente · GARELON
 
-> **Última actualización:** 2026-10-07 (reclasificación con el modelo de evidencia nuevo; contenido de `reports/2026-10-07.md` y de la consulta del Lab sobre copy, hashtags y etiquetas de IA).
+> **Última actualización:** 2026-10-07 (reclasificación con el modelo de evidencia nuevo; contenido de `reports/2026-10-07.md` y de la consulta del Lab sobre copy, hashtags y etiquetas de IA; corrección posterior: ninguna obligación de etiquetado de IA se da por confirmada sin fuente oficial).
 >
 > Aquí solo queda lo que **sigue siendo útil y vigente** para GARELON. Lo que se queda viejo o se contradice **no convive** con lo nuevo: sale del cuerpo y pasa al «Historial de cambios», que explica qué decía antes, qué dice ahora y por qué.
 
@@ -92,14 +92,14 @@ Un resumen de buscador **nunca** cuenta como verificación. A 2026-10-07 **ningu
 - **Estado:** vigente
 - **Impacto GARELON:** no se usa para el producto (R1). Como mucho, planos sin producto y con aviso de IA.
 
-### [K-TT-03] Etiqueta obligatoria del contenido de IA en anuncios
+### [K-TT-03] Etiqueta del contenido de IA en anuncios de TikTok (obligación sin verificar en fuente oficial)
 - **Tema:** TikTok · política de anuncios · IA
 - **Fecha:** desde el 2026-07-21 · comprobado 2026-10-07
 - **Fuente:** commonthreadco.com, stellarsearch.co.uk
 - **Evidencia:** Medio especializado · FUENTE SECUNDARIA (varias fuentes coinciden; la política oficial no se ha podido leer)
 - **Estado:** vigente
-- **Afirmación:** el contenido generado o muy editado con IA (imagen, voz, personas o escenas realistas) se etiqueta con el interruptor AIGC al subir el anuncio. TikTok lo detecta también por metadatos C2PA, y saltárselo escala hasta la suspensión de la cuenta.
-- **Impacto GARELON:** alto. Los vídeos base de Higgsfield llevan etiqueta de IA en TikTok (y aviso en Meta y en la UE, K-REG-01). Lo controlan `lab ingest --origen` y `lab check` del pack.
+- **Afirmación (según fuentes secundarias):** el contenido generado o muy editado con IA (imagen, voz, personas o escenas realistas) se etiquetaría con el interruptor AIGC al subir el anuncio; TikTok lo detectaría también por metadatos C2PA, y saltárselo podría acabar en la suspensión de la cuenta. No está comprobado en la política oficial (ads.tiktok.com bloqueado).
+- **Impacto GARELON:** alto. Para los vídeos de Higgsfield el Lab **recomienda** etiquetar (prudencia) y avisa con el nivel de evidencia; no lo presenta como obligación confirmada. Lo controlan `lab ingest --origen`, `config/platforms.json` → `etiqueta_ia` y `lab check` del pack. Prioridad de verificación: alta.
 
 ### [K-TT-04] TikTok Shop en España y ampliación europea
 - **Tema:** TikTok Shop · UE
@@ -240,7 +240,7 @@ Un resumen de buscador **nunca** cuenta como verificación. A 2026-10-07 **ningu
 - **Fuente:** walls.io, solidlabs.com
 - **Evidencia:** Medio especializado (agregador) · FUENTE SECUNDARIA (texto oficial y guía de la Comisión sin leer). No es asesoramiento jurídico
 - **Estado:** vigente
-- **Afirmación:** el contenido generado o manipulado con IA que parezca auténtico debe avisarse de forma visible o audible. Las etiquetas automáticas de las plataformas no bastarían por sí solas.
+- **Afirmación (según fuentes secundarias; texto oficial sin leer):** el contenido generado o manipulado con IA que parezca auténtico debería avisarse de forma visible o audible. Las etiquetas automáticas de las plataformas no bastarían por sí solas.
 - **Impacto GARELON:** registrar el origen de cada material (ya lo hace `lab ingest --origen`) y decidir el aviso anuncio a anuncio.
 
 ### [K-REG-02] Digital Fairness Act
@@ -293,4 +293,5 @@ Cuando una entrada cambia de criterio, se explica aquí: qué decía antes, qué
 | 2026-10-07 | K-TT-06 · K-REELS-02 · K-YT-01 · K-IA-03 | — | Entradas nuevas | Ampliación del Lab a copy, hashtags y Higgsfield |
 | 2026-10-07 | K-TT-04 | `✔ confirmado` (OFICIAL) | FUENTE OFICIAL NO ACCESIBLE DIRECTAMENTE | Nuevo criterio: el ✔ se basaba en un resumen de búsqueda de newsroom.tiktok.com, no en haber leído la página. Un snippet no cuenta como verificación |
 | 2026-10-07 | K-TT-05 (algoritmo de TikTok en EE. UU. reentrenado por la joint venture desde el 2026-01-22) | `✔` (MEDIO, 9to5mac) | **Retirada** | El ✔ no estaba justificado (fuente secundaria) y no tiene efecto en la UE: no es útil para GARELON |
+| 2026-10-07 | K-TT-03 | «Etiqueta obligatoria…» (se afirmaba como regla) | Obligación según fuentes secundarias, sin verificar en fuente oficial; el Lab la recomienda por prudencia | Corrección del propietario: ninguna obligación legal o de plataforma se da por confirmada sin fuente oficial |
 | 2026-10-07 | Todas | Estado `✔ / ~ / ✘` y evidencia OFICIAL…COMUNIDAD | Tipo de fuente + 5 etiquetas de verificación + estado vigente/dudoso | Ajustes del propietario al sistema semanal |
