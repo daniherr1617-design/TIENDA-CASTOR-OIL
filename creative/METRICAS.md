@@ -10,7 +10,7 @@ impresión → hook (para el scroll) → retención → clic → landing → car
 
 Exportar de Meta Ads Manager y TikTok Ads Manager por **anuncio**, con el nombre igual al ID del Lab (`ROSARIO_AD01_HOOK-CURIOSIDAD_V1`), y rellenar `metrics/plantilla.csv` (una fila por anuncio y periodo; `creativo_id` = ID del Lab, `ad_id` = ID numérico de la plataforma). Vale también pegar el export o una captura: Claude lo pasa a la plantilla.
 
-Cada ID tiene su pack (`packs/<ID>.md`) con **ángulo, variable, control, hipótesis y métrica de decisión**. El análisis empieza por ahí: ¿se cumplió la hipótesis en la métrica que decidimos de antemano? Los datos de Shopify (pedidos e ingresos reales) sirven para contrastar lo que atribuyen las plataformas.
+Cada ID tiene su pack (`packs/<ID>.md`) con **ángulo, variable, control, hipótesis y métrica principal**. El análisis empieza por ahí: ¿se cumplió la hipótesis en la métrica que decidimos de antemano? Los datos de Shopify (pedidos e ingresos reales) sirven para contrastar lo que atribuyen las plataformas.
 
 ## Definiciones
 
@@ -58,7 +58,7 @@ Fuente de cada definición: **[P]** métrica oficial de la plataforma · **[H]**
 ## Formato de la respuesta
 
 1. **Datos y calidad:** periodo, ventana de atribución, volumen y si basta para concluir.
-2. **Hipótesis del pack:** confirmada, refutada o sin datos suficientes, en la métrica de decisión.
+2. **Hipótesis del pack:** confirmada, refutada o sin datos suficientes, en la métrica principal.
 3. **Funnel:** cada etapa con su tasa y dónde está la caída principal.
 4. **Diagnóstico:** causa probable, como hipótesis, separando lo que es del creativo de lo que no (landing, oferta, tracking, CPM).
 5. **Siguiente test:** ID propuesto, variable única, control e hipótesis. Ya queda listo para `lab pack`.

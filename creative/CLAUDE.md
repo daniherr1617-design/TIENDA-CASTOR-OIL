@@ -25,8 +25,10 @@ vídeo existente → análisis → edición → hook → copy y descripciones �
 
 Los vídeos base los genera el propietario (p. ej. con **Higgsfield**). Claude trabaja **sobre ese material**: cortar, reordenar, quitar silencios, adaptar a 9:16, añadir hook, textos, subtítulos, CTA, zooms, transiciones, overlays, música y efectos, y sacar variantes. **No genera escenas ni vídeos nuevos** salvo petición expresa.
 
-- El material de IA que entrega el propietario es **fuente aprobada**. Aun así, Claude **avisa** si algo puede representar mal el producto (forma, piezas, colores, medalla, cruz, cierre, escala o materiales distintos de las referencias), o si una persona generada con IA podría parecer un cliente real dando testimonio (R14).
-- Se ingesta siempre con su origen: `lab ingest <vídeo> --name ROSARIO_HIGGS_01 --origen ia --herramienta Higgsfield`. De ahí sale la etiqueta de IA del pack.
+- El material de IA que entrega el propietario es **fuente aprobada**. Aun así, Claude **avisa** si algo puede representar mal el producto (forma, piezas, colores, medalla, cruz, cierre, escala o materiales distintos de las referencias).
+- **Personas generadas con IA.** Si sale una persona usando o enseñando el producto, no se asume que es un testimonio: se mira cómo se presenta. Como recurso visual o presentador, sí. Si parece una clienta real contando una experiencia que nunca ocurrió, se avisa al propietario: sería un testimonio falso (R14). Detalle en `COPY.md` § Personas generadas con IA.
+- **Etiqueta de IA.** Si el material es de IA, se avisa de que puede necesitar etiqueta, con el nivel de verificación de cada regla. No se presenta como definitiva una obligación que no se ha comprobado en la fuente oficial (`COPY.md` § Etiqueta de IA).
+- Se ingesta siempre con su origen: `lab ingest <vídeo> --name ROSARIO_HIGGS_01 --origen ia --herramienta Higgsfield`. De ahí salen los avisos de IA del pack.
 
 ## Cómo trabajar un vídeo (primero la estrategia, después la edición)
 
@@ -41,12 +43,23 @@ Los vídeos base los genera el propietario (p. ej. con **Higgsfield**). Claude t
    7. Textos en pantalla (pocos, legibles y dentro de la zona segura).
    8. CTA y en qué segundo aparece.
    9. Variantes que tiene sentido probar, cada una con **una sola variable**.
-   10. Avisos de fidelidad o de claims.
+   10. Avisos de fidelidad, de claims y de personas generadas con IA (¿recurso visual, presentador o riesgo de testimonio?).
    Si el material es flojo, decirlo y explicar por qué.
 3. **Editar:** `props/<ID>.json` → `lab render` (incluye `lab check`). Nombre `<PRODUCTO>_AD<nn>_<VARIABLE>-<VALOR>_V<n>`. Un error de claims bloquea; los avisos se resuelven o se explican.
 4. **Revisar visualmente** el QA y una hoja completa del render final. Que los controles técnicos pasen no basta.
-5. **Pack:** `lab pack props/<ID>.json` → completar `packs/<ID>.md` (hook, texto del vídeo, CTA, descripción por plataforma, hashtags razonados, comentario fijado, respuestas, variantes de descripción, ángulo, variable, hipótesis y métrica de decisión) → `lab check packs/<ID>.md --final`. Solo las plataformas donde se vaya a publicar. Guía: `COPY.md`.
-6. **Entregar:** vídeo + pack, qué se cambió y por qué, qué variable prueba cada variante y qué falta verificar (precio y envío en Shopify, etiqueta de IA, permisos de UGC, música con licencia).
+5. **Pack:** `lab pack props/<ID>.json` → completar `packs/<ID>.md` → borrar las secciones de las plataformas donde no se publique → `lab rules packs/<ID>.md` → `lab check packs/<ID>.md --final`. Guía: `COPY.md` (incluye la lista de campos del pack final).
+   - Copy **distinto por contexto**: tienda, TikTok orgánico, TikTok Ads, Instagram Reels, Meta Ads y YouTube Shorts. Se adaptan hook, descripción, CTA, longitud, tono, hashtags y comentario fijado; no se copia el mismo texto.
+   - Hashtags específicos y razonados uno a uno (producto, nicho, intención, audiencia, temática, país, tendencia, contexto). #viral, #fyp o #parati no se usan por popularidad. Si no hay datos de volumen de Creative Center, se dice.
+6. **Entregar:** vídeo + pack, qué se cambió y por qué, qué variable prueba cada variante y qué falta verificar (precio y envío en Shopify, etiqueta de IA, personas de IA, permisos de UGC, música con licencia, reglas de plataforma sin verificar).
+
+## Reglas de plataforma: nada es permanente
+
+Límites de caracteres, número de hashtags, formatos, zonas seguras, restricciones de copy y etiquetas de IA cambian. Están en `config/platforms.json` y `config/safe-zones.json`, cada una con nivel (VERIFICADA EN FUENTE OFICIAL · FUENTE OFICIAL NO ACCESIBLE DIRECTAMENTE · FUENTE SECUNDARIA · PENDIENTE DE VERIFICACIÓN) y fecha.
+
+- Antes de usar una como criterio importante: intentar leer la documentación oficial; si no se puede, citar el nivel.
+- Solo una regla verificada en fuente oficial bloquea un pack; el resto avisa.
+- La investigación semanal las revalida y propone los cambios; aquí se aplican cuando el propietario los aprueba.
+- Mejor «no está verificado todavía» que una afirmación falsa. Sin convertir esto en burocracia: el pack genera solo la parte de cumplimiento.
 
 ## Investigación antes de publicar (cuando aporte)
 
@@ -62,7 +75,7 @@ Búsqueda reciente de tendencias, sonidos, formatos, hooks, memes, hashtags, anu
 
 ## Métricas
 
-`METRICAS.md`. Se lee el resultado contra la **hipótesis y la métrica de decisión del pack** (`packs/<ID>.md`). Se localiza la etapa que falla (hook → retención → clic → landing → oferta → checkout → compra) y se propone el siguiente test con una sola variable. Nunca concluir «el anuncio es malo» sin localizar la etapa.
+`METRICAS.md`. Se lee el resultado contra la **hipótesis y la métrica principal del pack** (`packs/<ID>.md`). Se localiza la etapa que falla (hook → retención → clic → landing → oferta → checkout → compra) y se propone el siguiente test con una sola variable. Nunca concluir «el anuncio es malo» sin localizar la etapa.
 
 ## MCP oficiales de Meta y TikTok (cuando se conecten)
 

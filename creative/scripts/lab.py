@@ -9,7 +9,9 @@
   lab cuts NOMBRE                      propone cortes sin silencios y reubica las palabras en la línea final
   lab check props/ID.json              claims prohibidos + coherencia de las props
   lab pack props/ID.json               crea packs/ID.md (copy, descripciones, hashtags, hipótesis) a partir de las props
-  lab check packs/ID.md [--final]      claims + límites de cada plataforma + hashtags + etiqueta IA
+  lab check packs/ID.md [--final]      claims, reglas de plataforma con su nivel de verificación, hashtags,
+                                       etiqueta IA, personas IA y copy repetido entre plataformas
+  lab rules packs/ID.md                regenera «Reglas de plataforma usadas» desde config/platforms.json
   lab render props/ID.json             check → Remotion → sonoridad/faststart → QA → manifest
   lab qa archivo.mp4                   especificaciones, sonoridad y fotogramas con zonas seguras
 
@@ -107,13 +109,15 @@ def cmd_ingest(a):
         print(f"+ original: {dst.relative_to(ROOT)} (solo lectura)")
     digest = sha256(dst)
     (ORIG / f"{a.name}{ext}.sha256").write_text(f"{digest}  {dst.name}\n")
-    # Origen del material: decide la etiqueta de IA (TikTok, Meta, Ley de IA art. 50) y el nivel de revisión de fidelidad.
+    # Origen del material: decide si el pack avisa de la etiqueta de IA y el nivel de revisión de fidelidad.
     meta = {"nombre": a.name, "archivo": dst.name, "origen": a.origen, "herramienta": a.herramienta or "",
             "ingestado": dt.datetime.now().isoformat(timespec="seconds"), "sha256": digest}
     (ORIG / f"{a.name}.origen.json").write_text(json.dumps(meta, indent=2, ensure_ascii=False) + "\n")
     print(f"  origen: {ORIGINS[a.origen]}{' (' + a.herramienta + ')' if a.herramienta else ''}")
     if a.origen in ("ia", "editado-ia"):
-        print("  ⚠ material con IA: revisar fidelidad (lab fidelity) y activar la etiqueta de IA al publicar")
+        print("  ⚠ material con IA: revisar fidelidad (lab fidelity). Puede necesitar etiqueta de IA al publicar "
+              "(obligación sin verificar en fuente oficial: ver COPY.md). Si sale una persona, que no parezca "
+              "una clienta contando su experiencia")
 
     if ext in IMAGE_EXT or ext in AUDIO_EXT:
         print(f"  sha256 {digest[:16]}…  (imagen/audio: se usa directamente desde 00_originales)")
@@ -434,18 +438,29 @@ def cmd_fidelity(a):
 
 
 # ---------------------------------------------------------------- pack
+# Niveles de verificación de las reglas de plataforma (config/platforms.json). Solo la primera bloquea.
+VERIFIED = "VERIFICADA EN FUENTE OFICIAL"
+RULE_LEVELS = (VERIFIED, "FUENTE OFICIAL NO ACCESIBLE DIRECTAMENTE", "FUENTE SECUNDARIA", "PENDIENTE DE VERIFICACIÓN")
+PERSONAS = ("NO HAY", "RECURSO VISUAL", "PRESENTADOR", "RIESGO DE TESTIMONIO")
+# Primera persona contando una experiencia: en boca de una persona generada con IA sería un testimonio falso (R14).
+TESTIMONY_RE = re.compile(
+    r"\b(me (encanta|encantó|llegó|la regalaron|cambió)|(me )?la compré|lo compré|la (llevo|uso|tengo) (desde|cada|todos)|"
+    r"desde que la (llevo|tengo|compré|uso)|llevo \w+ (días|semanas|meses)|mi experiencia|os cuento|"
+    r"yo (la|lo) (uso|llevo|compré)|no me la quito|mi favorita)\b", re.I)
+
 PACK_TEMPLATE = """# {id}
 
 | Campo | Valor |
 |---|---|
 | Vídeo | `media/03_finales/{id}.mp4` |
+| Origen del material | {origen} |
+| Plataformas | PENDIENTE (borra abajo las secciones de las plataformas donde no se publique) |
 | Ángulo | PENDIENTE |
 | Variable que probamos | {variable} |
 | Control | PENDIENTE (ID del anuncio con el que se compara) |
 | Hipótesis | PENDIENTE (qué métrica debería mejorar y por qué) |
-| Métrica de decisión | PENDIENTE (hook rate · hold · CTR de enlace · CVR…) |
-| Plataformas | PENDIENTE (TikTok orgánico · TikTok Ads · Instagram Reels · Meta Ads · YouTube Shorts) |
-| Origen del material | {origen} |
+| Métrica principal | PENDIENTE (hook rate · hold · CTR de enlace · CVR…) |
+| Personas generadas con IA | {personas} |
 | Etiqueta IA | {etiqueta} |
 | Estado | borrador |
 
@@ -453,7 +468,7 @@ PACK_TEMPLATE = """# {id}
 
 {hook}
 
-## Texto del vídeo
+## Body
 
 {texto}
 
@@ -463,33 +478,40 @@ PACK_TEMPLATE = """# {id}
 
 ## TikTok orgánico
 
-**Descripción:** PENDIENTE (palabra clave que buscaría el cliente en los primeros 100 caracteres)
-**Hashtags:** PENDIENTE (3-5)
+**Hook:** PENDIENTE (primera línea o texto inicial para TikTok; «igual que el vídeo» si no cambia)
+**Descripción:** PENDIENTE (palabra clave que buscaría el cliente al principio)
+**Hashtags:** PENDIENTE
+**CTA:** PENDIENTE
+**Comentario fijado:** PENDIENTE (o «no aplica»)
 
 ## TikTok Ads
 
-**Texto del anuncio:** PENDIENTE (máx. 100 caracteres; en Spark Ads se usa la descripción del post orgánico)
+**Hook:** PENDIENTE
+**Texto del anuncio:** PENDIENTE (en Spark Ads se usa la descripción del post orgánico)
+**CTA (botón):** PENDIENTE
 
 ## Instagram Reels
 
-**Descripción:** PENDIENTE (lo importante en los primeros ~125 caracteres)
-**Hashtags:** PENDIENTE (máx. 5 entre descripción y primer comentario)
+**Hook:** PENDIENTE
+**Descripción:** PENDIENTE (lo importante al principio)
+**Hashtags:** PENDIENTE
+**CTA:** PENDIENTE
+**Comentario fijado:** PENDIENTE (o «no aplica»)
 
 ## Meta Ads
 
-**Texto principal:** PENDIENTE (~125 caracteres visibles en el feed; en Reels se ve menos)
-**Título:** PENDIENTE (≤27 recomendado, 40 máx.)
-**Descripción:** PENDIENTE (≤27 recomendado, 30 máx.)
+**Hook:** PENDIENTE
+**Texto principal:** PENDIENTE
+**Título:** PENDIENTE
+**Descripción:** PENDIENTE
+**CTA (botón):** PENDIENTE
 
 ## YouTube Shorts
 
-**Título:** PENDIENTE (máx. 100)
+**Título:** PENDIENTE
 **Descripción:** PENDIENTE
-**Hashtags:** PENDIENTE (3-5; se muestran 3 junto al título)
-
-## Comentario fijado
-
-PENDIENTE
+**Hashtags:** PENDIENTE
+**Comentario fijado:** PENDIENTE (o «no aplica»)
 
 ## Respuestas a comentarios
 
@@ -501,16 +523,20 @@ PENDIENTE (cada variante cambia una sola cosa: ángulo, primera frase o CTA)
 
 ## Hashtags: por qué
 
-PENDIENTE (los principales, una línea cada uno: nicho · producto · intención · tendencia · amplio)
+PENDIENTE (cada hashtag, una línea: producto · nicho · intención · audiencia · temática · país · tendencia · contexto del vídeo)
+- Volumen y tendencia: NO DISPONIBLE (sin acceso a TikTok Creative Center desde este entorno) salvo que el propietario aporte datos.
 
-## Antes de publicar
+## Claims utilizados
 
-- [ ] Precio y envío del copy = Shopify el día de publicación
-- [ ] Etiqueta IA: {etiqueta_corta}
-- [ ] Mejoras automáticas con IA desactivadas (Advantage+ Creative en Meta, Smart+ Creative en TikTok) y vista previa revisada en cada ubicación
-- [ ] Nombre del anuncio en la plataforma = `{id}`
-- [ ] Música de la biblioteca comercial de la plataforma o con licencia
-- [ ] Ninguna persona generada con IA presentada como cliente real ni dando testimonio
+{claims}
+
+## Avisos de cumplimiento
+
+{avisos}
+
+## Reglas de plataforma usadas
+
+{reglas}
 
 ## Notas internas
 
@@ -523,6 +549,60 @@ def origin_of(src: str) -> dict | None:
     name = parts[1] if parts[0] == "01_intermedio" else Path(src).stem
     f = ORIG / f"{name}.origen.json"
     return json.loads(f.read_text()) if f.exists() else {"nombre": name, "origen": None}
+
+
+def rule_line(where: str, r: dict) -> str:
+    return f"- {where}: {r['texto']} · **{r['evidencia']}** · {r['fecha']}"
+
+
+def rules_block(platforms: list[str], ai: bool) -> str:
+    """Reglas de plataforma que se aplican al pack, con su nivel de verificación (de config/platforms.json)."""
+    plat = json.loads((CONFIG / "platforms.json").read_text())
+    lines = []
+    for name in platforms:
+        spec = plat["secciones"].get(name, {})
+        for fname, lim in spec.get("campos", {}).items():
+            lines.append(rule_line(f"{name} · {fname}", lim))
+        if spec.get("hashtags"):
+            lines.append(rule_line(f"{name} · Hashtags", spec["hashtags"]))
+        if ai and name in plat["etiqueta_ia"]:
+            lines.append(rule_line(f"{name} · Etiqueta IA", plat["etiqueta_ia"][name]))
+    if ai:
+        k = "UE (Ley de IA, art. 50)"
+        lines.append(rule_line(k, plat["etiqueta_ia"][k]))
+    lines.append("- Zonas seguras (config/safe-zones.json): **FUENTE SECUNDARIA**; revisar la vista previa de cada ubicación")
+    lines.append("- Nada de esto es permanente: lo revalida la investigación semanal. Regenerar con `lab rules packs/<ID>.md`")
+    return "\n".join(lines)
+
+
+def avisos_block(ai: bool, unknown: bool) -> str:
+    out = []
+    if ai or unknown:
+        out.append("- [ ] **Etiqueta de IA.** El material " + ("es de IA" if ai else "tiene origen sin registrar") +
+                   ": puede necesitar etiqueta en TikTok, Meta, YouTube y por la Ley de IA (art. 50). Ninguna de estas "
+                   "obligaciones está verificada en fuente oficial (ver «Reglas de plataforma usadas»). Recomendado: "
+                   "etiquetar y comprobar el interruptor o la etiqueta en la interfaz al subir")
+        out.append("- [ ] **Personas generadas con IA.** Pueden salir como recurso visual o presentador, nunca contando "
+                   "una experiencia personal que no ocurrió (testimonio falso, R14)")
+    out += ["- [ ] Precio y envío del copy = Shopify el día de publicación",
+            "- [ ] Mejoras automáticas con IA desactivadas (Advantage+ Creative en Meta, Smart+ Creative en TikTok) "
+            "y vista previa revisada en cada ubicación",
+            "- [ ] Música de la biblioteca comercial de la plataforma o con licencia",
+            "- [ ] Sin ocasiones concretas salvo petición (D31) ni urgencia o recuentos (R9, R14)"]
+    return "\n".join(out)
+
+
+def claims_block(texts: list[str]) -> str:
+    conf = json.loads((CONFIG / "claims.json").read_text())["confirmados"]
+    joined = " ".join(texts).lower()
+    found = [c for c in conf if all(w in joined for w in claim_words(c)[:2])]
+    if not found:
+        return "PENDIENTE (los de config/claims.json → confirmados que aparezcan en el vídeo o el copy; uno por línea)"
+    return "\n".join(f"- {c}" for c in found) + "\n- (revisar: añadir los que use el copy de cada plataforma)"
+
+
+def claim_words(s: str) -> list[str]:
+    return [w for w in re.findall(r"[a-záéíóúñ0-9]+", s.lower()) if len(w) > 3]
 
 
 def cmd_pack(a):
@@ -544,14 +624,12 @@ def cmd_pack(a):
             uses_ai |= o["origen"] in ("ia", "editado-ia")
             lines.append(f"{o['nombre']}: {o['origen']}{' (' + o['herramienta'] + ')' if o.get('herramienta') else ''}")
     if uses_ai:
-        etiqueta = "SÍ (material generado o retocado con IA)"
-        corta = "activar «contenido generado por IA» en TikTok; revisar «Información de IA» en Meta"
+        etiqueta = "SÍ (recomendada; la obligación no está verificada en fuente oficial, ver «Avisos de cumplimiento»)"
     elif unknown:
         etiqueta = "PENDIENTE (hay material sin origen registrado)"
-        corta = "decidir cuando se conozca el origen de todo el material"
     else:
         etiqueta = "NO (sin material generado con IA)"
-        corta = "no aplica"
+    personas = ("PENDIENTE (" + " · ".join(PERSONAS) + ")") if uses_ai or unknown else "NO HAY"
     m = re.match(r"^[A-Z0-9]+_AD\d+_([A-Z0-9]+)-([A-Z0-9-]+)_V\d+$", ad_id)
     variable = f"{m.group(1).capitalize()} ({m.group(2).lower()})" if m else "PENDIENTE"
     hook = props.get("hook", {}).get("text") or "PENDIENTE (hook visual: describir el primer plano)"
@@ -561,53 +639,153 @@ def cmd_pack(a):
         texts.append("Subtítulos: " + " ".join(w["text"] for w in words))
     cta = props.get("cta")
     out.write_text(PACK_TEMPLATE.format(
-        id=ad_id, variable=variable, origen=" · ".join(lines), etiqueta=etiqueta, etiqueta_corta=corta, hook=hook,
-        texto="\n".join(f"- {x}" for x in texts) or "PENDIENTE",
-        cta=f"{cta['text']}" + (f" · {cta['sub']}" if cta.get("sub") else "") if cta else "PENDIENTE"))
+        id=ad_id, variable=variable, origen=" · ".join(lines), etiqueta=etiqueta, personas=personas, hook=hook,
+        texto="\n".join(f"- {x}" for x in texts) or "PENDIENTE (textos en pantalla, voz o subtítulos entre hook y CTA)",
+        cta=f"{cta['text']}" + (f" · {cta['sub']}" if cta.get("sub") else "") if cta else "PENDIENTE",
+        claims=claims_block([hook] + texts + ([cta["text"]] if cta else [])),
+        avisos=avisos_block(uses_ai, unknown),
+        reglas=rules_block(list(json.loads((CONFIG / "platforms.json").read_text())["secciones"]), uses_ai or unknown)))
     print(f"+ {out.relative_to(ROOT)}  (origen: {' · '.join(lines)})")
+    if uses_ai:
+        print("  ⚠ material con IA: el pack recomienda etiquetarlo; la obligación está sin verificar en fuente oficial")
     print("  Rellenar los PENDIENTE y validar con: lab check " + str(out.relative_to(ROOT)) + " --final")
 
 
-INTERNAL_SECTIONS = ("Hashtags: por qué", "Antes de publicar", "Notas internas")
+INTERNAL_SECTIONS = ("Hashtags: por qué", "Avisos de cumplimiento", "Reglas de plataforma usadas", "Notas internas")
+COPY_FIELDS = ("Descripción", "Texto del anuncio", "Texto principal")
 HASHTAG_RE = re.compile(r"#[^\s#.,;:!?¿¡()]+")
+
+
+def split_pack(text: str) -> tuple[str, dict, dict]:
+    parts = re.split(r"^## ", text, flags=re.M)
+    head = parts[0]
+    secs = {p.splitlines()[0].strip(): p.split("\n", 1)[1] if "\n" in p else "" for p in parts[1:]}
+    table = {k.strip(): v.strip() for k, v in re.findall(r"^\|\s*([^|]+?)\s*\|\s*(.*?)\s*\|\s*$", head, flags=re.M)}
+    return head, secs, table
+
+
+def pack_flags(table: dict) -> tuple[bool, bool]:
+    origen = table.get("Origen del material", "")
+    return bool(re.search(r"\b(ia|editado-ia)\b", origen, re.I)), "NO REGISTRADO" in origen
+
+
+def cmd_rules(a):
+    """Reescribe «Reglas de plataforma usadas» del pack con las reglas vigentes de config/platforms.json."""
+    path = Path(a.pack)
+    text = path.read_text()
+    _, secs, table = split_pack(text)
+    plat = json.loads((CONFIG / "platforms.json").read_text())
+    ai, unknown = pack_flags(table)
+    block = rules_block([n for n in plat["secciones"] if n in secs], ai or unknown)
+    new, n = re.subn(r"(^## Reglas de plataforma usadas\n\n).*?(?=^## |\Z)", lambda m: m.group(1) + block + "\n\n",
+                     text, flags=re.M | re.S)
+    if not n:
+        new = re.sub(r"(?=^## Notas internas)", "## Reglas de plataforma usadas\n\n" + block + "\n\n", text, flags=re.M)
+        if new == text:
+            new = text.rstrip() + "\n\n## Reglas de plataforma usadas\n\n" + block + "\n"
+    path.write_text(new)
+    print(f"+ {path}: «Reglas de plataforma usadas» actualizada")
+
+
+def is_pending(s: str) -> bool:
+    """PENDIENTE = por rellenar. «PENDIENTE DE VERIFICACIÓN» es un nivel de evidencia, no un hueco."""
+    return bool(re.search(r"PENDIENTE(?! DE VERIFICACI)", s))
 
 
 def check_pack(path: Path, final: bool) -> tuple[list[str], list[str], list[str]]:
     text = path.read_text()
-    rules = json.loads((CONFIG / "claims.json").read_text())["reglas"]
+    rules = json.loads((CONFIG / "claims.json").read_text())
     plat = json.loads((CONFIG / "platforms.json").read_text())
     errors, warns, info = [], [], []
-    parts = re.split(r"^## ", text, flags=re.M)
-    head, secs = parts[0], {p.splitlines()[0].strip(): p.split("\n", 1)[1] if "\n" in p else "" for p in parts[1:]}
-    table = {k.strip(): v.strip() for k, v in re.findall(r"^\|\s*([^|]+?)\s*\|\s*(.*?)\s*\|\s*$", head, flags=re.M)}
+    soft = errors if final else warns
+    head, secs, table = split_pack(text)
+    today = dt.date.today()
 
     if not head.startswith(f"# {path.stem}"):
         errors.append(f"El título debe ser «# {path.stem}» (= nombre del archivo y del anuncio)")
-    for k in ("Vídeo", "Ángulo", "Variable que probamos", "Hipótesis", "Origen del material", "Etiqueta IA"):
+    for k in ("Vídeo", "Origen del material", "Plataformas", "Ángulo", "Variable que probamos", "Hipótesis",
+              "Métrica principal", "Personas generadas con IA", "Etiqueta IA"):
         if k not in table:
             errors.append(f"Falta la fila «{k}» en la tabla")
-    if re.search(r"\b(ia|editado-ia)\b", table.get("Origen del material", ""), re.I) and \
-            not table.get("Etiqueta IA", "").upper().startswith(("SÍ", "SI")):
-        errors.append("Hay material con IA y «Etiqueta IA» no es SÍ (TikTok y Meta lo exigen; Ley de IA art. 50)")
-    if "NO REGISTRADO" in table.get("Origen del material", ""):
-        (errors if final else warns).append("Origen del material NO REGISTRADO: no se puede decidir la etiqueta de IA")
+    for s in ("Hook", "Body", "CTA", "Claims utilizados", "Avisos de cumplimiento", "Reglas de plataforma usadas"):
+        if s not in secs:
+            soft.append(f"Falta la sección «## {s}»")
+    ai, unknown = pack_flags(table)
+
+    # Etiqueta de IA: se avisa, sin presentar como definitiva una obligación no verificada.
+    etiqueta = table.get("Etiqueta IA", "").upper()
+    if ai and etiqueta.startswith("NO"):
+        ev = sorted({v["evidencia"] for k, v in plat["etiqueta_ia"].items() if not k.startswith("_")})
+        warns.append(f"Material con IA y «Etiqueta IA» = NO. Puede que TikTok, Meta o la Ley de IA la pidan "
+                     f"(evidencia: {' / '.join(ev)}). Si no se etiqueta, explicar por qué en «Notas internas»")
+    if unknown:
+        soft.append("Origen del material NO REGISTRADO: no se puede valorar si hace falta etiqueta de IA")
+
+    # Personas generadas con IA: recurso visual o presentador sí; experiencia personal inventada no.
+    personas = table.get("Personas generadas con IA", "").upper()
+    if personas and not personas.startswith("PENDIENTE") and not personas.startswith(PERSONAS):
+        warns.append(f"«Personas generadas con IA»: usa uno de {' · '.join(PERSONAS)}")
+    if personas.startswith("RIESGO DE TESTIMONIO"):
+        soft.append("Una persona generada con IA parece contar una experiencia real: sería un testimonio falso (R14). "
+                    "Reformular (presentador o voz de marca, sin experiencia personal) o no usar ese plano")
+    if ai or unknown or personas.startswith(("PRESENTADOR", "RECURSO", "RIESGO")):
+        for name, body in secs.items():
+            if name in INTERNAL_SECTIONS or name == "Respuestas a comentarios":
+                continue
+            for m in TESTIMONY_RE.finditer(body):
+                warns.append(f"{name}: «{m.group(0)}» suena a experiencia personal. Si lo dice o lo ilustra una "
+                             f"persona generada con IA, sería un testimonio falso (R14)")
+
     if not (FINAL / f"{path.stem}.mp4").exists():
         warns.append(f"No está media/03_finales/{path.stem}.mp4 en este contenedor (normal si es otra sesión)")
 
-    pend = [k for k, v in table.items() if "PENDIENTE" in v] + \
-           [s for s, body in secs.items() if s != "Notas internas" and "PENDIENTE" in body]
+    pend = [k for k, v in table.items() if is_pending(v)] + \
+           [s for s, body in secs.items() if s != "Notas internas" and is_pending(body)]
     if pend:
-        (errors if final else warns).append(f"Por completar: {', '.join(pend)}")
+        soft.append(f"Por completar: {', '.join(pend)}")
 
     for name, body in secs.items():
         if name in INTERNAL_SECTIONS:
             continue
-        for r in rules:
+        for r in rules["reglas"]:
             for m in re.finditer(r["patron"], body, re.I):
                 msg = f"{name}: «{m.group(0)}» → {r['motivo']}"
                 (errors if r["nivel"] == "error" else warns).append(msg)
 
+    # Claims utilizados: cada uno debe estar entre los confirmados del producto.
+    confirmed = [set(claim_words(c)) for c in rules["confirmados"]]
+    for line in re.findall(r"^- (.+)$", secs.get("Claims utilizados", ""), flags=re.M):
+        w = set(claim_words(line))
+        if line.startswith("(") or not w:
+            continue
+        if not any(c and (c <= w or w <= c) for c in confirmed):
+            warns.append(f"Claims utilizados: «{line}» no está entre los confirmados de config/claims.json")
+
+    # Reglas de plataforma: nivel de verificación, antigüedad y si el pack está al día.
+    def rule_issue(where: str, r: dict, msg: str, hard: bool):
+        lvl = r.get("evidencia", "PENDIENTE DE VERIFICACIÓN")
+        if hard and lvl == VERIFIED:
+            errors.append(f"{where}: {msg}")
+        else:
+            warns.append(f"{where}: {msg} · regla con {lvl} ({r.get('fecha', 'sin fecha')}): comprobar en la interfaz al subir")
+
+    def stale(where: str, r: dict):
+        try:
+            age = (today - dt.date.fromisoformat(r["fecha"])).days
+        except (KeyError, ValueError):
+            age = None
+        if age is None or age > plat.get("revalidar_dias", 60):
+            info.append(f"{where}: regla comprobada {r.get('fecha', 'nunca')}; revalidar (investigación semanal o "
+                        f"documentación oficial) antes de usarla como criterio importante")
+
+    present = [n for n in plat["secciones"] if n in secs]
+    expected = rules_block(present, ai or unknown).strip()
+    if "Reglas de plataforma usadas" in secs and secs["Reglas de plataforma usadas"].strip() != expected:
+        warns.append("«Reglas de plataforma usadas» no coincide con config/platforms.json ni con las plataformas del "
+                     "pack: regenerar con `lab rules " + str(path) + "`")
+
     why = secs.get("Hashtags: por qué", "").lower()
+    copies = {}
     for name, spec in plat["secciones"].items():
         body = secs.get(name)
         if body is None:
@@ -615,25 +793,31 @@ def check_pack(path: Path, final: bool) -> tuple[list[str], list[str], list[str]
         fields = {}
         for m in re.finditer(r"^\*\*(.+?):\*\*[ \t]*(.*?)(?=^\*\*.+?:\*\*|\Z)", body, flags=re.M | re.S):
             fields[m.group(1).strip()] = m.group(2).strip()
+        for fname in COPY_FIELDS:
+            v = fields.get(fname, "")
+            if v and not is_pending(v):
+                copies.setdefault(re.sub(r"\W+", " ", v.lower()).strip(), []).append(f"{name} · {fname}")
         for fname, lim in spec.get("campos", {}).items():
             val = fields.get(fname)
+            where = f"{name} · {fname}"
             if val is None:
                 errors.append(f"{name}: falta el campo **{fname}:**")
                 continue
-            if "PENDIENTE" in val:
+            if is_pending(val):
                 continue
+            stale(where, lim)
             full = val + (" " + fields["Hashtags"] if fname == spec.get("hashtags_en") and fields.get("Hashtags") else "")
             n = len(full)
             if lim.get("max") and n > lim["max"]:
-                errors.append(f"{name} · {fname}: {n} caracteres (máx. {lim['max']})")
+                rule_issue(where, lim, f"{n} caracteres (máx. {lim['max']})", True)
             elif lim.get("recomendado") and n > lim["recomendado"]:
-                warns.append(f"{name} · {fname}: {n} caracteres (recomendado ≤{lim['recomendado']}; se puede cortar)")
+                rule_issue(where, lim, f"{n} caracteres (recomendado ≤{lim['recomendado']}; se puede cortar)", False)
             if lim.get("visible") and n > lim["visible"]:
-                info.append(f"{name} · {fname}: se ven ~{lim['visible']} de {n} caracteres antes de «más»")
+                info.append(f"{where}: se ven ~{lim['visible']} de {n} caracteres antes de «más» ({lim['evidencia']})")
         hs_spec = spec.get("hashtags")
-        tags = [h for v in fields.values() if "PENDIENTE" not in v for h in HASHTAG_RE.findall(v)]
+        tags = [h for v in fields.values() if not is_pending(v) for h in HASHTAG_RE.findall(v)]
         raw = fields.get("Hashtags", "")
-        if raw and "PENDIENTE" not in raw:
+        if raw and not is_pending(raw):
             bad = [w for w in raw.split() if not w.startswith("#")]
             if bad:
                 errors.append(f"{name}: en **Hashtags:** solo hashtags sin espacios (sobra: {' '.join(bad[:5])})")
@@ -641,19 +825,32 @@ def check_pack(path: Path, final: bool) -> tuple[list[str], list[str], list[str]
             if tags:
                 warns.append(f"{name}: lleva hashtags ({' '.join(tags[:5])}); en este formato no aportan")
             continue
+        if tags:
+            stale(f"{name} · Hashtags", hs_spec)
         low = [h.lower() for h in tags]
         if len(set(low)) < len(low):
             warns.append(f"{name}: hashtags repetidos")
         if hs_spec.get("max") and len(tags) > hs_spec["max"]:
-            errors.append(f"{name}: {len(tags)} hashtags (máx. {hs_spec['max']}: {hs_spec.get('motivo', '')})")
-        lo, hi = hs_spec.get("recomendado", [0, 99])
-        if tags and not lo <= len(tags) <= hi and not (hs_spec.get("max") and len(tags) > hs_spec["max"]):
-            warns.append(f"{name}: {len(tags)} hashtags (recomendado {lo}-{hi})")
+            rule_issue(f"{name} · Hashtags", hs_spec, f"{len(tags)} hashtags (máx. {hs_spec['max']})", True)
+        else:
+            lo, hi = hs_spec.get("recomendado", [0, 99])
+            if tags and not lo <= len(tags) <= hi:
+                rule_issue(f"{name} · Hashtags", hs_spec, f"{len(tags)} hashtags (recomendado {lo}-{hi})", False)
         for h in tags:
-            if h[1:].lower() in plat["hashtags_genericos"] and h.lower() not in why:
-                warns.append(f"{name}: {h} es genérico; úsalo solo si «Hashtags: por qué» explica qué aporta")
-    return errors, warns, info
+            # Razonado = tiene su propia línea «- #tag: …» (mencionarlo como descartado no cuenta).
+            reasoned = re.search(rf"^\s*-\s*{re.escape(h.lower())}(?![\w])", why, flags=re.M)
+            if h[1:].lower() in plat["hashtags_genericos"] and not reasoned:
+                warns.append(f"{name}: {h} es genérico; úsalo solo si «Hashtags: por qué» explica qué aporta a este vídeo")
+            elif final and not reasoned:
+                warns.append(f"{name}: {h} no está razonado en «Hashtags: por qué»")
+    if why and "volumen" not in why:
+        warns.append("«Hashtags: por qué» no dice de dónde salen los datos de volumen (o que no hay)")
 
+    # El mismo texto en varias plataformas: se adapta, no se copia (excepción: Spark Ads usa el post orgánico).
+    for where in copies.values():
+        if len(where) > 1 and not (len(where) == 2 and all(w.startswith("TikTok") for w in where)):
+            warns.append(f"Mismo texto en {' y '.join(where)}: adaptar hook, longitud, tono y CTA a cada plataforma")
+    return errors, warns, info
 
 
 # ---------------------------------------------------------------- render
@@ -795,6 +992,7 @@ def main():
     s.set_defaults(fn=cmd_check)
     s = sub.add_parser("pack"); s.add_argument("props"); s.add_argument("--force", action="store_true")
     s.set_defaults(fn=cmd_pack)
+    s = sub.add_parser("rules"); s.add_argument("pack"); s.set_defaults(fn=cmd_rules)
     s = sub.add_parser("render"); s.add_argument("props"); s.add_argument("--concurrency", type=int)
     s.set_defaults(fn=cmd_render)
     s = sub.add_parser("qa"); s.add_argument("file"); s.add_argument("--platform", default="universal")

@@ -1,31 +1,44 @@
 {
-  "_nota": "Límites de texto y hashtags que usa `lab check packs/ID.md`. Comprobado el 2026-10-07 con fuentes secundarias (ver COPY.md); la investigación semanal los revisa. max = límite duro (error) · recomendado = se puede cortar (aviso) · visible = caracteres antes de «más» (info).",
+  "_nota": "Reglas de plataforma que usa `lab check packs/ID.md` y que `lab pack` copia al pack con su nivel de verificación. NO son permanentes: las plataformas las cambian. Cada regla lleva `evidencia` (VERIFICADA EN FUENTE OFICIAL · FUENTE OFICIAL NO ACCESIBLE DIRECTAMENTE · FUENTE SECUNDARIA · PENDIENTE DE VERIFICACIÓN) y `fecha` (última comprobación). Solo una regla VERIFICADA EN FUENTE OFICIAL bloquea (error); el resto avisa. Con más de `revalidar_dias` días desde la fecha, lab check pide revalidarla. Fuentes en COPY.md. La investigación semanal las revisa y propone cambios; no los aplica. max = límite (error solo si verificado) · recomendado = práctica (aviso) · visible = caracteres antes de «más» (info).",
+  "revalidar_dias": 60,
   "secciones": {
     "TikTok orgánico": {
-      "campos": {"Descripción": {"max": 4000, "visible": 100}},
+      "campos": {"Descripción": {"max": 4000, "visible": 100, "evidencia": "FUENTE SECUNDARIA", "fecha": "2026-10-07", "texto": "descripción de hasta 4.000 caracteres en la app (2.200 por API), ~100 visibles"}},
       "hashtags_en": "Descripción",
-      "hashtags": {"recomendado": [3, 5]}
+      "hashtags": {"recomendado": [3, 5], "evidencia": "FUENTE SECUNDARIA", "fecha": "2026-10-07", "texto": "3-5 hashtags concretos es práctica habitual, no un límite de TikTok"}
     },
     "TikTok Ads": {
-      "campos": {"Texto del anuncio": {"max": 100}}
+      "campos": {"Texto del anuncio": {"max": 100, "evidencia": "FUENTE SECUNDARIA", "fecha": "2026-10-07", "texto": "texto del anuncio In-Feed de 1-100 caracteres; en Spark Ads se usa la descripción del post"}}
     },
     "Instagram Reels": {
-      "campos": {"Descripción": {"max": 2200, "visible": 125}},
+      "campos": {"Descripción": {"max": 2200, "visible": 125, "evidencia": "FUENTE SECUNDARIA", "fecha": "2026-10-07", "texto": "descripción de hasta 2.200 caracteres, ~125 visibles"}},
       "hashtags_en": "Descripción",
-      "hashtags": {"max": 5, "recomendado": [3, 5], "motivo": "límite de Instagram desde diciembre de 2025, descripción y primer comentario juntos"}
+      "hashtags": {"max": 5, "recomendado": [3, 5], "evidencia": "FUENTE SECUNDARIA", "fecha": "2026-10-07", "texto": "máximo 5 hashtags desde diciembre de 2025, descripción y primer comentario juntos (varios medios coinciden)"}
     },
     "Meta Ads": {
       "campos": {
-        "Texto principal": {"visible": 125},
-        "Título": {"max": 40, "recomendado": 27},
-        "Descripción": {"max": 30, "recomendado": 27}
+        "Texto principal": {"visible": 125, "evidencia": "FUENTE SECUNDARIA", "fecha": "2026-10-07", "texto": "~125 caracteres visibles en el feed; en Reels menos"},
+        "Título": {"max": 40, "recomendado": 27, "evidencia": "FUENTE SECUNDARIA", "fecha": "2026-10-07", "texto": "título ≤27 recomendado, 40 máx."},
+        "Descripción": {"max": 30, "recomendado": 27, "evidencia": "FUENTE SECUNDARIA", "fecha": "2026-10-07", "texto": "descripción ≤27 recomendado, 30 máx."}
       }
     },
     "YouTube Shorts": {
-      "campos": {"Título": {"max": 100}, "Descripción": {"max": 5000, "visible": 157}},
+      "campos": {
+        "Título": {"max": 100, "evidencia": "FUENTE SECUNDARIA", "fecha": "2026-10-07", "texto": "título de hasta 100 caracteres (~50-60 visibles en móvil)"},
+        "Descripción": {"max": 5000, "visible": 157, "evidencia": "FUENTE SECUNDARIA", "fecha": "2026-10-07", "texto": "descripción de hasta 5.000 caracteres"}
+      },
       "hashtags_en": "Descripción",
-      "hashtags": {"max": 60, "recomendado": [3, 5], "motivo": "con más de 60, YouTube ignora todos"}
+      "hashtags": {"max": 60, "recomendado": [3, 5], "evidencia": "FUENTE SECUNDARIA", "fecha": "2026-10-07", "texto": "con más de 60 hashtags YouTube ignora todos; 3-5 recomendados"}
     }
+  },
+  "etiqueta_ia": {
+    "_nota": "Si el material es de IA, el pack AVISA de que puede necesitar etiqueta; no presenta como definitiva una obligación sin verificar. Ver COPY.md § Etiqueta de IA.",
+    "TikTok orgánico": {"evidencia": "FUENTE SECUNDARIA", "fecha": "2026-10-07", "texto": "activar «contenido generado por IA» en contenido realista generado o muy editado con IA"},
+    "TikTok Ads": {"evidencia": "FUENTE SECUNDARIA", "fecha": "2026-10-07", "texto": "desde el 2026-07-21, anuncios con imagen, voz o personas realistas de IA llevarían la etiqueta AIGC; la política oficial no se ha podido leer (ads.tiktok.com bloqueado)"},
+    "Instagram Reels": {"evidencia": "FUENTE SECUNDARIA", "fecha": "2026-10-07", "texto": "Meta marca «Información de IA» (C2PA) y pide declarar personas y escenas realistas sintéticas"},
+    "Meta Ads": {"evidencia": "FUENTE SECUNDARIA", "fecha": "2026-10-07", "texto": "igual que Instagram; revisar la etiqueta en la vista previa del anuncio"},
+    "YouTube Shorts": {"evidencia": "PENDIENTE DE VERIFICACIÓN", "fecha": "2026-10-07", "texto": "YouTube pediría declarar el contenido realista alterado o sintético al subir; sin fuente comprobada en esta sesión"},
+    "UE (Ley de IA, art. 50)": {"evidencia": "FUENTE SECUNDARIA", "fecha": "2026-10-07", "texto": "desde el 2026-08-02, avisar del contenido realista generado o manipulado con IA; texto oficial sin leer (eur-lex bloqueado). No es asesoramiento jurídico"}
   },
   "hashtags_genericos": ["fyp", "foryou", "foryoupage", "fy", "parati", "paratii", "xyzbca", "viral", "viralvideo", "trending", "tendencia", "tendencias", "explore", "explorepage", "explorar", "reels", "reelsinstagram", "tiktok", "instagood", "shorts", "youtubeshorts"]
 }

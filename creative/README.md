@@ -35,8 +35,8 @@ original ─ lab ingest ─▶ 00_originales (solo lectura + SHA-256 + origen: i
    props/<ID>.json     ◀ decisión creativa: segmentos, hook, subtítulos, overlays, zooms, CTA, sonido
             lab check ─▶ claims prohibidos (config/claims.json) + coherencia
            lab render ─▶ Remotion → 02_renders → sonoridad −14 LUFS + faststart → 03_finales + QA + manifest.csv
-             lab pack ─▶ packs/<ID>.md: hook, textos, CTA, copy por plataforma, hashtags, comentarios, hipótesis
-  lab check pack --final ─▶ claims + límites de cada plataforma + hashtags + etiqueta de IA
+             lab pack ─▶ packs/<ID>.md: hook, body, CTA, copy por plataforma, hashtags, hipótesis, claims, avisos y reglas usadas
+  lab check pack --final ─▶ claims + reglas de plataforma con su nivel + hashtags + IA (etiqueta y personas)
 ```
 
 | Comando | Qué hace |
@@ -48,8 +48,9 @@ original ─ lab ingest ─▶ 00_originales (solo lectura + SHA-256 + origen: i
 | `creative/lab cuts ROSARIO_ORIGINAL_01 [--max-gap 0.3]` | Propone cortes sin silencios (con transcripción o, si no hay, con `silencedetect`) |
 | `creative/lab check props/<ID>.json` | Bloquea claims prohibidos; avisa de precio, envío y ocasiones |
 | `creative/lab render props/<ID>.json` | Check → render → normalización → QA → manifest |
-| `creative/lab pack props/<ID>.json` | Crea `packs/<ID>.md` con lo que ya dicen las props (hook, textos, CTA, origen, etiqueta de IA) y el resto PENDIENTE |
-| `creative/lab check packs/<ID>.md [--final]` | Claims, límites de caracteres y hashtags de cada plataforma, genéricos sin justificar, etiqueta de IA. Con `--final`, lo pendiente es error |
+| `creative/lab pack props/<ID>.json` | Crea `packs/<ID>.md` con lo que ya dicen las props (hook, body, CTA, origen, claims detectados) más los avisos de cumplimiento y las reglas de plataforma con su nivel de verificación; el resto PENDIENTE |
+| `creative/lab rules packs/<ID>.md` | Regenera «Reglas de plataforma usadas» para las plataformas que quedan en el pack, desde `config/platforms.json` |
+| `creative/lab check packs/<ID>.md [--final]` | Claims (y que los «Claims utilizados» estén confirmados), reglas de plataforma con su nivel (solo las verificadas en fuente oficial bloquean), hashtags razonados uno a uno, genéricos, etiqueta de IA, personas de IA que suenan a testimonio y copy repetido entre plataformas. Con `--final`, lo pendiente es error |
 | `creative/lab qa <archivo.mp4>` | Especificaciones, sonoridad y fotogramas con la zona segura dibujada |
 
 Para previsualizar en local (con navegador): `cd creative/remotion && npm run studio`.
@@ -60,9 +61,9 @@ Para previsualizar en local (con navegador): `cd creative/remotion && npm run st
 creative/
   setup.sh · lab · requirements.txt (Python fijado)
   config/brand.json        colores y fuentes del tema (marfil, dorado, carbón · Inter + Lora)
-  config/safe-zones.json   márgenes por plataforma (meta · tiktok · universal)
+  config/safe-zones.json   márgenes por plataforma (meta · tiktok · universal), con su nivel de evidencia
   config/claims.json       claims confirmados y patrones prohibidos del producto actual
-  config/platforms.json    límites de texto y hashtags por plataforma (los aplica lab check)
+  config/platforms.json    reglas de plataforma (texto, hashtags, etiqueta IA), cada una con nivel de verificación y fecha
   props/<ID>.json          receta completa de cada anuncio (versionada: permite reconstruirlo)
   packs/<ID>.md            pack de publicación: copy, descripciones, hashtags, comentarios, ángulo, variable, hipótesis
   COPY.md                  guía de copy, hashtags y etiqueta de IA por plataforma
