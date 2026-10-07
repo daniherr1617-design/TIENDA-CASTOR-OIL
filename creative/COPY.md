@@ -22,7 +22,7 @@ Antes de usar una regla como criterio importante:
 2. Si no se puede, decir el nivel de evidencia junto a la recomendación.
 3. Dejar que la investigación semanal la revalide; con más de 60 días desde la fecha, `lab check` pide revalidarla.
 
-Hoy (2026-10-07) **ninguna regla está verificada en fuente oficial**: la red de este entorno bloquea las webs oficiales de TikTok, Meta, Instagram, Shopify y la UE (lista exacta en `research/README.md` § Red). Así que ninguna bloquea el pack; todas avisan con su nivel. Cambiar un nivel o un límite en `platforms.json` es un cambio del Lab: la investigación semanal lo **propone** y el propietario lo aprueba.
+Hoy (2026-10-07) solo está **verificada en fuente oficial** la regla de la UE (Ley de IA, art. 50), leída en las páginas y el PDF de las guías de la Comisión. Las demás siguen en FUENTE SECUNDARIA o PENDIENTE: con la red ampliada del 2026-10-07 ya se pueden abrir ads.tiktok.com, www.tiktok.com, help.instagram.com, www.facebook.com y los dominios de la UE, pero esas reglas aún no se han revalidado allí (estado de cada dominio en `research/README.md` § Red). Ninguna regla de límites bloquea el pack hoy; todas avisan con su nivel. Cambiar un nivel o un límite en `platforms.json` es un cambio del Lab: la investigación semanal lo **propone** y el propietario lo aprueba.
 
 ## Principios
 
@@ -111,7 +111,7 @@ Si el vídeo muestra a una persona usando o enseñando el producto, no se asume 
 
 ## Etiqueta de IA
 
-Si un vídeo usa material de IA (`lab ingest --origen ia`), el Lab **avisa** de que puede necesitar etiqueta, pero no presenta como definitiva una obligación que no se ha podido comprobar en la fuente oficial. Recomendación por defecto: etiquetar (cuesta poco) y comprobar la opción en la interfaz al subir.
+Si un vídeo usa material de IA (`lab ingest --origen ia`), el Lab **avisa** de que puede necesitar etiqueta, pero no presenta como definitiva una obligación que no se ha podido comprobar en la fuente oficial. La única verificada es la de la UE, y solo obliga cuando el material es un deepfake (ver la tabla). Recomendación por defecto: etiquetar (cuesta poco) y comprobar la opción en la interfaz al subir.
 
 | Dónde | Qué se sabe | Nivel · fecha |
 |---|---|---|
@@ -119,7 +119,7 @@ Si un vídeo usa material de IA (`lab ingest --origen ia`), el Lab **avisa** de 
 | TikTok orgánico | Opción «contenido generado por IA» al publicar | FUENTE SECUNDARIA · 2026-10-07 |
 | Meta (Instagram y anuncios) | Meta marca «Información de IA» por su cuenta (C2PA) y pide declarar personas y escenas realistas sintéticas | FUENTE SECUNDARIA · 2026-10-07 |
 | YouTube Shorts | YouTube pediría declarar el contenido realista alterado o sintético al subir | PENDIENTE DE VERIFICACIÓN · 2026-10-07 |
-| UE | Ley de IA, art. 50, desde el 2026-08-02: avisar del contenido realista generado o manipulado con IA. Guías de la Comisión (2026-07-20): aviso claro y distinguible, a más tardar en la primera exposición. No es asesoramiento jurídico | FUENTE OFICIAL NO ACCESIBLE DIRECTAMENTE (URL oficial identificada en digital-strategy.ec.europa.eu, bloqueada; K-REG-01) · 2026-10-07 |
+| UE | Ley de IA, art. 50, desde el 2026-08-02: quien publica un deepfake (imagen, audio o vídeo de IA que parezca real) debe avisar de que es artificial, de forma clara y distinguible, a más tardar en la primera exposición (art. 50.4 y 50.5). Las guías de la Comisión (C(2026) 5054, 20-07-2026) ponen como deepfake una imagen de IA del producto que pueda engañar sobre su aspecto, características o uso reales, y como no deepfake un producto real sobre un fondo de IA que no engañe. No es asesoramiento jurídico | **VERIFICADA EN FUENTE OFICIAL** ([guías del art. 50](https://digital-strategy.ec.europa.eu/en/library/guidelines-transparency-obligations-providers-and-deployers-ai-systems), PDF leído; [Código de prácticas](https://digital-strategy.ec.europa.eu/en/faqs/code-practice-transparency-ai-generated-content); K-REG-01) · 2026-10-07 |
 
 `lab pack` pone «Etiqueta IA: SÍ (recomendada…)» y lo explica en «Avisos de cumplimiento». Si el propietario decide NO, `lab check` avisa (no bloquea) y pide el motivo en «Notas internas». Si el origen no está registrado, el pack no pasa `--final` hasta registrarlo.
 
@@ -147,5 +147,6 @@ Si un vídeo usa material de IA (`lab ingest --origen ia`), el Lab **avisa** de 
 - Búsqueda en TikTok: [capcut.com](https://www.capcut.com/create/tiktok-caption-keywords-discoverability) · [metadatareactor.com](https://metadatareactor.com/blog/tiktok-seo-guide-2026/)
 - Etiquetas de IA: [commonthreadco.com](https://commonthreadco.com/blogs/coachs-corner/tiktok-ai-ad-disclosure-rules-ecommerce-2026) · [stellarsearch.co.uk](https://www.stellarsearch.co.uk/insight/tiktoks-ai-ad-disclosure-rules-are-live-what-brands-running-ai-creative-need-to-do-now) · [cinerads.com](https://www.cinerads.com/blog/ai-ad-disclosure-requirements)
 - Creative Center: [snaklab.lovable.app](https://snaklab.lovable.app/en/blog/tiktok-creative-center-guide/)
+- UE, Ley de IA art. 50 (oficial, leída el 2026-10-07): [guías de la Comisión, C(2026) 5054](https://digital-strategy.ec.europa.eu/en/library/guidelines-transparency-obligations-providers-and-deployers-ai-systems) · [Código de prácticas sobre contenido generado por IA](https://digital-strategy.ec.europa.eu/en/faqs/code-practice-transparency-ai-generated-content)
 - Higgsfield (uso comercial): [higgsfield.ai, centro de ayuda](https://higgsfield.ai/creator-hub/help-center/account/who-owns-my-generations-and-can-i-use-them-commercially)
 - Intento de lectura de fuentes oficiales (2026-10-07): ads.tiktok.com, www.facebook.com, support.google.com y eur-lex.europa.eu → bloqueados por la red del entorno. Por eso nada está VERIFICADO EN FUENTE OFICIAL.

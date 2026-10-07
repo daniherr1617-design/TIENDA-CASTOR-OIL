@@ -116,7 +116,7 @@ def cmd_ingest(a):
     print(f"  origen: {ORIGINS[a.origen]}{' (' + a.herramienta + ')' if a.herramienta else ''}")
     if a.origen in ("ia", "editado-ia"):
         print("  ⚠ material con IA: revisar fidelidad (lab fidelity). Puede necesitar etiqueta de IA al publicar "
-              "(obligación sin verificar en fuente oficial: ver COPY.md). Si sale una persona, que no parezca "
+              f"({ai_label_status()}: ver COPY.md). Si sale una persona, que no parezca "
               "una clienta contando su experiencia")
 
     if ext in IMAGE_EXT or ext in AUDIO_EXT:
@@ -552,7 +552,18 @@ def origin_of(src: str) -> dict | None:
 
 
 def rule_line(where: str, r: dict) -> str:
-    return f"- {where}: {r['texto']} · **{r['evidencia']}** · {r['fecha']}"
+    urls = r.get("url") or []
+    src = f" · {' · '.join(urls if isinstance(urls, list) else [urls])}" if urls else ""
+    return f"- {where}: {r['texto']} · **{r['evidencia']}** · {r['fecha']}{src}"
+
+
+def ai_label_status() -> str:
+    """Qué obligaciones de etiqueta de IA están verificadas en fuente oficial (según config/platforms.json)."""
+    rules = json.loads((CONFIG / "platforms.json").read_text())["etiqueta_ia"]
+    ok = [k for k, v in rules.items() if not k.startswith("_") and v.get("evidencia") == VERIFIED]
+    if not ok:
+        return "ninguna obligación de etiqueta está verificada en fuente oficial"
+    return f"verificada en fuente oficial solo: {', '.join(ok)}; el resto, sin verificar"
 
 
 def rules_block(platforms: list[str], ai: bool) -> str:
@@ -579,8 +590,8 @@ def avisos_block(ai: bool, unknown: bool) -> str:
     out = []
     if ai or unknown:
         out.append("- [ ] **Etiqueta de IA.** El material " + ("es de IA" if ai else "tiene origen sin registrar") +
-                   ": puede necesitar etiqueta en TikTok, Meta, YouTube y por la Ley de IA (art. 50). Ninguna de estas "
-                   "obligaciones está verificada en fuente oficial (ver «Reglas de plataforma usadas»). Recomendado: "
+                   ": puede necesitar etiqueta en TikTok, Meta, YouTube y por la Ley de IA (art. 50); "
+                   f"{ai_label_status()} (ver «Reglas de plataforma usadas»). Recomendado: "
                    "etiquetar y comprobar el interruptor o la etiqueta en la interfaz al subir")
         out.append("- [ ] **Personas generadas con IA.** Pueden salir como recurso visual o presentador, nunca contando "
                    "una experiencia personal que no ocurrió (testimonio falso, R14)")
@@ -624,7 +635,7 @@ def cmd_pack(a):
             uses_ai |= o["origen"] in ("ia", "editado-ia")
             lines.append(f"{o['nombre']}: {o['origen']}{' (' + o['herramienta'] + ')' if o.get('herramienta') else ''}")
     if uses_ai:
-        etiqueta = "SÍ (recomendada; la obligación no está verificada en fuente oficial, ver «Avisos de cumplimiento»)"
+        etiqueta = f"SÍ (recomendada; {ai_label_status()}, ver «Avisos de cumplimiento»)"
     elif unknown:
         etiqueta = "PENDIENTE (hay material sin origen registrado)"
     else:
@@ -647,7 +658,7 @@ def cmd_pack(a):
         reglas=rules_block(list(json.loads((CONFIG / "platforms.json").read_text())["secciones"]), uses_ai or unknown)))
     print(f"+ {out.relative_to(ROOT)}  (origen: {' · '.join(lines)})")
     if uses_ai:
-        print("  ⚠ material con IA: el pack recomienda etiquetarlo; la obligación está sin verificar en fuente oficial")
+        print(f"  ⚠ material con IA: el pack recomienda etiquetarlo; {ai_label_status()}")
     print("  Rellenar los PENDIENTE y validar con: lab check " + str(out.relative_to(ROOT)) + " --final")
 
 

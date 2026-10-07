@@ -24,6 +24,8 @@ hf.co
 
 Sin ellos, todo lo demás funciona; solo `lab transcribe` falla con un 403.
 
+Prueba del 2026-10-07 en el entorno «GARELON Creative Lab»: el modelo `small` de faster-whisper (`Systran/faster-whisper-small`, `model.bin` de 483.546.902 bytes, SHA-256 igual al de Hugging Face) se descarga bien. faster-whisper **no** se pudo instalar porque PyPI está bloqueado en ese entorno («Host not in allowlist»). La transcripción corta se probó con el mismo modelo `small` exportado a ONNX (`onnx-community/whisper-small`) y el `onnxruntime` ya instalado: 10,4 s de audio de prueba transcritos en 23 s de CPU, con el texto correcto. Para usar `lab transcribe` hace falta además que PyPI (`pypi.org`, `files.pythonhosted.org`) esté permitido.
+
 ## Flujo
 
 ```

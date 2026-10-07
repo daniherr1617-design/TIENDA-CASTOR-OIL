@@ -51,6 +51,14 @@ A 2026-10-07, la política de red del entorno (Limited) rechaza con 403 todos es
 
 **Importante: el entorno correcto.** Una sesión no cambia de entorno. La sesión del Lab y de la Routine corre en el entorno **«Default»** (`env_016ofSMuy4TGBR5PaE3f3vqy`), así que los dominios hay que añadirlos **a ese entorno**. El 2026-10-07 se añadieron a un entorno nuevo, «GARELON Creative Lab» (`env_01UoQfNaTyBJ51L22cqGEe2j`), y desde esta sesión siguieron bloqueados: un entorno nuevo solo afecta a las sesiones que se crean en él. Si algún día el Lab pasa a otro entorno, hay que volver a crear la Routine desde una sesión de ese entorno.
 
+**Comprobación del 2026-10-07 (14:31 UTC) desde una sesión del entorno «GARELON Creative Lab»** (`env_01UoQfNaTyBJ51L22cqGEe2j`, red personalizada por el propietario), con `curl` a la raíz de cada dominio:
+
+- **Funcionan (200):** `ads.tiktok.com`, `newsroom.tiktok.com`, `www.tiktok.com`, `support.tiktok.com`, `www.facebook.com`, `developers.facebook.com`, `transparency.meta.com`, `about.instagram.com`, `help.instagram.com`, `www.instagram.com`, `shopify.dev`, `help.shopify.com`, `changelog.shopify.com`, `www.shopify.com`, `digital-strategy.ec.europa.eu`, `commission.europa.eu`, `ec.europa.eu`, `taxation-customs.ec.europa.eu`, `huggingface.co`, `hf.co`.
+- **Responde pero no se puede leer:** `eur-lex.europa.eu` (202 con desafío anti-bot de AWS WAF, cuerpo vacío). Para el texto de la Ley de IA se usó el PDF de las guías de la Comisión, que cita el art. 50.
+- **Siguen bloqueados (403 del proxy):** `business-api.tiktok.com`, `seller-eu.tiktok.com`, `about.fb.com`, `www.meta.com`, `creators.instagram.com`, `community.shopify.dev`, `www.youtube.com`, `support.google.com`, `www.boe.es`, `www.aepd.es`, `higgsfield.ai`, y los medios (`www.socialmediatoday.com`, `ppc.land`, `techcrunch.com`, `www.reddit.com`).
+- **Gestores de paquetes bloqueados:** `pypi.org`, `files.pythonhosted.org` y `registry.npmjs.org` responden «Host not in allowlist», así que `creative/setup.sh` no puede instalar faster-whisper ni Remotion en ese entorno.
+- El entorno «Default» del Lab y de la Routine no se ha comprobado aquí: según la nota anterior, ahí seguían bloqueados.
+
 | Plataforma | Dominio | Para qué |
 |---|---|---|
 | TikTok | `ads.tiktok.com` | Centro de ayuda de TikTok Ads: políticas de anuncios (etiqueta AIGC), especificaciones, Creative Center |
