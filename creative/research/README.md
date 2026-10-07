@@ -7,9 +7,9 @@ Cada semana, una sesión automática de Claude investiga en la web lo **nuevo** 
 | | |
 |---|---|
 | Programación | **Lunes a las 07:51 (hora de Madrid)**, `CRON_TZ=Europe/Madrid 51 7 * * 1`. El minuto 51 evita la cola de las horas en punto |
-| Mecanismo | Routine de Claude Code («GARELON · Investigación semanal de marketing»): cada lunes arranca una **sesión nueva** en este mismo entorno cloud |
+| Mecanismo | Routine de Claude Code «GARELON · Investigación semanal de marketing» (`trig_01TGsoi1v4g1FpfSXK2RdCd9`): cada lunes arranca una **sesión nueva** en este mismo entorno cloud, añade el repositorio con acceso de escritura y trabaja en `claude/festive-clarke-jub9rm` |
 | Instrucciones | `ROUTINE_PROMPT.md` (versionado). La Routine guarda además las reglas de seguridad en su propio prompt, para que un cambio en el repo no pueda relajarlas |
-| Conectores | **Ninguno** (la Routine se creó sin conectores): no puede llegar a Meta, TikTok, Canva ni Shopify |
+| Conectores | **Ninguno**: la Routine no guarda conectores, así que sus sesiones no tienen herramientas de Meta, TikTok, Canva, Claude Docs ni Shopify. Esta organización no permite fijarlos al crearla; si algún día hicieran falta, habría que crearla desde la pantalla de Routines de claude.ai. Además, el prompt prohíbe usarlos |
 | Resultado | commit en `claude/festive-clarke-jub9rm`, solo dentro de `creative/research/` |
 | Aviso | notificación push y email al terminar cada ejecución |
 | Coste | consume uso de tu plan de Claude, igual que una sesión normal. Sin APIs de pago ni claves |

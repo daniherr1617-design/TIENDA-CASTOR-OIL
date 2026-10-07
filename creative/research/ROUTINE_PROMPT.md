@@ -8,7 +8,7 @@ Nunca: lanzar, pausar ni editar campañas; gastar dinero ni cambiar presupuestos
 
 ## 1. Preparación
 
-1. Si el repositorio no está en el contenedor, añádelo (`add_repo` daniherr1617-design/TIENDA-CASTOR-OIL) y clónalo.
+1. Si el repositorio no está en el contenedor, añádelo (`add_repo` daniherr1617-design/TIENDA-CASTOR-OIL con `access: "push"`) y clónalo con el comando que devuelva.
 2. `git fetch origin claude/festive-clarke-jub9rm && git checkout claude/festive-clarke-jub9rm && git pull --rebase origin claude/festive-clarke-jub9rm`. El propietario autoriza expresamente commits y push **a esta rama y solo en `creative/research/`**.
 3. Fecha de hoy en España: `TZ=Europe/Madrid date +%F` (= `HOY`). Ventana: `python3 creative/research/research.py window`.
 4. Lee: `creative/research/topics.md`, `creative/research/marketing-current-knowledge.md`, el último informe de `creative/research/reports/` y `creative/research/seen-urls.txt`. Para el contexto de GARELON: `creative/CLAUDE.md`.
