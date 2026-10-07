@@ -29,3 +29,7 @@ Rama especializada de GARELON: creatividades de vídeo, TikTok Ads, Meta Ads, m�
 - Métricas: `METRICAS.md` (definiciones, diagnóstico por etapa del funnel y prudencia estadística). Nunca concluir «el anuncio es malo» sin localizar la etapa que falla.
 - Investigación: separar siempre 1) confirmado, 2) recomendación oficial de la plataforma, 3) estudios o casos, 4) práctica de marketers, 5) hipótesis a probar. Fuentes recientes y oficiales primero; citar enlaces.
 - Competidores: aprender patrones (hook, estructura, ritmo, ángulo) y crear versiones propias. No copiar creatividades.
+
+## Investigación semanal
+
+`creative/research/` (ver su README): una Routine la ejecuta los lunes a las 07:51 (Madrid). Antes de proponer estrategia, consultar `creative/research/marketing-current-knowledge.md`. Es la memoria vigente; los informes por fecha están en `creative/research/reports/`.
