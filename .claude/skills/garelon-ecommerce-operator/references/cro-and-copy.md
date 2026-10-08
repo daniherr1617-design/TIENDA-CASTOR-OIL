@@ -14,7 +14,7 @@ Optimizar la conversión **sí**; dark patterns **no**. Se mejora lo que el clie
 | «Quedan 3 unidades» / «12 personas viendo» | Stock o tráfico inventados | Confianza: envío, pago seguro, 14 días, opiniones reales; mejor jerarquía visual |
 | «Pon 4,9 estrellas» / «+1.000 clientes» | Notas o recuentos inventados | Judge.me con opiniones reales (incluidas las importadas del mismo modelo, con nota de origen) |
 | «Tacha un precio más alto» | `compare_at_price` ficticio | `compare_at_price` solo si es un precio anterior real (UE: el más bajo de los 30 días anteriores); si no, ahorro de pack calculado |
-| «Pon “Más popular” en el pack 2» | Badge con dato falso | «Recomendado» (editorial) hasta tener datos reales de ventas |
+| «Pon “Más popular” en el pack 2» | Badge con dato falso | «Recomendado» o un dato verificable como «Mejor precio por pulsera» (el tema lo oculta si deja de ser cierto) hasta tener datos reales de ventas |
 | «Cambia el precio a 19,99 en Liquid» | Precio escrito en el tema | El precio se cambia en Shopify Admin › Productos › variante. El tema lo lee solo |
 
 ## Palancas permitidas
@@ -24,8 +24,9 @@ Jerarquía visual · un CTA claro · packs con ahorro real · `compare_at_price`
 ## Estructura de la página (lo aprobado hoy)
 
 - **Portada:** producto y beneficio, un CTA («Elegir mi …» → `/#comprar`), **sin «A partir de X €»**.
-- **Compra:** título, valoración real (si existe), frase emocional (una vez), 4 garantías, «Elige tu oferta» (precio dentro de cada tarjeta), «Impuestos incluidos. Envío gratis.» (si el envío es gratis; el mismo texto en el cajón y en `/cart`), Añadir al carrito y pago dinámico.
-- Después: «Compra con tranquilidad» → opiniones → significado → detalles → regalo → FAQ → cierre. El orden real está en el snapshot.
+- **Compra (D37):** título, valoración real (si existe), «Elige tu oferta» (precio dentro de cada tarjeta; pack de 3 como foco editorial con «Mejor precio por pulsera», sin preseleccionarlo), texto de campaña si lo hay, «Impuestos incluidos. Envío gratis.» (si el envío es gratis; el mismo texto en el cajón y en `/cart`), Añadir al carrito y pago dinámico, y **debajo** la frase emocional (una vez) y las garantías.
+- Después: opiniones → «Compra con tranquilidad» → significado → detalles → regalo → FAQ → cierre. El orden real está en el snapshot.
+- **Campañas temáticas** (p. ej. «Octubre, mes del Rosario»): barra superior + texto de promo del bloque de packs, sin descuento, contador ni escasez. Son temporales: se retiran en el editor al terminar (ver `current-store-state.md` §5). Un «-10 %» solo con el precio anterior más bajo de los 30 días previos a la vista (art. 20 Ley 7/1996).
 
 ## Copy
 

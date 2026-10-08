@@ -1,6 +1,6 @@
 # GARELON · PROMPT MAESTRO DEL PROYECTO (constitución operativa)
 
-> **Versión:** 3.9 · **Fecha:** 2026-10-06 · **Repositorio:** `daniherr1617-design/TIENDA-CASTOR-OIL` · **Rama fuente:** `claude/rosary-clean-rebuild` · **Commit fuente:** `e08077b`
+> **Versión:** 3.10 · **Fecha:** 2026-10-08 · **Repositorio:** `daniherr1617-design/TIENDA-CASTOR-OIL` · **Rama fuente:** `claude/rosary-clean-rebuild` · **Commit fuente:** `9c8f144`
 >
 > Snapshot generado desde `e27ae75`. Ante discrepancias futuras manda el repositorio actual y, por encima de él, el producto real y las decisiones recientes del propietario (§3).
 
@@ -260,7 +260,7 @@ Optimizar la conversión **sí**; dark patterns **no** (R9).
 
 **Portada (hero):** explica producto y beneficio y lleva a la compra con **un solo CTA** (hoy «Elegir mi pulsera» → `/#comprar`). **No muestra «A partir de X €»**: el usuario descubre los precios en los packs.
 
-**Selector de packs («Elige tu oferta»):** tarjetas visuales e interactivas montadas sobre el selector de variantes real de Dawn (formulario oficial, cambio de variante, URL, carrito, teclado, lector de pantalla). El precio visible está **dentro de cada tarjeta**, no duplicado bajo el título. Badge editorial «Recomendado» (también el texto por defecto del schema); «Más popular» o «Más vendido» solo con datos de ventas reales, y nunca como default de un schema.
+**Selector de packs («Elige tu oferta»):** tarjetas visuales e interactivas montadas sobre el selector de variantes real de Dawn (formulario oficial, cambio de variante, URL, carrito, teclado, lector de pantalla). El precio visible está **dentro de cada tarjeta**, no duplicado bajo el título. Badge editorial: hoy «Mejor precio por pulsera» en el pack de 3 (D37), un dato que el tema comprueba con los precios de Shopify y oculta si deja de ser cierto; el pack de 3 no se preselecciona. El texto por defecto del schema sigue siendo «Recomendado». «Más popular» o «Más vendido» solo con datos de ventas reales, y nunca como default de un schema.
 
 **Precio:** siempre de Shopify (R5-R6). En Liquid nunca se escribe un precio comercial, aunque lo pida alguien: el precio se cambia en Shopify Admin.
 
@@ -273,7 +273,7 @@ Optimizar la conversión **sí**; dark patterns **no** (R9).
 - `Pago seguro`
 - `14 días para cambiar de opinión`
 
-Si cambian en Shopify o en las políticas, mandan Shopify y las políticas, y el tema se actualiza. **«Envíos internacionales» no se promete (D32):** España es el mercado inicial y la política de envíos solo admite destinos habilitados en Shopify (Markets y Envío y entrega). Si el propietario los verifica, puede volver a escribirse en la 4.ª garantía; mientras, queda vacía.
+Si cambian en Shopify o en las políticas, mandan Shopify y las políticas, y el tema se actualiza. **«Envíos internacionales» no se promete (D32):** la política de envíos solo admite destinos habilitados en Shopify (Markets y Envío y entrega). El propietario configuró mercados internacionales (España + 11 países de Latinoamérica, 2026-10-08) y el pie muestra el selector nativo de país (D37), pero la disponibilidad real por país, las monedas y el envío se verifican en Shopify, no en el tema. Hasta esa verificación, la 4.ª garantía queda vacía.
 
 **Políticas legales:** su texto vive en Shopify (Configuración › Políticas; Cookies y, si hace falta, Aviso legal como páginas). El tema no copia condiciones ni datos del titular: las respuestas cortas remiten a `/policies/refund-policy` y `/policies/shipping-policy`, y no se escriben plazos ni ventanas de entrega fijas.
 
