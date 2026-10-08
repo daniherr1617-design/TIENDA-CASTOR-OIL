@@ -51,7 +51,8 @@ module.exports = async function (browser) {
   for (const [n, u] of [['home', '/'], ['ficha', P]]) {
     const r = await get(u);
     const badges = [...r.html.matchAll(/<label[^>]*class="g-offer__card[\s\S]*?<\/label>/g)].map(m => [/(\d) pulseras?/.exec(text(m[0]))?.[1], (/<span class="g-offer__badge">([^<]*)<\/span>/.exec(m[0]) || [])[1]]).filter(([, b]) => b);
-    ok(`K5 ${n}: el pack de 2 sigue mostrando «Recomendado» (y solo ese)`, JSON.stringify(badges) === JSON.stringify([['2', 'Recomendado']]) && !CLAIM.test(text(r.html)), badges);
+    // Ronda T: el distintivo editorial pasa al pack de 3 (el default del schema sigue siendo «Recomendado», K1).
+    ok(`K5 ${n}: solo el pack de 3 muestra distintivo, «Mejor precio por pulsera»`, JSON.stringify(badges) === JSON.stringify([['3', 'Mejor precio por pulsera']]) && !CLAIM.test(text(r.html)), badges);
   }
 
   // 2 · Envío gratis activo (valor del tema): packs, ficha, cajón y /cart dicen lo mismo

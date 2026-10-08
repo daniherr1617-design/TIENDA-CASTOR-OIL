@@ -585,7 +585,9 @@
       "editor_waiting": "Solo en el editor: el widget de opiniones está oculto para los clientes porque la valoración sincronizada con Shopify es 0. Aparecerá cuando haya opiniones publicadas (o desactiva «Ocultar sin opiniones»)."
     },
     "cart": {
-      "taxes_at_checkout": "Impuestos calculados en la pantalla de pago."
+      "taxes_at_checkout": "Impuestos calculados en la pantalla de pago.",
+      "pack_includes": "Tu pack incluye {{ contents }}",
+      "pack_includes_one": "Incluye {{ contents }}"
     }
   }
 }

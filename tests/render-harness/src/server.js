@@ -21,11 +21,23 @@ const state = { mode: 'single', soldout: [], design: false, catalog: 'ok', conta
   freeship: '', taxes: 'included',
   // Ronda N: chips = inyecta 6 etiquetas de prueba neutras en «Para regalar» (que en la tienda ya no tiene bloques, D31)
   // para seguir probando el diseño «Etiquetas» de GARELON Detalles en futuros productos.
-  chips: false };
+  chips: false,
+  // Ronda T: countries = 1 (solo España, por defecto) | multi (varios mercados con su moneda, como el selector nativo de Shopify).
+  countries: '1' };
 const taxFlags = () => ({ taxes_included: state.taxes === 'included' || state.taxes === 'both', duties_included: state.taxes === 'duties' || state.taxes === 'both' });
+// Ronda T: mercados SIMULADOS para el selector nativo de país de Dawn (lo que devolvería Shopify Markets).
+function localizationDrop() {
+  const C = (iso, name, cur, sym) => ({ iso_code: iso, name, currency: { iso_code: cur, symbol: sym }, toString() { return iso; } });
+  const es = C('ES', 'España', 'EUR', '€');
+  const all = state.countries === 'multi' ? [es, C('MX', 'México', 'MXN', '$'), C('CL', 'Chile', 'CLP', '$'), C('CO', 'Colombia', 'COP', '$')] : [es];
+  return { available_countries: all, popular_countries_regions: [], available_languages: [{ iso_code: 'es', endonym_name: 'Español' }], language: { iso_code: 'es', endonym_name: 'Español' }, country: es };
+}
 function scenario() {
   const m = state.mode; // precios SIMULADOS (SOLO TEST)
   if (m === 'pack3') return { options: ['Pack'], rows: [[['1 pulsera'], 1999], [['2 pulseras'], 3998], [['3 pulseras'], 5997]] };
+  // Ronda T: los mismos importes que el propietario confirmó en Shopify el 2026-10-08 (19,99 / 29,99 / 34,99 €),
+  // SOLO como datos simulados del render; el tema no los conoce ni los escribe.
+  if (m === 'real') return { options: ['Pack'], rows: [[['1 pulsera'], 1999], [['2 pulseras'], 2999], [['3 pulseras'], 3499]] };
   if (m === 'pack3save') return { options: ['Pack'], rows: [[['1 pulsera'], 1999], [['2 pulseras'], 3499], [['3 pulseras'], 4799]] };
   if (m === 'compare') return { options: ['Pack'], rows: [[['1 pulsera'], 1999, 2499], [['2 pulseras'], 3499, 3998], [['3 pulseras'], 4799, null]] };
   if (m === 'nosave') return { options: ['Pack'], rows: [[['1 pulsera'], 1999], [['2 pulseras'], 3998], [['3 pulseras'], 5997]] };
@@ -193,7 +205,7 @@ function globals(req, product) {
     routes: { root_url: '/', cart_url: '/cart', cart_add_url: '/cart/add', cart_change_url: '/cart/change', cart_update_url: '/cart/update', search_url: '/search', account_url: '/account', account_login_url: '/account/login', account_register_url: '/account/register', all_products_collection_url: '/collections/all', collections_url: '/collections', predictive_search_url: '/search/suggest', product_recommendations_url: '/recommendations/products' },
     shop: { name: 'GARELON', policies, refund_policy: pol('refund-policy'), shipping_policy: pol('shipping-policy'), privacy_policy: pol('privacy-policy'), terms_of_service: pol('terms-of-service'),
       enabled_payment_types: [], customer_accounts_enabled: state.accounts, customer_accounts_optional: true, url: 'http://localhost:' + PORT, secure_url: 'http://localhost:' + PORT, locale: 'es', currency: 'EUR', money_format: '{{amount_with_comma_separator}} €', brand: null, types: [], vendors: [], email: '' },
-    localization: { available_countries: [], available_languages: [], language: { iso_code: 'es' }, country: { iso_code: 'ES' } }, customer: null,
+    localization: localizationDrop(), customer: null,
     request: { page_type: req.pageType, design_mode: state.design, path: req.pageType === '404' ? '/404' : req.pathname, host: 'localhost', origin: 'http://localhost:' + PORT, locale: { iso_code: 'es', primary: true }, visual_preview_mode: false },
     template: { name: req.pageType, suffix: req.suffix || null, directory: null }, canonical_url: 'http://localhost' + req.pathname, page_title: req.title || 'GARELON', page_description: '',
     content_for_header: `<script>window.Shopify={routes:{root:'/'},designMode:${state.design},currency:{active:'EUR',rate:'1.0'},locale:'es',PaymentButton:{init(){}}};</script>`, powered_by_link: '', current_tags: null, scheme_classes: '' };
@@ -270,10 +282,10 @@ http.createServer(async (req, res) => {
     if (p.startsWith('/__fonts/')) { const fp = path.join(FONTS_DIR, p.slice(9)); return fs.readFile(fp, (e, d) => { if (e) { res.writeHead(404); return res.end(); } res.writeHead(200, { 'Content-Type': 'font/woff2' }); res.end(d); }); }
     if (p.startsWith('/assets/')) { const fp = path.join(T, decodeURIComponent(p)); return fs.readFile(fp, (e, d) => { if (e) { res.writeHead(404); return res.end(); } res.writeHead(200, { 'Content-Type': types[path.extname(fp)] || 'application/octet-stream' }); res.end(d); }); }
     if (p === '/__state') { const q = u.searchParams;
-      for (const k of ['mode', 'catalog', 'contact', 'refund', 'shipping', 'cookies', 'legal', 'reviews', 'freeship', 'taxes']) if (q.has(k)) state[k] = q.get(k);
+      for (const k of ['mode', 'catalog', 'contact', 'refund', 'shipping', 'cookies', 'legal', 'reviews', 'freeship', 'taxes', 'countries']) if (q.has(k)) state[k] = q.get(k);
       for (const k of ['design', 'noindex', 'accounts', 'media', 'chips', 'contactinfo', 'editorimg']) if (q.has(k)) state[k] = q.get(k) === '1';
       if (q.has('soldout')) state.soldout = q.get('soldout').split(',').filter(Boolean).map(Number);
-      if (q.has('reset')) { state.cart = []; state.log = []; if (!q.has('freeship')) state.freeship = ''; if (!q.has('taxes')) state.taxes = 'included'; if (!q.has('chips')) state.chips = false; if (!q.has('editorimg')) state.editorimg = false; }
+      if (q.has('reset')) { state.cart = []; state.log = []; if (!q.has('freeship')) state.freeship = ''; if (!q.has('taxes')) state.taxes = 'included'; if (!q.has('chips')) state.chips = false; if (!q.has('editorimg')) state.editorimg = false; if (!q.has('countries')) state.countries = '1'; }
       if (q.has('reload')) L = loadSettings();
       res.writeHead(200, { 'Content-Type': 'application/json' }); return res.end(JSON.stringify(state)); }
     if (p === '/cart.js' || p === '/cart.json') { res.setHeader('Content-Type', 'application/json'); const c = cartDrop(); return res.end(JSON.stringify({ item_count: c.item_count, items: c.items.map(i => ({ id: i.id, quantity: i.quantity, variant_id: i.id })), total_price: c.total_price })); }

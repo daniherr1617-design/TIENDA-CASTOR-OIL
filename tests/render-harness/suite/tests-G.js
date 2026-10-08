@@ -41,11 +41,14 @@ module.exports = async function (browser) {
 
   // 3 · Distintivo, promo, confianza.
   await setState('mode=pack3save'); r = await get('/'); s = buy(r.html); c = cards(s);
-  ok('G13 distintivo editable en un solo pack (2): «Recomendado»; nunca «Más popular» por defecto', count(s, /class="g-offer__badge"/g) === 1 && /^Recomendado 2 pulseras/.test(c[1]) && !/Más popular/.test(visible(r.html)), c);
-  ok('G14 promoción apagada por defecto (sin texto promocional ni contador)', !/g-offer__promo|Oferta especial/.test(s));
+  // Ronda T: el distintivo editorial pasa al pack de 3 («Mejor precio por pulsera») y la promo lleva el texto de octubre.
+  ok('G13 distintivo editable en un solo pack (3): «Mejor precio por pulsera»; nunca «Más popular» por defecto', count(s, /class="g-offer__badge"/g) === 1 && /^Mejor precio por pulsera 3 pulseras/.test(c[2]) && !/Más popular/.test(visible(r.html)), c);
+  const promoDef = (f) => JSON.parse(fs.readFileSync(`${THEME}/sections/${f}`, 'utf8').match(/{% schema %}([\s\S]*){% endschema %}/)[1]).blocks.find(b => b.type === 'garelon_offer').settings.find(x => x.id === 'show_promo').default;
+  ok('G14 promoción apagada por defecto en el schema; en la tienda, solo el texto de campaña sin contador ni oferta', ['featured-product.liquid', 'main-product.liquid'].every(f => promoDef(f) === false) && count(s, /class="g-offer__promo"/g) === 1 && !/Oferta especial|data-countdown|\d+:\d\d/.test(s));
   const chips = [...s.matchAll(/<li class="g-trust__chip">[\s\S]*?<span>([^<]+)<\/span>/g)].map(x => x[1]);
   ok('G15 zona de confianza: frase + 3 garantías en orden, con icono (sin «Envíos internacionales», D32)', /<p class="g-trust__phrase">Un símbolo de tu fe, contigo cada día\.<\/p>/.test(s) && JSON.stringify(chips) === JSON.stringify(['Envío gratis + seguimiento', 'Pago seguro', '14 días para cambiar de opinión']) && count(s, /<li class="g-trust__chip"><svg\s+class="g-icon"/g) === 3, chips);
-  ok('G16 orden de compra: título → frase → garantías → «Elige tu oferta» → Añadir al carrito', ['product__title', 'g-trust__phrase', 'g-trust__grid', 'g-offer__legend', 'ProductSubmitButton'].map(k => s.indexOf(k)).every((v, i, a) => v > 0 && (i === 0 || v > a[i - 1])));
+  // Ronda T: frase y garantías debajo del botón.
+  ok('G16 orden de compra: título → «Elige tu oferta» → Añadir al carrito → frase → garantías', ['product__title', 'g-offer__legend', 'ProductSubmitButton', 'g-trust__phrase', 'g-trust__grid'].map(k => s.indexOf(k)).every((v, i, a) => v > 0 && (i === 0 || v > a[i - 1])));
   ok('G17 sin dark patterns: ni contador, ni «últimas unidades», ni «X personas viendo», ni «oferta termina»', !/countdown|data-countdown|[uú]ltimas \d|quedan \d|personas viendo|viendo (esto|ahora)|oferta termina|termina en/i.test(visible(r.html)));
   const idx = fs.readFileSync(THEME + '/templates/index.json', 'utf8');
   ok('G18 index.json: sin precios, ids, compare_at ni stock escritos a mano', !/\d+[.,]\d{2}\s*(€|EUR)|variant_id|compare_at|inventory|"sku"/.test(idx));
@@ -124,7 +127,8 @@ module.exports = async function (browser) {
   r = await get('/'); ok('G35 / → 200 con la home (plantilla index)', r.status === 200 && r.tpl === 'index');
   r = await get('/ruta-inexistente-garelon'); ok('G36 ruta inexistente → 404', r.status === 404 && r.tpl === '404');
   const idxJson = JSON.parse(idx);
-  ok('G37 index.json: 9 secciones, el mismo orden y la compra con titulo → valoracion → precio → confianza → oferta → comprar', idxJson.order.join() === 'portada,compra,tranquilidad,opiniones,significado,detalles,regalo,preguntas,cierre' && idxJson.sections.compra.block_order.join() === 'titulo,valoracion,precio,confianza,oferta,comprar');
+  // Ronda T: opiniones antes de tranquilidad y confianza después del botón.
+  ok('G37 index.json: 9 secciones en orden y la compra con titulo → valoracion → precio → oferta → comprar → confianza', idxJson.order.join() === 'portada,compra,opiniones,tranquilidad,significado,detalles,regalo,preguntas,cierre' && idxJson.sections.compra.block_order.join() === 'titulo,valoracion,precio,oferta,comprar,confianza');
 
   // 10 · Responsive de la ficha (la home la cubre D24).
   for (const [w, h] of [[320, 640], [360, 740], [375, 667], [390, 844], [430, 932], [768, 1024], [1024, 768], [1440, 900]]) {

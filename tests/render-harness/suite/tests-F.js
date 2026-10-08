@@ -10,7 +10,8 @@ module.exports = async function (browser) {
   const h1 = [...m.matchAll(/<h1[^>]*>([\s\S]*?)<\/h1>/g)].map(x => text(x[1]).trim());
   ok('F1 ficha → 200; un único H1 = título del producto de Shopify', r.status === 200 && r.tpl === 'product' && h1.length === 1 && h1[0] === 'Pulsera Rosario Virgen María', [r.status, h1]);
   const order = [...r.html.matchAll(/id="shopify-section-template--1__(\w+)"/g)].map(x => x[1]);
-  ok('F2 orden de la ficha: producto → tranquilidad → opiniones → detalles → preguntas → compra fija', JSON.stringify(order) === JSON.stringify(['main', 'tranquilidad', 'opiniones', 'detalles', 'preguntas', 'compra_fija']), order);
+  // Ronda T: opiniones antes de «Compra con tranquilidad».
+  ok('F2 orden de la ficha: producto → opiniones → tranquilidad → detalles → preguntas → compra fija', JSON.stringify(order) === JSON.stringify(['main', 'opiniones', 'tranquilidad', 'detalles', 'preguntas', 'compra_fija']), order);
   ok('F3 galería del tema: 5 imágenes, la primera prioritaria (LCP)', count(m, /class="g-gallery__slide[ "]/g) === 5 && count(r.html, /fetchpriority="high"/g) === 1 && /<img[^>]*producto-completa[^>]*loading="eager"/.test(m));
   ok('F4 antetítulo, resumen, frase, garantías, tarjetas de oferta con precio, botón y pago dinámico', /Joyería con significado/.test(m) && /19,99 €/.test(m) && /Acero inoxidable con acabado dorado, medalla de la Virgen María, cruz y cuentas tricolor\./.test(m) && count(r.html, /Un símbolo de tu fe, contigo cada día/g) === 1 && /<variant-selects/.test(m) && /g-offer__card/.test(m) && /ProductSubmitButton-/.test(m) && /shopify-payment-button/.test(m));
   ok('F5 sin selector de cantidad en la ficha', !/quantity-input|name="quantity"/.test((m.match(/<product-info[\s\S]*?<\/product-info>/) || [''])[0]));
@@ -68,7 +69,8 @@ module.exports = async function (browser) {
   ok('F19 carrito vacío: «Seguir comprando» → home (no al catálogo)', r.status === 200 && /href="\/" class="button">\s*Seguir comprando/.test(m) && !/\/collections/.test(m));
   await fetch(B + '/cart/add', { method: 'POST', body: (() => { const f = new FormData(); f.append('id', '4102'); return f; })() });
   r = await get('/cart'); m = main(r.html);
-  ok('F20 carrito: producto, variante «Pack: 2 pulseras», cantidad, eliminar, subtotal y «Finalizar compra»', /Pulsera Rosario Virgen María/.test(m) && /Pack:\s*<\/dt>\s*<dd>2 pulseras|Pack: 2 pulseras/.test(m.replace(/\s+/g, ' ')) && /name="updates\[\]"/.test(m) && /cart-remove-button/.test(m) && /34,99 €/.test(m) && /name="checkout"/.test(m), text(m).slice(0, 200));
+  // Ronda T: la línea del pack dice «Tu pack incluye 2 pulseras» (la etiqueta «Pack:» queda solo para lectores de pantalla).
+  ok('F20 carrito: producto, variante «Tu pack incluye 2 pulseras», cantidad, eliminar, subtotal y «Finalizar compra»', /Pulsera Rosario Virgen María/.test(m) && /<dt class="visually-hidden">Pack:<\/dt>\s*<dd>Tu pack incluye 2 pulseras/.test(m.replace(/\s+/g, ' ')) && /name="updates\[\]"/.test(m) && /cart-remove-button/.test(m) && /34,99 €/.test(m) && /name="checkout"/.test(m), text(m).slice(0, 200));
   // Casos límite y regresión final.
   await setState('reset=1&mode=single&design=1');
   for (const u of ['/', P, '/pages/contacto', '/cart']) {

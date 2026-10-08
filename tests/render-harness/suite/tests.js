@@ -4,7 +4,7 @@ const { chromium } = require('playwright-core');
 const fs = require('fs'); const path = require('path');
 const THEME = path.resolve(process.env.THEME || path.join(__dirname, '..', '..', '..'));
 const B = 'http://localhost:' + (process.env.PORT || 8810);
-const PHASES = 'ABCDEFGHIJKLMNOPQRS'; const PH = PHASES.indexOf(process.env.PHASE || PHASES.slice(-1));
+const PHASES = 'ABCDEFGHIJKLMNOPQRST'; const PH = PHASES.indexOf(process.env.PHASE || PHASES.slice(-1));
 const at = (p) => PHASES.indexOf(p) <= PH;
 const results = []; const ok = (n, c, i) => results.push([c ? 'PASS' : 'FAIL', n, i === undefined ? '' : JSON.stringify(i).slice(0, 300)]);
 const setState = (q) => fetch(`${B}/__state?${q}`).then(r => r.json());

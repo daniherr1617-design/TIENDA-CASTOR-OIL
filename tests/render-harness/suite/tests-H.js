@@ -140,5 +140,5 @@ module.exports = async function (browser) {
   r = await get('/cart'); ok('H27 carrito → 200', r.status === 200 && r.tpl === 'cart');
   r = await get('/pages/contacto'); ok('H28 contacto → 200 con formulario', r.status === 200 && /form[^>]*contact/i.test(r.html));
   let idx = null; try { idx = JSON.parse(fs.readFileSync(`${THEME}/templates/index.json`, 'utf8')); } catch (e) {}
-  ok('H29 templates/index.json existe, es JSON válido y conserva las 9 secciones en orden', idx && JSON.stringify(idx.order) === JSON.stringify(['portada', 'compra', 'tranquilidad', 'opiniones', 'significado', 'detalles', 'regalo', 'preguntas', 'cierre']), idx && idx.order);
+  ok('H29 templates/index.json existe, es JSON válido y conserva las 9 secciones en orden', idx && JSON.stringify(idx.order) === JSON.stringify(['portada', 'compra', 'opiniones', 'tranquilidad', 'significado', 'detalles', 'regalo', 'preguntas', 'cierre']), idx && idx.order);
 };

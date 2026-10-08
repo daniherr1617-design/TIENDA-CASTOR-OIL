@@ -191,13 +191,14 @@
                             <dl>
                               {%- if item.product.has_only_default_variant == false -%}
                                 {%- for option in item.options_with_values -%}
-                                  <div class="product-option">
-                                    <dt>{{ option.name }}:</dt>
-                                    <dd>
-                                      {{ option.value -}}
-                                      {%- unless forloop.last %}, {% endunless %}
-                                    </dd>
-                                  </div>
+                                  {%- liquid
+                                    # GARELON: «Tu pack incluye N …» con el valor real de la variante.
+                                    assign separator = ''
+                                    unless forloop.last
+                                      assign separator = ', '
+                                    endunless
+                                  -%}
+                                  {%- render 'garelon-cart-option', option: option, separator: separator -%}
                                 {%- endfor -%}
                               {%- endif -%}
 

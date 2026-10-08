@@ -14,7 +14,8 @@ module.exports = async function (browser) {
   let s = section(r.html);
   ok('D2 una sola variante: sin selector, sin tabla de packs y sin aviso para el cliente', !/variant-selects|g-packs|g-offer|g-editor-note/.test(s));
   ok('D3 galería con las 5 imágenes del tema (completa → detalle → infografía → principal → oración), lazy, con alt', count(s, /class="g-gallery__slide[ "]/g) === 5 && /producto-completa-1080[\s\S]*producto-detalle-600[\s\S]*producto-infografia-v\d+-1254[\s\S]*producto-principal-1080[\s\S]*producto-oracion-1080/.test(s) && count(s, /loading="lazy"/g) >= 5 && !/alt=""/.test((s.match(/<div class="g-gallery"[\s\S]*?<\/ul>/) || [''])[0]));
-  ok('D4 frase de fe una sola vez en la página, antes del botón', count(r.html, /Un símbolo de tu fe, contigo cada día\./g) === 1 && s.indexOf('g-trust__phrase') > 0 && s.indexOf('g-trust__phrase') < s.indexOf('ProductSubmitButton'));
+  // Ronda T: la frase y las garantías van debajo del botón para subir los packs en móvil.
+  ok('D4 frase de fe una sola vez en la página, después del botón', count(r.html, /Un símbolo de tu fe, contigo cada día\./g) === 1 && s.indexOf('ProductSubmitButton') > 0 && s.indexOf('g-trust__phrase') > s.indexOf('ProductSubmitButton'));
   ok('D5 título del producto como H2 (el H1 es la portada) y botón de pago dinámico', /<h2 class="product__title h1"/.test(s) && /shopify-payment-button/.test(s));
   ok('D6 sin selector de cantidad (cada pack = una variante con cantidad 1)', !/quantity-input|name="quantity"/.test(s));
   ok('D7 un único Product JSON-LD en la home', count(r.html, /"@type":\s*"Product"/g) === 1, count(r.html, /"@type":\s*"Product"/g));
@@ -23,7 +24,7 @@ module.exports = async function (browser) {
   ok('D9 editor sin packs en Shopify: aviso solo en el editor', /g-editor-note/.test(section(r.html)) && /opción «Pack»/.test(r.html));
   await setState('design=0&mode=pack3save'); r = await get('/'); s = section(r.html);
   const rows = [...s.matchAll(/<label[^>]*class="g-offer__card[^"]*"[^>]*>([\s\S]*?)<\/label>/g)].map(m => text(m[1]).trim());
-  ok('D10 tarjetas con ahorro real: precio de cada pack + precio/pulsera y ahorro solo en 2 y 3', JSON.stringify(rows) === JSON.stringify(['1 pulsera Ideal para ti 19,99 €', 'Recomendado 2 pulseras Perfecto para regalar 17,50 € por pulsera Ahorras 4,99 € 34,99 €', '3 pulseras Ahorra más por unidad 16,00 € por pulsera Ahorras 11,98 € 47,99 €']) && /Ahorro calculado frente a comprar cada pulsera por separado\./.test(s), rows);
+  ok('D10 tarjetas con ahorro real: precio de cada pack + precio/pulsera y ahorro solo en 2 y 3', JSON.stringify(rows) === JSON.stringify(['1 pulsera Ideal para ti 19,99 €', '2 pulseras Perfecto para regalar 17,50 € por pulsera Ahorras 4,99 € 34,99 €', 'Mejor precio por pulsera 3 pulseras Para ti y para compartir 16,00 € por pulsera Ahorras 11,98 € 47,99 €']) && /Ahorro calculado frente a comprar cada pulsera por separado\./.test(s), rows);
   ok('D11 tarjetas dentro del <variant-selects> de Dawn con «1 pulsera · 2 pulseras · 3 pulseras»', /<variant-selects[^>]*class="g-offer"/.test(s) && ['1 pulsera', '2 pulseras', '3 pulseras'].every(v => new RegExp(`value="${v}"`).test(s)) && count(s, /<variant-selects/g) === 1);
   await setState('mode=pack3'); r = await get('/'); s = section(r.html);
   ok('D12 packs sin ahorro real (mismo precio por unidad): ni «ahorras», ni precio por pulsera, ni «Ahorra más por unidad», ni nota de ahorro', /g-offer__card/.test(s) && !/ahorras|por pulsera|Ahorra más|Ahorro calculado/i.test(s));

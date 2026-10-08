@@ -10,6 +10,7 @@
   - Ahorro: con precio comparado, frente a él; si no, frente a comprar las unidades sueltas
     al precio del pack de 1 (solo si es > 0). Nunca se inventa.
   - Textos que hablan de ahorro («ahorr…») solo se muestran si ese pack ahorra de verdad.
+  - Un distintivo con «mejor precio» solo se muestra en el pack con el precio por unidad más bajo.
   - Sin la opción de packs (o con más de una opción), el selector normal de Dawn.
 
   Parámetros: product, block, product_form_id, check (true = solo escribe «on» si las tarjetas
@@ -45,6 +46,40 @@
     assign unit_name = block.settings.unit_singular | default: 'unidad'
     assign badge_pack = block.settings.badge_pack | append: ''
     assign used_pack_basis = false
+
+    # Pack con el precio por unidad más bajo (de los precios reales de Shopify). Un distintivo que habla
+    # de «mejor precio» solo se pinta en ese pack, y solo si es el único con ese precio por unidad.
+    assign best_slot = ''
+    assign best_unit = nil
+    assign best_ties = 0
+    for value in pack_option.values
+      assign bv = value.variant
+      if bv == blank
+        assign bv = product.variants | where: 'option1', value.name | first
+      endif
+      assign b_units = value.name | split: ' ' | first | plus: 0
+      assign b_slot = b_units
+      if b_slot < 1 or b_slot > 3
+        assign b_slot = forloop.index
+      endif
+      if bv and b_units > 0
+        assign b_unit = bv.price | times: 1.0 | divided_by: b_units
+        if best_unit == nil or b_unit < best_unit
+          assign best_unit = b_unit
+          assign best_slot = b_slot | append: ''
+          assign best_ties = 1
+        elsif b_unit == best_unit
+          assign best_ties = best_ties | plus: 1
+        endif
+      endif
+    endfor
+    if best_ties != 1
+      assign best_slot = ''
+    endif
+    assign badge_lc = block.settings.badge_text | downcase
+    if badge_lc contains 'mejor precio' and badge_pack != best_slot
+      assign badge_pack = 'none'
+    endif
   -%}
   <variant-selects
     id="variant-selects-{{ section.id }}"
@@ -59,9 +94,6 @@
     {% # theme-check-enable %}
     {{ block.shopify_attributes }}
   >
-    {%- if block.settings.show_promo and block.settings.promo_text != blank -%}
-      <p class="g-offer__promo">{{ block.settings.promo_text | escape }}</p>
-    {%- endif -%}
     <fieldset class="js product-form__input g-offer__fieldset">
       <legend class="g-offer__legend">
         {{- block.settings.heading | default: pack_option.name | escape -}}
@@ -186,6 +218,13 @@
         {%- endfor -%}
       </div>
     </fieldset>
+    {%- comment -%}
+      Texto de campaña (p. ej. octubre): debajo de las tarjetas para no empujar los packs hacia abajo.
+      Se activa y se retira desde el editor (bloque «GARELON Elige tu oferta» › Promoción).
+    {%- endcomment -%}
+    {%- if block.settings.show_promo and block.settings.promo_text != blank -%}
+      <p class="g-offer__promo">{{ block.settings.promo_text | escape }}</p>
+    {%- endif -%}
     {%- if used_pack_basis -%}
       <p class="g-offer__note">{{ 'garelon.offer.saving_note' | t: unit: unit_name }}</p>
     {%- endif -%}

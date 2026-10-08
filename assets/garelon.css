@@ -61,7 +61,7 @@ body {
   gap: 1rem;
   padding: 1.2rem 0;
   font-size: 1.5rem;
-  min-height: 4.4rem;
+  min-height: 2.4rem;
 }
 .garelon-drawer-account .svg-wrapper {
   width: 2rem;
@@ -73,7 +73,7 @@ body {
   }
 }
 .menu-drawer__menu-item {
-  min-height: 4.4rem;
+  min-height: 2.4rem;
 }
 
 /* ---------- Barra superior ---------- */
@@ -144,7 +144,7 @@ body {
   display: inline-flex;
   align-items: center;
   gap: 0.6rem;
-  min-height: 4.4rem;
+  min-height: 2.4rem;
   font-size: 1.5rem;
   font-weight: 500;
   color: rgb(var(--color-foreground));
@@ -253,7 +253,9 @@ body {
   display: none;
 }
 .g-gallery__slide {
-  flex: 0 0 86%;
+  /* Ronda T: en móvil, todas las fotos a todo el ancho. Con la foto al 86 % y la infografía al 100 %,
+     la pista tomaba la altura de la infografía y dejaba ~65-80 px vacíos bajo la primera foto. */
+  flex: 0 0 100%;
   scroll-snap-align: start;
   border-radius: var(--g-radius);
   overflow: hidden;
@@ -330,7 +332,7 @@ body {
   }
 }
 .product-form__input--pill input[type='radio'] + label {
-  min-height: 4.4rem;
+  min-height: 2.4rem;
   display: inline-flex;
   align-items: center;
   padding: 1rem 2rem;
@@ -503,18 +505,19 @@ body {
 .g-offer {
   margin: 2rem 0 0.8rem;
 }
+/* Texto de campaña o promoción, debajo de las tarjetas: discreto, sin colores de alerta. */
 .g-offer__promo {
-  display: table;
-  margin: 0 auto 1.2rem;
-  padding: 0.4rem 1.2rem;
-  border: 1px solid var(--g-accent);
-  border-radius: 999px;
-  font-size: 1.2rem;
-  font-weight: 600;
-  letter-spacing: 0.06em;
-  text-transform: uppercase;
-  color: var(--g-accent-ink);
-  background: #fff;
+  margin: 1.2rem 0 0;
+  padding: 0.9rem 1.4rem;
+  border: 1px solid var(--g-gold-line);
+  border-radius: var(--g-radius);
+  background: #fbf7ef;
+  font-family: var(--font-heading-family);
+  font-style: italic;
+  font-size: 1.45rem;
+  line-height: 1.4;
+  text-align: center;
+  color: var(--g-ink);
 }
 .g-offer .g-offer__fieldset {
   max-width: none;
@@ -1184,4 +1187,14 @@ body {
 .contact .contact__button .button:focus-visible {
   outline: 2px solid var(--g-accent);
   outline-offset: 3px;
+}
+
+/* ---------- Carrito: «Tu pack incluye N …» (ronda T) ---------- */
+.g-cart-pack dd {
+  margin: 0;
+}
+
+/* ---------- Pie: selector nativo de país/región de Dawn (ronda T) ---------- */
+.footer__localization .disclosure__button {
+  min-height: 4.4rem;
 }

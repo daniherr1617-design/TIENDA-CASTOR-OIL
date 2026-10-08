@@ -194,6 +194,17 @@ def ok_free_shipping_off_coherent(t):
         p = f'{t}/templates/{f}'
         s = open(p, encoding='utf-8').read().replace('Envío gratis + seguimiento', 'Envío con seguimiento')
         open(p, 'w', encoding='utf-8').write(s)
+    # Ronda T (D37): la barra superior de octubre también promete el envío gratis; coherente = cambiarla igual.
+    p = f'{t}/sections/header-group.json'
+    s = open(p, encoding='utf-8').read().replace('Envío gratis con seguimiento', 'Envío con seguimiento')
+    open(p, 'w', encoding='utf-8').write(s)
+
+
+def m_free_shipping_off_bar_only(t):
+    ok_free_shipping_off_coherent(t)  # garantías y barra coherentes…
+    p = f'{t}/sections/header-group.json'  # …salvo la barra, que vuelve a prometer el envío gratis
+    s = open(p, encoding='utf-8').read().replace('Envío con seguimiento', 'Envío gratis con seguimiento')
+    open(p, 'w', encoding='utf-8').write(s)
 
 
 def m_text(rel, old, new):
@@ -309,6 +320,7 @@ MUTATIONS = [
     ('traducción que falta en un idioma', m_missing_translation),
     ('schema: default «Más popular» (claim de ventas sin datos)', schema_mutation(sales_claim_default)),
     ('«Envío gratis» desactivado pero una garantía sigue prometiéndolo', m_free_shipping_off),
+    ('«Envío gratis» desactivado pero la barra superior sigue prometiéndolo', m_free_shipping_off_bar_only),
     ('garantía «Garantía de 14 días» en lugar del desistimiento',
      m_text('templates/index.json', '14 días para cambiar de opinión', 'Garantía de 14 días')),
     ('«Devolución garantizada» en una respuesta de la FAQ',

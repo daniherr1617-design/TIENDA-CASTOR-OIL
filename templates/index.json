@@ -56,12 +56,12 @@
             "unit_singular": "pulsera",
             "sub_1": "Ideal para ti",
             "sub_2": "Perfecto para regalar",
-            "sub_3": "Ahorra más por unidad",
+            "sub_3": "Para ti y para compartir",
             "show_unit_price": true,
-            "badge_pack": "2",
-            "badge_text": "Recomendado",
-            "show_promo": false,
-            "promo_text": "Oferta especial de lanzamiento"
+            "badge_pack": "3",
+            "badge_text": "Mejor precio por pulsera",
+            "show_promo": true,
+            "promo_text": "Octubre es el mes del Rosario. Llévala tú y comparte las otras dos con quien quieras."
           }
         },
         "comprar": {
@@ -76,9 +76,9 @@
         "titulo",
         "valoracion",
         "precio",
-        "confianza",
         "oferta",
-        "comprar"
+        "comprar",
+        "confianza"
       ],
       "settings": {
         "garelon_anchor": "comprar",
@@ -112,7 +112,7 @@
           "type": "heading",
           "settings": {
             "heading": "Compra con tranquilidad",
-            "heading_size": "h1"
+            "heading_size": "h2"
           }
         },
         "texto": {
@@ -144,8 +144,8 @@
         "content_alignment": "center",
         "color_scheme": "scheme-2",
         "full_width": false,
-        "padding_top": 48,
-        "padding_bottom": 48,
+        "padding_top": 36,
+        "padding_bottom": 36,
         "garelon_badge": "escudo"
       }
     },
@@ -402,8 +402,8 @@
   "order": [
     "portada",
     "compra",
-    "tranquilidad",
     "opiniones",
+    "tranquilidad",
     "significado",
     "detalles",
     "regalo",

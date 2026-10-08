@@ -597,7 +597,9 @@
       "editor_waiting": "Editor only: the reviews widget is hidden from customers because the rating synced to Shopify is 0. It will appear once reviews are published (or turn off «Hide without reviews»)."
     },
     "cart": {
-      "taxes_at_checkout": "Taxes calculated at checkout."
+      "taxes_at_checkout": "Taxes calculated at checkout.",
+      "pack_includes": "Your pack includes {{ contents }}",
+      "pack_includes_one": "Includes {{ contents }}"
     }
   }
 }

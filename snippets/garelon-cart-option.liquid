@@ -1,0 +1,33 @@
+{%- comment -%}
+  GARELON · Una opción de la línea del carrito (cajón y /cart).
+  Si la opción se llama «Pack» y su valor empieza por un número («3 pulseras»), dice qué incluye
+  el pedido con el valor real de la variante: «Tu pack incluye 3 pulseras» (o «Incluye 1 pulsera»).
+  El número nunca se escribe en el tema. Cualquier otra opción, como en Dawn: «Nombre: valor».
+
+  Parámetros: option (de item.options_with_values), separator (texto opcional tras el valor)
+{%- endcomment -%}
+{%- liquid
+  assign option_key = option.name | downcase | strip
+  assign units = option.value | split: ' ' | first | plus: 0
+-%}
+{%- if option_key == 'pack' and units > 0 -%}
+  <div class="product-option g-cart-pack">
+    <dt class="visually-hidden">{{ option.name }}:</dt>
+    <dd>
+      {%- if units == 1 -%}
+        {{ 'garelon.cart.pack_includes_one' | t: contents: option.value }}
+      {%- else -%}
+        {{ 'garelon.cart.pack_includes' | t: contents: option.value }}
+      {%- endif -%}
+      {{- separator -}}
+    </dd>
+  </div>
+{%- else -%}
+  <div class="product-option">
+    <dt>{{ option.name }}:</dt>
+    <dd>
+      {{ option.value -}}
+      {{- separator -}}
+    </dd>
+  </div>
+{%- endif -%}
