@@ -9,3 +9,4 @@ remotion/out/
 *.wav
 *.m4a
 __pycache__/
+_qa/

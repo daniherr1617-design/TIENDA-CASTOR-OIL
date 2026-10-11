@@ -32,7 +32,7 @@ Los vídeos base los genera el propietario (p. ej. con **Higgsfield**). Claude t
 
 ## Cómo trabajar un vídeo (primero la estrategia, después la edición)
 
-1. **Preparar:** `lab ingest` → `lab analyze` (hojas cada 0,5 s + tira `hook_0-3s.jpg`) → `lab fidelity NOMBRE --ref <imágenes aprobadas>` si hay IA o dudas → `lab transcribe` si hay voz → `lab cuts`.
+1. **Preparar:** `lab ingest` → `lab analyze` (hojas cada 0,5 s + tira `hook_0-3s.jpg`) → `lab fidelity NOMBRE --ref <imágenes aprobadas>` si hay IA o dudas (hoja rápida de referencias + fotogramas; para métricas por pieza, comparación original/resultado y veredicto PASS/WARNING/FAIL usar la skill `garelon-video-qa`, obligatoria antes y después de cada upscale, edición o generación en Higgsfield) → `lab transcribe` si hay voz → `lab cuts`.
 2. **Analizar, mirando todas las hojas.** Entregar este diagnóstico **antes** de editar:
    1. Qué funciona (planos fuertes, momentos que se entienden).
    2. Partes débiles (relleno, planos repetidos, producto mal visto, silencios).

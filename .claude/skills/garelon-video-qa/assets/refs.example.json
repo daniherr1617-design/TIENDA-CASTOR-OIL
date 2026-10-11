@@ -1,0 +1,11 @@
+{
+  "_nota": "Copiar a creative/_references/product/refs.json. bbox = [x, y, ancho, alto] en píxeles de la imagen indicada. Recortes ajustados a cada pieza, con poco fondo.",
+  "product": "Pulsera Rosario Virgen María Dorada",
+  "parts": [
+    {"name": "pulsera", "image": "imagen 4.png",       "bbox": [0, 0, 100, 100], "critical": true},
+    {"name": "medalla", "image": "NUEVA IMAGEN 3.png", "bbox": [0, 0, 100, 100], "critical": true},
+    {"name": "cruz",    "image": "NUEVA IMAGEN 3.png", "bbox": [0, 0, 100, 100], "critical": true},
+    {"name": "cuentas", "image": "NUEVA IMAGEN 3.png", "bbox": [0, 0, 100, 100], "critical": true},
+    {"name": "cierre",  "image": "imagen 4.png",       "bbox": [0, 0, 100, 100], "critical": true}
+  ]
+}

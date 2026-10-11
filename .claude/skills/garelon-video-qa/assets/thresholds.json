@@ -1,0 +1,49 @@
+{
+  "_nota": "Valores PROVISIONALES v0.1. Calibrar con vídeos reales de GARELON (buenos y malos). SSIM y métricas de producto son señales, nunca deciden solas la fidelidad.",
+  "target": {
+    "width": 1080,
+    "height": 1920,
+    "fps_allowed": [23.976, 24, 25, 29.97, 30, 50, 59.94, 60],
+    "codecs_ok": ["h264", "hevc"],
+    "pix_fmts_ok": ["yuv420p", "yuvj420p"],
+    "min_bitrate_kbps": 5000,
+    "max_duration_s": null
+  },
+  "anomalies": {
+    "freeze_noise_db": -60,
+    "freeze_min_s": 0.5,
+    "black_min_s": 0.1,
+    "black_pix_th": 0.10,
+    "scene_threshold": 10.0,
+    "duplicate_ydif": 0.05,
+    "duplicate_run_frames": 3,
+    "flicker_yavg_jump": 12.0
+  },
+  "compare_aligned": {
+    "ssim_ok": 0.95,
+    "ssim_warn": 0.90,
+    "psnr_warn_db": 30.0,
+    "min_bad_run_frames": 3,
+    "sharpness_loss_ratio_warn": 0.80
+  },
+  "product": {
+    "sample_frames_max": 12,
+    "min_inliers": 12,
+    "lowe_ratio": 0.75,
+    "template_fallback_ncc": 0.72,
+    "min_visible_fraction": 0.5,
+    "ssim_part_warn": 0.55,
+    "deltaE_warn": 7.0,
+    "relative_scale_tolerance": 0.25,
+    "aligned_part_ssim_warn": 0.85
+  },
+  "frames": {
+    "max_representative": 16,
+    "dedupe_s": 0.25,
+    "thumb_width": 270
+  },
+  "pipeline_limits": {
+    "_nota": "Límites confirmados en el catálogo Higgsfield (models_explore, 2026-10-09). Añadir otros solo cuando estén verificados.",
+    "flux_3_video_edit": {"max_input_s": 15}
+  }
+}

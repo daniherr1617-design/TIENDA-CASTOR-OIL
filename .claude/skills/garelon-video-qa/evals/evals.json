@@ -1,0 +1,20 @@
+{
+  "skill_name": "garelon-video-qa",
+  "_nota": "Casos con vídeos sintéticos de evals/make_fixtures.py. Sin vídeos reales ni créditos.",
+  "evals": [
+    {"id": 1, "prompt": "Revisa el upscale bueno frente al original 720p antes de aprobarlo", "files": ["original_720.mp4", "upscale_good.mp4", "refs/refs.json"],
+     "expected_output": "post-upscale; SSIM alto; producto visible en todas las piezas; veredicto provisional hasta la revisión visual; nunca FAIL de producto"},
+    {"id": 2, "prompt": "El upscale ha quedado blando, ¿lo apruebo?", "files": ["original_720.mp4", "upscale_bad.mp4", "refs/refs.json"],
+     "expected_output": "WARNING; recomendación REPETIR UPSCALE; pérdida de nitidez por pieza; sugerencias de preset/fps"},
+    {"id": 3, "prompt": "Comprueba si la generación nueva mantiene la pulsera", "files": ["generation_altered.mp4", "refs/refs.json"],
+     "expected_output": "SOSPECHAS de color en cuentas/cruz/cierre; tras la revisión visual (medalla rectangular, cuentas de otro color) → FAIL, REGENERAR / DESCARTAR PLANO"},
+    {"id": 4, "prompt": "Mismo producto, otra toma generada", "files": ["generation_ok.mp4", "refs/refs.json"],
+     "expected_output": "Sin sospechas de producto; solo avisos técnicos"},
+    {"id": 5, "prompt": "Revisa este resultado descargado", "files": ["corrupted.mp4"],
+     "expected_output": "FAIL por errores de decodificación; VOLVER A DESCARGAR"},
+    {"id": 6, "prompt": "Revisa la toma con imagen congelada", "files": ["frozen.mp4", "refs/refs.json"],
+     "expected_output": "Imagen congelada detectada con timestamp"},
+    {"id": 7, "prompt": "Antes de mandarlo a Higgsfield, ¿está listo?", "files": ["original_720.mp4", "refs/refs.json"],
+     "expected_output": "stage pre; 720×1280 informativo (BAJA); listo para enviar"}
+  ]
+}
