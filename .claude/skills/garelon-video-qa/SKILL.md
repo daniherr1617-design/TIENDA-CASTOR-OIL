@@ -30,7 +30,7 @@ LPIPS queda para la v2; no lo instales.
 
 ## Referencias de producto
 
-Las referencias maestras aprobadas están en `creative/_references/product/`, junto con `refs.json`, que declara un recorte (`bbox` en píxeles) por pieza: pulsera, medalla, cruz, cuentas y cierre. Ver `assets/refs.example.json`.
+Las referencias maestras aprobadas están en `creative/_references/product/`, junto con `refs.json`, que declara un recorte (`bbox` en píxeles) por pieza: pulsera completa, medalla, cruz, cuentas del lado izquierdo, cuentas del lado derecho (otra disposición junto a la cruz) y cierre. Ver `assets/refs.example.json`.
 
 - Usa solo las imágenes aprobadas que aparecen en `references/product_spec.md`. Nunca las marcadas como "No usar".
 - Si no hay `refs.json` o falta una pieza, el informe dice "fidelidad no verificada" (WARNING). No inventes referencias.
@@ -60,7 +60,7 @@ En un vídeo de 6 s tarda alrededor de 1 minuto; escala con la duración.
 - Los scripts **nunca dan FAIL de producto por sí solos.** Como mucho dan WARNING "SOSPECHA, revisar lámina". El FAIL de producto solo llega con una discrepancia visual clara confirmada en la revisión.
 - Una pieza crítica (medalla, cruz, cierre o cuentas) que no se ve o no se localiza da **WARNING**, nunca PASS.
 - Sin revisión visual, el veredicto es siempre **provisional** y nunca PASS.
-- Piezas con `"auto": false` en `refs.json` (hoy: pulsera, cuentas, cruz y cierre) no se localizan automáticamente, porque la visión clásica no las encuentra de forma fiable en fotos reales. Se juzgan solo en la revisión visual, buscándolas en `contact_sheet.jpg` y `frames/`. Hoy solo la medalla tiene métricas automáticas.
+- Piezas con `"auto": false` en `refs.json` (hoy: pulsera, cuentas_izquierda, cuentas_derecha, cruz y cierre) no se localizan automáticamente, porque la visión clásica no las encuentra de forma fiable en fotos reales. Se juzgan solo en la revisión visual, buscándolas en `contact_sheet.jpg` y `frames/`. Hoy solo la medalla tiene métricas automáticas.
 - Limitación conocida: los cambios de **forma** (p. ej. medalla ovalada → rectangular) pueden pasar las métricas automáticas. La lámina es la que los detecta.
 
 ## Revisión visual (siempre)
@@ -71,7 +71,7 @@ En un vídeo de 6 s tarda alrededor de 1 minuto; escala con la duración.
 ```json
 {"revisor": "claude", "piezas": {
   "medalla": {"estado": "ok|discrepancia|dudoso|no_visible", "nota": "…", "timestamps": [1.0, 3.0]},
-  "cruz": {…}, "cuentas": {…}, "cierre": {…}, "pulsera": {…}}}
+  "cruz": {…}, "cuentas_izquierda": {…}, "cuentas_derecha": {…}, "cierre": {…}, "pulsera": {…}}}
 ```
    Marca `discrepancia` solo cuando el cambio sea claro: otra forma, otro color de cuentas, cruz colgante en vez de integrada, aros que faltan o proporciones evidentes. Si hay duda, usa `dudoso`. Si no se ve bien, usa `no_visible`.
 4. Ejecuta `qa.py finalize --run <carpeta_run> --visual <carpeta_run>/visual_review.json`, que recalcula el veredicto.

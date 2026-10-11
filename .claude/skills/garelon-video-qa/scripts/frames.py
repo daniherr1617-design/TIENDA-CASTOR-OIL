@@ -124,10 +124,12 @@ def side_by_side_rows(rows: list[dict], out: Path, title: str, cell: int = 300) 
     d.text((pad, 10), _txt(title), fill=(235, 235, 235), font=_font(18))
     for i, row in enumerate(rows):
         y = head + i * row_h
-        d.text((pad, y + 6), _txt(row["label"]), fill=(255, 210, 90), font=_font(17))
+        label_lines = _wrap(row["label"].replace("_", " "), 13)[:3]
+        for j, line in enumerate(label_lines):
+            d.text((pad, y + 6 + j * 20), _txt(line), fill=(255, 210, 90), font=_font(17))
         if row.get("note"):
             for j, line in enumerate(_wrap(row["note"], 18)[:8]):
-                d.text((pad, y + 32 + j * 16), _txt(line), fill=(200, 200, 200), font=_font(13))
+                d.text((pad, y + 12 + 20 * len(label_lines) + j * 16), _txt(line), fill=(200, 200, 200), font=_font(13))
         for j, (caption, img) in enumerate(row["cells"]):
             x = label_w + j * (cell + pad)
             if img is None:

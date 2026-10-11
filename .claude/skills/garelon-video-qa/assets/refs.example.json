@@ -5,7 +5,8 @@
     {"name": "pulsera", "image": "imagen 4.png",       "bbox": [0, 0, 100, 100], "critical": true},
     {"name": "medalla", "image": "NUEVA IMAGEN 3.png", "bbox": [0, 0, 100, 100], "critical": true},
     {"name": "cruz",    "image": "NUEVA IMAGEN 3.png", "bbox": [0, 0, 100, 100], "critical": true},
-    {"name": "cuentas", "image": "NUEVA IMAGEN 3.png", "bbox": [0, 0, 100, 100], "critical": true},
+    {"name": "cuentas_izquierda", "image": "imagen 4.png", "bbox": [0, 0, 100, 100], "critical": true},
+    {"name": "cuentas_derecha",   "image": "imagen 4.png", "bbox": [0, 0, 100, 100], "critical": true},
     {"name": "cierre",  "image": "imagen 4.png",       "bbox": [0, 0, 100, 100], "critical": true}
   ]
 }

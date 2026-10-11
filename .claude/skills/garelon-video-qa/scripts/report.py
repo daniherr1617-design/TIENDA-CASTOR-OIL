@@ -5,7 +5,7 @@ from pathlib import Path
 
 from common import SEVERITY_ORDER, fmt_range, write_json
 
-DEFAULT_PARTS = ["pulsera", "medalla", "cruz", "cuentas", "cierre"]
+DEFAULT_PARTS = ["pulsera", "medalla", "cruz", "cuentas_izquierda", "cuentas_derecha", "cierre"]
 VISUAL_STATES = {"ok", "discrepancia", "dudoso", "no_visible"}
 
 
