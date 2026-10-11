@@ -102,3 +102,19 @@ def sharpness_check(pairs: list[tuple[float, object, object]], th: dict) -> tupl
                             f"Pérdida de nitidez en {len(low)}/{len(rows)} frames muestreados (ratio < {ratio_warn})",
                             t_start=low[0]["t"], t_end=low[-1]["t"], evidence={"muestras": low[:5]}))
     return issues, rows
+
+
+def worst_tiles(orig, res, grid: int = 6, n: int = 2) -> list[tuple[float, object, object]]:
+    """Regions where result differs most from original (no product localisation needed)."""
+    from product import ssim_gray
+    h, w = res.shape[:2]
+    th_, tw = h // grid, w // grid
+    out = []
+    for gy in range(grid):
+        for gx in range(grid):
+            y, x = gy * th_, gx * tw
+            a, b = orig[y:y + th_, x:x + tw], res[y:y + th_, x:x + tw]
+            if a.std() < 4:          # flat background: not informative
+                continue
+            out.append((ssim_gray(a, b), a, b))
+    return sorted(out, key=lambda r: r[0])[:n]

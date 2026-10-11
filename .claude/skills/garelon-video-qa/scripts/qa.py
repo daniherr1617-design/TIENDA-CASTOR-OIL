@@ -106,6 +106,14 @@ def cmd_run(a) -> int:
                 pairs.append((t, fr.resize_to(o, r.shape[1], r.shape[0]), r))
         s_issues, sharp_rows = compare.sharpness_check(pairs, th)
         issues += [i.to_dict() for i in s_issues]
+        worst = sorted(pairs, key=lambda pr: compare.sharpness(pr[2]) / max(compare.sharpness(pr[1]), 1e-6))[:2]
+        for t, o, r in worst:
+            cells = []
+            for k, (sv, tile_o, tile_r) in enumerate(compare.worst_tiles(o, r)):
+                cells += [(f"ORIGINAL zona {k + 1}", tile_o), (f"RESULTADO zona {k + 1} · SSIM {sv:.2f}", tile_r)]
+            if cells:
+                rows.append({"label": f"ZONAS {fmt_ts(t)}", "cells": cells,
+                             "note": "zonas con más diferencia original/resultado"})
 
     product_summary, visual_parts = None, DEFAULT_PARTS
     if a.refs:
@@ -172,6 +180,14 @@ def cmd_finalize(a) -> int:
     for i in v_issues:
         ts = visual["piezas"][i["evidence"]["pieza"]].get("timestamps") or []
         i["frames"] = sorted({int(round(t * fps)) for t in ts})
+    # A part reviewed as "ok" resolves the automatic signals for that part (they are only signals).
+    ok_parts = {n for n, v in visual.get("piezas", {}).items() if v.get("estado") == "ok"}
+    for i in state["issues"]:
+        pieza = (i.get("evidence") or {}).get("pieza")
+        if i["category"] == "producto" and pieza in ok_parts and i["severity"] != "BAJA":
+            i["evidence"]["severidad_original"] = i["severity"]
+            i["severity"] = "BAJA"
+            i["message"] += " (resuelto: ok en revisión visual)"
     state["issues"] = [i for i in state["issues"] if i["category"] != "visual"] + v_issues
     state["visual"] = visual
     state["visual_done"] = complete

@@ -175,6 +175,12 @@ def analyze(result: str, timestamps: list[float], refs: dict, th: dict, stage: s
 
     for part in refs["parts"]:
         name, tpl = part["name"], part["crop"]
+        if not part.get("auto", True):
+            # Non-rigid or tiny parts (chain, beads, clasp) cannot be located reliably with classic CV:
+            # they are judged only in the visual review.
+            per_part[name] = {"critical": part.get("critical", True), "obs": [], "tpl": tpl,
+                              "image": part["image"], "auto": False}
+            continue
         obs = []
         for t in ts:
             fr = frames_r.get(t)
@@ -210,7 +216,7 @@ def analyze(result: str, timestamps: list[float], refs: dict, th: dict, stage: s
                     o["found_in_original"] = False
             obs.append(o)
         per_part[name] = {"critical": part.get("critical", True), "obs": obs, "tpl": tpl,
-                          "image": part["image"]}
+                          "image": part["image"], "auto": True}
 
     # Proportions: relative scale of parts that come from the same reference image
     for t in ts:
@@ -232,6 +238,9 @@ def analyze(result: str, timestamps: list[float], refs: dict, th: dict, stage: s
     # Issues per part
     summary = {}
     for name, d in per_part.items():
+        if not d.get("auto", True):
+            summary[name] = {"modo": "solo revisión visual"}
+            continue
         obs = d["obs"]
         found = [o for o in obs if o.get("found")]
         frac = len(found) / len(obs) if obs else 0.0
@@ -248,13 +257,13 @@ def analyze(result: str, timestamps: list[float], refs: dict, th: dict, stage: s
         crit = d["critical"]
         missing_t = [o["t"] for o in obs if not o.get("found")]
         if not found:
-            issues.append(Issue("ALTA" if crit else "MEDIA", "producto",
-                                f"{name}: no se ve o no se localiza en ningún frame muestreado → no verificable",
-                                evidence={"pieza": name}))
+            issues.append(Issue("MEDIA", "producto",
+                                f"{name}: no localizada automáticamente en ningún frame muestreado → verificar en lámina",
+                                evidence={"pieza": name, "tipo": "visibilidad"}))
         elif frac < p["min_visible_fraction"]:
             issues.append(Issue("MEDIA", "producto",
                                 f"{name}: visible solo en {len(found)}/{len(obs)} frames muestreados → verificación parcial",
-                                t_start=min(missing_t), t_end=max(missing_t), evidence={"pieza": name, "sin_localizar": missing_t, "ts": missing_t}))
+                                t_start=min(missing_t), t_end=max(missing_t), evidence={"pieza": name, "sin_localizar": missing_t, "ts": missing_t, "tipo": "visibilidad"}))
         # Signals: only relevant for non-aligned stages (generation/edit). Upscale uses vs-original.
         if stage in ("post-generate", "post-edit", "pre"):
             low = [o for o in found if o["ssim_ref"] < p["ssim_part_warn"]]
@@ -263,18 +272,18 @@ def analyze(result: str, timestamps: list[float], refs: dict, th: dict, stage: s
                 issues.append(Issue("ALTA", "producto",
                                     f"{name}: estructura poco parecida a la referencia en {len(low)} frames "
                                     f"(SSIM pieza {min(o['ssim_ref'] for o in low):.2f}) → SOSPECHA, revisar lámina",
-                                    t_start=low[0]["t"], t_end=low[-1]["t"], evidence={"pieza": name, "ts": [o["t"] for o in low]}))
+                                    t_start=low[0]["t"], t_end=low[-1]["t"], evidence={"pieza": name, "tipo": "sospecha", "ts": [o["t"] for o in low]}))
             if col:
                 issues.append(Issue("ALTA", "producto",
                                     f"{name}: color distinto de la referencia en {len(col)} frames "
                                     f"(ΔE hasta {max(o['deltaE_ref'] for o in col):.1f}) → SOSPECHA, revisar lámina",
-                                    t_start=col[0]["t"], t_end=col[-1]["t"], evidence={"pieza": name, "ts": [o["t"] for o in col]}))
+                                    t_start=col[0]["t"], t_end=col[-1]["t"], evidence={"pieza": name, "tipo": "sospecha", "ts": [o["t"] for o in col]}))
         prop = [o for o in found if "proportion_dev" in o]
         if prop:
             issues.append(Issue("ALTA", "producto",
                                 f"{name}: proporción respecto a las otras piezas desviada hasta "
                                 f"{max(o['proportion_dev'] for o in prop)*100:.0f}% → SOSPECHA, revisar lámina",
-                                t_start=prop[0]["t"], t_end=prop[-1]["t"], evidence={"pieza": name, "ts": [o["t"] for o in prop]}))
+                                t_start=prop[0]["t"], t_end=prop[-1]["t"], evidence={"pieza": name, "tipo": "sospecha", "ts": [o["t"] for o in prop]}))
         if al:
             ap = th["product"]["aligned_part_ssim_warn"]
             bad = [o for o in al if o["ssim_vs_original"] < ap]
@@ -282,13 +291,13 @@ def analyze(result: str, timestamps: list[float], refs: dict, th: dict, stage: s
                 issues.append(Issue("ALTA" if stage == "post-upscale" else "MEDIA", "producto",
                                     f"{name}: diferencia con el original en la misma posición "
                                     f"(SSIM {min(o['ssim_vs_original'] for o in bad):.2f} < {ap}) → revisar detalle en lámina",
-                                    t_start=bad[0]["t"], t_end=bad[-1]["t"], evidence={"pieza": name, "ts": [o["t"] for o in bad]}))
+                                    t_start=bad[0]["t"], t_end=bad[-1]["t"], evidence={"pieza": name, "tipo": "sospecha", "ts": [o["t"] for o in bad]}))
             sharp_lim = th["compare_aligned"]["sharpness_loss_ratio_warn"]
             soft = [o for o in al if o.get("sharp_ratio") and o["sharp_ratio"] < sharp_lim]
             if soft:
                 issues.append(Issue("MEDIA", "producto",
                                     f"{name}: pérdida de nitidez frente al original (ratio {min(o['sharp_ratio'] for o in soft):.2f})",
-                                    t_start=soft[0]["t"], t_end=soft[-1]["t"], evidence={"pieza": name, "ts": [o["t"] for o in soft]}))
+                                    t_start=soft[0]["t"], t_end=soft[-1]["t"], evidence={"pieza": name, "tipo": "sospecha", "ts": [o["t"] for o in soft]}))
     return issues, summary, per_part
 
 
@@ -296,6 +305,10 @@ def lamina_rows(per_part: dict, aligned: bool) -> list[dict]:
     """Rows for the side-by-side sheet: reference | (original) | result best | result worst."""
     rows = []
     for name, d in per_part.items():
+        if not d.get("auto", True):
+            rows.append({"label": name.upper(), "cells": [("REFERENCIA aprobada", d["tpl"])],
+                         "note": "solo revisión visual: comparar con frames de abajo y frames/"})
+            continue
         found = [o for o in d["obs"] if o.get("found")]
         cells = [("REFERENCIA aprobada", d["tpl"])]
         if aligned:

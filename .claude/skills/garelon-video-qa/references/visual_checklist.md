@@ -10,10 +10,10 @@ Para cada pieza, decide un estado:
 
 ## Qué mirar
 
-1. **Medalla:** silueta (ovalada frente a otra forma), figura de la Virgen, borde y tamaño respecto a las cuentas.
-2. **Cruz:** integrada en la línea de la pulsera, **no colgando**; forma de los brazos y tamaño relativo.
-3. **Cuentas:** los tres colores y su orden; ninguna cuenta de un color nuevo; tamaño homogéneo.
-4. **Cierre:** tres aros visibles cuando el cierre está en plano; ningún mosquetón ni broche distinto.
+1. **Medalla:** silueta ovalada, figura de la Virgen, orla de piedras claras alrededor y tamaño respecto a las cuentas.
+2. **Cruz:** crucifijo con figura, integrado en la línea de la pulsera, **sin colgar**; forma de los brazos y tamaño relativo.
+3. **Cuentas:** facetadas, en tres tonos (dorado, oro rosa, plateado) alternos; ninguna cuenta de un color nuevo (p. ej. negra, roja o azul); tamaño homogéneo.
+4. **Cierre:** mosquetón dorado como en las referencias; ningún broche, imán o cierre de otro tipo o color.
 5. **Acabado:** dorado. Un cambio de temperatura de color por la luz es aceptable; un metal plateado no lo es.
 6. **Proporciones:** pulsera frente a muñeca, y medalla y cruz frente a cuentas.
 7. **Artefactos de IA en manos y joyería:** cuentas que se funden, eslabones que desaparecen entre frames, dedos que atraviesan la pulsera, texto o figura de la medalla deformados.
@@ -23,3 +23,7 @@ Para cada pieza, decide un estado:
 - Una SOSPECHA del script (SSIM o ΔE fuera de umbral) solo indica dónde mirar. Si la lámina muestra que es la luz, un reflejo o una cuenta contigua dentro del recorte, márcalo `ok` y explícalo en la nota.
 - En `post-upscale`, compara sobre todo ORIGINAL frente a RESULTADO en la misma posición: cuentas fundidas, medalla emborronada o halos alrededor del metal.
 - Indica los timestamps exactos de cualquier `discrepancia` o `dudoso`.
+
+## Piezas «solo revisión visual»
+
+En `refs.json`, las piezas con `"auto": false` (pulsera, cuentas, cruz y cierre) no se localizan automáticamente: en fotos reales, la cadena, las cuentas brillantes y las piezas pequeñas no se dejan localizar con visión clásica. La lámina solo muestra su referencia, y hay que buscarlas en `contact_sheet.jpg` y en `frames/` (a resolución completa). Si no se ven en ningún frame → `no_visible` (WARNING).

@@ -40,7 +40,7 @@
   "frames": {
     "max_representative": 16,
     "dedupe_s": 0.25,
-    "thumb_width": 270
+    "thumb_width": 360
   },
   "pipeline_limits": {
     "_nota": "Límites confirmados en el catálogo Higgsfield (models_explore, 2026-10-09). Añadir otros solo cuando estén verificados.",

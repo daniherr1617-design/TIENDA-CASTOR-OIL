@@ -122,6 +122,9 @@ def build(state: dict, run_dir: Path) -> dict:
         vis = state.get("visual") or {}
         for name, s in ps.items():
             vstate = (vis.get("piezas", {}).get(name) or {}).get("estado", "sin revisar")
+            if s.get("modo"):
+                lines.append(f"- **{name}**: {s['modo']} · revisión visual: **{vstate}**")
+                continue
             extra = []
             if "ssim_ref_mediana" in s:
                 extra.append(f"SSIM pieza {s['ssim_ref_mediana']}")

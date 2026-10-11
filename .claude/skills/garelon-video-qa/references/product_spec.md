@@ -6,14 +6,17 @@ Fuente: `GARELON_CURRENT_PRODUCT_TRUTH_FOR_ADS_v1_0.md` (2026-10-07). Si ese arc
 
 | Pieza | Debe ser | Discrepancia clara (→ FAIL tras revisión visual) |
 |---|---|---|
-| Medalla | Medalla de la Virgen María, dorada | Otra figura, otra forma, otro tamaño relativo, sin medalla |
-| Cruz | **Integrada en la pulsera; no cuelga** | Cruz colgante, cruz ausente, otra forma de cruz |
-| Cuentas | Tricolor, en el orden y color de la referencia | Otros colores, un solo color, orden distinto, tamaño muy distinto |
-| Cierre | Ajuste mediante **3 aros** | Otro tipo de cierre, número de aros distinto |
+| Medalla | Medalla ovalada de la Virgen María, dorada, con orla de piedras claras alrededor | Otra figura, otra forma, otro tamaño relativo, sin medalla |
+| Cruz | Crucifijo dorado con figura, **integrado en la pulsera, sin colgar** | Cruz colgante, cruz ausente, otra forma de cruz |
+| Cuentas | Facetadas y tricolor: dorado, oro rosa y plateado, alternas, unidas por cadena dorada | Otros colores, un solo color, orden distinto, tamaño muy distinto |
+| Cierre | **Mosquetón** dorado (visible en las referencias) y ajuste mediante 3 aros según la ficha | Otro tipo de cierre (broche, imán, nudo), cierre plateado |
 | Acabado | Dorado pulido, acero inoxidable | Plateado, mate o cobrizo evidente (no confundir con un cambio de luz) |
 | Proporciones | Aprox. 20 cm; medalla, cruz y cuentas en la escala de la referencia | Medalla o cruz desproporcionadas respecto a cuentas y muñeca |
 
 ## Referencias
+
+Recibidas de Daniel el 2026-10-11: `ref_01_fondo_blanco` (fondo blanco, la usada para los recortes de `refs.json`) y `ref_02_fondo_rosa`. Las piezas visuales de la tabla describen lo que se ve en ellas; no son claims publicitarios (la orla de piedras, p. ej., no se menciona en copy sin verificar el material).
+
 
 Se guardan en `creative/_references/product/`:
 - `NUEVA IMAGEN 3.png`: muñeca, la principal.

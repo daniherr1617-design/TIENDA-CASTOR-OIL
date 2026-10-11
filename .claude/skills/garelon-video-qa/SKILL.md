@@ -60,6 +60,7 @@ En un vídeo de 6 s tarda alrededor de 1 minuto; escala con la duración.
 - Los scripts **nunca dan FAIL de producto por sí solos.** Como mucho dan WARNING "SOSPECHA, revisar lámina". El FAIL de producto solo llega con una discrepancia visual clara confirmada en la revisión.
 - Una pieza crítica (medalla, cruz, cierre o cuentas) que no se ve o no se localiza da **WARNING**, nunca PASS.
 - Sin revisión visual, el veredicto es siempre **provisional** y nunca PASS.
+- Piezas con `"auto": false` en `refs.json` (hoy: pulsera, cuentas, cruz y cierre) no se localizan automáticamente, porque la visión clásica no las encuentra de forma fiable en fotos reales. Se juzgan solo en la revisión visual, buscándolas en `contact_sheet.jpg` y `frames/`. Hoy solo la medalla tiene métricas automáticas.
 - Limitación conocida: los cambios de **forma** (p. ej. medalla ovalada → rectangular) pueden pasar las métricas automáticas. La lámina es la que los detecta.
 
 ## Revisión visual (siempre)
