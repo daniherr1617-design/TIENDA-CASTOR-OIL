@@ -1,6 +1,6 @@
 # Conocimiento de marketing vigente · GARELON
 
-> **Última actualización:** 2026-10-07 (red ampliada por el propietario: K-REG-01, K-ECO-03, K-TT-02 y K-TT-04 releídas en su fuente oficial y pasadas a `VERIFICADO EN FUENTE ORIGINAL`).
+> **Última actualización:** 2026-10-12 (`reports/2026-10-12.md`: K-META-01 actualizada con el vídeo a partir de imagen; K-MED-05 nueva).
 >
 > Aquí solo queda lo que **sigue siendo útil y vigente** para GARELON. Lo que se queda viejo o se contradice **no convive** con lo nuevo: sale del cuerpo y pasa al «Historial de cambios», que explica qué decía antes, qué dice ahora y por qué.
 
@@ -35,11 +35,12 @@ Un resumen de buscador **nunca** cuenta como verificación. Desde el 2026-10-07,
 
 ### [K-META-01] Advantage+ Creative trae mejoras de IA activadas por defecto
 - **Tema:** Meta · Advantage+ Creative
-- **Fecha:** desde ~2026-09 · comprobado 2026-10-07
-- **Fuente:** marketingbrew.com (2026-04-07), leapbuzz.com
+- **Fecha:** desde ~2026-09; vídeo a partir de imagen desde el 2026-10-06 · comprobado 2026-10-12
+- **Fuente:** marketingbrew.com (2026-04-07), leapbuzz.com, aifrontierreview.com (2026-10-09), commonthreadco.com
 - **Evidencia:** Medio especializado · FUENTE SECUNDARIA
 - **Estado:** vigente
 - **Afirmación:** Advantage+ es el punto de partida de las campañas nuevas de Ventas, Clientes potenciales y Apps. Las mejoras estándar (música, color, animar imágenes, recolocar texto, expandir imagen) vienen activadas. Las «de prueba» generan contenido nuevo (fondos, textos) sin vista previa. La desactivación se recordaría en campañas futuras desde marzo de 2026.
+- **Novedad 2026-10-06 (FUENTE SECUNDARIA, `reports/2026-10-12.md`):** en Advertising Week Nueva York, Meta habría abierto a todos los anunciantes el vídeo generado a partir de imágenes estáticas en Advantage+ Creative; los vídeos de producto desde el catálogo seguirían en beta.
 - **Impacto GARELON:** alto, porque choca con R1. Antes de lanzar: desactivar todo lo que pueda alterar el producto y revisar la vista previa en cada ubicación (ya está en el checklist del pack).
 
 ### [K-META-02] Muse Image en Advantage+
@@ -216,6 +217,15 @@ Un resumen de buscador **nunca** cuenta como verificación. Desde el 2026-10-07,
 - **Estado:** dudoso (no representan a España)
 - **Impacto GARELON:** CPM de Meta en e-commerce de unos 13,5 $ y de TikTok In-Feed en retail de unos 5,40 $. Solo orientan; las referencias serán nuestras campañas.
 
+### [K-MED-05] Píxel de Meta: enriquecimiento por IA y eventos automáticos por defecto
+- **Tema:** Meta · píxel y medición
+- **Fecha:** anunciado el 2026-04-15; eventos automáticos por defecto en píxeles añadidos desde el 2026-08-03 · comprobado 2026-10-12
+- **Fuente:** adexchanger.com, insights.vaizle.com, segwise.ai
+- **Evidencia:** Medio especializado · FUENTE SECUNDARIA
+- **Estado:** dudoso (las fechas varían entre fuentes; documentación de Meta sin leer)
+- **Afirmación:** el píxel añade por IA datos del producto y de la página a los eventos (desactivable en Events Manager), y los eventos automáticos vienen activados en los píxeles nuevos. Hay anunciantes que reportan eventos duplicados entre píxel y API de conversiones.
+- **Impacto GARELON:** al instalar el píxel, revisar los eventos que crea la IA y que píxel y API de conversiones compartan event ID.
+
 ## 7. E-commerce, Shopify y logística
 
 ### [K-ECO-01] Shopify: checkout para agentes de IA
@@ -309,3 +319,5 @@ Cuando una entrada cambia de criterio, se explica aquí: qué decía antes, qué
 | 2026-10-07 | Todas | Estado `✔ / ~ / ✘` y evidencia OFICIAL…COMUNIDAD | Tipo de fuente + 5 etiquetas de verificación + estado vigente/dudoso | Ajustes del propietario al sistema semanal |
 | 2026-10-07 | K-REG-01 | Medio especializado · FUENTE SECUNDARIA; «guía de la Comisión sin leer» | Oficial · FUENTE OFICIAL NO ACCESIBLE DIRECTAMENTE; guías finales del 2026-07-20 y Código de prácticas | Se identificó la URL oficial (digital-strategy.ec.europa.eu), aunque no se pudo abrir (`reports/2026-10-07-2.md`) |
 | 2026-10-07 | K-ECO-03 | — | Entrada nueva | Deprecación de los script tags de Shopify (`reports/2026-10-07-2.md`) |
+| 2026-10-12 | K-META-01 | Mejoras de IA por defecto (sin vídeo desde imagen) | Añade el vídeo a partir de imágenes estáticas, abierto a todos el 2026-10-06 (FUENTE SECUNDARIA) | `reports/2026-10-12.md` |
+| 2026-10-12 | K-MED-05 | — | Entrada nueva (dudoso) | Enriquecimiento por IA del píxel y eventos automáticos por defecto (`reports/2026-10-12.md`) |
