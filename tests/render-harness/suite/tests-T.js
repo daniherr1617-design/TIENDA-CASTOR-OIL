@@ -122,7 +122,7 @@ module.exports = async function (browser) {
     ok('T27 /cart y cajón: «Impuestos incluidos. Envío gratis.» y sin recomendaciones, upsells ni casillas premarcadas', /Impuestos incluidos\. Envío gratis\./.test(text(d)) && /Impuestos incluidos\. Envío gratis\./.test(text(r.html.match(/id="main-cart-footer"[\s\S]*$/)[0])) && !/product-recommendations|complementary|cart-upsell|type="checkbox"[^>]*checked/.test(m + d));
   }
   const cartSrc = ['snippets/garelon-cart-option.liquid', 'snippets/cart-drawer.liquid', 'sections/main-cart-items.liquid'].map(f => fs.readFileSync(`${THEME}/${f}`, 'utf8').replace(/{%-?\s*comment\s*-?%}[\s\S]*?{%-?\s*endcomment\s*-?%}/g, '')).join('\n');
-  ok('T28 el número de pulseras no está escrito en el tema (sale de option.value; desde D38, del paréntesis si lo hay)', !/\b[123] pulseras?\b/.test(cartSrc) && /option\.value \| split: '\(' \| last/.test(cartSrc) && /units_src \| strip \| split: ' ' \| first \| plus: 0/.test(cartSrc));
+  ok('T28 el número de pulseras no está escrito en el tema (sale de option.value vía garelon-pack-units)', !/\b[123] pulseras?\b/.test(cartSrc) && /render 'garelon-pack-units', name: option\.value/.test(cartSrc)); // desde V, en el snippet compartido
   await reset(); await setState('mode=other'); await addToCart(4101);
   { const r = await get('/cart'); ok('T29 otra opción (Color): se ve como en Dawn («Color: Dorado»), sin «pack incluye»', /<dt>Color:<\/dt>\s*<dd>\s*Dorado/.test(r.html) && !/pack incluye/i.test(r.html)); }
   await reset(); await setState('mode=real');

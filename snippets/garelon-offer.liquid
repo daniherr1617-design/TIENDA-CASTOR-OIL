@@ -11,10 +11,11 @@
     al precio del pack de 1 (solo si es > 0). Nunca se inventa.
   - Textos que hablan de ahorro («ahorr…») solo se muestran si ese pack ahorra de verdad.
   - Un distintivo con «mejor precio» solo se muestra en el pack con el precio por unidad más bajo.
-  - Unidades que recibe el cliente: el número entre paréntesis del valor de la variante si lo hay
-    («2 + 1 de regalo (3 pulseras)» → 3); si no, el primer número («2 pulseras» → 2). El título de
-    la tarjeta es el valor sin el paréntesis y, debajo, «Recibes 3 pulseras». Las tarjetas (textos,
-    distintivo) se asignan por posición: 1.ª, 2.ª y 3.ª variante en el orden de Shopify.
+  - Unidades que recibe el cliente: garelon-pack-units, desde el valor de la variante
+    («Compra 2 y llévate 1 de regalo» → 3; «2 + 1 de regalo (3 pulseras)» → 3; «2 pulseras» → 2).
+    Si no coinciden con el primer número del nombre, la tarjeta lo aclara: «Recibes 3 pulseras».
+    Con paréntesis, el título es el valor sin él. Las tarjetas (textos, distintivo) se asignan por
+    posición: 1.ª, 2.ª y 3.ª variante en el orden de Shopify.
   - Sin la opción de packs (o con más de una opción), el selector normal de Dawn.
 
   Parámetros: product, block, product_form_id, check (true = solo escribe «on» si las tarjetas
@@ -41,8 +42,10 @@
   {%- liquid
     assign base_price = nil
     for value in pack_option.values
-      assign units_src = value.name | split: '(' | last
-      assign units = units_src | strip | split: ' ' | first | plus: 0
+      capture u
+        render 'garelon-pack-units', name: value.name
+      endcapture
+      assign units = u | split: '|' | first | plus: 0
       if units == 1
         assign v1 = product.variants | where: 'option1', value.name | first
         assign base_price = v1.price
@@ -62,8 +65,10 @@
       if bv == blank
         assign bv = product.variants | where: 'option1', value.name | first
       endif
-      assign b_units_src = value.name | split: '(' | last
-      assign b_units = b_units_src | strip | split: ' ' | first | plus: 0
+      capture u
+        render 'garelon-pack-units', name: value.name
+      endcapture
+      assign b_units = u | split: '|' | first | plus: 0
       assign b_slot = forloop.index
       if bv and b_units > 0
         assign b_unit = bv.price | times: 1.0 | divided_by: b_units
@@ -115,16 +120,21 @@
             if v == blank
               assign v = product.variants | where: 'option1', value.name | first
             endif
-            assign units_src = value.name | split: '(' | last
-            assign units = units_src | strip | split: ' ' | first | plus: 0
+            capture u
+              render 'garelon-pack-units', name: value.name
+            endcapture
+            assign units = u | split: '|' | first | plus: 0
+            assign name_first = u | split: '|' | last | plus: 0
             assign card_title = value.name
-            assign qty_text = ''
             if value.name contains '('
               assign title_part = value.name | split: '(' | first | strip
               if title_part != blank
                 assign card_title = title_part
               endif
-              assign qty_text = units_src | remove: ')' | strip
+            endif
+            assign qty_text = ''
+            if units > 0 and units != name_first
+              assign qty_text = 'garelon.offer.units_count' | t: count: units
             endif
             assign slot_key = forloop.index | append: ''
 
@@ -199,7 +209,7 @@
               <span class="g-offer__radio" aria-hidden="true"></span>
               <span class="g-offer__body">
                 <span class="g-offer__name">{{ card_title | escape }}</span>
-                {%- if qty_text != blank and units > 0 -%}
+                {%- if qty_text != blank -%}
                   <span class="g-offer__qty">{{ 'garelon.offer.receives' | t: contents: qty_text }}</span>
                 {%- endif -%}
                 {%- if sub != blank -%}

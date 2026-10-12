@@ -8,7 +8,8 @@ const { ok, get, setState, reset, count, text, openPage, B, THEME } = T;
 const fs = require('fs');
 const { execSync } = require('child_process');
 const P = '/products/pulsera-rosario-virgen-maria';
-const BASE = 'd21bfc5'; // HEAD antes de la ronda U (la próxima ronda fija aquí también el commit final de U)
+const BASE = 'd21bfc5'; // HEAD antes de la ronda U
+const ROUND_HEAD = '765e970'; // Ronda V: commit del tema de la ronda U (alcance fijado a U, como en T)
 const REPO = fs.existsSync(THEME + '/.git');
 const VPS = [320, 360, 375, 390, 430, 768, 1024, 1440];
 const CAMPAIGN = 'Especial octubre · Mes del Rosario';
@@ -106,9 +107,9 @@ module.exports = async function (browser) {
     const r = await get(P); const s = buy(r.html, P); const lab = [...s.matchAll(/<label[^>]*class="g-offer__card[^"]*"[\s\S]*?<\/label>/g)].map(m => m[0]);
     ok('U23 opción agotada: tarjeta marcada «Agotado», radio deshabilitado visualmente y sin preselección', /g-offer__card--soldout/.test(lab[2]) && /Agotado/.test(text(lab[2])) && (() => { const ins = [...s.matchAll(/<input\s+type="radio"[^>]*>/g)].map(m => m[0]); return /class="g-offer__input disabled"/.test(ins[2]) && !/\schecked/.test(ins[2]) && /class="g-offer__input"/.test(ins[0]); })() && !/g-offer__card--soldout/.test(lab[0]));
   }
-  const theme = ['snippets/garelon-offer.liquid', 'snippets/garelon-cart-option.liquid', 'snippets/garelon-pack-prices.liquid', 'sections/garelon-announcement.liquid', 'snippets/garelon-shipping-note.liquid'].map(src).join('\n')
+  const theme = ['snippets/garelon-offer.liquid', 'snippets/garelon-cart-option.liquid', 'snippets/garelon-pack-prices.liquid', 'snippets/garelon-pack-units.liquid', 'sections/garelon-announcement.liquid', 'snippets/garelon-shipping-note.liquid'].map(src).join('\n')
     + JSON.stringify([tp, ti, hg]);
-  ok('U24 el tema no escribe precios, cantidades ni «regalo» (salen de la variante de Shopify)', !/19,99|29,99|39,99|\b[35] pulseras\b|de regalo/.test(theme) && /split: '\(' \| last/.test(theme));
+  ok('U24 el tema no escribe precios, cantidades ni «regalo» (salen de la variante de Shopify; desde V, en garelon-pack-units)', !/19,99|29,99|39,99|\b[35] pulseras\b|de regalo/.test(theme) && /split: '\(' \| last/.test(theme));
 
   // 4 · Carrito y cajón: cantidad real recibida, cantidad 1 por pack
   await reset(); await setState('mode=regalo');
@@ -169,14 +170,13 @@ module.exports = async function (browser) {
   if (REPO) {
     const at = (f) => JSON.parse(execSync(`git -C ${THEME} show ${BASE}:${f}`).toString());
     ok('U34 Judge.me: la sección «GARELON Opiniones» es idéntica en home y ficha', ['templates/index.json', 'templates/product.json'].every((f, i) => JSON.stringify(at(f).sections.opiniones) === JSON.stringify([ti, tp][i].sections.opiniones)));
-    const changed = execSync(`git -C ${THEME} diff --name-only ${BASE} -- assets config layout locales sections snippets templates`).toString().trim().split('\n').filter(Boolean)
-      .concat(execSync(`git -C ${THEME} ls-files --others --exclude-standard -- assets config layout locales sections snippets templates`).toString().trim().split('\n').filter(Boolean));
+    const changed = execSync(`git -C ${THEME} diff --name-only ${BASE} ${ROUND_HEAD} -- assets config layout locales sections snippets templates`).toString().trim().split('\n').filter(Boolean);
     const allowed = /^(assets\/garelon\.css|config\/settings_schema\.json|locales\/[\w.-]+\.json|sections\/(featured-product|main-product|garelon-announcement)\.liquid|sections\/(header|footer)-group\.json|snippets\/(garelon-offer|garelon-cart-option|garelon-pack-prices|garelon-shipping-note|garelon-gallery|garelon-trust)\.liquid|templates\/(index|product)\.json)$/;
     ok('U35 alcance: packs, barra de envío, nota de envío, galería, cabecera/pie, plantillas, CSS, locales y el esquema de ajustes', changed.length > 0 && changed.every(f => allowed.test(f)), changed.filter(f => !allowed.test(f)));
     ok('U36 sin cambios en imágenes, WebP, layout ni settings_data (App Embeds y valores del propietario)', !changed.some(f => /\.(webp|png|jpe?g|svg)$|^layout\/|settings_data/.test(f)));
-    const loc = execSync(`git -C ${THEME} diff ${BASE} -- locales`).toString().split('\n').filter(l => /^[+-]\s/.test(l));
+    const loc = execSync(`git -C ${THEME} diff ${BASE} ${ROUND_HEAD} -- locales`).toString().split('\n').filter(l => /^[+-]\s/.test(l));
     ok('U37 locales: solo se añaden garelon.offer.receives, garelon.cart.pack_receives y garelon.shipping', loc.every(l => /^\+\s+("receives"|"pack_receives"|"shipping": \{|"editor_bar_hidden"|\},?$)|^[-+]\s+"(pack_includes_one|free_shipping|editor_missing)"/.test(l)), loc.filter(l => !/^\+\s+("receives"|"pack_receives"|"shipping": \{|"editor_bar_hidden"|\},?$)|^[-+]\s+"(pack_includes_one|free_shipping|editor_missing)"/.test(l)).slice(0, 4));
-    const imgSrc = execSync(`git -C ${THEME} diff --name-only ${BASE} -- "NUEVA IMAGEN 1.png" "NUEVA IMAGEN 3.png" "imagen 2.png" "imagen 4.png"`).toString().trim();
+    const imgSrc = execSync(`git -C ${THEME} diff --name-only ${BASE} ${ROUND_HEAD} -- "NUEVA IMAGEN 1.png" "NUEVA IMAGEN 3.png" "imagen 2.png" "imagen 4.png"`).toString().trim();
     ok('U38 imágenes fuente intactas (incluida «NUEVA IMAGEN 1.png»)', imgSrc === '', imgSrc);
   }
 };

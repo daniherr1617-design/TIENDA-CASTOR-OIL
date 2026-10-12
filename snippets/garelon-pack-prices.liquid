@@ -2,8 +2,8 @@
   GARELON · Precio de cada pack, leído de las variantes reales de Shopify.
 
   Un pack es UNA variante de la opción «Pack» (p. ej. «1 pulsera», «2 pulseras», «3 pulseras»)
-  y se añade al carrito con cantidad 1 (el selector es el de Dawn). Las unidades salen del número
-  entre paréntesis si lo hay («2 + 1 de regalo (3 pulseras)» → 3). Aquí solo se informa:
+  y se añade al carrito con cantidad 1 (el selector es el de Dawn). Las unidades salen de
+  garelon-pack-units («Compra 2 y llévate 1 de regalo» → 3). Aquí solo se informa:
   precio de cada pack y, SOLO si los precios reales lo justifican, precio por unidad y ahorro
   frente a comprar las mismas unidades por separado. Nada escrito a mano.
 
@@ -29,8 +29,10 @@
   assign base_price = nil
   if usable
     for value in pack_option.values
-      assign units_src = value.name | split: '(' | last
-      assign units = units_src | strip | split: ' ' | first | plus: 0
+      capture u
+        render 'garelon-pack-units', name: value.name
+      endcapture
+      assign units = u | split: '|' | first | plus: 0
       if units == 1
         assign v = product.variants | where: 'option1', value.name | first
         assign base_price = v.price
@@ -47,8 +49,10 @@
       {%- for value in pack_option.values -%}
         {%- liquid
           assign v = product.variants | where: 'option1', value.name | first
-          assign units_src = value.name | split: '(' | last
-          assign units = units_src | strip | split: ' ' | first | plus: 0
+          capture u
+            render 'garelon-pack-units', name: value.name
+          endcapture
+          assign units = u | split: '|' | first | plus: 0
           assign savings = 0
           assign unit_price = 0
           if base_price and units > 1 and v

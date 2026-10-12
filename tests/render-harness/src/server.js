@@ -44,6 +44,9 @@ function scenario() {
   // Ronda U: packs con regalo, como los pide el propietario el 2026-10-12 (19,99 / 29,99 / 39,99 €), SOLO como
   // datos simulados; el tema lee la cantidad del paréntesis del valor de la variante.
   if (m === 'regalo') return { options: ['Pack'], rows: [[['1 pulsera'], 1999], [['2 + 1 de regalo (3 pulseras)'], 2999], [['3 + 2 de regalo (5 pulseras)'], 3999]] };
+  // Ronda V: nombres y precios finales del propietario (2026-10-12): «Compra 2 y llévate 1 de regalo» (3 pulseras)
+  // 29,99 € y «Compra 3 y llévate 2 de regalo» (5 pulseras) 34,99 €, SOLO como datos simulados.
+  if (m === 'final') return { options: ['Pack'], rows: [[['1 pulsera'], 1999], [['Compra 2 y llévate 1 de regalo'], 2999], [['Compra 3 y llévate 2 de regalo'], 3499]] };
   if (m === 'regalocaro') return { options: ['Pack'], rows: [[['1 pulsera'], 1999], [['2 + 1 de regalo (3 pulseras)'], 2999], [['3 + 2 de regalo (5 pulseras)'], 5499]] };
   if (m === 'pack3save') return { options: ['Pack'], rows: [[['1 pulsera'], 1999], [['2 pulseras'], 3499], [['3 pulseras'], 4799]] };
   if (m === 'compare') return { options: ['Pack'], rows: [[['1 pulsera'], 1999, 2499], [['2 pulseras'], 3499, 3998], [['3 pulseras'], 4799, null]] };
