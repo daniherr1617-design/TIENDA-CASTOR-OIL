@@ -211,10 +211,16 @@ def collect(repo):
         snap['header_search'] = hs.get('garelon_show_search')
     ann = find(hg, 'announcement-bar')
     snap['announcement'] = [b['settings'].get('text') for _, b in (ann or {}).get('blocks', [])]
+    # D38: «GARELON Barra de envío». Los textos de envío y plazo son ajustes globales que solo se ven
+    # con la confirmación del propietario; aquí se anota el texto alternativo de la sección.
+    gbar = find(hg, 'garelon-announcement')
+    if gbar:
+        fb = gbar['settings'].get('fallback_text') or ''
+        snap['announcement'].append(f'GARELON Barra de envío (envío y plazo solo con confirmación; texto alternativo: «{fb}»)')
     fg = sections_of(repo, 'sections/footer-group.json')
     ft = find(fg, 'footer')
     if ft:
-        snap['footer'] = {k: ft['settings'].get(k) for k in ('payment_enable', 'newsletter_enable', 'show_policy')}
+        snap['footer'] = {k: ft['settings'].get(k) for k in ('payment_enable', 'newsletter_enable', 'show_policy', 'enable_country_selector')}
         snap['footer']['blocks'] = [b['type'] for _, b in ft['blocks']]
 
     keys = image_keys(repo)
@@ -278,9 +284,9 @@ def to_markdown(s):
         a(f"- **Opiniones:** «{r['heading']}», ocultar sin opiniones: {r['hide_without_reviews']}, Review Widget de Judge.me versionado (D30): home {r.get('versioned_apps', {}).get('index') or 'no'} · ficha {r.get('versioned_apps', {}).get('product') or 'no'} [(bloque, review_data)], App Embeds en settings_data: {r.get('app_embeds') or 'ninguno'} [(bloque, activo)], nota: {re.sub('<[^>]+>', '', r['note'] or '') or 'ninguna'}")
     a(f"- **Compra fija (ficha):** {'sí' if s['sticky_cta'] else 'no'}")
     a('- **Navegación:** ' + ' · '.join(f'{l} (`{u}`)' for l, u in s.get('nav', [])) + f" · búsqueda en cabecera: {s.get('header_search')}")
-    a('- **Barra superior:** ' + ' · '.join(f'«{t}»' for t in s['announcement']))
+    a('- **Barra superior:** ' + ' · '.join(t if t.startswith('GARELON Barra') else f'«{t}»' for t in s['announcement']))
     if 'footer' in s:
-        a(f"- **Pie:** bloques {', '.join(s['footer']['blocks'])}; iconos de pago: {s['footer']['payment_enable']}; newsletter: {s['footer']['newsletter_enable']}")
+        a(f"- **Pie:** bloques {', '.join(s['footer']['blocks'])}; iconos de pago: {s['footer']['payment_enable']}; newsletter: {s['footer']['newsletter_enable']}; selector de país: {s['footer'].get('enable_country_selector')}")
     a('- **Imágenes del tema por clave:** ' + ', '.join(f"`{k}` ({'/'.join(v['widths'])}{'' if v['complete'] else ' · INCOMPLETA'})" for k, v in s['image_keys'].items()))
     a('- **Imágenes fuente en la raíz (fuera del ZIP):** ' + ', '.join(f'`{f}`' for f in s['source_images_in_root']))
     st = s['settings']

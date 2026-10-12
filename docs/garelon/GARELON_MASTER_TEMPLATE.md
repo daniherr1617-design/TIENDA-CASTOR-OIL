@@ -1,6 +1,6 @@
 # GARELON · MASTER TEMPLATE (arquitectura real del tema)
 
-> **Versión:** 3.9 · **Fecha:** 2026-10-08 · **Repositorio:** `daniherr1617-design/TIENDA-CASTOR-OIL` · **Rama fuente:** `claude/rosary-clean-rebuild` · **Commit fuente:** `9c8f144`
+> **Versión:** 3.10 · **Fecha:** 2026-10-12 · **Repositorio:** `daniherr1617-design/TIENDA-CASTOR-OIL` · **Rama fuente:** `claude/garelon-espana-cro` · **Commit fuente:** `765e970`
 >
 > Snapshot generado desde `e27ae75`. Ante discrepancias futuras manda el repositorio actual: revisa el código antes de actuar sobre lo que dice este documento.
 
@@ -92,8 +92,12 @@ Todo el JavaScript de Dawn (`global.js`, `product-info.js`, `product-form.js`, `
 
 El orden actual de secciones está en `current-store-state.md`. Esta es la función de cada pieza.
 
-### 3.1 Barra superior · `announcement-bar` (Dawn)
-Un mensaje de marca, sin urgencia. Se edita en `sections/header-group.json`.
+### 3.1 Barra superior · `garelon-announcement` (desde D38)
+«GARELON Barra de envío» sustituye al anuncio de Dawn en `sections/header-group.json`. Dos líneas que se editan y **se confirman** en Configuración del tema › Carrito › «GARELON · Envío a España»:
+1. Envío: con «Envío gratis» activo, «🇪🇸 Envío gratis a toda España» (`garelon_ship_bar_text`) solo si el propietario marca `garelon_ship_coverage_confirmed` (tarifa de 0 € en península, Baleares, Canarias, Ceuta y Melilla); si no, el texto con los destinos que sí la tienen (`garelon_ship_bar_text_limited`, vacío por defecto = no se muestra).
+2. Plazo, destacado en una píldora: «Entrega estimada en 5–10 días naturales» (`garelon_ship_eta_text`) solo con `garelon_ship_eta_confirmed`. El mismo plazo se añade a la nota de envío (§3.17).
+
+Las dos confirmaciones están **desmarcadas** por defecto y no van en `settings_data.json`. Sin ninguna línea confirmada, la barra muestra el texto alternativo de la sección (`fallback_text`, hoy «Especial octubre · Mes del Rosario») o desaparece. Con envío confirmado, enlaza a la política de envíos. `garelon_check` impide escribir «toda España» o un plazo «N–M días» a mano en plantillas y grupos. Sin urgencia ni contador. El anuncio de Dawn (`announcement-bar`) sigue disponible en el editor.
 
 ### 3.2 Cabecera y menú móvil · `header` (Dawn + GARELON)
 - Hasta 4 enlaces editables (texto + URL): hoy Inicio · anclas de la home · Contacto. Sin «Catálogo» (R21).
@@ -111,7 +115,7 @@ Formulario oficial de Dawn. Orden de bloques (desde D37): título, valoración, 
 - `garelon_anchor` (solo home): ancla `comprar`, destino de todos los CTA.
 
 ### 3.5 Galería · `snippets/garelon-gallery.liquid`
-Sin JS. En móvil, scroll-snap con **todas las imágenes a todo el ancho** (D37: con fotos al 86 % y la infografía al 100 %, la pista tomaba la altura de la infografía y dejaba un hueco bajo la primera foto). La infografía se ve entera, sin recorte. Desde 750 px, rejilla. Solo la primera imagen de la ficha es `eager`. La infografía enlaza a su versión grande para ampliarla. Los textos alternativos salen de `garelon.gallery.alt_<clave>`.
+Sin JS. En móvil, contador decorativo «1 / 5» en cada foto (D38, `aria-hidden`; la infografía no lo lleva para no tapar su texto; oculto desde 750 px) y scroll-snap con **todas las imágenes a todo el ancho** (D37: con fotos al 86 % y la infografía al 100 %, la pista tomaba la altura de la infografía y dejaba un hueco bajo la primera foto). La infografía se ve entera, sin recorte. Desde 750 px, rejilla. Solo la primera imagen de la ficha es `eager`. La infografía enlaza a su versión grande para ampliarla. Los textos alternativos salen de `garelon.gallery.alt_<clave>`.
 
 ### 3.6 Confianza · bloque `garelon_trust` (`snippets/garelon-trust.liquid`)
 Frase destacada (una vez por página, debajo del botón de compra desde D37) + hasta 4 garantías con icono, en 2 columnas; con un número impar, la última ocupa la fila entera. Cada garantía solo aparece si su texto no está vacío (hoy 3: la 4.ª, «Envíos internacionales», está vacía por D32 y sin default en el schema). Los textos deben ser ciertos en Shopify (envío gratis, internacional…). Con el ajuste «Envío gratis» desactivado, `tools/garelon_check.py` da error si una garantía sigue diciendo «Envío gratis».
@@ -121,12 +125,12 @@ Tarjetas clicables que **son** los radios del `<variant-selects>` de Dawn: Dawn 
 
 | Ajuste | Uso |
 |---|---|
-| `option_name` | Nombre de la opción de packs en Shopify (hoy `Pack`). El número inicial del valor («2 pulseras») son las unidades |
+| `option_name` | Nombre de la opción de packs en Shopify (hoy `Pack`). Unidades que recibe el cliente: el número entre paréntesis del valor si lo hay («2 + 1 de regalo (3 pulseras)» → 3; D38) o, si no, el número inicial («2 pulseras» → 2). Con paréntesis, la tarjeta muestra el valor sin él («2 + 1 de regalo») y debajo «Recibes 3 pulseras» (`garelon.offer.receives`) |
 | `unit_singular` | Palabra de la unidad para «X € por <unidad>» y la nota de ahorro (schema: «unidad») |
-| `sub_1..3` | Texto corto de cada tarjeta. Un texto que hable de ahorro («ahorr…») se oculta solo si ese pack no ahorra de verdad |
+| `sub_1..3` | Texto corto de la 1.ª, 2.ª y 3.ª tarjeta, **por posición** en el orden de variantes de Shopify (D38; `badge_pack` también). Un texto que hable de ahorro («ahorr…») se oculta solo si ese pack no ahorra de verdad |
 | `badge_pack` / `badge_text` | Distintivo editorial en un pack (`badge_pack` por defecto `none`). El texto por defecto del schema es «Recomendado». Un texto que diga «mejor precio» solo se pinta si ese pack tiene, con los precios de Shopify, el precio por unidad más bajo y sin empate (si no, no hay distintivo). «Más popular», «Más vendido» o similares solo con datos de ventas reales (R9); `tools/garelon_check.py` impide que un default de schema los traiga |
 | `show_unit_price` | Precio por unidad, solo en packs con ahorro real |
-| `show_promo` / `promo_text` | Texto de campaña o promoción **debajo de las tarjetas**, apagado por defecto en el schema, sin contador ni fechas. Para campañas temáticas (se retira desactivándolo en el editor) |
+| `show_promo` / `promo_text` | Etiqueta corta de campaña o promoción **encima de las tarjetas** (D38; antes, debajo), apagada por defecto en el schema, sin contador ni fechas. Para campañas temáticas (se retira desactivándola en el editor) |
 
 Bajo las tarjetas va la nota de impuestos y envío común (`garelon-shipping-note`, §3.17). El bloque **no tiene** ajuste de envío propio: lo decide el ajuste global «Envío gratis».
 
@@ -171,10 +175,10 @@ Título, texto y botón hacia `/#comprar`.
 `main-product` + opiniones + tranquilidad + detalles + FAQ + compra fija (desde D37, opiniones antes de «Compra con tranquilidad») (`garelon-sticky-cta`, solo móvil, visible cuando el botón real queda por encima de la pantalla, con el estado y el precio del botón real).
 
 ### 3.16 Pie · `footer` (Dawn + GARELON)
-Logo completo, descripción de marca, bloque «Ayuda» con enlace a contacto, enlaces legales en orden fijo y solo si existen (Contacto · Envíos · Devoluciones y reembolsos · Privacidad · Cookies · Términos · Aviso legal). Contacto = página `contacto` (o `contact`); sin ella, la política nativa «Información de contacto», nunca las dos. Esa misma resolución (`snippets/garelon-contact-url.liquid`) la usan la cabecera, el menú móvil y, mediante `snippets/garelon-contact-rte.liquid`, los enlaces `/pages/contacto` del bloque «Ayuda» y de las FAQ: sin página de contacto, el enlace no se pinta o queda como texto (nunca un 404). Cookies = página `politica-de-cookies` (o `cookies`). Aviso legal = política nativa `/policies/legal-notice` con contenido o, si no, página `aviso-legal`. Ningún texto legal en Liquid. Sin iconos de pago ni newsletter. **Selector de país/región nativo de Dawn** activo (D37, `enable_country_selector`): Shopify lo pinta solo si Markets ofrece más de un país; los países y monedas los da Shopify, el tema no escribe ninguno. Selector de idioma desactivado.
+Logo completo, descripción de marca, bloque «Ayuda» con enlace a contacto, enlaces legales en orden fijo y solo si existen (Contacto · Envíos · Devoluciones y reembolsos · Privacidad · Cookies · Términos · Aviso legal). Contacto = página `contacto` (o `contact`); sin ella, la política nativa «Información de contacto», nunca las dos. Esa misma resolución (`snippets/garelon-contact-url.liquid`) la usan la cabecera, el menú móvil y, mediante `snippets/garelon-contact-rte.liquid`, los enlaces `/pages/contacto` del bloque «Ayuda» y de las FAQ: sin página de contacto, el enlace no se pinta o queda como texto (nunca un 404). Cookies = página `politica-de-cookies` (o `cookies`). Aviso legal = política nativa `/policies/legal-notice` con contenido o, si no, página `aviso-legal`. Ningún texto legal en Liquid. Sin iconos de pago ni newsletter. **Sin selector de país/región** (D38: la tienda vende solo en España; en D37 estuvo activo). `garelon_check` da error si se activa en la cabecera o en el pie. Selector de idioma desactivado.
 
 ### 3.17 Carrito y nota de envío
-Cajón (`cart_type: drawer`) y `/cart` de Dawn: formulario, líneas, cantidades, subtotal y botón de pago sin cambios. Tres cambios GARELON: «Seguir comprando» → home, la nota de impuestos y envío, y (D37) la línea del pack: si la opción se llama «Pack» y su valor empieza por un número, `snippets/garelon-cart-option.liquid` dice «Tu pack incluye 3 pulseras» (o «Incluye 1 pulsera») con el valor real de la variante; la etiqueta «Pack:» queda para lectores de pantalla. Otras opciones, como en Dawn. Sin upsells ni casillas.
+Cajón (`cart_type: drawer`) y `/cart` de Dawn: formulario, líneas, cantidades, subtotal y botón de pago sin cambios. Tres cambios GARELON: «Seguir comprando» → home, la nota de impuestos y envío, y (D37) la línea del pack: si la opción se llama «Pack» y su valor empieza por un número, `snippets/garelon-cart-option.liquid` dice «Tu pack incluye 3 pulseras» (o «Incluye 1 pulsera») con el valor real de la variante; con la cantidad entre paréntesis (D38), «Recibes 3 pulseras (2 + 1 de regalo)»; la etiqueta «Pack:» queda para lectores de pantalla. Otras opciones, como en Dawn. Sin upsells ni casillas.
 
 **Envío gratis: una sola fuente de verdad.**
 
@@ -183,6 +187,7 @@ Cajón (`cart_type: drawer`) y `/cart` de Dawn: formulario, líneas, cantidades,
 | Decisión | Ajuste global «Envío gratis» (`garelon_free_shipping`), en Configuración del tema › Carrito. Activo por defecto y en `settings_data.json`, porque el propietario confirmó que el envío es gratis. Se activa solo si la tarifa real en Shopify Admin › Envío y entrega es gratuita: el tema no cambia tarifas |
 | Texto | `snippets/garelon-shipping-note.liquid`, único archivo que pinta «Envío gratis.» (`garelon.offer.free_shipping`) |
 | Dónde se ve | Bajo los packs (`garelon-offer`), bajo el precio cuando no hay packs (`featured-product`, `main-product`), en el cajón (`cart-drawer`) y en `/cart` (`main-cart-footer`) |
+| Plazo (D38) | Solo con «Plazo de entrega confirmado» (`garelon_ship_eta_confirmed`): segunda línea destacada con `garelon_ship_eta_text` en esa misma nota (packs, ficha y, con envío gratis, cajón y `/cart`) |
 
 | Situación | Packs y ficha | Cajón y `/cart` |
 |---|---|---|
