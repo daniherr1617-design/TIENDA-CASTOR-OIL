@@ -53,7 +53,7 @@
             "badge_pack": "3",
             "badge_text": "Mejor precio por pulsera",
             "show_promo": true,
-            "promo_text": "Octubre es el mes del Rosario. Llévala tú y comparte las otras dos con quien quieras."
+            "promo_text": "Especial octubre · Mes del Rosario"
           }
         },
         "comprar": {
@@ -276,7 +276,7 @@
           "type": "question",
           "settings": {
             "question": "¿Qué incluye mi pedido?",
-            "answer": "<p>Recibirás el número de pulseras correspondiente al pack que elijas: 1, 2 o 3 unidades.</p>"
+            "answer": "<p>Recibirás todas las pulseras del pack que elijas. Cada opción indica cuántas recibes en total, y el carrito lo repite antes de pagar.</p>"
           }
         },
         "p6": {

@@ -7,12 +7,15 @@ const { ok, get, setState, reset, count, text, openPage, B, THEME } = T;
 const fs = require('fs');
 const { execSync } = require('child_process');
 const P = '/products/pulsera-rosario-virgen-maria';
-const BASE = 'aa9c01a'; // HEAD antes de la ronda T (la próxima ronda fija aquí también el commit final de T)
+const BASE = 'aa9c01a'; // HEAD antes de la ronda T
+const ROUND_HEAD = 'd21bfc5'; // Ronda U: commit final de la ronda T (alcance fijado a T, como en las fases J-P)
 const REPO = fs.existsSync(THEME + '/.git');
 const MOBILE = [320, 360, 375, 390, 430];
 const VPS = [320, 360, 375, 390, 430, 768, 1024, 1440];
-const PROMO = 'Octubre es el mes del Rosario. Llévala tú y comparte las otras dos con quien quieras.';
-const BAR = 'Octubre, mes del Rosario · Envío gratis con seguimiento';
+// Ronda U (D38): la campaña pasa a «Especial octubre · Mes del Rosario» (etiqueta encima de los packs y texto alternativo
+// de la nueva barra de envío) y la tienda vende solo en España (sin selector de país). Las pruebas T se adaptan sin quitarse.
+const PROMO = 'Especial octubre · Mes del Rosario';
+const BAR = 'Especial octubre · Mes del Rosario';
 const CLAIM = /m[aá]s popular|m[aá]s vendid|best ?sell|top ventas/i;
 const URGENCY = /quedan|últimas unidades|últimos días|termina en|cuenta atrás|solo hoy|personas (están )?viendo|\d+:\d\d:\d\d/i;
 const json = (f) => JSON.parse(fs.readFileSync(`${THEME}/${f}`, 'utf8').replace(/^\s*\/\*[\s\S]*?\*\/\s*/, ''));
@@ -29,7 +32,7 @@ module.exports = async function (browser) {
   ok('T3 home y ficha: texto de octubre activo en la promo, exacto', offers.every(o => o.show_promo === true && o.promo_text === PROMO));
   const tpl = JSON.stringify([tp, ti, json('sections/header-group.json'), json('sections/footer-group.json')]);
   ok('T4 plantillas: sin «Más vendido»/«Más popular», sin urgencia, sin código ni descuento', !CLAIM.test(tpl) && !URGENCY.test(tpl) && !/ROSARIO10|descuento|% ?dto|-\s?\d+ ?%/i.test(tpl));
-  ok('T5 barra superior: «Octubre, mes del Rosario · Envío gratis con seguimiento» (un solo anuncio, sin rotación)', (() => { const a = json('sections/header-group.json').sections['announcement-bar']; return a.block_order.length === 1 && a.blocks[a.block_order[0]].settings.text === BAR && a.settings.auto_rotate === false; })());
+  ok('T5 barra superior: «Especial octubre · Mes del Rosario» como único texto sin envío confirmado (sin rotación)', (() => { const a = json('sections/header-group.json').sections['barra-envio']; return a.type === 'garelon-announcement' && a.settings.fallback_text === BAR; })());
 
   // 2 · Render con los importes reales simulados: precio por unidad y ahorro calculados por el tema desde los precios
   await reset(); await setState('mode=real');
@@ -41,11 +44,11 @@ module.exports = async function (browser) {
     const radios = [...s.matchAll(/<input\s+type="radio"[^>]*>/g)].map(m => /\schecked/.test(m[0]));
     ok(`T9 ${n}: el pack de 3 no se preselecciona (la variante inicial es la de Shopify: pack de 1)`, JSON.stringify(radios) === '[true,false,false]' && /name="id" value="4101"/.test(s), radios);
     const iPromo = s.indexOf('class="g-offer__promo"');
-    ok(`T10 ${n}: el texto de octubre va debajo de las tarjetas y antes del botón, como párrafo discreto`, iPromo > s.lastIndexOf('g-offer__card') && iPromo < s.indexOf('ProductSubmitButton') && s.includes(`<p class="g-offer__promo">${PROMO}</p>`));
+    ok(`T10 ${n}: la etiqueta de octubre va encima de las tarjetas (D38) y antes del botón, como párrafo discreto`, iPromo > 0 && iPromo < s.indexOf('g-offer__card') && iPromo < s.indexOf('ProductSubmitButton') && s.includes(`<p class="g-offer__promo">${PROMO}</p>`));
     ok(`T11 ${n}: el CTA sigue siendo el nativo «Añadir al carrito»`, /<span>\s*Añadir al carrito\s*<\/span>/.test(s));
   }
   const r0 = await get('/');
-  ok('T12 la barra superior se pinta con el texto de octubre', r0.html.includes(BAR) && !URGENCY.test(text((r0.html.match(/<div class="announcement-bar[\s\S]*?<\/div>/) || [''])[0])));
+  ok('T12 la barra superior se pinta con el texto de octubre', r0.html.includes(`<p class="g-bar__line">${BAR}</p>`) && !URGENCY.test(text((r0.html.match(/class="utility-bar g-bar[\s\S]*?<\/div>\s*<\/div>/) || [''])[0])));
 
   // 3 · «Mejor precio» solo si es verdad (lo decide el tema con los precios de Shopify)
   for (const [mode, want] of [['pack3save', '3'], ['compare', '3'], ['nosave', ''], ['pack3', '']]) {
@@ -90,7 +93,8 @@ module.exports = async function (browser) {
         ok(`T22 ${n} ${w}px: galería móvil sin hueco (cada foto al ancho de la pista; bajo la 1.ª solo queda la línea «Ampliar», ≤ 32 px)`, m.widths.every(x => Math.abs(x - m.track) <= 1) && m.gap <= 32, [m.gap, m.widths, m.track]);
         // Antes de la ronda T (aa9c01a, mode=real, 390×844): ficha «Elige tu oferta» a 868 px y botón a 1308 px.
         if (n === 'ficha') ok(`T23 ficha ${w}px: «Elige tu oferta» empieza en la primera pantalla (< 760 px) y la 1.ª tarjeta asoma (< 844 px)`, m.legend < 760 && m.card1 < 844, m);
-        else ok(`T23 home ${w}px: «Elige tu oferta» a ≤ 110 px del título (antes ~265 px)`, m.legend - m.title <= 110, m);
+        // Ronda U (D38): la etiqueta de campaña va encima de «Elige tu oferta» (+~23 px) en vez de entre las tarjetas y el botón.
+        else ok(`T23 home ${w}px: «Elige tu oferta» a ≤ 130 px del título (antes de T ~265 px; con la etiqueta de campaña encima, ~120 px)`, m.legend - m.title <= 130, m);
       }
       await page.close();
     }
@@ -118,7 +122,7 @@ module.exports = async function (browser) {
     ok('T27 /cart y cajón: «Impuestos incluidos. Envío gratis.» y sin recomendaciones, upsells ni casillas premarcadas', /Impuestos incluidos\. Envío gratis\./.test(text(d)) && /Impuestos incluidos\. Envío gratis\./.test(text(r.html.match(/id="main-cart-footer"[\s\S]*$/)[0])) && !/product-recommendations|complementary|cart-upsell|type="checkbox"[^>]*checked/.test(m + d));
   }
   const cartSrc = ['snippets/garelon-cart-option.liquid', 'snippets/cart-drawer.liquid', 'sections/main-cart-items.liquid'].map(f => fs.readFileSync(`${THEME}/${f}`, 'utf8').replace(/{%-?\s*comment\s*-?%}[\s\S]*?{%-?\s*endcomment\s*-?%}/g, '')).join('\n');
-  ok('T28 el número de pulseras no está escrito en el tema (sale de option.value)', !/\b[123] pulseras?\b/.test(cartSrc) && /option\.value \| split: ' ' \| first \| plus: 0/.test(cartSrc));
+  ok('T28 el número de pulseras no está escrito en el tema (sale de option.value; desde D38, del paréntesis si lo hay)', !/\b[123] pulseras?\b/.test(cartSrc) && /option\.value \| split: '\(' \| last/.test(cartSrc) && /units_src \| strip \| split: ' ' \| first \| plus: 0/.test(cartSrc));
   await reset(); await setState('mode=other'); await addToCart(4101);
   { const r = await get('/cart'); ok('T29 otra opción (Color): se ve como en Dawn («Color: Dorado»), sin «pack incluye»', /<dt>Color:<\/dt>\s*<dd>\s*Dorado/.test(r.html) && !/pack incluye/i.test(r.html)); }
   await reset(); await setState('mode=real');
@@ -134,21 +138,21 @@ module.exports = async function (browser) {
 
   // 8 · Selector nativo de país/región en el pie (Dawn): solo con más de un país; sin países ni monedas en el tema
   const fg = json('sections/footer-group.json').sections.footer.settings;
-  ok('T31 pie: selector de país activo y de idioma desactivado (Dawn nativo)', fg.enable_country_selector === true && fg.enable_language_selector === false);
+  ok('T31 pie: selectores de país (D38: solo España) y de idioma desactivados', fg.enable_country_selector === false && fg.enable_language_selector === false);
   await reset();
   { const r = await get('/'); ok('T32 un solo mercado: el pie no pinta selector (degrada sin hueco ni error)', !/FooterCountryForm/.test(r.html)); }
   await setState('countries=multi');
   {
-    const r = await get('/'); const f = (r.html.match(/<localization-form>[\s\S]*?<\/localization-form>/) || [''])[0];
-    ok('T33 varios mercados: formulario nativo «localization» con los países y monedas que da Shopify', /form_type" value="localization"/.test(f) && /País\/región/.test(f) && ['ES', 'MX', 'CL', 'CO'].every(c => f.includes(`data-value="${c}"`)) && /MXN/.test(f), f.length);
+    // D38: aunque Shopify ofreciera varios mercados, el pie no pinta el selector (la tienda vende solo en España).
+    const r = await get('/');
+    ok('T33 varios mercados en Shopify: el pie no pinta el formulario «localization» (solo España, D38)', !/form_type" value="localization"/.test(r.html) && !/FooterCountryForm/.test(r.html));
     const src = ['sections/footer.liquid', 'snippets/country-localization.liquid'].map(x => fs.readFileSync(`${THEME}/${x}`, 'utf8')).join('');
     ok('T34 el tema no escribe países ni monedas (los lee de localization)', !/México|Chile|Colombia|MXN|CLP|COP/.test(src));
     for (const w of [320, 390, 1440]) {
       const { page, errs } = await openPage(browser, '/', { width: w, height: 844 });
-      const btn = page.locator('#FooterCountryForm button.disclosure__button');
-      await btn.scrollIntoViewIfNeeded(); await btn.focus(); await page.keyboard.press('Enter'); await page.waitForTimeout(400);
-      const st = await page.evaluate(() => { const b = document.querySelector('#FooterCountryForm button.disclosure__button'); const r = b.getBoundingClientRect(); return { h: Math.round(r.height), exp: b.getAttribute('aria-expanded'), hs: document.documentElement.scrollWidth > innerWidth }; });
-      ok(`T35 ${w}px: botón del selector ≥ 44 px, se abre con teclado (aria-expanded) y sin scroll horizontal`, st.h >= 44 && st.exp === 'true' && !st.hs && errs.length === 0, st);
+      const st = await page.evaluate(() => ({ sel: !!document.querySelector('#FooterCountryForm, #HeaderCountryForm, localization-form'), hs: document.documentElement.scrollWidth > innerWidth }));
+      const css = fs.readFileSync(`${THEME}/assets/garelon.css`, 'utf8');
+      ok(`T35 ${w}px: sin selector de país, sin scroll horizontal; la regla de 44 px del botón se conserva por si vuelve`, !st.sel && !st.hs && errs.length === 0 && /\.footer__localization \.disclosure__button \{\s*min-height: 4\.4rem;/.test(css), st);
       await page.close();
     }
   }
@@ -156,14 +160,13 @@ module.exports = async function (browser) {
 
   // 9 · Alcance: solo los archivos de la ronda; ninguna imagen, ajuste global, precio ni Judge.me tocados
   if (REPO) {
-    const changed = execSync(`git -C ${THEME} diff --name-only ${BASE} -- assets config layout locales sections snippets templates`).toString().trim().split('\n').filter(Boolean)
-      .concat(execSync(`git -C ${THEME} ls-files --others --exclude-standard -- assets config layout locales sections snippets templates`).toString().trim().split('\n').filter(Boolean));
+    const changed = execSync(`git -C ${THEME} diff --name-only ${BASE} ${ROUND_HEAD} -- assets config layout locales sections snippets templates`).toString().trim().split('\n').filter(Boolean);
     const allowed = /^(assets\/garelon\.css|locales\/[\w.-]+\.json|sections\/(featured-product|main-product|main-cart-items)\.liquid|sections\/(header|footer)-group\.json|snippets\/(cart-drawer|garelon-offer|garelon-trust|garelon-cart-option)\.liquid|templates\/(index|product)\.json)$/;
     ok('T36 alcance: solo CSS, locales, oferta, carrito, confianza, plantillas, barra y pie', changed.length > 0 && changed.every(f => allowed.test(f)), changed.filter(f => !allowed.test(f)));
     ok('T37 sin cambios en imágenes, WebP, config (ajustes globales y App Embeds) ni layout', !changed.some(f => /\.(webp|png|jpe?g|svg)$|^config\/|^layout\//.test(f)));
-    const imgSrc = execSync(`git -C ${THEME} diff --name-only ${BASE} -- "NUEVA IMAGEN 1.png" "NUEVA IMAGEN 3.png" "imagen 2.png" "imagen 4.png"`).toString().trim();
+    const imgSrc = execSync(`git -C ${THEME} diff --name-only ${BASE} ${ROUND_HEAD} -- "NUEVA IMAGEN 1.png" "NUEVA IMAGEN 3.png" "imagen 2.png" "imagen 4.png"`).toString().trim();
     ok('T38 imágenes fuente intactas (incluida «NUEVA IMAGEN 1.png»)', imgSrc === '', imgSrc);
-    const loc = execSync(`git -C ${THEME} diff ${BASE} -- locales`).toString().split('\n').filter(l => /^[+-]\s/.test(l) && !/taxes_at_checkout/.test(l));
+    const loc = execSync(`git -C ${THEME} diff ${BASE} ${ROUND_HEAD} -- locales`).toString().split('\n').filter(l => /^[+-]\s/.test(l) && !/taxes_at_checkout/.test(l));
     ok('T39 locales: solo se añaden garelon.cart.pack_includes(_one)', loc.every(l => /^\+\s+"pack_includes(_one)?":/.test(l)), loc.slice(0, 4));
   }
 };

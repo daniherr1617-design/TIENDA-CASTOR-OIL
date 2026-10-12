@@ -2,7 +2,8 @@
   GARELON · Galería con las imágenes fieles del producto incluidas en el tema.
   Sustituye a la multimedia de Shopify mientras esta no esté revisada (la que importa el
   proveedor puede traer imágenes con claims no verificados). Sin JS: deslizable en móvil
-  (scroll-snap) y en rejilla desde 750 px.
+  (scroll-snap) y en rejilla desde 750 px. En móvil, cada foto lleva «1 / 5» para que se vea que hay
+  más (sin JS, decorativo; la infografía no lo lleva para no tapar su texto).
 
   Parámetros:
   - keys: claves separadas por comas, en el orden de la historia (p. ej. 'principal,completa,detalle,infografia,oracion')
@@ -10,7 +11,18 @@
 
   Uso: {% render 'garelon-gallery', keys: 'principal,detalle,oracion', eager: true %}
 {%- endcomment -%}
-{%- assign list = keys | default: 'principal' | split: ',' -%}
+{%- liquid
+  assign list = keys | default: 'principal' | split: ','
+  assign known = 'principal,completa,detalle,infografia,oracion' | split: ','
+  assign total = 0
+  for raw in list
+    assign k = raw | strip
+    if known contains k
+      assign total = total | plus: 1
+    endif
+  endfor
+  assign n = 0
+-%}
 <div class="g-gallery" role="region" aria-label="{{ 'garelon.gallery.label' | t }}" tabindex="0">
   <ul class="g-gallery__track" role="list">
     {%- for raw in list -%}
@@ -36,7 +48,11 @@
         endif
       -%}
       {%- if alt != '' -%}
+        {%- assign n = n | plus: 1 -%}
         <li class="g-gallery__slide{% if key == 'infografia' %} g-gallery__slide--wide{% endif %}">
+          {%- if total > 1 and key != 'infografia' -%}
+            <span class="g-gallery__count" aria-hidden="true">{{ n }} / {{ total }}</span>
+          {%- endif -%}
           {%- render 'garelon-image',
             key: key,
             alt: alt,

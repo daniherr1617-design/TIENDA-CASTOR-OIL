@@ -23,7 +23,8 @@ module.exports = async function (browser) {
   await setState('accounts=0'); r = await get('/'); ok('B5b sin cuentas de cliente: ni icono ni enlace de cuenta', !/class="garelon-drawer-account|<shopify-account/.test(r.html)); await reset(); r = await get('/');
   ok('B6 sin búsqueda en la cabecera', !/Search-In-Modal|header__search/.test(header));
   // Ronda T: la barra pasa a la campaña temática aprobada (octubre, sin descuento); el envío gratis ya está confirmado (ronda K).
-  ok('B7 barra superior: «Octubre, mes del Rosario · Envío gratis con seguimiento», sin urgencia ni oferta', /Octubre, mes del Rosario · Envío gratis con seguimiento/.test(r.html) && !/quedan|últimas|oferta|descuento|termina/i.test(text((r.html.match(/announcement-bar[\s\S]*?<\/section>|announcement-bar[\s\S]*?<\/div>\s*<\/div>/) || [''])[0])));
+  // Ronda U (D38): la barra es «GARELON Barra de envío»; sin envío ni plazo confirmados muestra la campaña.
+  ok('B7 barra superior: «Especial octubre · Mes del Rosario» (sin envío confirmado), sin urgencia ni oferta', /<p class="g-bar__line">Especial octubre · Mes del Rosario<\/p>/.test(r.html) && !/quedan|últimas|oferta|descuento|termina/i.test(text((r.html.match(/class="utility-bar g-bar[\s\S]*?<\/div>\s*<\/div>/) || [''])[0])));
   ok('B8 favicon e icono iOS de la marca', /garelon-favicon-32\.png/.test(r.html) && /apple-touch-icon" href="\/assets\/garelon-apple-touch-180\.png/.test(r.html));
   const footer = (r.html.match(/<footer[\s\S]*?<\/footer>/) || [''])[0];
   ok('B9 pie: logo completo + descripción de marca', /garelon-logo-negro-320\.webp/.test(footer) && /Joyería con significado para acompañar momentos especiales\./.test(footer));

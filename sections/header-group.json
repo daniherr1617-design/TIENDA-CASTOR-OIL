@@ -2,28 +2,12 @@
   "name": "t:sections.header.name",
   "type": "header",
   "sections": {
-    "announcement-bar": {
-      "type": "announcement-bar",
-      "blocks": {
-        "anuncio": {
-          "type": "announcement",
-          "settings": {
-            "text": "Octubre, mes del Rosario · Envío gratis con seguimiento",
-            "link": ""
-          }
-        }
-      },
-      "block_order": [
-        "anuncio"
-      ],
+    "barra-envio": {
+      "type": "garelon-announcement",
       "settings": {
-        "color_scheme": "scheme-3",
-        "show_line_separator": false,
-        "show_social": false,
-        "auto_rotate": false,
-        "change_slides_speed": 5,
-        "enable_country_selector": false,
-        "enable_language_selector": false
+        "fallback_text": "Especial octubre · Mes del Rosario",
+        "link_policy": true,
+        "color_scheme": "scheme-3"
       }
     },
     "header": {
@@ -55,7 +39,7 @@
     }
   },
   "order": [
-    "announcement-bar",
+    "barra-envio",
     "header"
   ]
 }

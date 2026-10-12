@@ -806,7 +806,7 @@
       "settings": [
         {
           "type": "paragraph",
-          "content": "Frase principal y hasta 4 garantías cortas encima de «Elige tu oferta». Escribe solo lo que sea verdad: «Envío gratis + seguimiento» solo si el envío es gratis y «Envíos internacionales» solo si esos destinos están habilitados en Shopify (Markets y Envío y entrega). Un texto vacío no se muestra."
+          "content": "Frase principal y hasta 4 garantías cortas encima de «Elige tu oferta». Escribe solo lo que sea verdad: «Envío gratis + seguimiento» solo si el envío es gratis y destinos o plazos solo si coinciden con Shopify (Markets, Envío y entrega) y la política de envíos. La tienda vende solo en España: no anuncies otros países. Un texto vacío no se muestra."
         },
         {
           "type": "text",
@@ -845,7 +845,7 @@
             },
             {
               "value": "globo",
-              "label": "Internacional"
+              "label": "Globo"
             },
             {
               "value": "tarjeta",
@@ -899,7 +899,7 @@
             },
             {
               "value": "globo",
-              "label": "Internacional"
+              "label": "Globo"
             },
             {
               "value": "tarjeta",
@@ -953,7 +953,7 @@
             },
             {
               "value": "globo",
-              "label": "Internacional"
+              "label": "Globo"
             },
             {
               "value": "tarjeta",
@@ -1007,7 +1007,7 @@
             },
             {
               "value": "globo",
-              "label": "Internacional"
+              "label": "Globo"
             },
             {
               "value": "tarjeta",
@@ -1063,21 +1063,25 @@
           "content": "Texto de cada pack"
         },
         {
+          "type": "paragraph",
+          "content": "Las tarjetas siguen el orden de las variantes en Shopify. Si el valor lleva la cantidad entre paréntesis, p. ej. «2 + 1 de regalo (3 pulseras)», la tarjeta muestra «2 + 1 de regalo», «Recibes 3 pulseras» y el precio por pulsera con esas 3 unidades."
+        },
+        {
           "type": "text",
           "id": "sub_1",
-          "label": "Pack de 1",
+          "label": "1.ª tarjeta",
           "default": "Ideal para ti"
         },
         {
           "type": "text",
           "id": "sub_2",
-          "label": "Pack de 2",
+          "label": "2.ª tarjeta",
           "default": "Perfecto para regalar"
         },
         {
           "type": "text",
           "id": "sub_3",
-          "label": "Pack de 3",
+          "label": "3.ª tarjeta",
           "default": "Ahorra más por unidad",
           "info": "Un texto que hable de ahorro solo se muestra si ese pack ahorra de verdad con los precios de Shopify."
         },
@@ -1102,15 +1106,15 @@
             },
             {
               "value": "1",
-              "label": "Pack de 1"
+              "label": "1.ª tarjeta"
             },
             {
               "value": "2",
-              "label": "Pack de 2"
+              "label": "2.ª tarjeta"
             },
             {
               "value": "3",
-              "label": "Pack de 3"
+              "label": "3.ª tarjeta"
             }
           ],
           "default": "none"
@@ -1137,7 +1141,7 @@
           "id": "promo_text",
           "label": "Texto de promoción",
           "default": "Oferta especial de lanzamiento",
-          "info": "Se muestra debajo de las tarjetas. Solo texto, sin contador ni fechas inventadas. Úsalo para una campaña temática o una promoción real, y desactívalo al terminar."
+          "info": "Una línea corta encima de las tarjetas, p. ej. «Especial octubre · Mes del Rosario». Solo texto, sin contador ni fechas inventadas. Úsalo para una campaña temática o una promoción real, y desactívalo al terminar."
         }
       ]
     },

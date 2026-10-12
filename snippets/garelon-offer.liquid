@@ -11,6 +11,10 @@
     al precio del pack de 1 (solo si es > 0). Nunca se inventa.
   - Textos que hablan de ahorro («ahorr…») solo se muestran si ese pack ahorra de verdad.
   - Un distintivo con «mejor precio» solo se muestra en el pack con el precio por unidad más bajo.
+  - Unidades que recibe el cliente: el número entre paréntesis del valor de la variante si lo hay
+    («2 + 1 de regalo (3 pulseras)» → 3); si no, el primer número («2 pulseras» → 2). El título de
+    la tarjeta es el valor sin el paréntesis y, debajo, «Recibes 3 pulseras». Las tarjetas (textos,
+    distintivo) se asignan por posición: 1.ª, 2.ª y 3.ª variante en el orden de Shopify.
   - Sin la opción de packs (o con más de una opción), el selector normal de Dawn.
 
   Parámetros: product, block, product_form_id, check (true = solo escribe «on» si las tarjetas
@@ -37,7 +41,8 @@
   {%- liquid
     assign base_price = nil
     for value in pack_option.values
-      assign units = value.name | split: ' ' | first | plus: 0
+      assign units_src = value.name | split: '(' | last
+      assign units = units_src | strip | split: ' ' | first | plus: 0
       if units == 1
         assign v1 = product.variants | where: 'option1', value.name | first
         assign base_price = v1.price
@@ -57,11 +62,9 @@
       if bv == blank
         assign bv = product.variants | where: 'option1', value.name | first
       endif
-      assign b_units = value.name | split: ' ' | first | plus: 0
-      assign b_slot = b_units
-      if b_slot < 1 or b_slot > 3
-        assign b_slot = forloop.index
-      endif
+      assign b_units_src = value.name | split: '(' | last
+      assign b_units = b_units_src | strip | split: ' ' | first | plus: 0
+      assign b_slot = forloop.index
       if bv and b_units > 0
         assign b_unit = bv.price | times: 1.0 | divided_by: b_units
         if best_unit == nil or b_unit < best_unit
@@ -94,6 +97,13 @@
     {% # theme-check-enable %}
     {{ block.shopify_attributes }}
   >
+    {%- comment -%}
+      Etiqueta de campaña (p. ej. «Especial octubre · Mes del Rosario»): una línea corta encima de
+      las tarjetas. Se activa y se retira desde el editor (bloque «GARELON Elige tu oferta» › Promoción).
+    {%- endcomment -%}
+    {%- if block.settings.show_promo and block.settings.promo_text != blank -%}
+      <p class="g-offer__promo">{{ block.settings.promo_text | escape }}</p>
+    {%- endif -%}
     <fieldset class="js product-form__input g-offer__fieldset">
       <legend class="g-offer__legend">
         {{- block.settings.heading | default: pack_option.name | escape -}}
@@ -105,12 +115,18 @@
             if v == blank
               assign v = product.variants | where: 'option1', value.name | first
             endif
-            assign units = value.name | split: ' ' | first | plus: 0
-            assign slot = units
-            if slot < 1 or slot > 3
-              assign slot = forloop.index
+            assign units_src = value.name | split: '(' | last
+            assign units = units_src | strip | split: ' ' | first | plus: 0
+            assign card_title = value.name
+            assign qty_text = ''
+            if value.name contains '('
+              assign title_part = value.name | split: '(' | first | strip
+              if title_part != blank
+                assign card_title = title_part
+              endif
+              assign qty_text = units_src | remove: ')' | strip
             endif
-            assign slot_key = slot | append: ''
+            assign slot_key = forloop.index | append: ''
 
             assign compare_saving = 0
             assign pack_saving = 0
@@ -182,7 +198,10 @@
               {%- endif -%}
               <span class="g-offer__radio" aria-hidden="true"></span>
               <span class="g-offer__body">
-                <span class="g-offer__name">{{ value | escape }}</span>
+                <span class="g-offer__name">{{ card_title | escape }}</span>
+                {%- if qty_text != blank and units > 0 -%}
+                  <span class="g-offer__qty">{{ 'garelon.offer.receives' | t: contents: qty_text }}</span>
+                {%- endif -%}
                 {%- if sub != blank -%}
                   <span class="g-offer__sub">{{ sub | escape }}</span>
                 {%- endif -%}
@@ -218,13 +237,6 @@
         {%- endfor -%}
       </div>
     </fieldset>
-    {%- comment -%}
-      Texto de campaña (p. ej. octubre): debajo de las tarjetas para no empujar los packs hacia abajo.
-      Se activa y se retira desde el editor (bloque «GARELON Elige tu oferta» › Promoción).
-    {%- endcomment -%}
-    {%- if block.settings.show_promo and block.settings.promo_text != blank -%}
-      <p class="g-offer__promo">{{ block.settings.promo_text | escape }}</p>
-    {%- endif -%}
     {%- if used_pack_basis -%}
       <p class="g-offer__note">{{ 'garelon.offer.saving_note' | t: unit: unit_name }}</p>
     {%- endif -%}

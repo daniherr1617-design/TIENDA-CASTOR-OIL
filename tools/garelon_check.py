@@ -22,6 +22,9 @@ tema (y, si es `templates/index.json`, que la home dé 404):
     'archivo' | asset_url → assets;
   * honestidad: ningún default de schema con claims de ventas («Más popular»…) y, con el
     ajuste global «Envío gratis» desactivado, ningún texto de plantilla que prometa envío gratis.
+  * España, único mercado (D38): ni «toda España» ni plazos «N–M días» escritos a mano en
+    plantillas o grupos (van en los ajustes con confirmación del propietario) y sin selector
+    de país en cabecera o pie.
 
 Uso:  python3 tools/garelon_check.py [RAÍZ_DEL_TEMA] [--strict-root]
       --strict-root: además, la raíz solo puede contener las 7 carpetas del tema
@@ -590,6 +593,30 @@ def check_free_shipping(theme):
                 break
 
 
+# ---------------------------------------------------------------- España, único mercado (D38)
+SPAIN_CLAIM_RE = re.compile(r'toda\s+Espa[ñn]a|\b\d{1,2}\s*(?:[–-]|a)\s*\d{1,2}\s+d[ií]as(?:\s+(?:naturales|h[aá]biles|laborables))?', re.I)
+
+
+def check_spain_shipping(theme):
+    """La tienda vende solo en España (D38). En plantillas y grupos: (1) ni «toda España» ni un plazo
+    «N–M días» escritos a mano: van en Configuración del tema › Carrito › «GARELON · Envío a España»,
+    que solo los muestra cuando el propietario confirma tarifa, destinos y plazo; (2) sin selector de
+    país en la cabecera ni en el pie (anunciaría otros mercados)."""
+    for d in ('templates', 'sections'):
+        for fn in sorted(os.listdir(os.path.join(theme.root, d))):
+            if not fn.endswith('.json'):
+                continue
+            rel = f'{d}/{fn}'
+            src = read(theme.root, rel)
+            m = SPAIN_CLAIM_RE.search(src)
+            if m:
+                err(rel, f'«{m.group(0)}» escrito a mano: cobertura y plazo van en Configuración del tema › Carrito › '
+                         '«GARELON · Envío a España», que solo los muestra con la confirmación del propietario')
+            if re.search(r'"enable_country_selector"\s*:\s*true', src):
+                err(rel, 'selector de país activo: la tienda vende solo en España (D38); '
+                         'los mercados se gestionan en Shopify Admin › Markets')
+
+
 # ---------------------------------------------------------------- claims legales y píxeles
 MONTHS = 'enero|febrero|marzo|abril|mayo|junio|julio|agosto|septiembre|octubre|noviembre|diciembre'
 LEGAL_CLAIMS = [
@@ -804,6 +831,7 @@ def main(argv):
     check_image_keys(theme)
     check_locales(theme)
     check_free_shipping(theme)
+    check_spain_shipping(theme)
     check_legal_claims(theme)
     check_contact(theme)
 

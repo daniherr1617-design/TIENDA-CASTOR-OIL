@@ -121,7 +121,7 @@ module.exports = async function (browser) {
 
   // 8 · FAQ y detalles.
   r = await get('/');
-  ok('G34 FAQ: «¿Qué longitud tiene y cómo se ajusta?» y «¿Qué incluye mi pedido?» con los textos nuevos', /¿Qué longitud tiene y cómo se ajusta\?<\/h3>[\s\S]*?La pulsera tiene una longitud aproximada de 20 cm y cuenta con 3 aros para ajustar el cierre\./.test(r.html) && /¿Qué incluye mi pedido\?<\/h3>[\s\S]*?Recibirás el número de pulseras correspondiente al pack que elijas: 1, 2 o 3 unidades\./.test(r.html));
+  ok('G34 FAQ: «¿Qué longitud tiene y cómo se ajusta?» y «¿Qué incluye mi pedido?» con los textos nuevos', /¿Qué longitud tiene y cómo se ajusta\?<\/h3>[\s\S]*?La pulsera tiene una longitud aproximada de 20 cm y cuenta con 3 aros para ajustar el cierre\./.test(r.html) && /¿Qué incluye mi pedido\?<\/h3>[\s\S]*?Recibirás todas las pulseras del pack que elijas\. Cada opción indica cuántas recibes en total, y el carrito lo repite antes de pagar\./.test(r.html)); // texto de la ronda U (D38)
 
   // 9 · Regresión de lo crítico.
   r = await get('/'); ok('G35 / → 200 con la home (plantilla index)', r.status === 200 && r.tpl === 'index');

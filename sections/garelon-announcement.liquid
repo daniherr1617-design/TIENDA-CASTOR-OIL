@@ -1,0 +1,101 @@
+{%- comment -%}
+  GARELON · Barra superior de envío (España).
+
+  Dos líneas configurables desde Configuración del tema › Carrito › «GARELON · Envío a España»:
+  1. Envío: con «Envío gratis» activo, «🇪🇸 Envío gratis a toda España» solo si el propietario
+     confirma la tarifa de 0 € en todos los destinos de España; si no, el texto con los destinos
+     que sí la tienen (vacío por defecto: no se muestra).
+  2. Plazo, destacado: «Entrega estimada en 5–10 días naturales», solo con el plazo confirmado.
+  Sin ninguna de las dos, la barra muestra el texto alternativo de la sección (p. ej. la campaña
+  del mes) o desaparece. El tema no cambia tarifas, zonas ni plazos: solo comunica lo confirmado.
+{%- endcomment -%}
+{%- liquid
+  assign ship_line = ''
+  if settings.garelon_free_shipping
+    if settings.garelon_ship_coverage_confirmed
+      assign ship_line = settings.garelon_ship_bar_text
+    else
+      assign ship_line = settings.garelon_ship_bar_text_limited
+    endif
+  endif
+  assign eta_line = ''
+  if settings.garelon_ship_eta_confirmed
+    assign eta_line = settings.garelon_ship_eta_text
+  endif
+
+  assign main_line = ship_line
+  assign shipping_info = true
+  if ship_line == blank and eta_line == blank
+    assign main_line = section.settings.fallback_text
+    assign shipping_info = false
+  endif
+
+  assign link = ''
+  if shipping_info and section.settings.link_policy and shop.shipping_policy.body != blank
+    assign link = shop.shipping_policy.url
+  endif
+-%}
+{%- if main_line != blank or eta_line != blank -%}
+  <div
+    class="utility-bar g-bar color-{{ section.settings.color_scheme }} gradient"
+    role="region"
+    aria-label="{{ 'sections.header.announcement' | t }}"
+  >
+    <div class="page-width">
+      {%- if link != blank -%}
+        <a href="{{ link }}" class="g-bar__link focus-inset">
+      {%- endif -%}
+      {%- if main_line != blank -%}
+        <p class="g-bar__line">{{ main_line | escape }}</p>
+      {%- endif -%}
+      {%- if eta_line != blank -%}
+        <p class="g-bar__eta">{{ eta_line | escape }}</p>
+      {%- endif -%}
+      {%- if link != blank -%}
+        </a>
+      {%- endif -%}
+    </div>
+  </div>
+{%- elsif request.design_mode -%}
+  <p class="g-bar__editor">{{ 'garelon.shipping.editor_bar_hidden' | t }}</p>
+{%- endif -%}
+
+{% schema %}
+{
+  "name": "GARELON Barra de envío",
+  "tag": "div",
+  "class": "announcement-bar-section",
+  "enabled_on": {
+    "groups": ["header"]
+  },
+  "settings": [
+    {
+      "type": "paragraph",
+      "content": "Los textos de envío y el plazo se editan y se confirman en Configuración del tema › Carrito › «GARELON · Envío a España». Sin confirmar, no se muestran."
+    },
+    {
+      "type": "text",
+      "id": "fallback_text",
+      "label": "Texto sin envío ni plazo confirmados",
+      "info": "Se muestra solo mientras no haya ninguna línea de envío confirmada, p. ej. una campaña. Vacío: la barra desaparece."
+    },
+    {
+      "type": "checkbox",
+      "id": "link_policy",
+      "label": "Enlazar a la política de envíos",
+      "default": true
+    },
+    {
+      "type": "color_scheme",
+      "id": "color_scheme",
+      "label": "Esquema de color",
+      "default": "scheme-3"
+    }
+  ],
+  "presets": [
+    {
+      "name": "GARELON Barra de envío"
+    }
+  ]
+}
+{% endschema %}

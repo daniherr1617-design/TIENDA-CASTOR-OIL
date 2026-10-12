@@ -23,7 +23,10 @@ const state = { mode: 'single', soldout: [], design: false, catalog: 'ok', conta
   // para seguir probando el diseño «Etiquetas» de GARELON Detalles en futuros productos.
   chips: false,
   // Ronda T: countries = 1 (solo España, por defecto) | multi (varios mercados con su moneda, como el selector nativo de Shopify).
-  countries: '1' };
+  countries: '1',
+  // Ronda U: ship = '' (valor del tema) o lista de confirmaciones SIMULADAS del propietario para la barra de envío:
+  // cov (toda España confirmada), lim (texto de destinos limitados) y eta (plazo confirmado).
+  ship: '' };
 const taxFlags = () => ({ taxes_included: state.taxes === 'included' || state.taxes === 'both', duties_included: state.taxes === 'duties' || state.taxes === 'both' });
 // Ronda T: mercados SIMULADOS para el selector nativo de país de Dawn (lo que devolvería Shopify Markets).
 function localizationDrop() {
@@ -38,6 +41,10 @@ function scenario() {
   // Ronda T: los mismos importes que el propietario confirmó en Shopify el 2026-10-08 (19,99 / 29,99 / 34,99 €),
   // SOLO como datos simulados del render; el tema no los conoce ni los escribe.
   if (m === 'real') return { options: ['Pack'], rows: [[['1 pulsera'], 1999], [['2 pulseras'], 2999], [['3 pulseras'], 3499]] };
+  // Ronda U: packs con regalo, como los pide el propietario el 2026-10-12 (19,99 / 29,99 / 39,99 €), SOLO como
+  // datos simulados; el tema lee la cantidad del paréntesis del valor de la variante.
+  if (m === 'regalo') return { options: ['Pack'], rows: [[['1 pulsera'], 1999], [['2 + 1 de regalo (3 pulseras)'], 2999], [['3 + 2 de regalo (5 pulseras)'], 3999]] };
+  if (m === 'regalocaro') return { options: ['Pack'], rows: [[['1 pulsera'], 1999], [['2 + 1 de regalo (3 pulseras)'], 2999], [['3 + 2 de regalo (5 pulseras)'], 5499]] };
   if (m === 'pack3save') return { options: ['Pack'], rows: [[['1 pulsera'], 1999], [['2 pulseras'], 3499], [['3 pulseras'], 4799]] };
   if (m === 'compare') return { options: ['Pack'], rows: [[['1 pulsera'], 1999, 2499], [['2 pulseras'], 3499, 3998], [['3 pulseras'], 4799, null]] };
   if (m === 'nosave') return { options: ['Pack'], rows: [[['1 pulsera'], 1999], [['2 pulseras'], 3998], [['3 pulseras'], 5997]] };
@@ -199,7 +206,12 @@ const linklists = { 'main-menu': { handle: 'main-menu', title: 'Menú principal'
   'customer-account-main-menu': { handle: 'customer-account-main-menu', links: [], levels: 0 } };
 function globals(req, product) {
   const noCat = state.catalog === 'none'; const policies = policyList(); const pol = (h) => policies.find(p => p.handle === h) || null;
-  const settings = state.freeship === '' ? L.settings : { ...L.settings, garelon_free_shipping: state.freeship === '1' };
+  let settings = state.freeship === '' ? L.settings : { ...L.settings, garelon_free_shipping: state.freeship === '1' };
+  if (state.ship !== '') {
+    const f = state.ship.split(',');
+    settings = { ...settings, garelon_ship_coverage_confirmed: f.includes('cov'), garelon_ship_eta_confirmed: f.includes('eta'),
+      garelon_ship_bar_text_limited: f.includes('lim') ? '🇪🇸 Envío gratis a la península y Baleares' : '' };
+  }
   return { settings, pages: pagesObj(), linklists, product: req.pageType === 'product' ? product : null,
     collections: { all: { products: noCat ? [] : [product], products_count: noCat ? 0 : 1, url: '/collections/all', title: 'Productos' } }, all_products: noCat ? {} : { [HANDLE]: product }, cart: cartDrop(),
     routes: { root_url: '/', cart_url: '/cart', cart_add_url: '/cart/add', cart_change_url: '/cart/change', cart_update_url: '/cart/update', search_url: '/search', account_url: '/account', account_login_url: '/account/login', account_register_url: '/account/register', all_products_collection_url: '/collections/all', collections_url: '/collections', predictive_search_url: '/search/suggest', product_recommendations_url: '/recommendations/products' },
@@ -282,10 +294,10 @@ http.createServer(async (req, res) => {
     if (p.startsWith('/__fonts/')) { const fp = path.join(FONTS_DIR, p.slice(9)); return fs.readFile(fp, (e, d) => { if (e) { res.writeHead(404); return res.end(); } res.writeHead(200, { 'Content-Type': 'font/woff2' }); res.end(d); }); }
     if (p.startsWith('/assets/')) { const fp = path.join(T, decodeURIComponent(p)); return fs.readFile(fp, (e, d) => { if (e) { res.writeHead(404); return res.end(); } res.writeHead(200, { 'Content-Type': types[path.extname(fp)] || 'application/octet-stream' }); res.end(d); }); }
     if (p === '/__state') { const q = u.searchParams;
-      for (const k of ['mode', 'catalog', 'contact', 'refund', 'shipping', 'cookies', 'legal', 'reviews', 'freeship', 'taxes', 'countries']) if (q.has(k)) state[k] = q.get(k);
+      for (const k of ['mode', 'catalog', 'contact', 'refund', 'shipping', 'cookies', 'legal', 'reviews', 'freeship', 'taxes', 'countries', 'ship']) if (q.has(k)) state[k] = q.get(k);
       for (const k of ['design', 'noindex', 'accounts', 'media', 'chips', 'contactinfo', 'editorimg']) if (q.has(k)) state[k] = q.get(k) === '1';
       if (q.has('soldout')) state.soldout = q.get('soldout').split(',').filter(Boolean).map(Number);
-      if (q.has('reset')) { state.cart = []; state.log = []; if (!q.has('freeship')) state.freeship = ''; if (!q.has('taxes')) state.taxes = 'included'; if (!q.has('chips')) state.chips = false; if (!q.has('editorimg')) state.editorimg = false; if (!q.has('countries')) state.countries = '1'; }
+      if (q.has('reset')) { state.cart = []; state.log = []; if (!q.has('freeship')) state.freeship = ''; if (!q.has('taxes')) state.taxes = 'included'; if (!q.has('chips')) state.chips = false; if (!q.has('editorimg')) state.editorimg = false; if (!q.has('countries')) state.countries = '1'; if (!q.has('ship')) state.ship = ''; }
       if (q.has('reload')) L = loadSettings();
       res.writeHead(200, { 'Content-Type': 'application/json' }); return res.end(JSON.stringify(state)); }
     if (p === '/cart.js' || p === '/cart.json') { res.setHeader('Content-Type', 'application/json'); const c = cartDrop(); return res.end(JSON.stringify({ item_count: c.item_count, items: c.items.map(i => ({ id: i.id, quantity: i.quantity, variant_id: i.id })), total_price: c.total_price })); }

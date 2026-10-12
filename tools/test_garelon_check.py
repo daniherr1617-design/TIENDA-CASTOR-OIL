@@ -194,16 +194,15 @@ def ok_free_shipping_off_coherent(t):
         p = f'{t}/templates/{f}'
         s = open(p, encoding='utf-8').read().replace('Envío gratis + seguimiento', 'Envío con seguimiento')
         open(p, 'w', encoding='utf-8').write(s)
-    # Ronda T (D37): la barra superior de octubre también promete el envío gratis; coherente = cambiarla igual.
-    p = f'{t}/sections/header-group.json'
-    s = open(p, encoding='utf-8').read().replace('Envío gratis con seguimiento', 'Envío con seguimiento')
-    open(p, 'w', encoding='utf-8').write(s)
+    # Ronda U (D38): la barra superior es «GARELON Barra de envío»; su texto alternativo no habla de envío.
 
 
 def m_free_shipping_off_bar_only(t):
-    ok_free_shipping_off_coherent(t)  # garantías y barra coherentes…
-    p = f'{t}/sections/header-group.json'  # …salvo la barra, que vuelve a prometer el envío gratis
-    s = open(p, encoding='utf-8').read().replace('Envío con seguimiento', 'Envío gratis con seguimiento')
+    ok_free_shipping_off_coherent(t)  # garantías coherentes…
+    p = f'{t}/sections/header-group.json'  # …salvo el texto alternativo de la barra, que promete el envío gratis
+    s = open(p, encoding='utf-8').read()
+    assert '"fallback_text": "Especial octubre · Mes del Rosario"' in s
+    s = s.replace('"fallback_text": "Especial octubre · Mes del Rosario"', '"fallback_text": "Envío gratis con seguimiento"')
     open(p, 'w', encoding='utf-8').write(s)
 
 
@@ -334,6 +333,11 @@ MUTATIONS = [
      m_text('snippets/garelon-nav-items.liquid', 'href="{{ url }}"', 'href="/pages/contacto"')),
     ('FAQ pintando la respuesta sin resolver el enlace de contacto',
      m_text('sections/garelon-faq.liquid', "{% render 'garelon-contact-rte', html: block.settings.answer %}", '{{ block.settings.answer }}')),
+    ('barra: «toda España» escrito a mano (sin la confirmación del propietario)',
+     m_text('sections/header-group.json', 'Especial octubre · Mes del Rosario', '🇪🇸 Envío gratis a toda España')),
+    ('garantía con plazo de entrega escrito a mano', m_text('templates/product.json', 'Pago seguro', 'Entrega en 5–10 días naturales')),
+    ('selector de país activo en el pie (la tienda vende solo en España)',
+     m_text('sections/footer-group.json', '"enable_country_selector": false', '"enable_country_selector": true')),
 ]
 
 # Cambios válidos que NO deben dar error (sin falsos positivos).
