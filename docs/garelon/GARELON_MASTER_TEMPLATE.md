@@ -1,6 +1,6 @@
 # GARELON · MASTER TEMPLATE (arquitectura real del tema)
 
-> **Versión:** 3.10 · **Fecha:** 2026-10-12 · **Repositorio:** `daniherr1617-design/TIENDA-CASTOR-OIL` · **Rama fuente:** `claude/garelon-espana-cro` · **Commit fuente:** `765e970`
+> **Versión:** 3.11 · **Fecha:** 2026-10-12 · **Repositorio:** `daniherr1617-design/TIENDA-CASTOR-OIL` · **Rama fuente:** `claude/garelon-espana-cro` · **Commit fuente:** `6c021f3`
 >
 > Snapshot generado desde `e27ae75`. Ante discrepancias futuras manda el repositorio actual: revisa el código antes de actuar sobre lo que dice este documento.
 
@@ -125,7 +125,7 @@ Tarjetas clicables que **son** los radios del `<variant-selects>` de Dawn: Dawn 
 
 | Ajuste | Uso |
 |---|---|
-| `option_name` | Nombre de la opción de packs en Shopify (hoy `Pack`). Unidades que recibe el cliente: el número entre paréntesis del valor si lo hay («2 + 1 de regalo (3 pulseras)» → 3; D38) o, si no, el número inicial («2 pulseras» → 2). Con paréntesis, la tarjeta muestra el valor sin él («2 + 1 de regalo») y debajo «Recibes 3 pulseras» (`garelon.offer.receives`) |
+| `option_name` | Nombre de la opción de packs en Shopify (hoy `Pack`). Unidades que recibe el cliente: `snippets/garelon-pack-units.liquid` (D39), fuente única para tarjetas, carrito y lista de precios. Con paréntesis, su primer número («2 + 1 de regalo (3 pulseras)» → 3); si el nombre habla de regalo («regalo», «gratis»), la suma de sus números («Compra 2 y llévate 1 de regalo» → 3); si no, el primer número («2 pulseras» → 2). Si no coinciden con el primer número del nombre, la tarjeta añade «Recibes 3 pulseras» (`garelon.offer.receives` + `garelon.offer.units_count`, con plural). Con paréntesis, el título es el valor sin él |
 | `unit_singular` | Palabra de la unidad para «X € por <unidad>» y la nota de ahorro (schema: «unidad») |
 | `sub_1..3` | Texto corto de la 1.ª, 2.ª y 3.ª tarjeta, **por posición** en el orden de variantes de Shopify (D38; `badge_pack` también). Un texto que hable de ahorro («ahorr…») se oculta solo si ese pack no ahorra de verdad |
 | `badge_pack` / `badge_text` | Distintivo editorial en un pack (`badge_pack` por defecto `none`). El texto por defecto del schema es «Recomendado». Un texto que diga «mejor precio» solo se pinta si ese pack tiene, con los precios de Shopify, el precio por unidad más bajo y sin empate (si no, no hay distintivo). «Más popular», «Más vendido» o similares solo con datos de ventas reales (R9); `tools/garelon_check.py` impide que un default de schema los traiga |
