@@ -121,7 +121,7 @@ module.exports = async function (browser) {
 
   // 8 · FAQ y detalles.
   r = await get('/');
-  ok('G34 FAQ: «¿Qué longitud tiene y cómo se ajusta?» y «¿Qué recibo con cada oferta?» con los textos de D41', /¿Qué longitud tiene y cómo se ajusta\?<\/h3>[\s\S]*?Mide aproximadamente 20 cm \(7,87 pulgadas\)\. El cierre de mosquetón se engancha en cualquiera de sus 3 aros/.test(r.html) && /¿Qué recibo con cada oferta\?<\/h3>[\s\S]*?Cada tarjeta indica cuántas pulseras recibes en total y cuánto sale cada una, y el carrito lo repite antes de pagar\./.test(r.html)); // textos de D41 (antes, ronda U)
+  ok('G34 FAQ: «¿Qué longitud tiene y cómo se ajusta?» y «¿Qué recibo con cada oferta?» con los textos de D42', /¿Qué longitud tiene y cómo se ajusta\?<\/h3>[\s\S]*?Mide aproximadamente 20 cm \(7,87 pulgadas\)\. Tiene un cierre de mosquetón que puedes enganchar en cualquiera de sus 3 aros/.test(r.html) && /¿Qué recibo con cada oferta\?<\/h3>[\s\S]*?Cada opción te indica cuántas pulseras recibes en total y cuánto sale cada una, y lo verás de nuevo en el carrito antes de pagar\./.test(r.html)); // textos de D42 (antes, D41 y ronda U)
 
   // 9 · Regresión de lo crítico.
   r = await get('/'); ok('G35 / → 200 con la home (plantilla index)', r.status === 200 && r.tpl === 'index');

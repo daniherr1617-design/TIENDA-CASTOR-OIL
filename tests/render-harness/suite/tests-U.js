@@ -13,7 +13,7 @@ const ROUND_HEAD = '765e970'; // Ronda V: commit del tema de la ronda U (alcance
 const REPO = fs.existsSync(THEME + '/.git');
 const VPS = [320, 360, 375, 390, 430, 768, 1024, 1440];
 const CAMPAIGN = 'Especial octubre · Mes del Rosario';
-const BAR_ALL = '🇪🇸 Envío gratis a toda España';
+const BAR_ALL = '🇪🇸 Envío gratis a toda la península'; // D42 (antes «a toda España»)
 const ETA = 'Entrega estimada en 5–10 días naturales';
 const LIMITED = '🇪🇸 Envío gratis a la península y Baleares'; // texto SIMULADO del propietario (ship=lim)
 const LATAM = /México|Mexico|Chile|Colombia|Perú|Argentina|Latinoam|LATAM|MXN|CLP|COP\b/;
@@ -52,7 +52,7 @@ module.exports = async function (browser) {
   for (const u of ['/', P, '/cart']) {
     const r = await get(u); const b = bar(r.html);
     ok(`U7 ${u} sin confirmar: la barra muestra solo la campaña, sin enlace; ni «toda España» ni el plazo en toda la página`,
-      text(b).trim() === CAMPAIGN && !/g-bar__link/.test(b) && !/toda España|5–10 días/.test(text(r.html)), text(b));
+      text(b).trim() === CAMPAIGN && !/g-bar__link/.test(b) && !/toda España|toda la península|5–10 días/.test(text(r.html)), text(b));
   }
   await setState('ship=cov,eta');
   for (const u of ['/', P]) {
@@ -68,9 +68,9 @@ module.exports = async function (browser) {
     ok('U10 /cart y cajón: el plazo confirmado aparece junto a «Envío gratis.»', [d, f].every(h => /Envío gratis\./.test(text(h)) && h.includes(`<span class="g-eta">${ETA}</span>`)));
   }
   await setState('ship=lim');
-  { const r = await get(P); const b = bar(r.html); ok('U11 solo algunos destinos confirmados: el texto del propietario, sin «toda España» ni plazo', text(b).trim() === LIMITED && !/toda España|5–10/.test(text(r.html)), text(b)); }
+  { const r = await get(P); const b = bar(r.html); ok('U11 solo algunos destinos confirmados: el texto del propietario, sin «toda España» ni plazo', text(b).trim() === LIMITED && !/toda España|toda la península|5–10/.test(text(r.html)), text(b)); }
   await setState('ship=eta');
-  { const r = await get(P); const b = bar(r.html); ok('U12 solo el plazo confirmado: la barra muestra solo el plazo (sin texto de envío ni campaña)', text(b).trim() === ETA && !/toda España/.test(text(r.html)), text(b)); }
+  { const r = await get(P); const b = bar(r.html); ok('U12 solo el plazo confirmado: la barra muestra solo el plazo (sin texto de envío ni campaña)', text(b).trim() === ETA && !/toda España|toda la península/.test(text(r.html)), text(b)); }
   await setState('ship=cov,eta&freeship=0');
   {
     const r = await get(P); const b = bar(r.html);

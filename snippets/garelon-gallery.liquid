@@ -5,6 +5,11 @@
   (scroll-snap) y en rejilla desde 750 px. En móvil, cada foto lleva «1 / 5» para que se vea que hay
   más (sin JS, decorativo; la infografía no lo lleva para no tapar su texto).
 
+  Rejilla de escritorio sin huecos (D42): la primera foto ocupa todo el ancho; las demás fotos van de
+  dos en dos; la infografía cierra la galería a todo el ancho (legible, con «Ampliar» debajo sin
+  descuadrar ninguna fila). Si quedan fotos impares, la última también va a todo el ancho.
+  En móvil el orden y el deslizamiento no cambian.
+
   Parámetros:
   - keys: claves separadas por comas, en el orden de la historia (p. ej. 'principal,completa,infografia,oracion')
   - eager: true si es la imagen principal de la página (ficha de producto)
@@ -15,12 +20,19 @@
   assign list = keys | default: 'principal' | split: ','
   assign known = 'principal,completa,infografia,oracion' | split: ','
   assign total = 0
+  assign halves = 0
+  assign last_half = 0
   for raw in list
     assign k = raw | strip
     if known contains k
       assign total = total | plus: 1
+      if total > 1 and k != 'infografia'
+        assign halves = halves | plus: 1
+        assign last_half = total
+      endif
     endif
   endfor
+  assign odd_halves = halves | modulo: 2
   assign n = 0
 -%}
 <div class="g-gallery" role="region" aria-label="{{ 'garelon.gallery.label' | t }}" tabindex="0">
@@ -47,7 +59,7 @@
       -%}
       {%- if alt != '' -%}
         {%- assign n = n | plus: 1 -%}
-        <li class="g-gallery__slide{% if key == 'infografia' %} g-gallery__slide--wide{% endif %}">
+        <li class="g-gallery__slide{% if key == 'infografia' %} g-gallery__slide--wide{% endif %}{% if n == 1 or key == 'infografia' or odd_halves == 1 and n == last_half %} g-gallery__slide--full{% endif %}">
           {%- if total > 1 and key != 'infografia' -%}
             <span class="g-gallery__count" aria-hidden="true">{{ n }} / {{ total }}</span>
           {%- endif -%}

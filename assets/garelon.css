@@ -357,8 +357,14 @@ body {
     grid-template-columns: 1fr 1fr;
     overflow: visible;
   }
-  .g-gallery__slide:first-child {
+  /* D42: sin huecos. La primera foto y la infografía a todo el ancho; el resto, de dos en dos
+     (si sobra una, también a todo el ancho: lo decide garelon-gallery.liquid). La infografía va
+     al final para que «Ampliar» quede bajo la galería y no descuadre la fila de al lado. */
+  .g-gallery__slide--full {
     grid-column: 1 / -1;
+  }
+  .g-gallery__slide--wide:not(:first-child) {
+    order: 1;
   }
 }
 /* Infografía con texto: enlace a la versión grande (1254 px) para leerla ampliada. */

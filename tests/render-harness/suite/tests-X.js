@@ -8,6 +8,7 @@ const fs = require('fs');
 const { execSync } = require('child_process');
 const P = '/products/pulsera-rosario-virgen-maria';
 const BASE = '2d86d69'; // HEAD antes de la ronda X
+const ROUND_HEAD = '48279dc'; // Ronda Y: commit del tema de la ronda X (alcance fijado a X, como en T, U, V y W)
 const REPO = fs.existsSync(THEME + '/.git');
 const MEDAL = 'Medalla ovalada con la imagen de la Virgen María, rodeada de detalles brillantes.';
 const QS = ['¿De qué material está hecha?', '¿Cómo es la medalla de la Virgen María?', '¿Cómo son el crucifijo y las cuentas?', '¿Qué longitud tiene y cómo se ajusta?',
@@ -75,12 +76,12 @@ module.exports = async function (browser) {
     const qs = f.map(x => text((x.match(/<h3[\s\S]*?<\/h3>/) || [''])[0]).trim());
     ok(`X12 ${n}: 10 preguntas en orden (producto, oferta, regalo, envío, devoluciones, ayuda)`, JSON.stringify(qs) === JSON.stringify(QS), qs);
     const t = text(f.join(' '));
-    ok(`X13 ${n}: datos confirmados (acero inoxidable, acabado dorado pulido, medalla ovalada, crucifijo integrado que no cuelga, cuentas tricolor, 20 cm, 3 aros, desistimiento 14 días, garantía legal aplicable)`,
-      /acero inoxidable con acabado dorado pulido/.test(t) && /medalla ovalada con la imagen de la Virgen María, rodeada de detalles brillantes/i.test(t) && /no cuelga/.test(t) && /tricolor, en tonos dorado, plateado y rosado/.test(t)
+    ok(`X13 ${n}: datos confirmados (acero inoxidable, acabado dorado pulido, medalla ovalada, crucifijo integrado que no cuelga, cuentas de tres tonos, 20 cm, 3 aros, desistimiento 14 días, garantía legal aplicable; textos de D42)`,
+      /acero inoxidable con un acabado dorado pulido/.test(t) && /medalla ovalada con la imagen de la Virgen María, rodeada de detalles brillantes/i.test(t) && /no cuelga/.test(t) && /de tres tonos, dorado, plateado y rosado/.test(t)
       && /aproximadamente 20 cm \(7,87 pulgadas\)/.test(t) && /3 aros/.test(t) && /14 días naturales desde la recepción del pedido/.test(t) && /garantía legal aplicable/.test(t));
     ok(`X14 ${n}: sin propiedades no verificadas ni cuidados inventados`, !/hipoal|alerg|14 ?k|quilat|chapad|impermeab|waterproof|resistente al agua|no se oxida|no pierde (el )?color|oro |circon|zirc|diamant|cristal|piedras? preciosa|garant[ií]a de \d|\d+ años|cuidad|limpi/i.test(t), (t.match(/.{30}(hipoal|alerg|14 ?k|quilat|chapad|impermeab|resistente al agua|oxida|oro |circon|diamant|cristal|preciosa|años|cuidad|limpi).{30}/i) || [''])[0]);
   }
-  for (const [q, want] of [['ship=', 'El envío es gratuito.'], ['ship=cov', 'El envío es gratuito a toda España.'], ['ship=cov,eta', 'El envío es gratuito a toda España. Entrega estimada en 5–10 días naturales.'], ['ship=eta', 'El envío es gratuito. Entrega estimada en 5–10 días naturales.'], ['ship=cov,eta&freeship=0', 'Entrega estimada en 5–10 días naturales.']]) {
+  for (const [q, want] of [['ship=', 'El envío es gratuito.'], ['ship=cov', 'El envío es gratuito a toda la península.'], ['ship=cov,eta', 'El envío es gratuito a toda la península. Entrega estimada en 5–10 días naturales.'], ['ship=eta', 'El envío es gratuito. Entrega estimada en 5–10 días naturales.'], ['ship=cov,eta&freeship=0', 'Entrega estimada en 5–10 días naturales.']]) {
     await setState(q); const f = faq((await get(P)).html)[7] || '';
     const facts = text((f.match(/<p class="g-faq__facts">[\s\S]*?<\/p>/) || [''])[0]).trim();
     ok(`X15 envío en la FAQ con ${q}: «${want}» y después el seguimiento y la política`, facts === want && /número de seguimiento/.test(text(f)) && /href="\/policies\/shipping-policy"/.test(f), facts);
@@ -90,7 +91,7 @@ module.exports = async function (browser) {
     ok('X15 sin envío gratis ni plazo confirmados: sin frase de envío, solo seguimiento y política', !/g-faq__facts|gratuito|días/.test(f));
   }
   await reset();
-  ok('X16 plantillas: el plazo y «toda España» no se escriben en la FAQ (salen de las casillas del tema)', ['templates/index.json', 'templates/product.json'].every(f => { const s = JSON.stringify(JSON.parse(fs.readFileSync(`${THEME}/${f}`, 'utf8')).sections.preguntas); return !/\d+\s*[–-]\s*\d+ días|toda España/.test(s) && /"ship_facts":true/.test(s); }));
+  ok('X16 plantillas: el plazo y la cobertura («toda España» / «toda la península») no se escriben en la FAQ (salen de las casillas del tema)', ['templates/index.json', 'templates/product.json'].every(f => { const s = JSON.stringify(JSON.parse(fs.readFileSync(`${THEME}/${f}`, 'utf8')).sections.preguntas); return !/\d+\s*[–-]\s*\d+ días|toda España|toda la península/.test(s) && /"ship_facts":true/.test(s); }));
 
   // 4 · Imagen retirada: el recorte `detalle` ya no está en galerías, secciones ni assets
   await setState('mode=live');
@@ -129,13 +130,12 @@ module.exports = async function (browser) {
 
   // 6 · Alcance de la ronda
   if (REPO) {
-    const changed = execSync(`git -C ${THEME} diff --name-only ${BASE} -- assets config layout locales sections snippets templates`).toString().trim().split('\n').filter(Boolean)
-      .concat(execSync(`git -C ${THEME} ls-files --others --exclude-standard -- assets config layout locales sections snippets templates`).toString().trim().split('\n').filter(Boolean));
+    const changed = execSync(`git -C ${THEME} diff --name-only ${BASE} ${ROUND_HEAD} -- assets config layout locales sections snippets templates`).toString().trim().split('\n').filter(Boolean);
     const allowed = /^(assets\/garelon\.css|assets\/producto-detalle-(480|600)\.webp|locales\/[\w.-]+\.json|sections\/(main-product|featured-product|garelon-faq|garelon-reviews|garelon-details|garelon-hero|garelon-image-text)\.liquid|snippets\/(garelon-offer|garelon-pack-prices|garelon-image|garelon-gallery)\.liquid|templates\/(index|product)\.json)$/;
     ok('X25 alcance: ofertas (ahorro), FAQ, opiniones, medalla e imagen; sin config, carrito, layout ni otras fotos', changed.length > 0 && changed.every(f => allowed.test(f)), changed.filter(f => !allowed.test(f)));
-    const sec = execSync(`git -C ${THEME} diff ${BASE} -- sections/main-product.liquid sections/featured-product.liquid`).toString().split('\n').filter(l => /^[+-]\s/.test(l));
+    const sec = execSync(`git -C ${THEME} diff ${BASE} ${ROUND_HEAD} -- sections/main-product.liquid sections/featured-product.liquid`).toString().split('\n').filter(l => /^[+-]\s/.test(l));
     ok('X26 main-product / featured-product: solo cambia la galería por defecto (sin `detalle`)', sec.length === 8 && sec.every(l => /principal,(detalle|completa),oracion|Claves separadas por comas/.test(l)), sec);
-    const loc = execSync(`git -C ${THEME} diff ${BASE} -- locales`).toString().split('\n').filter(l => /^[+-]\s/.test(l));
+    const loc = execSync(`git -C ${THEME} diff ${BASE} ${ROUND_HEAD} -- locales`).toString().split('\n').filter(l => /^[+-]\s/.test(l));
     const okLine = (l) => /^\+\s+("saving_note_gift": |"faq": \{|"ship_free_spain": |"ship_free": |\},?$)|^-\s+"alt_detalle": |^[-+]\s+"alt_completa": |^[-+]\s+"alt_infografia": |^[-+]\s+"(display_reviews|editor_waiting|rating_link|alt_oracion|zoom)"/.test(l);
     ok('X27 locales: nota de ahorro con regalo, frases de envío de la FAQ y fuera el alt del recorte', loc.every(okLine), loc.filter(l => !okLine(l)).slice(0, 4));
   }

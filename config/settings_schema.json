@@ -1456,21 +1456,21 @@
       {
         "type": "checkbox",
         "id": "garelon_ship_coverage_confirmed",
-        "label": "Envío gratis confirmado en toda España",
-        "info": "Márcalo solo si en Envío y entrega hay una tarifa de 0 € para todos los destinos de España: península, Baleares, Canarias, Ceuta y Melilla. Requiere «Envío gratis» activo.",
+        "label": "Envío gratis confirmado en toda la península",
+        "info": "Márcalo solo si en Envío y entrega hay una tarifa de 0 € para todos los destinos de la península. Requiere «Envío gratis» activo. El texto no nombra Baleares, Canarias, Ceuta ni Melilla: no escribas «toda España» mientras su envío gratis no esté confirmado.",
         "default": false
       },
       {
         "type": "text",
         "id": "garelon_ship_bar_text",
-        "label": "Texto con toda España confirmada",
-        "default": "🇪🇸 Envío gratis a toda España"
+        "label": "Texto con la península confirmada",
+        "default": "🇪🇸 Envío gratis a toda la península"
       },
       {
         "type": "text",
         "id": "garelon_ship_bar_text_limited",
         "label": "Texto si solo algunos destinos tienen envío gratis",
-        "info": "Se usa con «Envío gratis» activo y la casilla anterior sin marcar. Nombra solo los destinos que tienen tarifa de 0 €, p. ej. «🇪🇸 Envío gratis a la península y Baleares». Vacío: no se muestra."
+        "info": "Se usa con «Envío gratis» activo y la casilla anterior sin marcar. Nombra solo los destinos que tienen tarifa de 0 €. Vacío: no se muestra."
       },
       {
         "type": "checkbox",

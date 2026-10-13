@@ -73,7 +73,7 @@ module.exports = async function (browser) {
   }
   {
     const r = await get('/');
-    ok('W11 FAQ del material sin «según la información del proveedor» (D41: «Está hecha de acero inoxidable con acabado dorado pulido…»)', /<p>Está hecha de acero inoxidable con acabado dorado pulido, /.test(r.html) && !/Según la información del proveedor/.test(r.html));
+    ok('W11 FAQ del material sin «según la información del proveedor» (D42: «Es de acero inoxidable con un acabado dorado pulido…»)', /<p>Es de acero inoxidable con un acabado dorado pulido /.test(r.html) && !/Según la información del proveedor/.test(r.html));
   }
   if (REPO) {
     const at = (f, c) => JSON.parse(execSync(`git -C ${THEME} show ${c}:${f}`).toString()).sections.opiniones;

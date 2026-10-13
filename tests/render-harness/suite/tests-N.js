@@ -14,7 +14,7 @@ const VPS = [320, 360, 375, 390, 430, 768, 1024, 1440];
 const HEADING = 'Un detalle para momentos que importan';
 const TEXT = 'Una joya con significado para regalar en un momento especial.';
 const FAQ_Q = '¿Es una buena opción para regalar?';
-const FAQ_A = '<p>Sí. Es un detalle con significado para alguien especial. Si eliges una oferta con varias pulseras, puedes quedarte una y regalar las demás.</p><p>Si quieres que llegue directamente a otra persona, indica su dirección de entrega al completar el pedido.</p>'; // D41
+const FAQ_A = '<p>Sí, es un regalo con mucho significado para alguien a quien quieres. Y si eliges una oferta con varias pulseras, puedes quedarte una y regalar las demás.</p><p>Si quieres que le llegue directamente a esa persona, solo tienes que poner su dirección al hacer el pedido.</p>'; // D42 (tono más natural; antes D41)
 // Ocasiones concretas que no deben aparecer (es + las traducciones que usan los locales en inglés).
 const OCCASIONS = /bautiz|comuni[oó]n|confirmaci[oó]n|navidad|pascua|ocasiones religiosas|celebraciones religiosas|fechas especiales|christening|baptism|communion|easter\b(?!-egg)|christmas|religious (occasion|celebration)/i;
 
@@ -54,7 +54,7 @@ module.exports = async function (browser) {
     ok(`N8 ${name}: FAQ «${FAQ_Q}» con respuesta genérica; ninguna pregunta por ocasiones`, g.length === 1 && g[0].question === FAQ_Q && g[0].answer === FAQ_A && !f.some(x => /ocasion/i.test(x.question)), g);
   }
   r = await get(P);
-  ok('N9 ficha: la FAQ nueva se pinta', r.status === 200 && r.html.includes(FAQ_Q) && r.html.includes('Es un detalle con significado para alguien especial.'));
+  ok('N9 ficha: la FAQ nueva se pinta', r.status === 200 && r.html.includes(FAQ_Q) && r.html.includes('es un regalo con mucho significado para alguien a quien quieres.'));
 
   // 4 · Ninguna ocasión concreta en el storefront: render (home, ficha, carrito, 404) y archivos del tema que pueden mostrarse
   const pages = {};

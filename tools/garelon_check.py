@@ -594,7 +594,7 @@ def check_free_shipping(theme):
 
 
 # ---------------------------------------------------------------- España, único mercado (D38)
-SPAIN_CLAIM_RE = re.compile(r'toda\s+Espa[ñn]a|\b\d{1,2}\s*(?:[–-]|a)\s*\d{1,2}\s+d[ií]as(?:\s+(?:naturales|h[aá]biles|laborables))?', re.I)
+SPAIN_CLAIM_RE = re.compile(r'toda\s+Espa[ñn]a|toda\s+la\s+pen[ií]nsula|\b\d{1,2}\s*(?:[–-]|a)\s*\d{1,2}\s+d[ií]as(?:\s+(?:naturales|h[aá]biles|laborables))?', re.I)
 
 
 def check_spain_shipping(theme):
@@ -615,6 +615,27 @@ def check_spain_shipping(theme):
             if re.search(r'"enable_country_selector"\s*:\s*true', src):
                 err(rel, 'selector de país activo: la tienda vende solo en España (D38); '
                          'los mercados se gestionan en Shopify Admin › Markets')
+    # (3) D42: la cobertura que se anuncia es la península. «Toda España» no aparece en ningún texto
+    # visible por defecto (valores por defecto del tema, textos de los locales ni Liquid fuera de
+    # comentarios) mientras no estén confirmados Baleares, Canarias, Ceuta y Melilla.
+    all_spain = re.compile(r'toda\s+Espa[ñn]a|all\s+of\s+Spain\b', re.I)
+    for st in (st for g in (load_json(theme.root, 'config/settings_schema.json') or []) for st in g.get('settings', [])):
+        dv = st.get('default')
+        if isinstance(dv, str) and all_spain.search(dv):
+            err('config/settings_schema.json', f'«{dv}» como texto por defecto de {st.get("id")}: '
+                                               'la cobertura confirmable es «toda la península» (D42)')
+    for fn in sorted(os.listdir(os.path.join(theme.root, 'locales'))):
+        if fn.endswith('.json') and '.schema.' not in fn:
+            m = all_spain.search(read(theme.root, f'locales/{fn}'))
+            if m:
+                err(f'locales/{fn}', f'«{m.group(0)}»: la cobertura confirmable es «toda la península» (D42)')
+    for d in ('sections', 'snippets', 'layout'):
+        for fn in sorted(os.listdir(os.path.join(theme.root, d))):
+            if fn.endswith('.liquid'):
+                src = re.sub(r'\{%-?\s*comment\s*-?%\}.*?\{%-?\s*endcomment\s*-?%\}', '', read(theme.root, f'{d}/{fn}'), flags=re.S)
+                m = all_spain.search(src)
+                if m:
+                    err(f'{d}/{fn}', f'«{m.group(0)}»: la cobertura confirmable es «toda la península» (D42)')
 
 
 # ---------------------------------------------------------------- claims legales y píxeles

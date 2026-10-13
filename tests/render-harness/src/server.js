@@ -25,7 +25,7 @@ const state = { mode: 'single', soldout: [], design: false, catalog: 'ok', conta
   // Ronda T: countries = 1 (solo España, por defecto) | multi (varios mercados con su moneda, como el selector nativo de Shopify).
   countries: '1',
   // Ronda U: ship = '' (valor del tema) o lista de confirmaciones SIMULADAS del propietario para la barra de envío:
-  // cov (toda España confirmada), lim (texto de destinos limitados) y eta (plazo confirmado).
+  // cov (toda la península confirmada, D42), lim (texto de destinos limitados) y eta (plazo confirmado).
   ship: '' };
 const taxFlags = () => ({ taxes_included: state.taxes === 'included' || state.taxes === 'both', duties_included: state.taxes === 'duties' || state.taxes === 'both' });
 // Ronda T: mercados SIMULADOS para el selector nativo de país de Dawn (lo que devolvería Shopify Markets).
