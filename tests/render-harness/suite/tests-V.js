@@ -7,7 +7,8 @@ const { ok, get, setState, reset, count, text, openPage, B, THEME } = T;
 const fs = require('fs');
 const { execSync } = require('child_process');
 const P = '/products/pulsera-rosario-virgen-maria';
-const BASE = '774f5ca'; // HEAD antes de la ronda V (la próxima ronda fija aquí también el commit final de V)
+const BASE = '774f5ca'; // HEAD antes de la ronda V
+const ROUND_HEAD = '6c021f3'; // Ronda W: commit del tema de la ronda V (alcance fijado a V, como en T y U)
 const REPO = fs.existsSync(THEME + '/.git');
 const NAMES = ['1 pulsera', 'Compra 2 y llévate 1 de regalo', 'Compra 3 y llévate 2 de regalo'];
 const WANT = ['1 pulsera Ideal para ti 19,99 €',
@@ -83,11 +84,10 @@ module.exports = async function (browser) {
     + fs.readFileSync(`${THEME}/templates/product.json`, 'utf8') + fs.readFileSync(`${THEME}/templates/index.json`, 'utf8');
   ok('V12 el tema no escribe precios, nombres de oferta ni cantidades (salen de la variante de Shopify)', !/19,99|29,99|34,99|Compra \d|llévate|\b[35] pulseras\b/.test(theme));
   if (REPO) {
-    const changed = execSync(`git -C ${THEME} diff --name-only ${BASE} -- assets config layout locales sections snippets templates`).toString().trim().split('\n').filter(Boolean)
-      .concat(execSync(`git -C ${THEME} ls-files --others --exclude-standard -- assets config layout locales sections snippets templates`).toString().trim().split('\n').filter(Boolean));
+    const changed = execSync(`git -C ${THEME} diff --name-only ${BASE} ${ROUND_HEAD} -- assets config layout locales sections snippets templates`).toString().trim().split('\n').filter(Boolean);
     const allowed = /^(locales\/[\w.-]+\.json|snippets\/(garelon-offer|garelon-cart-option|garelon-pack-prices|garelon-pack-units)\.liquid)$/;
     ok('V13 alcance: solo el cálculo de unidades (oferta, carrito, lista de precios) y la clave de locale', changed.length > 0 && changed.every(f => allowed.test(f)), changed.filter(f => !allowed.test(f)));
-    const loc = execSync(`git -C ${THEME} diff ${BASE} -- locales`).toString().split('\n').filter(l => /^[+-]\s/.test(l));
+    const loc = execSync(`git -C ${THEME} diff ${BASE} ${ROUND_HEAD} -- locales`).toString().split('\n').filter(l => /^[+-]\s/.test(l));
     const okLine = (l) => /^\+\s+("units_count": \{|"one": |"other": |\},?$)|^[-+]\s+"receives"/.test(l);
     ok('V14 locales: solo se añade garelon.offer.units_count (una/varias)', loc.every(okLine), loc.filter(l => !okLine(l)).slice(0, 4));
   }

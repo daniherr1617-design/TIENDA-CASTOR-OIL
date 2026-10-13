@@ -31,9 +31,9 @@ module.exports = async function (browser) {
   await setState('mode=other'); r = await get('/'); s = section(r.html);
   ok('D13 producto con otra opción (Color): sin tarjetas, selector estándar de Dawn y precio visible', /variant-selects/.test(s) && !/g-packs|g-offer__card/.test(s) && !/g-price--offer/.test(s) && /19,99 €/.test(s));
   await setState('mode=single&reviews=summary'); r = await get('/'); s = section(r.html);
-  ok('D14 valoración REAL (metafields simulados) junto al precio: 4.6 / 5 (12)', /class="rating"/.test(s) && /4\.6\s*\/\s*5/.test(text(s)) && /\(12\)/.test(s));
+  ok('D14 valoración REAL (metafields simulados) junto al título: «4,6/5 · 12 opiniones» (garelon-rating, W)', /class="g-rating"/.test(s) && /4,6\s*\/5\s*·\s*12 opiniones/.test(text(s)));
   await setState('reviews=none'); r = await get('/'); s = section(r.html);
-  ok('D15 sin valoración: ni estrellas ni «0 opiniones»', !/class="rating"|rating-count|0 opiniones/.test(s));
+  ok('D15 sin valoración: ni estrellas ni «0 opiniones»', !/class="rating"|g-rating|rating-count|0 opiniones/.test(s));
   await setState('catalog=none'); r = await get('/');
   ok('D16 sin productos: / → 200, el cliente no ve una ficha de ejemplo', r.status === 200 && !/<section\s+id="comprar"|onboarding|Título de ejemplo|Example product/i.test(r.html));
   await setState('catalog=none&design=1'); r = await get('/');

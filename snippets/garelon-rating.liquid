@@ -1,0 +1,38 @@
+{%- comment -%}
+  GARELON · Valoración junto al título: «★★★★★ 4,9/5 · 29 opiniones», enlazada a las opiniones (#opiniones).
+  Solo con datos reales: los metafields estándar de Shopify que rellena la app de reseñas (Judge.me)
+  reviews.rating y reviews.rating_count. Se actualiza sola cuando cambian las reseñas. Sin valoración o
+  con 0 opiniones no se pinta nada (ni estrellas vacías ni «0 opiniones»). El tema no escribe ninguna cifra.
+
+  Parámetros: product
+{%- endcomment -%}
+{%- liquid
+  assign r = product.metafields.reviews.rating.value
+  assign n = product.metafields.reviews.rating_count.value | default: 0 | plus: 0
+-%}
+{%- if r != blank and n > 0 -%}
+  {%- liquid
+    assign avg = r.rating | times: 1.0
+    assign max = r.scale_max | default: 5 | times: 1.0
+    assign pct = avg | divided_by: max | times: 100 | round: 1
+    assign avg_txt = avg | round: 1 | append: ''
+    unless avg_txt contains '.'
+      assign avg_txt = avg_txt | append: '.0'
+    endunless
+    assign avg_txt = avg_txt | replace: '.', ','
+    assign max_txt = max | round | append: ''
+    assign count_txt = 'garelon.reviews.count' | t: count: n
+  -%}
+  <a
+    href="#opiniones"
+    class="g-rating"
+    aria-label="{{ 'garelon.reviews.rating_link' | t: rating: avg_txt, max: max_txt, count: count_txt | escape }}"
+  >
+    <span class="g-stars g-rating__stars" style="--g-rating: {{ pct }}%;" aria-hidden="true"></span>
+    <span class="g-rating__text" aria-hidden="true">
+      <strong class="g-rating__score">{{ avg_txt }}</strong>/{{ max_txt }}
+      <span class="g-rating__sep">·</span>
+      <span class="g-rating__count">{{ count_txt }}</span>
+    </span>
+  </a>
+{%- endif -%}

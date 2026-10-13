@@ -14,7 +14,7 @@ const UUID = '61ccd3b1-a9f2-4160-9fe9-4fec8413e5d8';
 const WIDGET = `shopify://apps/judge-me-reviews/blocks/review_widget/${UUID}`;
 const CORE = `shopify://apps/judge-me-reviews/blocks/judgeme_core/${UUID}`;
 const VPS = [320, 360, 375, 390, 430, 768, 1024, 1440];
-const NOTE = 'Incluye opiniones de compradores del mismo modelo, importadas mediante Judge.me.';
+const NOTE = 'Incluye opiniones de compradores de este mismo modelo en otra tienda online; no corresponden a pedidos de GARELON.';
 
 const json = (f) => JSON.parse(fs.readFileSync(`${THEME}/${f}`, 'utf8'));
 const atBase = (f) => execSync(`git -C ${THEME} show ${BASE}:${f}`).toString();
@@ -93,7 +93,7 @@ module.exports = async function (browser) {
   // 5 · Ficha: sigue funcionando, ahora también con el widget versionado (el producto lo pone la página)
   r = await get(P); s = reviews(r.html);
   ok('M20 ficha: 200, widget versionado de Judge.me dentro de «GARELON Opiniones», nota y sin resumen duplicado',
-    r.status === 200 && s.includes(`data-app-type="${WIDGET}"`) && s.includes(NOTE) && !/g-reviews__score/.test(s) && /class="rating"/.test(r.html), s.length);
+    r.status === 200 && s.includes(`data-app-type="${WIDGET}"`) && s.includes(NOTE) && !/g-reviews__score/.test(s) && /class="g-rating"/.test(r.html), s.length);
   ok('M21 ficha: compra (packs, botón) intacta', /g-offer/.test(r.html) && /name="add"/.test(r.html));
 
   // 6 · Responsive y JS

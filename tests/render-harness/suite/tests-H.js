@@ -115,7 +115,7 @@ module.exports = async function (browser) {
   await setState('reviews=both'); r = await get('/');
   const rev = (r.html.match(/<section[^>]*class="g-reviews[\s\S]*?<\/section>/) || [''])[0];
   ok('H16 título de opiniones: «Opiniones sobre esta pulsera» (y no el antiguo)', /<h2 class="h1 g-head__title">Opiniones sobre esta pulsera<\/h2>/.test(rev) && !/Lo que opinan quienes ya la llevan/.test(r.html));
-  ok('H17 con opiniones: nota de origen visible tras el widget', /class="g-reviews__app"[\s\S]*<div class="g-reviews__note rte"><p>Incluye opiniones de compradores del mismo modelo, importadas mediante Judge\.me\.<\/p><\/div>/.test(rev));
+  ok('H17 con opiniones: nota de origen visible tras el widget', /class="g-reviews__app"[\s\S]*<div class="g-reviews__note rte"><p>Incluye opiniones de compradores de este mismo modelo en otra tienda online; no corresponden a pedidos de GARELON\.<\/p><\/div>/.test(rev));
   {
     const { page } = await openPage(browser, '/', { width: 390, height: 844 });
     const n = await page.evaluate(() => { const e = document.querySelector('.g-reviews__note'); const s = getComputedStyle(e); return { fs: parseFloat(s.fontSize), op: s.color }; });
@@ -130,7 +130,7 @@ module.exports = async function (browser) {
   await setState('design=1'); r = await get('/');
   ok('H22 editor con la sección en espera: aviso, pero la nota no ocupa espacio', /valoración sincronizada con Shopify es 0/.test(r.html) && !/g-reviews__note/.test(r.html));
   await setState('design=0&reviews=none'); r = await get('/');
-  ok('H23 sin opiniones: ni sección, ni estrellas, ni nota', !/g-reviews|Incluye opiniones de compradores|class="rating"/.test(r.html));
+  ok('H23 sin opiniones: ni sección, ni estrellas, ni nota', !/g-reviews|Incluye opiniones de compradores|class="rating"|g-rating/.test(r.html));
 
   // 5 · Regresión de rutas y plantilla
   await reset();

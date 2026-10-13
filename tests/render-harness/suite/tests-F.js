@@ -19,7 +19,7 @@ module.exports = async function (browser) {
   ok('F7 un único Product JSON-LD en la ficha', count(r.html, /"@type":\s*"Product"/g) === 1);
   ok('F8 opiniones sin datos reales: no se pintan en la ficha', !/g-reviews/.test(m));
   await setState('reviews=both'); r = await get(P); m = main(r.html);
-  ok('F9 con datos reales: valoración junto al precio y sección de opiniones con el widget', /class="rating"/.test(m) && /g-reviews/.test(m) && /data-test="app-reviews"/.test(m));
+  ok('F9 con datos reales: valoración junto al precio y sección de opiniones con el widget', /class="g-rating"/.test(m) && /g-reviews/.test(m) && /data-test="app-reviews"/.test(m));
   await setState('reviews=none'); r = await get(P + '?variant=4102'); m = main(r.html);
   ok('F10 ?variant=4102 marca «2 pulseras» y muestra su precio', /value="2 pulseras"[^>]*checked|checked[^>]*value="2 pulseras"/.test(m.replace(/\s+/g, ' ')) && /34,99 €/.test((m.match(/id="price-[^"]*"[\s\S]*?<\/div>\s*<\/div>/) || [''])[0]));
   {

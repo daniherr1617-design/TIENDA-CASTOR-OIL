@@ -109,15 +109,15 @@ module.exports = async function (browser) {
   {
     const { page, errs } = await openPage(browser, '/', { width: 390, height: 844 });
     const st = await page.evaluate(() => ({ title: getComputedStyle(document.querySelector('.jdgm-rev-widg__title')).display, star: getComputedStyle(document.querySelector('[data-test="jdgm-star"]')).color,
-      btn: getComputedStyle(document.querySelector('[data-test="jdgm-write"]')).borderTopLeftRadius, rating: getComputedStyle(document.querySelector('#comprar .rating-star')).getPropertyValue('--color-rating-star').trim() }));
-    ok('G30 widget integrado: sin título duplicado, estrellas doradas, botón redondeado; estrellas doradas junto al título', st.title === 'none' && st.star === 'rgb(134, 103, 47)' && st.btn === '40px' && /86672f|134, 103, 47/i.test(st.rating), st);
+      btn: getComputedStyle(document.querySelector('[data-test="jdgm-write"]')).borderTopLeftRadius, rating: getComputedStyle(document.querySelector('#comprar .g-rating__stars')).backgroundImage }));
+    ok('G30 widget integrado: sin título duplicado, estrellas doradas, botón redondeado; estrellas doradas junto al título', st.title === 'none' && st.star === 'rgb(134, 103, 47)' && st.btn === '40px' && /rgb\(134, 103, 47\)/.test(st.rating), st);
     ok('G31 sin errores JS con opiniones', errs.length === 0, errs);
     await page.close();
   }
   await setState('reviews=summary'); r = await get('/');
   ok('G32 solo valoración de Shopify (sin app): nota 4,6, estrellas y «12 opiniones»', /<span class="g-reviews__score" aria-hidden="true">4,6<\/span>/.test(r.html) && /12 opiniones/.test(r.html) && /aria-label="4,6 de 5 estrellas"/.test(r.html));
   await setState('reviews=none'); r = await get('/');
-  ok('G33 sin opiniones: ni sección, ni estrellas, ni «0 opiniones»', !/g-reviews|class="rating"|0 opiniones/.test(r.html));
+  ok('G33 sin opiniones: ni sección, ni estrellas, ni «0 opiniones»', !/g-reviews|class="rating"|g-rating|0 opiniones/.test(r.html));
 
   // 8 · FAQ y detalles.
   r = await get('/');

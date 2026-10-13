@@ -64,7 +64,8 @@ module.exports = async function (browser) {
   ok('T16 «Compra con tranquilidad» más compacta (H2, 36 px) con el texto legal y el enlace intactos', tq.every(t => t.blocks.titulo.settings.heading_size === 'h2' && t.settings.padding_top === 36 && t.settings.padding_bottom === 36 && /14 días naturales desde la recepción del pedido para ejercer tu derecho de desistimiento\. Además, tus derechos frente a faltas de conformidad están cubiertos por la garantía legal aplicable\./.test(t.blocks.texto.settings.text) && t.blocks.enlace.settings.button_link === '/policies/refund-policy'));
   if (REPO) {
     const at = (f) => JSON.parse(execSync(`git -C ${THEME} show ${BASE}:${f}`).toString());
-    ok('T17 Judge.me: la sección «GARELON Opiniones» (widget, ajustes y nota) es idéntica a la de antes de la ronda en home y ficha', ['templates/index.json', 'templates/product.json'].every((f, i) => JSON.stringify(at(f).sections.opiniones) === JSON.stringify([ti, tp][i].sections.opiniones)));
+    const atH = (f) => JSON.parse(execSync(`git -C ${THEME} show ${ROUND_HEAD}:${f}`).toString()); // Ronda W: la nota cambió en W (D40); se compara el final de la ronda
+    ok('T17 Judge.me: la sección «GARELON Opiniones» (widget, ajustes y nota) es idéntica a la de antes de la ronda en home y ficha', ['templates/index.json', 'templates/product.json'].every((f, i) => JSON.stringify(at(f).sections.opiniones) === JSON.stringify(atH(f).sections.opiniones)));
   }
   await setState('mode=real&reviews=both');
   for (const [n, u] of [['home', '/'], ['ficha', P]]) {

@@ -169,7 +169,8 @@ module.exports = async function (browser) {
   // 7 · Alcance: Judge.me, imágenes, layout y settings_data intactos; locales solo con las claves nuevas
   if (REPO) {
     const at = (f) => JSON.parse(execSync(`git -C ${THEME} show ${BASE}:${f}`).toString());
-    ok('U34 Judge.me: la sección «GARELON Opiniones» es idéntica en home y ficha', ['templates/index.json', 'templates/product.json'].every((f, i) => JSON.stringify(at(f).sections.opiniones) === JSON.stringify([ti, tp][i].sections.opiniones)));
+    const atH = (f) => JSON.parse(execSync(`git -C ${THEME} show ${ROUND_HEAD}:${f}`).toString()); // Ronda W: la nota cambió en W (D40); se compara el final de la ronda
+    ok('U34 Judge.me: la sección «GARELON Opiniones» es idéntica en home y ficha', ['templates/index.json', 'templates/product.json'].every((f, i) => JSON.stringify(at(f).sections.opiniones) === JSON.stringify(atH(f).sections.opiniones)));
     const changed = execSync(`git -C ${THEME} diff --name-only ${BASE} ${ROUND_HEAD} -- assets config layout locales sections snippets templates`).toString().trim().split('\n').filter(Boolean);
     const allowed = /^(assets\/garelon\.css|config\/settings_schema\.json|locales\/[\w.-]+\.json|sections\/(featured-product|main-product|garelon-announcement)\.liquid|sections\/(header|footer)-group\.json|snippets\/(garelon-offer|garelon-cart-option|garelon-pack-prices|garelon-shipping-note|garelon-gallery|garelon-trust)\.liquid|templates\/(index|product)\.json)$/;
     ok('U35 alcance: packs, barra de envío, nota de envío, galería, cabecera/pie, plantillas, CSS, locales y el esquema de ajustes', changed.length > 0 && changed.every(f => allowed.test(f)), changed.filter(f => !allowed.test(f)));

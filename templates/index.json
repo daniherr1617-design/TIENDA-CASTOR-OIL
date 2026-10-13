@@ -171,7 +171,7 @@
         "show_summary": true,
         "summary_with_app": false,
         "hide_without_reviews": true,
-        "note": "<p>Incluye opiniones de compradores del mismo modelo, importadas mediante Judge.me.</p>",
+        "note": "<p>Incluye opiniones de compradores de este mismo modelo en otra tienda online; no corresponden a pedidos de GARELON.</p>",
         "color_scheme": "scheme-1",
         "anchor": "opiniones",
         "padding_top": 48,
@@ -276,7 +276,7 @@
           "type": "question",
           "settings": {
             "question": "¿De qué material está hecha?",
-            "answer": "<p>Según la información del proveedor, es de acero inoxidable con acabado dorado pulido.</p>"
+            "answer": "<p>Es de acero inoxidable con acabado dorado pulido.</p>"
           }
         },
         "p2": {

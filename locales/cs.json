@@ -599,7 +599,8 @@
         "other": "{{ count }} reviews"
       },
       "editor_empty": "Editor only: «GARELON Opiniones» is hidden for customers because there are no real reviews. Add your review app block (Add block › Apps).",
-      "editor_waiting": "Editor only: the reviews widget is hidden from customers because the rating synced to Shopify is 0. It will appear once reviews are published (or turn off «Hide without reviews»)."
+      "editor_waiting": "Editor only: the reviews widget is hidden from customers because the rating synced to Shopify is 0. It will appear once reviews are published (or turn off «Hide without reviews»).",
+      "rating_link": "Average rating {{ rating }} out of {{ max }}, {{ count }}. Go to reviews"
     },
     "cart": {
       "taxes_at_checkout": "Taxes calculated at checkout.",
