@@ -80,7 +80,7 @@ module.exports = async function (browser) {
         chipCols: new Set(chips.map(c => Math.round(c.left))).size, chipRows: new Set(chips.map(c => Math.round(c.top))).size, chipH: chips.map(c => Math.round(c.height)), quoteH: Math.round(q.height),
         chipN: chips.length, lastFull: chips.length % 2 === 0 || Math.abs(chips[chips.length - 1].width - document.querySelector('#comprar .g-trust__grid').getBoundingClientRect().width) < 1,
         btn: Math.round(document.querySelector('#comprar [id^="ProductSubmitButton-"]').getBoundingClientRect().height) }; });
-    ok(`D24 ${w}px: compra sin scroll horizontal; 3 tarjetas apiladas ≥ 44 px con el precio dentro; 3 garantías en 2 columnas, la impar a lo ancho, sin hueco (≥ 44 px); frase compacta (≤ 80 px); botón ≥ 44 px`, m.sw <= m.cw && m.n === 3 && m.oneCol && m.hs.every(x => x >= 44) && m.prices.every(Boolean) && m.chipN === 3 && m.lastFull && m.chipCols === 2 && m.chipRows === 2 && m.chipH.every(x => x >= 44) && m.btn >= 44 && m.quoteH <= 80 && errs.length === 0, m);
+    ok(`D24 ${w}px: compra sin scroll horizontal; 3 tarjetas apiladas ≥ 44 px con el precio dentro; 3 garantías en una fila de 3 de la misma altura, sin hueco (≥ 44 px; D43, antes 2 columnas con la impar a lo ancho); frase compacta (≤ 80 px); botón ≥ 44 px`, m.sw <= m.cw && m.n === 3 && m.oneCol && m.hs.every(x => x >= 44) && m.prices.every(Boolean) && m.chipN === 3 && m.chipCols === 3 && m.chipRows === 1 && new Set(m.chipH).size === 1 && m.chipH.every(x => x >= 44) && m.btn >= 44 && m.quoteH <= 80 && errs.length === 0, m);
     await page.close();
   }
   await reset();
