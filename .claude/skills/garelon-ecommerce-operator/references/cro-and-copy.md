@@ -28,14 +28,15 @@ Jerarquía visual · un CTA claro · packs con ahorro real · `compare_at_price`
 - Después: opiniones → «Compra con tranquilidad» → significado → detalles → regalo → FAQ → cierre. El orden real está en el snapshot.
 - **Ahorro con regalo (D41):** el «Ahorras X €» cuenta solo las unidades pagadas frente a comprarlas sueltas; las de regalo no suman. No usar «Ahorra 24,98 €» en anuncios sin decir la base (3 sueltas a 19,99 €).
 - **Packs con regalo (D38, D39: «Compra 2 y llévate 1 de regalo», «Compra 3 y llévate 2 de regalo»):** el regalo solo si el cliente recibe de verdad todas las unidades por el precio mostrado, sin recargo escondido en el precio de las unidades pagadas. La tarjeta dice la cantidad real («Recibes 3 pulseras») y el precio por pulsera calculado con esas unidades. Antes de anunciarlo, revisar el precio de los 30 días previos (art. 20 Ley 7/1996): si un pack de 3 se vendía por menos de lo que ahora cuestan «2 + 1», presentarlo como regalo puede ser engañoso.
-- **Envío y plazo (D38):** «Envío gratis a toda España» y «Entrega estimada en 5–10 días naturales» solo cuando el propietario los confirma en el editor y coinciden con Envío y entrega y con la política de envíos.
+- **Envío y plazo (D38, D42):** «🇪🇸 Envío gratis a toda la península» y «Entrega estimada en 5–10 días naturales» solo cuando el propietario los confirma en el editor y coinciden con Envío y entrega y con la política de envíos. «Toda España» no se usa en ningún texto visible mientras no estén confirmados Baleares, Canarias, Ceuta y Melilla.
 - **Campañas temáticas** (p. ej. «Especial octubre · Mes del Rosario»): etiqueta corta encima de los packs (y texto alternativo de la barra superior mientras no haya envío confirmado), sin descuento, contador ni escasez. Son temporales: se retiran en el editor al terminar (ver `current-store-state.md` §5). Un «-10 %» solo con el precio anterior más bajo de los 30 días previos a la vista (art. 20 Ley 7/1996).
 
 ## Copy
 
 - Español de España, «tú», frases cortas, sin mayúsculas gritonas ni cadenas de exclamaciones.
 - Beneficio y significado antes que especificación. Los datos secundarios (plazos, capacidad, lo que no incluye) van en la FAQ o en las políticas.
-- Datos del proveedor atribuidos cuando haga falta («según el proveedor») o reformulados. Nada no verificado.
+- Sin mencionar al proveedor ni la logística de origen en el copy visible (D40, D42): lo no confirmable se reformula con prudencia o no se dice. Nada no verificado.
+- FAQ (D42): respuestas cálidas y seguras, sin frases defensivas («solo describimos lo que hemos podido comprobar», «si tienes sensibilidad a algún metal…»).
 - Copy emocional o de fe: simbólico, sin prometer protección, milagros, suerte ni efectos; sin miedo ni culpa.
 - Sin superlativos sin prueba («el mejor», «el regalo perfecto»).
 - **Regalo (D31):** Una sección de gifting puede comunicar de forma genérica que el producto es apropiado como regalo o detalle para momentos especiales. Las ocasiones concretas (bautizos, comuniones, Navidad, cumpleaños, bodas…) solo se enumeran si el propietario las pide expresamente para ese producto (D31). Ni tarjetas ni listas de ocasiones, tampoco escondidas en la FAQ.

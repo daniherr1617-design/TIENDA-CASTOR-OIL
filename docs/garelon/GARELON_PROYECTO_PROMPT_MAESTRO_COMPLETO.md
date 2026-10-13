@@ -1,6 +1,6 @@
 # GARELON · PROMPT MAESTRO DEL PROYECTO (constitución operativa)
 
-> **Versión:** 3.14 · **Fecha:** 2026-10-13 · **Repositorio:** `daniherr1617-design/TIENDA-CASTOR-OIL` · **Rama fuente:** `claude/garelon-espana-cro` · **Commit fuente:** `48279dc`
+> **Versión:** 3.15 · **Fecha:** 2026-10-13 · **Repositorio:** `daniherr1617-design/TIENDA-CASTOR-OIL` · **Rama fuente:** `claude/garelon-espana-cro` · **Commit fuente:** `fc79181`
 >
 > Snapshot generado desde `e27ae75`. Ante discrepancias futuras manda el repositorio actual y, por encima de él, el producto real y las decisiones recientes del propietario (§3).
 
@@ -273,7 +273,7 @@ Optimizar la conversión **sí**; dark patterns **no** (R9).
 - `Pago seguro`
 - `14 días para cambiar de opinión`
 
-Si cambian en Shopify o en las políticas, mandan Shopify y las políticas, y el tema se actualiza. **«Envíos internacionales» no se promete (D32):** la política de envíos solo admite destinos habilitados en Shopify (Markets y Envío y entrega). **España es el único mercado (D38, 2026-10-12):** el tema no muestra selector de país ni promociona destinos fuera de España. Desactivar mercados, zonas y tarifas de Latinoamérica es trabajo del propietario en Shopify Admin (Markets, Envío y entrega, política de envíos); el tema no lo cambia. «Envío gratis a toda España» y el plazo «5–10 días naturales» solo se muestran cuando el propietario los confirma en Configuración del tema › Carrito › «GARELON · Envío a España». La 4.ª garantía queda vacía.
+Si cambian en Shopify o en las políticas, mandan Shopify y las políticas, y el tema se actualiza. **«Envíos internacionales» no se promete (D32):** la política de envíos solo admite destinos habilitados en Shopify (Markets y Envío y entrega). **España es el único mercado (D38, 2026-10-12):** el tema no muestra selector de país ni promociona destinos fuera de España. Desactivar mercados, zonas y tarifas de Latinoamérica es trabajo del propietario en Shopify Admin (Markets, Envío y entrega, política de envíos); el tema no lo cambia. «🇪🇸 Envío gratis a toda la península» y el plazo «5–10 días naturales» solo se muestran cuando el propietario los confirma en Configuración del tema › Carrito › «GARELON · Envío a España». **Desde D42 no se usa «toda España» en ningún texto visible** mientras no estén confirmados Baleares, Canarias, Ceuta y Melilla. La 4.ª garantía queda vacía.
 
 **Políticas legales:** su texto vive en Shopify (Configuración › Políticas; Cookies y, si hace falta, Aviso legal como páginas). El tema no copia condiciones ni datos del titular: las respuestas cortas remiten a `/policies/refund-policy` y `/policies/shipping-policy`, y no se escriben plazos ni ventanas de entrega fijas.
 

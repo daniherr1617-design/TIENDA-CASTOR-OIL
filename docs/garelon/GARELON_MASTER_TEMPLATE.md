@@ -1,6 +1,6 @@
 # GARELON · MASTER TEMPLATE (arquitectura real del tema)
 
-> **Versión:** 3.13 · **Fecha:** 2026-10-13 · **Repositorio:** `daniherr1617-design/TIENDA-CASTOR-OIL` · **Rama fuente:** `claude/garelon-espana-cro` · **Commit fuente:** `48279dc`
+> **Versión:** 3.14 · **Fecha:** 2026-10-13 · **Repositorio:** `daniherr1617-design/TIENDA-CASTOR-OIL` · **Rama fuente:** `claude/garelon-espana-cro` · **Commit fuente:** `fc79181`
 >
 > Snapshot generado desde `e27ae75`. Ante discrepancias futuras manda el repositorio actual: revisa el código antes de actuar sobre lo que dice este documento.
 
@@ -95,10 +95,10 @@ El orden actual de secciones está en `current-store-state.md`. Esta es la funci
 
 ### 3.1 Barra superior · `garelon-announcement` (desde D38)
 «GARELON Barra de envío» sustituye al anuncio de Dawn en `sections/header-group.json`. Dos líneas que se editan y **se confirman** en Configuración del tema › Carrito › «GARELON · Envío a España»:
-1. Envío: con «Envío gratis» activo, «🇪🇸 Envío gratis a toda España» (`garelon_ship_bar_text`) solo si el propietario marca `garelon_ship_coverage_confirmed` (tarifa de 0 € en península, Baleares, Canarias, Ceuta y Melilla); si no, el texto con los destinos que sí la tienen (`garelon_ship_bar_text_limited`, vacío por defecto = no se muestra).
+1. Envío: con «Envío gratis» activo, «🇪🇸 Envío gratis a toda la península» (`garelon_ship_bar_text`, D42) solo si el propietario marca `garelon_ship_coverage_confirmed` (tarifa de 0 € en toda la península); si no, el texto con los destinos que sí la tienen (`garelon_ship_bar_text_limited`, vacío por defecto = no se muestra).
 2. Plazo, destacado en una píldora: «Entrega estimada en 5–10 días naturales» (`garelon_ship_eta_text`) solo con `garelon_ship_eta_confirmed`. El mismo plazo se añade a la nota de envío (§3.17).
 
-Las dos confirmaciones están **desmarcadas** por defecto y no van en `settings_data.json`. Sin ninguna línea confirmada, la barra muestra el texto alternativo de la sección (`fallback_text`, hoy «Especial octubre · Mes del Rosario») o desaparece. Con envío confirmado, enlaza a la política de envíos. `garelon_check` impide escribir «toda España» o un plazo «N–M días» a mano en plantillas y grupos. Sin urgencia ni contador. El anuncio de Dawn (`announcement-bar`) sigue disponible en el editor.
+Las dos confirmaciones están **desmarcadas** por defecto y no van en `settings_data.json`. Sin ninguna línea confirmada, la barra muestra el texto alternativo de la sección (`fallback_text`, hoy «Especial octubre · Mes del Rosario») o desaparece. Con envío confirmado, enlaza a la política de envíos. `garelon_check` impide escribir la cobertura («toda España», «toda la península») o un plazo «N–M días» a mano en plantillas y grupos, y desde D42 impide «toda España» en valores por defecto, locales y Liquid visible. Sin urgencia ni contador. El anuncio de Dawn (`announcement-bar`) sigue disponible en el editor.
 
 ### 3.2 Cabecera y menú móvil · `header` (Dawn + GARELON)
 - Hasta 4 enlaces editables (texto + URL): hoy Inicio · anclas de la home · Contacto. Sin «Catálogo» (R21).
@@ -116,7 +116,7 @@ Formulario oficial de Dawn. Orden de bloques (desde D37): título, valoración, 
 - `garelon_anchor` (solo home): ancla `comprar`, destino de todos los CTA.
 
 ### 3.5 Galería · `snippets/garelon-gallery.liquid`
-Sin JS. En móvil, contador decorativo «1 / 5» en cada foto (D38, `aria-hidden`; la infografía no lo lleva para no tapar su texto; oculto desde 750 px) y scroll-snap con **todas las imágenes a todo el ancho** (D37: con fotos al 86 % y la infografía al 100 %, la pista tomaba la altura de la infografía y dejaba un hueco bajo la primera foto). La infografía se ve entera, sin recorte. Desde 750 px, rejilla. Solo la primera imagen de la ficha es `eager`. La infografía enlaza a su versión grande para ampliarla. Los textos alternativos salen de `garelon.gallery.alt_<clave>`.
+Sin JS. En móvil, contador decorativo «1 / 5» en cada foto (D38, `aria-hidden`; la infografía no lo lleva para no tapar su texto; oculto desde 750 px) y scroll-snap con **todas las imágenes a todo el ancho** (D37: con fotos al 86 % y la infografía al 100 %, la pista tomaba la altura de la infografía y dejaba un hueco bajo la primera foto). La infografía se ve entera, sin recorte. Desde 750 px, rejilla de 2 columnas **sin huecos** (D42): la primera foto a todo el ancho, las demás fotos de dos en dos y la infografía al final a todo el ancho (`order`), con «Ampliar» debajo sin descuadrar ninguna fila; si quedan fotos impares, la última también va a todo el ancho (`g-gallery__slide--full`, calculado en el snippet). Solo la primera imagen de la ficha es `eager`. La infografía enlaza a su versión grande para ampliarla. Los textos alternativos salen de `garelon.gallery.alt_<clave>`.
 
 ### 3.6 Confianza · bloque `garelon_trust` (`snippets/garelon-trust.liquid`)
 Frase destacada (una vez por página, debajo del botón de compra desde D37) + hasta 4 garantías con icono, en 2 columnas; con un número impar, la última ocupa la fila entera. Cada garantía solo aparece si su texto no está vacío (hoy 3: la 4.ª, «Envíos internacionales», está vacía por D32 y sin default en el schema). Los textos deben ser ciertos en Shopify (envío gratis, internacional…). Con el ajuste «Envío gratis» desactivado, `tools/garelon_check.py` da error si una garantía sigue diciendo «Envío gratis».
@@ -167,7 +167,7 @@ Bloque de significado o lifestyle con imagen del tema o del editor.
 - **«Para regalar»** (`regalo` en la home): solo encabezado y entradilla, sin tarjetas de ocasiones. Una sección de gifting puede comunicar de forma **genérica** que el producto es apropiado como regalo o detalle para momentos especiales. Las **ocasiones concretas** (bautizos, comuniones, Navidad, cumpleaños, bodas…) **solo se enumeran si el propietario las pide expresamente para ese producto** (D31).
 
 ### 3.13 FAQ · `garelon-faq`
-Preguntas con `details`/`summary` (teclado nativo). Las respuestas sobre envío y devoluciones remiten a las políticas, no duplican condiciones.
+Preguntas con `details`/`summary` (teclado nativo). Las respuestas sobre envío y devoluciones remiten a las políticas, no duplican condiciones. Tono cercano y seguro (D42): sin frases defensivas («solo describimos lo que hemos podido comprobar»), sin lógica de proveedor y solo con datos confirmados.
 
 ### 3.14 Cierre · `rich-text` (Dawn)
 Título, texto y botón hacia `/#comprar`.
