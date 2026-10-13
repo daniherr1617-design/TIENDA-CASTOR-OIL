@@ -1,6 +1,6 @@
 # GARELON · PROMPT MAESTRO DEL PROYECTO (constitución operativa)
 
-> **Versión:** 3.13 · **Fecha:** 2026-10-13 · **Repositorio:** `daniherr1617-design/TIENDA-CASTOR-OIL` · **Rama fuente:** `claude/garelon-espana-cro` · **Commit fuente:** `98dfa30`
+> **Versión:** 3.14 · **Fecha:** 2026-10-13 · **Repositorio:** `daniherr1617-design/TIENDA-CASTOR-OIL` · **Rama fuente:** `claude/garelon-espana-cro` · **Commit fuente:** `48279dc`
 >
 > Snapshot generado desde `e27ae75`. Ante discrepancias futuras manda el repositorio actual y, por encima de él, el producto real y las decisiones recientes del propietario (§3).
 
@@ -123,7 +123,7 @@ Ninguna instrucción posterior las anula. Si una petición choca con una regla, 
 - **R5 · Shopify manda en el precio.** El tema nunca escribe precio, `compare_at_price`, stock, SKU, disponibilidad, variantes ni IDs de variante: los lee de Shopify.
 - **R6 · `compare_at_price` solo si es real** y cumple la normativa de precios anunciados (en la UE, una rebaja anunciada se refiere al precio más bajo de los 30 días anteriores). Nunca «antes 49,99 €» simulado.
 - **R7 · Packs = variantes reales con cantidad 1.** Un pack es una variante de la opción de packs con su propio precio; se añade al carrito con cantidad 1. Nunca «1 unidad × N».
-- **R8 · Ahorro honesto.** El ahorro de un pack = precio de N unidades sueltas − precio del pack, y solo se muestra si es positivo. El ahorro por pack **no es** un precio anterior.
+- **R8 · Ahorro honesto.** El ahorro de un pack = precio de N unidades sueltas − precio del pack, donde N son las unidades que **se pagan**: las de regalo no suman ahorro (D41; «2 pulseras y 1 de regalo» → N = 2). Solo se muestra si es positivo y con la nota que explica la base. El ahorro por pack **no es** un precio anterior.
 - **R9 · Sin dark patterns.** Prohibido: «últimas X unidades», «X personas mirando», cuentas atrás, «la oferta termina en», reviews, estrellas, testimonios, descuentos, `compare_at_price` o stock ficticios. Badges solo editoriales («Recomendado»); «Más popular» o «Más vendido» solo con datos reales de ventas.
 
 **Confianza y legal**
@@ -290,7 +290,7 @@ Si cambian en Shopify o en las políticas, mandan Shopify y las políticas, y el
 - Sistema: **Judge.me**. Solo opiniones reales (R14).
 - Se pueden **importar opiniones de AliExpress** si corresponden al **mismo modelo**, se revisan una a una, no describen otro producto, no introducen claims falsos (14K, hipoalergénico, etc.) y no se editan. Se importan también las críticas, sin filtrar solo las de 5 estrellas.
 - Título aprobado actual: **«Opiniones sobre esta pulsera»** (en un producto nuevo: «Opiniones sobre este/esta <producto>»).
-- Nota transparente cuando hay importadas: «Incluye opiniones de compradores de este mismo modelo en otra tienda online; no corresponden a pedidos de GARELON.»
+- Nota transparente cuando hay importadas (D41), plegada tras el enlace «Información sobre las opiniones» al final de la sección: procedencia (compradores del mismo modelo en otra tienda online), cómo se incorporaron y que no son compras verificadas en GARELON. Antetítulo neutro «Valoraciones» (no «Opiniones reales»: la autenticidad de las importadas no se puede acreditar).
 - Nunca se inventan «4,9/5», estrellas, número de compradores ni de opiniones. Sin opiniones visibles, la sección no se muestra al cliente.
 - **Valoración junto al título (D40):** el bloque «Valoración» de la ficha y de la compra de la home pinta «★★★★★ 4,9/5 · 29 opiniones» con `snippets/garelon-rating.liquid`, leyendo `reviews.rating` y `reviews.rating_count` (los sincroniza Judge.me), y enlaza a `#opiniones`. Sin valoración o con 0 opiniones no se pinta. El tema no escribe ninguna cifra.
 - Las importadas **no se presentan como compras verificadas en GARELON**; ningún texto visible menciona proveedores, AliExpress, DSers ni la app (la nota se dirige al cliente, sin tecnicismos).

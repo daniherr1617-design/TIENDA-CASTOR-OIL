@@ -12,7 +12,7 @@
 - **Valoración junto al título (D40):** `snippets/garelon-rating.liquid` en el bloque «Valoración» de Dawn: «★★★★★ 4,9/5 · 29 opiniones» desde los mismos metafields, enlace a `#opiniones`; nada sin valoración o con 0 opiniones. No añadir el bloque «Star rating» de Judge.me ni una galería aparte (duplicarían carga y contenido).
 - El aspecto del widget (Carousel, colores, galería, nombres abreviados…) se configura en Judge.me; el tema no lo duplica en CSS.
 - Si Judge.me se sustituye o se desinstala: retirar el bloque de las dos plantillas y el App Embed. Al migrar de producto: revisar el producto del widget de la home.
-- Título aprobado: «Opiniones sobre esta <producto>». Nota cuando hay importadas: «Incluye opiniones de compradores de este mismo modelo en otra tienda online; no corresponden a pedidos de GARELON.»
+- Título aprobado: «Opiniones sobre esta <producto>», con antetítulo neutro «Valoraciones» (D41). Nota cuando hay importadas, plegada tras «Información sobre las opiniones» (ajuste `note_label`): «Estas opiniones proceden de compradores de este mismo modelo de pulsera en otra tienda online. Las hemos incorporado a nuestra tienda con su puntuación y, cuando las tienen, sus fotos. No corresponden a pedidos realizados en GARELON, por lo que no son compras verificadas en nuestra tienda.»
 
 ### Importar opiniones de AliExpress (lo hace el propietario)
 
