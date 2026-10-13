@@ -58,8 +58,8 @@ module.exports = async function (browser) {
   }
 
   // 4 · Orden de secciones: compra → opiniones → «Compra con tranquilidad» (más compacta, mismo texto legal)
-  ok('T14 ficha: main → opiniones → tranquilidad; confianza debajo del botón', tp.order.slice(0, 3).join() === 'main,opiniones,tranquilidad' && tp.sections.main.block_order.join() === 'antetitulo,titulo,valoracion,precio,resumen,oferta,comprar,confianza,descripcion,envios', [tp.order, tp.sections.main.block_order]);
-  ok('T15 home: portada → compra → opiniones → tranquilidad; confianza debajo del botón', ti.order.slice(0, 4).join() === 'portada,compra,opiniones,tranquilidad' && ti.sections.compra.block_order.join() === 'titulo,valoracion,precio,oferta,comprar,confianza', [ti.order, ti.sections.compra.block_order]);
+  ok('T14 ficha: main → opiniones → tranquilidad; garantías antes de la oferta y frase debajo del botón (D43; en T, toda la confianza debajo)', tp.order.slice(0, 3).join() === 'main,opiniones,tranquilidad' && tp.sections.main.block_order.join() === 'antetitulo,titulo,valoracion,precio,resumen,confianza,oferta,comprar,frase,descripcion,envios', [tp.order, tp.sections.main.block_order]);
+  ok('T15 home: portada → compra → opiniones → tranquilidad; garantías antes de la oferta y frase debajo del botón (D43)', ti.order.slice(0, 4).join() === 'portada,compra,opiniones,tranquilidad' && ti.sections.compra.block_order.join() === 'titulo,valoracion,precio,confianza,oferta,comprar,frase', [ti.order, ti.sections.compra.block_order]);
   const tq = [tp, ti].map(t => t.sections.tranquilidad);
   ok('T16 «Compra con tranquilidad» más compacta (H2, 36 px) con el texto legal y el enlace intactos', tq.every(t => t.blocks.titulo.settings.heading_size === 'h2' && t.settings.padding_top === 36 && t.settings.padding_bottom === 36 && /14 días naturales desde la recepción del pedido para ejercer tu derecho de desistimiento\. Además, tus derechos frente a faltas de conformidad están cubiertos por la garantía legal aplicable\./.test(t.blocks.texto.settings.text) && t.blocks.enlace.settings.button_link === '/policies/refund-policy'));
   if (REPO) {
@@ -82,20 +82,21 @@ module.exports = async function (browser) {
         const R = document.querySelector(root); const top = (s) => { const e = R.querySelector(s); return e ? Math.round(e.getBoundingClientRect().top + scrollY) : null; };
         const tr = R.querySelector('.g-gallery__track'); const sl = [...R.querySelectorAll('.g-gallery__slide')];
         const info = R.querySelector('.g-gallery__slide img[src*="infografia"]');
-        return { title: top('.product__title'), legend: top('.g-offer__legend'), card1: top('.g-offer__card'), atc: top('.product-form__submit'), trust: top('.g-trust'),
+        return { title: top('.product__title'), legend: top('.g-offer__legend'), card1: top('.g-offer__card'), atc: top('.product-form__submit'), trust: top('.g-trust--chips'), phrase: top('.g-trust__phrase'),
           gap: Math.round(tr.getBoundingClientRect().bottom - sl[0].getBoundingClientRect().bottom), widths: sl.map(s => Math.round(s.getBoundingClientRect().width)), track: Math.round(tr.getBoundingClientRect().width),
           info: info && { w: info.getBoundingClientRect().width, h: info.getBoundingClientRect().height, fit: getComputedStyle(info).objectFit, nw: info.naturalWidth, nh: info.naturalHeight },
           hscroll: document.documentElement.scrollWidth > window.innerWidth };
       }, root);
       ok(`T19 ${n} ${w}px: sin scroll horizontal y sin errores JS`, !m.hscroll && errs.length === 0, errs);
-      ok(`T20 ${n} ${w}px: título → «Elige tu oferta» → botón → confianza`, m.title < m.legend && m.legend < m.card1 && m.card1 < m.atc && m.atc < m.trust, m);
+      ok(`T20 ${n} ${w}px: título → garantías → «Elige tu oferta» → botón → frase (D43)`, m.title < m.trust && m.trust < m.legend && m.legend < m.card1 && m.card1 < m.atc && m.atc < m.phrase, m);
       ok(`T21 ${n} ${w}px: infografía entera (cuadrada, sin recorte)`, m.info && Math.abs(m.info.w - m.info.h) <= 1 && m.info.nw === m.info.nh, m.info);
       if (w < 750) {
         ok(`T22 ${n} ${w}px: galería móvil sin hueco (cada foto al ancho de la pista; bajo la 1.ª solo queda la línea «Ampliar», ≤ 32 px)`, m.widths.every(x => Math.abs(x - m.track) <= 1) && m.gap <= 32, [m.gap, m.widths, m.track]);
         // Antes de la ronda T (aa9c01a, mode=real, 390×844): ficha «Elige tu oferta» a 868 px y botón a 1308 px.
-        if (n === 'ficha') ok(`T23 ficha ${w}px: «Elige tu oferta» empieza en la primera pantalla (< 760 px) y la 1.ª tarjeta asoma (< 844 px)`, m.legend < 760 && m.card1 < 844, m);
+        // Ronda Z (D43): las 3 garantías vuelven antes de «Elige tu oferta» por decisión del propietario (+~85 px en móvil).
+        if (n === 'ficha') ok(`T23 ficha ${w}px: «Elige tu oferta» sigue empezando en la primera pantalla (< 844 px) con las garantías encima (D43; en T, < 760 px y la 1.ª tarjeta asomando)`, m.legend < 844, m);
         // Ronda U (D38): la etiqueta de campaña va encima de «Elige tu oferta» (+~23 px) en vez de entre las tarjetas y el botón.
-        else ok(`T23 home ${w}px: «Elige tu oferta» a ≤ 130 px del título (antes de T ~265 px; con la etiqueta de campaña encima, ~120 px)`, m.legend - m.title <= 130, m);
+        else ok(`T23 home ${w}px: «Elige tu oferta» a ≤ 230 px del título con las garantías encima (D43; antes ~120 px, antes de T ~265 px)`, m.legend - m.title <= 230, m);
       }
       await page.close();
     }

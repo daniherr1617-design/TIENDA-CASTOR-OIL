@@ -1,6 +1,8 @@
 {%- comment -%}
-  GARELON · Zona de confianza (desde la ronda T, debajo del botón de compra): frase principal en una banda
-  y hasta 4 garantías cortas con icono. Todo editable; un texto vacío no se pinta.
+  GARELON · Zona de confianza: frase principal en una banda y hasta 4 garantías cortas con icono.
+  Todo editable; un texto vacío no se pinta. Desde D43 son dos bloques: las garantías (sin frase) van
+  antes de «Elige tu oferta», en una franja compacta de hasta 3 columnas (`g-trust--chips`), y la frase
+  (sin garantías) sigue debajo del botón de compra.
   Solo textos verdaderos: «Envío gratis» o un destino únicamente si se ofrecen (la tienda vende solo en España).
 
   Parámetros: block
@@ -15,7 +17,7 @@
   endfor
 -%}
 {%- if block.settings.phrase != blank or chips > 0 -%}
-  <div class="g-trust" {{ block.shopify_attributes }}>
+  <div class="g-trust{% if block.settings.phrase == blank %} g-trust--chips g-trust--n{{ chips }}{% endif %}" {{ block.shopify_attributes }}>
     {%- if block.settings.phrase != blank -%}
       <p class="g-trust__phrase">{{ block.settings.phrase | escape }}</p>
     {%- endif -%}
@@ -30,7 +32,7 @@
           {%- if chip_text != blank -%}
             <li class="g-trust__chip">
               {%- render 'garelon-icon', icon: block.settings[icon_key] -%}
-              <span>{{ chip_text | escape }}</span>
+              <span>{{ chip_text | escape | replace: ' + ', '&nbsp;+ ' }}</span>
             </li>
           {%- endif -%}
         {%- endfor -%}

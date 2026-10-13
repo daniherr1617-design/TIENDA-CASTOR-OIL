@@ -20,7 +20,7 @@ const taxOf = (html) => text((html.match(/<p class="g-offer__tax">[\s\S]*?<\/p>/
 const productNote = (html) => text((html.match(/<div class="product__tax caption rte">[\s\S]*?<\/div>/) || [''])[0]).trim();
 const drawerNote = (html) => text(((html.match(/<cart-drawer[\s\S]*?<\/cart-drawer>/) || [''])[0].match(/<small class="tax-note[\s\S]*?<\/small>/) || [''])[0]).trim();
 const pageNote = (html) => text(((html.match(/id="main-cart-footer"[\s\S]*?<\/cart-footer>|id="main-cart-footer"[\s\S]*$/) || [''])[0].match(/<small class="tax-note[\s\S]*?<\/small>/) || [''])[0]).trim();
-const chips = (html) => [...html.matchAll(/<li class="g-trust__chip">[\s\S]*?<span>([^<]*)<\/span>/g)].map(m => m[1].trim());
+const chips = (html) => [...html.matchAll(/<li class="g-trust__chip">[\s\S]*?<span>([^<]*)<\/span>/g)].map(m => m[1].replace(/&nbsp;/g, ' ').trim()); // D43: «gratis&nbsp;+» para no dejar el «+» solo en una línea
 const schema = (f) => JSON.parse(fs.readFileSync(`${THEME}/sections/${f}`, 'utf8').match(/{% schema %}([\s\S]*){% endschema %}/)[1]);
 const addToCart = async (id) => { const fd = new FormData(); fd.append('id', String(id)); fd.append('quantity', '1'); await fetch(B + '/cart/add.js', { method: 'POST', body: fd }); };
 // Defaults de todos los schemas (secciones, bloques y ajustes globales) con su ruta.

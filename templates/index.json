@@ -37,13 +37,27 @@
         "confianza": {
           "type": "garelon_trust",
           "settings": {
-            "phrase": "Un símbolo de tu fe, contigo cada día.",
+            "phrase": "",
             "chip_1_icon": "envio",
             "chip_1_text": "Envío gratis + seguimiento",
             "chip_2_icon": "candado",
             "chip_2_text": "Pago seguro",
             "chip_3_icon": "devolucion",
             "chip_3_text": "14 días para cambiar de opinión",
+            "chip_4_icon": "globo",
+            "chip_4_text": ""
+          }
+        },
+        "frase": {
+          "type": "garelon_trust",
+          "settings": {
+            "phrase": "Un símbolo de tu fe, contigo cada día.",
+            "chip_1_icon": "envio",
+            "chip_1_text": "",
+            "chip_2_icon": "candado",
+            "chip_2_text": "",
+            "chip_3_icon": "devolucion",
+            "chip_3_text": "",
             "chip_4_icon": "globo",
             "chip_4_text": ""
           }
@@ -76,9 +90,10 @@
         "titulo",
         "valoracion",
         "precio",
+        "confianza",
         "oferta",
         "comprar",
-        "confianza"
+        "frase"
       ],
       "settings": {
         "garelon_anchor": "comprar",

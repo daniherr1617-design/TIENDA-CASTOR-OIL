@@ -8,6 +8,7 @@ const fs = require('fs');
 const { execSync } = require('child_process');
 const P = '/products/pulsera-rosario-virgen-maria';
 const BASE = 'bad7659'; // HEAD antes de la ronda Y
+const ROUND_HEAD = 'fc79181'; // Ronda Z: commit del tema de la ronda Y (alcance fijado a Y, como en T a X)
 const REPO = fs.existsSync(THEME + '/.git');
 const BAR = '🇪🇸 Envío gratis a toda la península';
 const CAMPAIGN = 'Especial octubre · Mes del Rosario';
@@ -128,17 +129,16 @@ module.exports = async function (browser) {
 
   // 4 · Alcance: solo copy de envío, galería y FAQ (sin precios, packs, Judge.me, políticas ni checkout)
   if (REPO) {
-    const changed = execSync(`git -C ${THEME} diff --name-only ${BASE} -- assets config layout locales sections snippets templates`).toString().trim().split('\n').filter(Boolean)
-      .concat(execSync(`git -C ${THEME} ls-files --others --exclude-standard -- assets config layout locales sections snippets templates`).toString().trim().split('\n').filter(Boolean));
+    const changed = execSync(`git -C ${THEME} diff --name-only ${BASE} ${ROUND_HEAD} -- assets config layout locales sections snippets templates`).toString().trim().split('\n').filter(Boolean);
     const allowed = /^(assets\/garelon\.css|config\/settings_schema\.json|locales\/[\w.-]+\.json|sections\/(garelon-announcement|garelon-faq)\.liquid|snippets\/garelon-gallery\.liquid|templates\/(index|product)\.json)$/;
     ok('Y23 alcance: envío, galería y FAQ; sin precios, packs, opiniones, carrito, layout ni imágenes', changed.length > 0 && changed.every(f => allowed.test(f)), changed.filter(f => !allowed.test(f)));
-    const at = (f) => JSON.parse(execSync(`git -C ${THEME} show ${BASE}:${f}`).toString());
+    const at = (f, c = BASE) => JSON.parse(execSync(`git -C ${THEME} show ${c}:${f}`).toString());
     const noFaq = (t) => { const c = JSON.parse(JSON.stringify(t)); Object.values(c.sections.preguntas.blocks).forEach(b => delete b.settings.answer); return c; };
-    ok('Y24 plantillas: solo cambian las respuestas de la FAQ (ofertas, opiniones, galería y demás secciones intactas)', ['templates/index.json', 'templates/product.json'].every(f => JSON.stringify(noFaq(at(f))) === JSON.stringify(noFaq(json(f)))));
-    const loc = execSync(`git -C ${THEME} diff ${BASE} -- locales`).toString().split('\n').filter(l => /^[+-]\s/.test(l));
+    ok('Y24 plantillas: solo cambian las respuestas de la FAQ (ofertas, opiniones, galería y demás secciones intactas)', ['templates/index.json', 'templates/product.json'].every(f => JSON.stringify(noFaq(at(f))) === JSON.stringify(noFaq(at(f, ROUND_HEAD)))));
+    const loc = execSync(`git -C ${THEME} diff ${BASE} ${ROUND_HEAD} -- locales`).toString().split('\n').filter(l => /^[+-]\s/.test(l));
     ok('Y25 locales: solo cambia la frase de envío de la FAQ', loc.length > 0 && loc.every(l => /^[+-]\s+"ship_free_spain": /.test(l)), loc.filter(l => !/ship_free_spain/.test(l)).slice(0, 3));
-    const sch = execSync(`git -C ${THEME} diff ${BASE} -- config/settings_schema.json`).toString().split('\n').filter(l => /^[+-]\s/.test(l));
+    const sch = execSync(`git -C ${THEME} diff ${BASE} ${ROUND_HEAD} -- config/settings_schema.json`).toString().split('\n').filter(l => /^[+-]\s/.test(l));
     ok('Y26 settings_schema: solo cambian los textos de la cobertura de envío (sin ajustes nuevos ni borrados)', sch.length > 0 && sch.every(l => /"(label|info|default)": /.test(l) && !/"id": /.test(l)), sch.slice(0, 4));
-    ok('Y27 config/settings_data.json sin cambios (casillas de envío y demás ajustes del propietario intactos)', execSync(`git -C ${THEME} diff --name-only ${BASE} -- config/settings_data.json`).toString().trim() === '');
+    ok('Y27 config/settings_data.json sin cambios (casillas de envío y demás ajustes del propietario intactos)', execSync(`git -C ${THEME} diff --name-only ${BASE} ${ROUND_HEAD} -- config/settings_data.json`).toString().trim() === '');
   }
 };

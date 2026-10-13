@@ -593,6 +593,33 @@ def check_free_shipping(theme):
                 break
 
 
+def check_trust_unique(theme):
+    """D43: la zona de confianza son dos bloques `garelon_trust` (garantías antes de «Elige tu oferta»;
+    frase debajo del botón). En cada sección, las garantías y la frase se pintan como mucho una vez:
+    nunca duplicadas en dos zonas de la misma compra."""
+    for d in ('templates', 'sections'):
+        for fn in sorted(os.listdir(os.path.join(theme.root, d))):
+            if not fn.endswith('.json'):
+                continue
+            rel = f'{d}/{fn}'
+            data = load_json(theme.root, rel) or {}
+            for sid, sec in (data.get('sections') or {}).items():
+                sc = theme.sections.get(sec.get('type')) or {}
+                bdef = next((b for b in sc.get('blocks', []) if b.get('type') == 'garelon_trust'), None)
+                if not bdef:
+                    continue
+                defaults = {s['id']: s.get('default') for s in bdef.get('settings', []) if s.get('id')}
+                blocks = [b for k, b in (sec.get('blocks') or {}).items()
+                          if b.get('type') == 'garelon_trust' and not b.get('disabled') and k in (sec.get('block_order') or [])]
+                val = lambda b, k: (b.get('settings') or {}).get(k, defaults.get(k)) or ''
+                with_chips = [b for b in blocks if any(str(val(b, f'chip_{i}_text')).strip() for i in range(1, 5))]
+                with_phrase = [b for b in blocks if str(val(b, 'phrase')).strip()]
+                if len(with_chips) > 1:
+                    err(f'{rel} › {sid}', 'garantías de confianza duplicadas en dos bloques (D43: una sola franja, antes de «Elige tu oferta»)')
+                if len(with_phrase) > 1:
+                    err(f'{rel} › {sid}', 'frase de confianza duplicada en dos bloques (D43: una sola vez, debajo del botón)')
+
+
 # ---------------------------------------------------------------- España, único mercado (D38)
 SPAIN_CLAIM_RE = re.compile(r'toda\s+Espa[ñn]a|toda\s+la\s+pen[ií]nsula|\b\d{1,2}\s*(?:[–-]|a)\s*\d{1,2}\s+d[ií]as(?:\s+(?:naturales|h[aá]biles|laborables))?', re.I)
 
@@ -853,6 +880,7 @@ def main(argv):
     check_locales(theme)
     check_free_shipping(theme)
     check_spain_shipping(theme)
+    check_trust_unique(theme)
     check_legal_claims(theme)
     check_contact(theme)
 

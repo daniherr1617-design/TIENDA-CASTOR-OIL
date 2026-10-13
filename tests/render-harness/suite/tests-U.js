@@ -160,7 +160,7 @@ module.exports = async function (browser) {
       ok(`U31 ${n} ${w}px: etiqueta de campaña en una sola línea`, m.promo <= 34, m.promo);
       if (w < 750) ok(`U32 ${n} ${w}px: contador «n / 4» en cada foto (D41) y ninguno en la infografía`, m.cnt.length === 4 && m.cnt.every((x, i) => x === (x.startsWith('i:') ? 'i:-' : `${i + 1} / 4`)) && m.cnt.includes('i:-'), m.cnt);
       else ok(`U32 ${n} ${w}px: contador oculto en la rejilla de escritorio`, m.cnt.every(x => /^(i:)?(oculto|-)$/.test(x)), m.cnt);
-      if (n === 'ficha' && w < 750) ok(`U33 ficha ${w}px: «Elige tu oferta» sigue en la primera pantalla (< 844 px) con la barra en dos líneas`, m.legend < 844, m.legend);
+      if (n === 'ficha' && w < 750) ok(`U33 ficha ${w}px: «Elige tu oferta» empieza al pie de la primera pantalla (< 870 px) con la barra en dos líneas y las garantías encima (D43; antes < 844 px)`, m.legend < 870, m.legend);
       await page.close();
     }
   }

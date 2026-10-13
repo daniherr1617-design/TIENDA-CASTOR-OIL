@@ -583,6 +583,37 @@ body {
   }
 }
 
+/* D43: garantías solas (sin frase) antes de «Elige tu oferta»: franja compacta con las 3 en una fila,
+   icono encima y texto centrado, mismo borde, fondo e icono dorado. Con 2 o 4 garantías, de dos en dos. */
+.g-trust--n3 .g-trust__grid {
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 0.6rem;
+}
+.g-trust--n3 .g-trust__chip,
+.g-trust--n3 .g-trust__chip:last-child:nth-child(odd) {
+  grid-column: auto;
+  flex-direction: column;
+  justify-content: flex-start;
+  gap: 0.3rem;
+  min-height: 0;
+  padding: 0.7rem 0.4rem;
+  font-size: 1.2rem;
+  line-height: 1.25;
+  text-align: center;
+}
+.g-trust--n3 .g-trust__chip .g-icon {
+  width: 2rem;
+  height: 2rem;
+}
+.g-trust--n1 .g-trust__grid {
+  grid-template-columns: minmax(0, 1fr);
+}
+@media screen and (min-width: 1200px) {
+  .g-trust--n3 .g-trust__chip {
+    font-size: 1.3rem;
+  }
+}
+
 /* ---------- «Elige tu oferta»: tarjetas sobre los radios de Dawn ---------- */
 .g-offer {
   margin: 2rem 0 0.8rem;

@@ -68,7 +68,7 @@ module.exports = async function (browser) {
     r = await get(u);
     const chips = [...r.html.matchAll(/<li class="g-trust__chip">([\s\S]*?)<span>([^<]+)<\/span>/g)];
     ok(`H9 ${u}: las 3 garantías definitivas, en orden, con sus iconos (envío, candado, devolución), sin «Envíos internacionales»`,
-      JSON.stringify(chips.map(c => c[2])) === JSON.stringify(want) && /M3 7h11v9H3z/.test(chips[0][1]) && /M8\.5 10\.5V7\.5/.test(chips[1][1]) && /M9 7L5 11l4 4/.test(chips[2][1]) &&
+      JSON.stringify(chips.map(c => c[2].replace(/&nbsp;/g, ' '))) === JSON.stringify(want) && /M3 7h11v9H3z/.test(chips[0][1]) && /M8\.5 10\.5V7\.5/.test(chips[1][1]) && /M9 7L5 11l4 4/.test(chips[2][1]) &&
       count(r.html, /<li class="g-trust__chip"><svg\s+class="g-icon"[^>]*stroke-width="1\.3"/g) === 3 && !/Envíos internacionales/.test(visible(r.html)), chips.map(c => c[2]));
     ok(`H10 ${u}: sin los textos antiguos («Compra protegida», «Envíos a España», «Envío con seguimiento»)`, !OLDCHIPS.test(visible(r.html)));
   }
