@@ -1,26 +1,26 @@
 # Estado actual de la tienda · SNAPSHOT
 
 <!-- snapshot-header:start -->
-> **SNAPSHOT, no verdad eterna.** Generado el 2026-10-12 desde `daniherr1617-design/tienda-castor-oil`, rama `claude/garelon-espana-cro`, **commit `6c021f3`** (último commit que cambió el tema).
+> **SNAPSHOT, no verdad eterna.** Generado el 2026-10-13 desde `daniherr1617-design/tienda-castor-oil`, rama `claude/garelon-espana-cro`, **commit `98dfa30`** (último commit que cambió el tema).
 <!-- snapshot-header:end -->
 >
 > Antes de una tarea importante, revalida lo relevante: `python3 .claude/skills/garelon-ecommerce-operator/scripts/garelon_store_snapshot.py`. Si el repo y este archivo difieren, **manda el repo** y este archivo se regenera (DOCUMENT_SYNC). `tools/garelon_docs_check.py` avisa si el tema ha cambiado después de este commit.
 
-<!-- snapshot-commit: 6c021f3 -->
+<!-- snapshot-commit: 98dfa30 -->
 
 ## 1. Datos leídos del repositorio (generados por el script)
 
 <!-- snapshot:start -->
-- **Generado:** 2026-10-12 10:05 UTC
-- **Repositorio:** `daniherr1617-design/tienda-castor-oil` · **rama:** `claude/garelon-espana-cro` · **HEAD:** `6c021f3` (2026-10-12) «Ofertas finales: «Compra 2 y llévate 1 de regalo» (3) y «Compra 3 y llévate 2 de regalo» (5)»
-- **Último commit que cambió el tema:** `6c021f3` (2026-10-12)
+- **Generado:** 2026-10-13 10:33 UTC
+- **Repositorio:** `daniherr1617-design/tienda-castor-oil` · **rama:** `claude/garelon-espana-cro` · **HEAD:** `98dfa30` (2026-10-13) «Confianza: valoración «4,9/5 · N opiniones» junto al título y nota de origen sin tecnicismos»
+- **Último commit que cambió el tema:** `98dfa30` (2026-10-13)
 - **Carpetas del tema sin cambios pendientes:** sí
 - **Tema:** GARELON (Dawn) 16.0.0 · base Dawn en el commit `b2adb07`
-- **Conteos (carpetas del tema):** assets 214, config 2, layout 2, locales 51, sections 55, snippets 53, templates 13
-- **Frente a Dawn:** 45 archivos añadidos, 20 modificados (sin contar locales), 31 locales modificados, 0 borrados
+- **Conteos (carpetas del tema):** assets 214, config 2, layout 2, locales 51, sections 55, snippets 54, templates 13
+- **Frente a Dawn:** 46 archivos añadidos, 20 modificados (sin contar locales), 31 locales modificados, 0 borrados
   - Modificados: `config/settings_data.json`, `config/settings_schema.json`, `layout/theme.liquid`, `sections/contact-form.liquid`, `sections/featured-product.liquid`, `sections/footer-group.json`, `sections/footer.liquid`, `sections/header-group.json`, `sections/header.liquid`, `sections/main-404.liquid`, `sections/main-cart-footer.liquid`, `sections/main-cart-items.liquid`, `sections/main-product.liquid`, `sections/rich-text.liquid`, `snippets/cart-drawer.liquid`, `snippets/header-drawer.liquid`, `templates/index.json`, `templates/page.contact.json`, `templates/page.json`, `templates/product.json`
 - **Secciones GARELON:** `garelon-announcement.liquid`, `garelon-details.liquid`, `garelon-faq.liquid`, `garelon-hero.liquid`, `garelon-image-text.liquid`, `garelon-reviews.liquid`, `garelon-sticky-cta.liquid`
-- **Snippets GARELON:** `garelon-cart-option.liquid`, `garelon-contact-rte.liquid`, `garelon-contact-url.liquid`, `garelon-gallery.liquid`, `garelon-icon.liquid`, `garelon-image.liquid`, `garelon-legal-links.liquid`, `garelon-logo.liquid`, `garelon-nav-items.liquid`, `garelon-offer.liquid`, `garelon-pack-prices.liquid`, `garelon-pack-units.liquid`, `garelon-shipping-note.liquid`, `garelon-trust.liquid`
+- **Snippets GARELON:** `garelon-cart-option.liquid`, `garelon-contact-rte.liquid`, `garelon-contact-url.liquid`, `garelon-gallery.liquid`, `garelon-icon.liquid`, `garelon-image.liquid`, `garelon-legal-links.liquid`, `garelon-logo.liquid`, `garelon-nav-items.liquid`, `garelon-offer.liquid`, `garelon-pack-prices.liquid`, `garelon-pack-units.liquid`, `garelon-rating.liquid`, `garelon-shipping-note.liquid`, `garelon-trust.liquid`
 - **Home (`templates/index.json`):** `portada` (garelon-hero) → `compra` (featured-product) → `opiniones` (garelon-reviews) → `tranquilidad` (rich-text) → `significado` (garelon-image-text) → `detalles` (garelon-details) → `regalo` (garelon-details) → `preguntas` (garelon-faq) → `cierre` (rich-text)
 - **Ficha (`templates/product.json`):** `main` (main-product) → `opiniones` (garelon-reviews) → `tranquilidad` (rich-text) → `detalles` (garelon-details) → `preguntas` (garelon-faq) → `compra_fija` (garelon-sticky-cta)
 - **Bloques de compra (home):** title, rating, price, garelon_offer, buy_buttons, garelon_trust
@@ -31,7 +31,7 @@
 - **Envío gratis (ajuste global `garelon_free_shipping`, Configuración del tema › Carrito):** True (settings_data) · nota común `snippets/garelon-shipping-note.liquid` usada por `sections/featured-product.liquid`, `sections/main-cart-footer.liquid`, `sections/main-product.liquid`, `snippets/cart-drawer.liquid`, `snippets/garelon-offer.liquid`
 - **Confianza:** frase «Un símbolo de tu fe, contigo cada día.» · chips: «Envío gratis + seguimiento» (envio) · «Pago seguro» (candado) · «14 días para cambiar de opinión» (devolucion)
 - **Sello GARELON (rich-text):** `index:tranquilidad`=escudo, `product:tranquilidad`=escudo
-- **Opiniones:** «Opiniones sobre esta pulsera», ocultar sin opiniones: True, Review Widget de Judge.me versionado (D30): home [('review_widget', 'real_data')] · ficha [('review_widget', 'real_data')] [(bloque, review_data)], App Embeds en settings_data: [('judgeme_core', True)] [(bloque, activo)], nota: Incluye opiniones de compradores del mismo modelo, importadas mediante Judge.me.
+- **Opiniones:** «Opiniones sobre esta pulsera», ocultar sin opiniones: True, Review Widget de Judge.me versionado (D30): home [('review_widget', 'real_data')] · ficha [('review_widget', 'real_data')] [(bloque, review_data)], App Embeds en settings_data: [('judgeme_core', True)] [(bloque, activo)], nota: Incluye opiniones de compradores de este mismo modelo en otra tienda online; no corresponden a pedidos de GARELON.
 - **Compra fija (ficha):** sí
 - **Navegación:** Inicio (`/`) · Detalles (`/#detalles`) · Preguntas frecuentes (`/#preguntas-frecuentes`) · Contacto (`/pages/contacto`) · búsqueda en cabecera: False
 - **Barra superior:** GARELON Barra de envío (envío y plazo solo con confirmación; texto alternativo: «Especial octubre · Mes del Rosario»)
@@ -42,7 +42,7 @@
 - **Esquemas de color:** scheme-1 fondo #FFFFFF / texto #2A2622 / botón #86672F, scheme-2 fondo #FAF7F2 / texto #2A2622 / botón #86672F, scheme-3 fondo #F3ECDF / texto #2A2622 / botón #2A2622, scheme-4 fondo #FFFFFF / texto #2A2622 / botón #86672F, scheme-5 fondo #F7F1E6 / texto #2A2622 / botón #86672F
 - **Locales con textos `garelon.*`:** 31
 - **Herramientas en `tools/`:** `build_zip.py`, `garelon_check.py`, `garelon_docs_check.py`, `garelon_infografia.py`, `test_garelon_check.py`, `test_garelon_docs_check.py`, `test_garelon_infografia.py`
-- **Batería de render versionada:** `tests/render-harness` · fases A-V · dependencias fijadas: `@fontsource/inter` 5.3.0, `@fontsource/lora` 5.3.0, `@shopify/theme-check-node` 3.30.1, `liquidjs` 10.29.0, `playwright-core` 1.63.0 · con `package-lock.json`
+- **Batería de render versionada:** `tests/render-harness` · fases A-W · dependencias fijadas: `@fontsource/inter` 5.3.0, `@fontsource/lora` 5.3.0, `@shopify/theme-check-node` 3.30.1, `liquidjs` 10.29.0, `playwright-core` 1.63.0 · con `package-lock.json`
 <!-- snapshot:end -->
 
 ## 2. Lectura humana del estado
@@ -86,13 +86,13 @@
 
 ## 4. Pruebas: última línea base conocida
 
-Medida el 2026-10-12 en el commit `6c021f3` en este entorno, con `node tests/render-harness/validate.js` (instalación: `cd tests/render-harness && npm ci`; ver `tests/render-harness/README.md`). Línea base antes de la ronda U (`d21bfc5`, árbol limpio): 763/763; antes de la V (`774f5ca`): 862/862.
+Medida el 2026-10-13 en el commit `98dfa30` en este entorno, con `node tests/render-harness/validate.js` (instalación: `cd tests/render-harness && npm ci`; ver `tests/render-harness/README.md`). Línea base antes de la ronda U (`d21bfc5`, árbol limpio): 763/763; antes de la V (`774f5ca`): 862/862; antes de la W (`b02c016`): 891/891.
 - `tools/garelon_check.py`: OK.
 - `tools/test_garelon_check.py`: 43/43 (incluye las mutaciones de Judge.me, de claims legales y píxeles, D32, de contacto, D33, de la barra que promete envío gratis con el ajuste apagado, D37, y de «toda España», plazos escritos a mano y selector de país, D38).
 - `tools/garelon_infografia.py`: OK (familia `producto-infografia-v3`, 4 WebP lossless idénticos a la fuente vigente reducida); `tools/test_garelon_infografia.py`: 28/28 (D34-D36).
 - Theme Check (`@shopify/theme-check-node` 3.30.1): 0 errores y 9 avisos, los 9 `BASELINE DAWN` y 0 `GARELON`.
 - Liquid (Ruby, gema `liquid` 5.14.0) estricto: 0 errores.
-- Batería de render **versionada** (`tests/render-harness`, fases A-V; la V cubre los nombres finales de las ofertas con 1, 3 y 5 unidades en tarjetas, carrito y navegador; la U cubre los packs con regalo, la barra de envío con y sin confirmación, el carrito «Recibes N», la tienda solo para España, la etiqueta de campaña, el contador de la galería y el responsive a 8 anchos): 891/891 en el repo y 835/835 (las 56 restantes necesitan git o `tools/`) en el ZIP descomprimido.
+- Batería de render **versionada** (`tests/render-harness`, fases A-W; la W cubre la valoración «4,6/5 · 12 opiniones» junto al título desde los metafields (redondeo, singular, sin datos, ancla bajo la cabecera, 7 anchos), la nota de origen, la ausencia de menciones al proveedor y los nombres publicados en Shopify («2 pulseras y 1 de regalo», «3 pulseras y 2 de regalo»); la V cubre los nombres finales de las ofertas con 1, 3 y 5 unidades en tarjetas, carrito y navegador; la U cubre los packs con regalo, la barra de envío con y sin confirmación, el carrito «Recibes N», la tienda solo para España, la etiqueta de campaña, el contador de la galería y el responsive a 8 anchos): 935/935 en el repo y 874/874 (las 61 restantes necesitan git o `tools/`) en el ZIP descomprimido.
 - En rondas anteriores, la misma validación pasó también desde un clon limpio del repositorio con `npm ci`.
 
 **Limitaciones:** todo es `PROBADO LOCALMENTE` / `ZIP DESCOMPRIMIDO`. No se han probado aquí la vista previa ni la tienda publicada, el checkout, los pagos, DSers, el widget real de Judge.me (ni que el bloque versionado y el App Embed queden activos al subir el tema) ni los metafields reales.
@@ -105,7 +105,8 @@ Medida el 2026-10-12 en el commit `6c021f3` en este entorno, con `node tests/ren
   3. Cabecera › «GARELON Barra de envío» › «Texto sin envío ni plazo confirmados»: vaciarlo o cambiarlo (solo se ve mientras no haya envío ni plazo confirmados).
   El distintivo «Mejor precio por pulsera» y los textos de los packs **no son de campaña** y se quedan. En el repo, lo mismo: `show_promo: false` en `templates/index.json` (`compra` › `oferta`) y `templates/product.json` (`main` › `oferta`), y `fallback_text` en `sections/header-group.json` (`barra-envio`); las pruebas B7, T3, T5, T10, T12, U3, U4, U7, U19 y U31 describen la campaña y se adaptan en esa ronda.
 - **Pendiente del propietario para D38 y D39** (listas completas en los informes de la ronda, `/mnt/project-files/rondas/cro-espana/`): renombrar «2 pulseras» → «Compra 2 y llévate 1 de regalo» y «3 pulseras» → «Compra 3 y llévate 2 de regalo» (19,99 / 29,99 / 34,99 €), mapear en DSers 3 y 5 unidades, aclarar el regalo en la política de devoluciones, dejar España como único mercado, zona de envío de España con tarifa 0 € y decidir Canarias, Ceuta, Melilla y Baleares, actualizar la política de envíos (plazo y destinos) y, después de subir el tema, marcar las confirmaciones de envío y plazo.
-- El ZIP `GARELON-PULSERA-ROSARIO-CLEAN-v1.17-OFERTAS.zip` (commit `6c021f3`, SHA-256 `38d4ce45…8651`, incluye todo lo anterior) está pendiente de que el propietario lo suba a Shopify. El 2026-10-11 la tienda servía la v1.15. Lo publicado el 2026-10-08 servía la infografía v3, es decir, la v1.14. Qué versión está publicada: `NO DISPONIBLE` desde aquí. Un tema anterior sirve otra infografía: la v1.13 (`producto-infografia-v2-*`) la versión con líneas indicadoras; hasta la v1.12 (`producto-infografia-<ancho>.webp`), la de «Imagen 1.png» (hasta la v1.10), la de calidad 90 (v1.11) o la lossless (v1.12).
+- El ZIP `GARELON-PULSERA-ROSARIO-CLEAN-v1.18-CONFIANZA.zip` (commit `98dfa30`, SHA-256 `64f91b13…d284`, incluye todo lo anterior) está pendiente de que el propietario lo suba a Shopify. El 2026-10-13 la tienda servía la v1.15, que con los nombres ya publicados («2 pulseras y 1 de regalo», «3 pulseras y 2 de regalo») calcula 15,00 € y 11,66 € por pulsera (lee solo el primer número); la rama da 10,00 € y 7,00 €.
+- Opiniones (D40, 2026-10-13): en la ficha real el widget muestra 29 opiniones (26 de 5★ y 3 de 4★) con fotos en algunas, en inglés («Customer Reviews», «Write a review»), sin fechas y con fotos sin texto alternativo; en la home solo el resumen (falta elegir el producto en el bloque). La ficha publicada muestra «4.9 / 5.0» y «(29)» del bloque de Dawn, señal de que Judge.me sincroniza los metafields. Pasos en `/mnt/project-files/rondas/cro-confianza/`.
 - En `main` la nueva infografía se llama `IMAGENN 1.png` y `NUEVA IMAGEN 1.png` está borrada; en esta rama es `NUEVA IMAGEN 1.png` (mismos bytes). Al integrar la rama en `main`, conservar `NUEVA IMAGEN 1.png` de la rama; `IMAGENN 1.png` es un duplicado exacto que se puede borrar.
 - La multimedia del producto en Shopify Admin puede seguir teniendo la foto antigua con la cruz colgante o la infografía antigua: las galerías del tema no la usan (`garelon_media: theme`), pero Shopify sí la usa en el carrito, el checkout, los correos, las vistas previas al compartir (og:image), los datos estructurados, la búsqueda y los feeds o anuncios. Conviene sustituirla allí también. Desde aquí no se puede ver.
 - Contacto (D33): el tema sigue a la página real (`contacto`, `contact` o la política «Información de contacto»). En Shopify Admin: página con handle `contacto` y plantilla `contact`, y un envío de prueba recibido en el email de la tienda. El envío real del correo solo se puede comprobar en Shopify real.

@@ -1,6 +1,6 @@
 # GARELON · MASTER TEMPLATE (arquitectura real del tema)
 
-> **Versión:** 3.11 · **Fecha:** 2026-10-12 · **Repositorio:** `daniherr1617-design/TIENDA-CASTOR-OIL` · **Rama fuente:** `claude/garelon-espana-cro` · **Commit fuente:** `6c021f3`
+> **Versión:** 3.12 · **Fecha:** 2026-10-13 · **Repositorio:** `daniherr1617-design/TIENDA-CASTOR-OIL` · **Rama fuente:** `claude/garelon-espana-cro` · **Commit fuente:** `98dfa30`
 >
 > Snapshot generado desde `e27ae75`. Ante discrepancias futuras manda el repositorio actual: revisa el código antes de actuar sobre lo que dice este documento.
 
@@ -45,6 +45,7 @@ Este documento describe **cómo está construido el tema hoy** y **qué hay que 
 |---|---|
 | `sections/garelon-hero.liquid` | Portada: antetítulo, H1, texto, CTA principal (vacío = `/#comprar`), 2.º botón opcional, precio opcional (`show_price`), imagen LCP |
 | `sections/garelon-reviews.liquid` | Opiniones reales: bloque de app (`@app`; el Review Widget de Judge.me viene versionado en home y ficha) y/o resumen con `reviews.rating` / `reviews.rating_count`. Sin datos, invisible para el cliente; aviso solo en el editor |
+| `snippets/garelon-rating.liquid` | Valoración junto al título (bloque «Valoración» de Dawn en ficha y home, D40): «★★★★★ 4,9/5 · 29 opiniones» desde `reviews.rating` / `reviews.rating_count`, enlace a `#opiniones`. Sin valoración o con 0 opiniones, nada. |
 | `sections/garelon-image-text.liquid` | Imagen + texto (significado, historia, lifestyle) |
 | `sections/garelon-details.liquid` | Lista de hechos verificables con icono e imagen (`layout: list`) o cuadrícula de tarjetas informativas (`layout: chips`) |
 | `sections/garelon-faq.liquid` | Preguntas frecuentes con `details`/`summary` |

@@ -1,6 +1,6 @@
 # GARELON · PROMPT MAESTRO DEL PROYECTO (constitución operativa)
 
-> **Versión:** 3.12 · **Fecha:** 2026-10-12 · **Repositorio:** `daniherr1617-design/TIENDA-CASTOR-OIL` · **Rama fuente:** `claude/garelon-espana-cro` · **Commit fuente:** `6c021f3`
+> **Versión:** 3.13 · **Fecha:** 2026-10-13 · **Repositorio:** `daniherr1617-design/TIENDA-CASTOR-OIL` · **Rama fuente:** `claude/garelon-espana-cro` · **Commit fuente:** `98dfa30`
 >
 > Snapshot generado desde `e27ae75`. Ante discrepancias futuras manda el repositorio actual y, por encima de él, el producto real y las decisiones recientes del propietario (§3).
 
@@ -290,8 +290,10 @@ Si cambian en Shopify o en las políticas, mandan Shopify y las políticas, y el
 - Sistema: **Judge.me**. Solo opiniones reales (R14).
 - Se pueden **importar opiniones de AliExpress** si corresponden al **mismo modelo**, se revisan una a una, no describen otro producto, no introducen claims falsos (14K, hipoalergénico, etc.) y no se editan. Se importan también las críticas, sin filtrar solo las de 5 estrellas.
 - Título aprobado actual: **«Opiniones sobre esta pulsera»** (en un producto nuevo: «Opiniones sobre este/esta <producto>»).
-- Nota transparente cuando hay importadas: «Incluye opiniones de compradores del mismo modelo, importadas mediante Judge.me.»
+- Nota transparente cuando hay importadas: «Incluye opiniones de compradores de este mismo modelo en otra tienda online; no corresponden a pedidos de GARELON.»
 - Nunca se inventan «4,9/5», estrellas, número de compradores ni de opiniones. Sin opiniones visibles, la sección no se muestra al cliente.
+- **Valoración junto al título (D40):** el bloque «Valoración» de la ficha y de la compra de la home pinta «★★★★★ 4,9/5 · 29 opiniones» con `snippets/garelon-rating.liquid`, leyendo `reviews.rating` y `reviews.rating_count` (los sincroniza Judge.me), y enlaza a `#opiniones`. Sin valoración o con 0 opiniones no se pinta. El tema no escribe ninguna cifra.
+- Las importadas **no se presentan como compras verificadas en GARELON**; ningún texto visible menciona proveedores, AliExpress, DSers ni la app (la nota se dirige al cliente, sin tecnicismos).
 - **Widget versionado (D30):** el Review Widget oficial de Judge.me viene en el tema, dentro de «GARELON Opiniones» de la home y de la ficha (encabezado GARELON → widget → nota de origen), y el App Embed Judge.me Core en `settings_data.json`.
   - Con el widget, el resumen GARELON se oculta (`summary_with_app` = falso): estrellas, recuento y reseñas los pone Judge.me.
   - En la ficha, el producto lo pone la página. En la home, el producto se elige en el bloque («Select product») mientras su referencia no esté verificada y versionada.

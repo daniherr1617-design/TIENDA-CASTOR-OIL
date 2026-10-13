@@ -9,9 +9,10 @@
 - **Widget versionado (D30, única excepción a R17):** el Review Widget oficial de Judge.me (`shopify://apps/judge-me-reviews/blocks/review_widget/61ccd3b1-a9f2-4160-9fe9-4fec8413e5d8`) viene en el tema dentro de «GARELON Opiniones» de `templates/index.json` y `templates/product.json`, con `review_data` = `real_data` (nunca la muestra de Judge.me). El App Embed Judge.me Core (`judgeme_core`) va en `config/settings_data.json`. `garelon_check` rechaza cualquier otro bloque o embed.
 - **Producto del widget:** en la ficha lo pone la página. En la home no se preselecciona (clave del ajuste y handle sin verificar desde el repo): tras subir el tema, el propietario elige el producto en el bloque («Select product»). Para versionarlo, copiar el JSON real del bloque desde Shopify (Editar código › `templates/index.json`); nunca inventar handle, ID ni clave.
 - Con el widget, el resumen GARELON se oculta (`summary_with_app` = falso) para no duplicar la valoración. Sin la app, el resumen de los metafields hace de respaldo.
+- **Valoración junto al título (D40):** `snippets/garelon-rating.liquid` en el bloque «Valoración» de Dawn: «★★★★★ 4,9/5 · 29 opiniones» desde los mismos metafields, enlace a `#opiniones`; nada sin valoración o con 0 opiniones. No añadir el bloque «Star rating» de Judge.me ni una galería aparte (duplicarían carga y contenido).
 - El aspecto del widget (Carousel, colores, galería, nombres abreviados…) se configura en Judge.me; el tema no lo duplica en CSS.
 - Si Judge.me se sustituye o se desinstala: retirar el bloque de las dos plantillas y el App Embed. Al migrar de producto: revisar el producto del widget de la home.
-- Título aprobado: «Opiniones sobre esta <producto>». Nota cuando hay importadas: «Incluye opiniones de compradores del mismo modelo, importadas mediante Judge.me.»
+- Título aprobado: «Opiniones sobre esta <producto>». Nota cuando hay importadas: «Incluye opiniones de compradores de este mismo modelo en otra tienda online; no corresponden a pedidos de GARELON.»
 
 ### Importar opiniones de AliExpress (lo hace el propietario)
 
