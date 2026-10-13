@@ -1,6 +1,6 @@
 # GARELON · MASTER TEMPLATE (arquitectura real del tema)
 
-> **Versión:** 3.14 · **Fecha:** 2026-10-13 · **Repositorio:** `daniherr1617-design/TIENDA-CASTOR-OIL` · **Rama fuente:** `claude/garelon-espana-cro` · **Commit fuente:** `fc79181`
+> **Versión:** 3.15 · **Fecha:** 2026-10-13 · **Repositorio:** `daniherr1617-design/TIENDA-CASTOR-OIL` · **Rama fuente:** `claude/garelon-espana-cro` · **Commit fuente:** `4f37217`
 >
 > Snapshot generado desde `e27ae75`. Ante discrepancias futuras manda el repositorio actual: revisa el código antes de actuar sobre lo que dice este documento.
 
@@ -53,7 +53,7 @@ Este documento describe **cómo está construido el tema hoy** y **qué hay que 
 | `snippets/garelon-offer.liquid` | Tarjetas «Elige tu oferta» sobre los radios del `<variant-selects>` de Dawn y, debajo, la nota de impuestos y envío |
 | `snippets/garelon-cart-option.liquid` | Línea de opción del carrito (cajón y `/cart`): «Tu pack incluye N …» desde el valor real de la variante (§3.17) |
 | `snippets/garelon-shipping-note.liquid` | Nota de impuestos y envío **común** a packs, ficha, cajón del carrito y `/cart` (§3.17). Única que pinta «Envío gratis.» |
-| `snippets/garelon-trust.liquid` | Frase destacada + hasta 4 garantías con icono |
+| `snippets/garelon-trust.liquid` | Frase destacada y/o hasta 4 garantías con icono (desde D43, dos bloques: garantías antes de la oferta, frase debajo del botón) |
 | `snippets/garelon-pack-prices.liquid` | Lista de precios por pack (bloque `garelon_packs`, disponible pero sin usar en las plantillas) |
 | `snippets/garelon-gallery.liquid` | Galería sin JS de las imágenes del tema: scroll-snap en móvil, rejilla desde 750 px |
 | `snippets/garelon-image.liquid` | Imagen del editor o del tema por clave, con `srcset`, `sizes`, `width`/`height` y `loading` |
@@ -110,7 +110,7 @@ Las dos confirmaciones están **desmarcadas** por defecto y no van en `settings_
 - `show_price` existe en el schema (por defecto `true`), pero **la home lo tiene desactivado por decisión del propietario**: el precio se descubre en los packs.
 
 ### 3.4 Bloque de compra · `featured-product` (home) / `main-product` (ficha)
-Formulario oficial de Dawn. Orden de bloques (desde D37): título, valoración, precio, oferta, botones de compra (con pago dinámico) y **confianza debajo del botón**, para que «Elige tu oferta» aparezca antes en móvil. En la ficha también: antetítulo y resumen (antes de la oferta), descripción y pestaña «Envíos y devoluciones».
+Formulario oficial de Dawn. Orden de bloques (D37, D43): título, valoración, precio, **garantías** (bloque `confianza`, sin frase), oferta, botones de compra (con pago dinámico) y **frase** debajo del botón (bloque `frase`, sin garantías). D37 había bajado toda la confianza debajo del botón para subir «Elige tu oferta»; D43 devuelve las garantías arriba a petición del propietario. En la ficha también: antetítulo y resumen (antes de la oferta), descripción y pestaña «Envíos y devoluciones».
 - `garelon_media`: `theme` (imágenes fieles del tema, valor de las plantillas) o `shopify` (multimedia del producto, default del schema). Se pasa a `shopify` solo cuando la multimedia del producto esté revisada.
 - `garelon_gallery_keys`: orden de la galería del tema (claves de §4).
 - `garelon_anchor` (solo home): ancla `comprar`, destino de todos los CTA.
@@ -119,7 +119,7 @@ Formulario oficial de Dawn. Orden de bloques (desde D37): título, valoración, 
 Sin JS. En móvil, contador decorativo «1 / 5» en cada foto (D38, `aria-hidden`; la infografía no lo lleva para no tapar su texto; oculto desde 750 px) y scroll-snap con **todas las imágenes a todo el ancho** (D37: con fotos al 86 % y la infografía al 100 %, la pista tomaba la altura de la infografía y dejaba un hueco bajo la primera foto). La infografía se ve entera, sin recorte. Desde 750 px, rejilla de 2 columnas **sin huecos** (D42): la primera foto a todo el ancho, las demás fotos de dos en dos y la infografía al final a todo el ancho (`order`), con «Ampliar» debajo sin descuadrar ninguna fila; si quedan fotos impares, la última también va a todo el ancho (`g-gallery__slide--full`, calculado en el snippet). Solo la primera imagen de la ficha es `eager`. La infografía enlaza a su versión grande para ampliarla. Los textos alternativos salen de `garelon.gallery.alt_<clave>`.
 
 ### 3.6 Confianza · bloque `garelon_trust` (`snippets/garelon-trust.liquid`)
-Frase destacada (una vez por página, debajo del botón de compra desde D37) + hasta 4 garantías con icono, en 2 columnas; con un número impar, la última ocupa la fila entera. Cada garantía solo aparece si su texto no está vacío (hoy 3: la 4.ª, «Envíos internacionales», está vacía por D32 y sin default en el schema). Los textos deben ser ciertos en Shopify (envío gratis, internacional…). Con el ajuste «Envío gratis» desactivado, `tools/garelon_check.py` da error si una garantía sigue diciendo «Envío gratis».
+Frase destacada (una vez por página, debajo del botón de compra desde D37) y hasta 4 garantías con icono. Desde D43 son dos bloques (límite 2; `garelon_check` impide duplicar garantías o frase): el de las garantías, sin frase, va antes de «Elige tu oferta» como franja compacta (`g-trust--chips`): con 3 garantías, una fila de 3 con el icono encima; con 2 o 4, de dos en dos. Un bloque con frase y garantías (como antes de D43) sigue pintando la frase y las garantías en 2 columnas, con la última a lo ancho si son impares. El «+» de «Envío gratis + seguimiento» va pegado a «gratis». Cada garantía solo aparece si su texto no está vacío (hoy 3: la 4.ª, «Envíos internacionales», está vacía por D32 y sin default en el schema). Los textos deben ser ciertos en Shopify (envío gratis, internacional…). Con el ajuste «Envío gratis» desactivado, `tools/garelon_check.py` da error si una garantía sigue diciendo «Envío gratis».
 
 ### 3.7 Elige tu oferta · bloque `garelon_offer` (`snippets/garelon-offer.liquid`)
 Tarjetas clicables que **son** los radios del `<variant-selects>` de Dawn: Dawn cambia la variante, el `id` del formulario, el precio, la URL (ficha), la disponibilidad y el botón. Teclado: Tab + flechas. El grupo se anuncia con el título del bloque.

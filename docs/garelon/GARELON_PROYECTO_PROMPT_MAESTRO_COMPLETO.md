@@ -1,6 +1,6 @@
 # GARELON · PROMPT MAESTRO DEL PROYECTO (constitución operativa)
 
-> **Versión:** 3.15 · **Fecha:** 2026-10-13 · **Repositorio:** `daniherr1617-design/TIENDA-CASTOR-OIL` · **Rama fuente:** `claude/garelon-espana-cro` · **Commit fuente:** `fc79181`
+> **Versión:** 3.16 · **Fecha:** 2026-10-13 · **Repositorio:** `daniherr1617-design/TIENDA-CASTOR-OIL` · **Rama fuente:** `claude/garelon-espana-cro` · **Commit fuente:** `4f37217`
 >
 > Snapshot generado desde `e27ae75`. Ante discrepancias futuras manda el repositorio actual y, por encima de él, el producto real y las decisiones recientes del propietario (§3).
 

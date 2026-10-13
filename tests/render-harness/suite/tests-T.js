@@ -93,7 +93,7 @@ module.exports = async function (browser) {
       if (w < 750) {
         ok(`T22 ${n} ${w}px: galería móvil sin hueco (cada foto al ancho de la pista; bajo la 1.ª solo queda la línea «Ampliar», ≤ 32 px)`, m.widths.every(x => Math.abs(x - m.track) <= 1) && m.gap <= 32, [m.gap, m.widths, m.track]);
         // Antes de la ronda T (aa9c01a, mode=real, 390×844): ficha «Elige tu oferta» a 868 px y botón a 1308 px.
-        // Ronda Z (D43): las 3 garantías vuelven antes de «Elige tu oferta» por decisión del propietario (+~85 px en móvil).
+        // Ronda Z (D43): las 3 garantías vuelven antes de «Elige tu oferta» por decisión del propietario (+99 px en móvil: ficha a 390×844, de 717 a 816 px).
         if (n === 'ficha') ok(`T23 ficha ${w}px: «Elige tu oferta» sigue empezando en la primera pantalla (< 844 px) con las garantías encima (D43; en T, < 760 px y la 1.ª tarjeta asomando)`, m.legend < 844, m);
         // Ronda U (D38): la etiqueta de campaña va encima de «Elige tu oferta» (+~23 px) en vez de entre las tarjetas y el botón.
         else ok(`T23 home ${w}px: «Elige tu oferta» a ≤ 230 px del título con las garantías encima (D43; antes ~120 px, antes de T ~265 px)`, m.legend - m.title <= 230, m);

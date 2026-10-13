@@ -1,19 +1,19 @@
 # Estado actual de la tienda · SNAPSHOT
 
 <!-- snapshot-header:start -->
-> **SNAPSHOT, no verdad eterna.** Generado el 2026-10-13 desde `daniherr1617-design/tienda-castor-oil`, rama `claude/garelon-espana-cro`, **commit `fc79181`** (último commit que cambió el tema).
+> **SNAPSHOT, no verdad eterna.** Generado el 2026-10-13 desde `daniherr1617-design/tienda-castor-oil`, rama `claude/garelon-espana-cro`, **commit `4f37217`** (último commit que cambió el tema).
 <!-- snapshot-header:end -->
 >
 > Antes de una tarea importante, revalida lo relevante: `python3 .claude/skills/garelon-ecommerce-operator/scripts/garelon_store_snapshot.py`. Si el repo y este archivo difieren, **manda el repo** y este archivo se regenera (DOCUMENT_SYNC). `tools/garelon_docs_check.py` avisa si el tema ha cambiado después de este commit.
 
-<!-- snapshot-commit: fc79181 -->
+<!-- snapshot-commit: 4f37217 -->
 
 ## 1. Datos leídos del repositorio (generados por el script)
 
 <!-- snapshot:start -->
-- **Generado:** 2026-10-13 15:39 UTC
-- **Repositorio:** `daniherr1617-design/tienda-castor-oil` · **rama:** `claude/garelon-espana-cro` · **HEAD:** `fc79181` (2026-10-13) «GARELON: envío a toda la península, galería sin huecos y FAQ más natural (D42)»
-- **Último commit que cambió el tema:** `fc79181` (2026-10-13)
+- **Generado:** 2026-10-13 17:08 UTC
+- **Repositorio:** `daniherr1617-design/tienda-castor-oil` · **rama:** `claude/garelon-espana-cro` · **HEAD:** `4f37217` (2026-10-13) «GARELON: garantías de confianza antes de «Elige tu oferta» (D43)»
+- **Último commit que cambió el tema:** `4f37217` (2026-10-13)
 - **Carpetas del tema sin cambios pendientes:** sí
 - **Tema:** GARELON (Dawn) 16.0.0 · base Dawn en el commit `b2adb07`
 - **Conteos (carpetas del tema):** assets 212, config 2, layout 2, locales 51, sections 55, snippets 54, templates 13
@@ -23,13 +23,13 @@
 - **Snippets GARELON:** `garelon-cart-option.liquid`, `garelon-contact-rte.liquid`, `garelon-contact-url.liquid`, `garelon-gallery.liquid`, `garelon-icon.liquid`, `garelon-image.liquid`, `garelon-legal-links.liquid`, `garelon-logo.liquid`, `garelon-nav-items.liquid`, `garelon-offer.liquid`, `garelon-pack-prices.liquid`, `garelon-pack-units.liquid`, `garelon-rating.liquid`, `garelon-shipping-note.liquid`, `garelon-trust.liquid`
 - **Home (`templates/index.json`):** `portada` (garelon-hero) → `compra` (featured-product) → `opiniones` (garelon-reviews) → `tranquilidad` (rich-text) → `significado` (garelon-image-text) → `detalles` (garelon-details) → `regalo` (garelon-details) → `preguntas` (garelon-faq) → `cierre` (rich-text)
 - **Ficha (`templates/product.json`):** `main` (main-product) → `opiniones` (garelon-reviews) → `tranquilidad` (rich-text) → `detalles` (garelon-details) → `preguntas` (garelon-faq) → `compra_fija` (garelon-sticky-cta)
-- **Bloques de compra (home):** title, rating, price, garelon_offer, buy_buttons, garelon_trust
-- **Bloques de compra (ficha):** text, title, rating, price, text, garelon_offer, buy_buttons, garelon_trust, description, collapsible_tab
+- **Bloques de compra (home):** title, rating, price, garelon_trust, garelon_offer, buy_buttons, garelon_trust
+- **Bloques de compra (ficha):** text, title, rating, price, text, garelon_trust, garelon_offer, buy_buttons, garelon_trust, description, collapsible_tab
 - **Galería home:** `completa,infografia,principal,oracion` (origen: theme) · **ficha:** `completa,principal,infografia,oracion` (origen: theme)
 - **Portada:** imagen `principal`, H1 «Pulsera Rosario Virgen María», precio visible: False, CTA «Elegir mi pulsera» → `/#comprar (vacío = compra de la home)`, 2.º botón: ninguno
 - **Packs («Elige tu oferta»):** opción `Pack`, unidad «pulsera», textos «Ideal para ti» / «Perfecto para regalar» / «Para ti y para compartir», distintivo pack 3 «Mejor precio por pulsera» (default del schema: «Recomendado»), promo: True, precio por unidad: True
 - **Envío gratis (ajuste global `garelon_free_shipping`, Configuración del tema › Carrito):** True (settings_data) · nota común `snippets/garelon-shipping-note.liquid` usada por `sections/featured-product.liquid`, `sections/main-cart-footer.liquid`, `sections/main-product.liquid`, `snippets/cart-drawer.liquid`, `snippets/garelon-offer.liquid`
-- **Confianza:** frase «Un símbolo de tu fe, contigo cada día.» · chips: «Envío gratis + seguimiento» (envio) · «Pago seguro» (candado) · «14 días para cambiar de opinión» (devolucion)
+- **Confianza:** frase «» · chips: «Envío gratis + seguimiento» (envio) · «Pago seguro» (candado) · «14 días para cambiar de opinión» (devolucion)
 - **Sello GARELON (rich-text):** `index:tranquilidad`=escudo, `product:tranquilidad`=escudo
 - **Opiniones:** «Opiniones sobre esta pulsera», ocultar sin opiniones: True, Review Widget de Judge.me versionado (D30): home [('review_widget', 'real_data')] · ficha [('review_widget', 'real_data')] [(bloque, review_data)], App Embeds en settings_data: [('judgeme_core', True)] [(bloque, activo)], nota: Estas opiniones proceden de compradores de este mismo modelo de pulsera en otra tienda online. Las hemos incorporado a nuestra tienda con su puntuación y, cuando las tienen, sus fotos.No corresponden a pedidos realizados en GARELON, por lo que no son compras verificadas en nuestra tienda.
 - **Compra fija (ficha):** sí
@@ -42,7 +42,7 @@
 - **Esquemas de color:** scheme-1 fondo #FFFFFF / texto #2A2622 / botón #86672F, scheme-2 fondo #FAF7F2 / texto #2A2622 / botón #86672F, scheme-3 fondo #F3ECDF / texto #2A2622 / botón #2A2622, scheme-4 fondo #FFFFFF / texto #2A2622 / botón #86672F, scheme-5 fondo #F7F1E6 / texto #2A2622 / botón #86672F
 - **Locales con textos `garelon.*`:** 31
 - **Herramientas en `tools/`:** `build_zip.py`, `garelon_check.py`, `garelon_docs_check.py`, `garelon_infografia.py`, `test_garelon_check.py`, `test_garelon_docs_check.py`, `test_garelon_infografia.py`
-- **Batería de render versionada:** `tests/render-harness` · fases A-Y · dependencias fijadas: `@fontsource/inter` 5.3.0, `@fontsource/lora` 5.3.0, `@shopify/theme-check-node` 3.30.1, `liquidjs` 10.29.0, `playwright-core` 1.63.0 · con `package-lock.json`
+- **Batería de render versionada:** `tests/render-harness` · fases A-Z · dependencias fijadas: `@fontsource/inter` 5.3.0, `@fontsource/lora` 5.3.0, `@shopify/theme-check-node` 3.30.1, `liquidjs` 10.29.0, `playwright-core` 1.63.0 · con `package-lock.json`
 <!-- snapshot:end -->
 
 ## 2. Lectura humana del estado
@@ -50,12 +50,12 @@
 - **Base:** Dawn 16.0.0 + capa GARELON (reconstrucción limpia). La tienda **ya funciona en Shopify**, según confirmó el propietario el 2026-10-03. El 404 histórico de la home está resuelto y no es un problema actual.
 - **Producto:** Pulsera Rosario Virgen María Dorada («Un símbolo de tu fe, contigo cada día.»). Datos confirmados y prohibidos: Prompt Maestro §13.
 - **Packs:** opción `Pack` (en Shopify «PACK») = `1 pulsera` · `2 pulseras` · `3 pulseras`, variantes reales con cantidad 1. **Nombres finales D39 (2026-10-12), pendientes de aplicar en Shopify por el propietario:** `1 pulsera` 19,99 € · `Compra 2 y llévate 1 de regalo` 29,99 € (3 pulseras) · `Compra 3 y llévate 2 de regalo` 34,99 € (5 pulseras), con DSers pidiendo 1, 3 y 5 unidades. El tema ya lo soporta (`garelon-pack-units`): «Recibes 3/5 pulseras», 10,00 € y 7,00 € por pulsera y ahorro calculados, textos y distintivo por posición; carrito «Recibes 5 pulseras (Compra 3 y llévate 2 de regalo)». Tarjetas «Elige tu oferta» (D37): **pack de 3 como foco editorial** con el distintivo «Mejor precio por pulsera» (el tema lo oculta si ese pack no tiene el precio por unidad más bajo con los precios de Shopify); textos «Ideal para ti» / «Perfecto para regalar» / «Para ti y para compartir». **No se preselecciona** el pack de 3: la variante inicial es la de Shopify (pack de 1). El default del schema sigue siendo «Recomendado» (desde `974eadd`). Precios, precio por unidad y ahorro salen siempre de Shopify; el propietario confirmó el 2026-10-08 19,99 / 29,99 / 34,99 € sin `compare_at` (dato de Shopify, no escrito en el tema).
-- **Orden de compra (D37):** título → valoración → (resumen en la ficha) → etiqueta de campaña (encima desde D38) → «Elige tu oferta» → Añadir al carrito → frase y garantías. Galería móvil con todas las imágenes a todo el ancho. Galería de escritorio sin huecos (D42): foto completa a todo el ancho, principal y oración de dos en dos, infografía al final a todo el ancho con «Ampliar» debajo. Medido en local (390×844, `mode=real`): «Elige tu oferta» en la ficha de 868 a 708 px y el botón de 1308 a 1220 px; en la home, de 1419 a 1259 px.
+- **Orden de compra (D37, D43):** título → valoración → (resumen en la ficha) → **garantías** (franja de 3, desde D43) → etiqueta de campaña (encima desde D38) → «Elige tu oferta» → Añadir al carrito → frase. Galería móvil con todas las imágenes a todo el ancho. Galería de escritorio sin huecos (D42): foto completa a todo el ancho, principal y oración de dos en dos, infografía al final a todo el ancho con «Ampliar» debajo. Medido en local (390×844, `mode=real`): «Elige tu oferta» en la ficha de 868 a 708 px y el botón de 1308 a 1220 px; en la home, de 1419 a 1259 px (D37). Con las garantías encima (D43), «Elige tu oferta» baja 99 px (ficha, de 717 a 816 px) y sigue empezando en la primera pantalla.
 - **Carrito (D37):** «Tu pack incluye 2/3 pulseras» o «Incluye 1 pulsera», leído del valor de la variante; sin upsells ni casillas.
 - **Portada:** sin precio; CTA «Elegir mi pulsera» → `/#comprar`.
 - **Barra de envío (D38, D42):** «GARELON Barra de envío». «🇪🇸 Envío gratis a toda la península» (desde D42; «toda España» no se usa en ningún texto visible mientras no estén confirmados Baleares, Canarias, Ceuta y Melilla) y «Entrega estimada en 5–10 días naturales» solo con las casillas de confirmación de Configuración del tema › Carrito › «GARELON · Envío a España» (desmarcadas en el repo). Mientras tanto muestra «Especial octubre · Mes del Rosario». El plazo confirmado también sale bajo los packs y en el carrito. La política publicada (10-10-2026) dice 6–10 días para España y no nombra Canarias, Baleares, Ceuta ni Melilla.
 - **Envío:** gratis (confirmado por el propietario). Un único ajuste global, Configuración del tema › Carrito › «Envío gratis» (`garelon_free_shipping`, activo), y una nota común (`snippets/garelon-shipping-note.liquid`): bajo los packs, en la ficha, en el cajón del carrito y en `/cart` dice «Impuestos incluidos. Envío gratis.». Si se desactiva, vuelve la nota original de Dawn y hay que cambiar también la garantía «Envío gratis + seguimiento» (`garelon_check` da error si no). La tarifa real se configura en Shopify Admin › Envío y entrega.
-- **Confianza:** 3 garantías («Envíos internacionales» retirada por D32 hasta verificar destinos en Shopify), debajo del botón desde D37. «Compra con tranquilidad» con sello de escudo con check, decorativo, en la home y en la ficha, **después de las opiniones** (D37), con H2 y 36 px de margen; mismo texto legal.
+- **Confianza:** 3 garantías («Envíos internacionales» retirada por D32 hasta verificar destinos en Shopify), **antes de «Elige tu oferta» desde D43** (debajo del botón entre D37 y D42); la frase «Un símbolo de tu fe…» sigue debajo del botón. «Compra con tranquilidad» con sello de escudo con check, decorativo, en la home y en la ficha, **después de las opiniones** (D37), con H2 y 36 px de margen; mismo texto legal.
 - **Mercados:** desde D38 (2026-10-12) **España es el único mercado** de la tienda: sin selector de país en el pie ni en la cabecera (`garelon_check` lo impide). En Shopify seguían configurados (2026-10-08) España + 11 países de Latinoamérica, y la política de envíos (10-10-2026) los sigue listando: desactivarlos es tarea del propietario en Markets, Envío y entrega y la política. Que cada país vea el producto disponible, en su moneda y con envío es **verificación de Shopify/propietario** (Markets, catálogo, inventario, Envío y entrega): el 2026-10-08, el `.js` público con `?country=MX|CL|CO` devolvía las variantes no disponibles y en EUR (auditoría CRO).
 - **Imágenes:** fuentes aprobadas por el propietario `NUEVA IMAGEN 1.png`, `imagen 2.png`, `NUEVA IMAGEN 3.png` e `imagen 4.png`. El recorte de detalle de `NUEVA IMAGEN 3.png` (medalla en primer plano) se retiró en D41 (2026-10-13) por incoherencias visuales y no se restaura. Las galerías usan las imágenes del tema (`garelon_media: theme`) hasta revisar la multimedia de Shopify.
   - `principal` ← `NUEVA IMAGEN 3.png` (pulsera en la muñeca; desde `3a78374`)
