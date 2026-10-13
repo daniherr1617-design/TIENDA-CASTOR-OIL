@@ -115,7 +115,7 @@ module.exports = async function (browser) {
   await setState('reviews=both'); r = await get('/');
   const rev = (r.html.match(/<section[^>]*class="g-reviews[\s\S]*?<\/section>/) || [''])[0];
   ok('H16 título de opiniones: «Opiniones sobre esta pulsera» (y no el antiguo)', /<h2 class="h1 g-head__title">Opiniones sobre esta pulsera<\/h2>/.test(rev) && !/Lo que opinan quienes ya la llevan/.test(r.html));
-  ok('H17 con opiniones: nota de origen visible tras el widget', /class="g-reviews__app"[\s\S]*<div class="g-reviews__note rte"><p>Incluye opiniones de compradores de este mismo modelo en otra tienda online; no corresponden a pedidos de GARELON\.<\/p><\/div>/.test(rev));
+  ok('H17 con opiniones: nota de origen tras el widget, plegada en «Información sobre las opiniones» (D41)', /class="g-reviews__app"[\s\S]*<details class="g-reviews__info">\s*<summary class="g-reviews__info-link">Información sobre las opiniones<\/summary>\s*<div class="g-reviews__note rte"><p>Estas opiniones proceden de compradores de este mismo modelo de pulsera en otra tienda online\./.test(rev));
   {
     const { page } = await openPage(browser, '/', { width: 390, height: 844 });
     const n = await page.evaluate(() => { const e = document.querySelector('.g-reviews__note'); const s = getComputedStyle(e); return { fs: parseFloat(s.fontSize), op: s.color }; });

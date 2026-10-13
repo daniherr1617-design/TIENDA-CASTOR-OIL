@@ -325,7 +325,7 @@ MUTATIONS = [
     ('«Devolución garantizada» en una respuesta de la FAQ',
      m_text('templates/product.json', 'ejercer tu derecho de desistimiento', 'devolución garantizada')),
     ('ventana de entrega fija («del 9 al 17 de octubre») en la FAQ',
-     m_text('templates/index.json', 'Consulta los plazos', 'Entrega del 9 al 17 de octubre. Consulta los plazos')),
+     m_text('templates/index.json', 'Encontrarás los plazos', 'Entrega del 9 al 17 de octubre. Encontrarás los plazos')),  # texto de la FAQ desde D41
     ('píxel de TikTok inyectado a mano en theme.liquid', m_pixel),
     ('plantilla de contacto sin el formulario nativo',
      m_text('templates/page.contact.json', '"type": "contact-form"', '"type": "rich-text"')),

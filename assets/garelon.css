@@ -879,6 +879,58 @@ body {
   text-align: center;
   color: rgba(42, 38, 34, 0.72);
 }
+/* Enlace plegable «Información sobre las opiniones» (D41): discreto, accesible y sin JS */
+.g-reviews__info {
+  max-width: 64rem;
+  margin: 1.2rem auto 0;
+  text-align: center;
+}
+.g-reviews__info-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.6rem;
+  min-height: 4.4rem;
+  padding: 0 0.4rem;
+  font-size: 1.4rem;
+  color: var(--g-ink);
+  text-decoration: underline;
+  text-decoration-color: rgba(42, 38, 34, 0.35);
+  text-underline-offset: 0.3rem;
+  cursor: pointer;
+  list-style: none;
+}
+.g-reviews__info-link::-webkit-details-marker {
+  display: none;
+}
+.g-reviews__info-link::after {
+  content: '';
+  width: 0.7rem;
+  height: 0.7rem;
+  border-right: 1.5px solid currentColor;
+  border-bottom: 1.5px solid currentColor;
+  transform: translateY(-0.2rem) rotate(45deg);
+  transition: transform 0.2s ease;
+}
+.g-reviews__info[open] > .g-reviews__info-link::after {
+  transform: translateY(0.2rem) rotate(-135deg);
+}
+.g-reviews__info-link:hover {
+  text-decoration-color: currentColor;
+}
+.g-reviews__info-link:focus-visible {
+  outline: 2px solid var(--g-ink);
+  outline-offset: 0.2rem;
+  border-radius: 0.4rem;
+}
+.g-reviews__info .g-reviews__note {
+  margin-top: 0.4rem;
+  text-align: left;
+}
+@media screen and (min-width: 750px) {
+  .g-reviews__info .g-reviews__note {
+    text-align: center;
+  }
+}
 /* Widget de Judge.me con la identidad GARELON (solo apariencia; el contenido es de la app). */
 .g-reviews .jdgm-widget,
 .g-reviews .jdgm-rev-widg {
@@ -1203,6 +1255,13 @@ body {
 }
 .g-faq__answer a {
   color: var(--g-accent-ink);
+}
+.g-faq__answer p + p {
+  margin-top: 0.8rem;
+}
+.g-faq__facts {
+  font-weight: 600;
+  color: var(--g-ink);
 }
 
 /* ---------- Cierre (rich-text de Dawn) ---------- */

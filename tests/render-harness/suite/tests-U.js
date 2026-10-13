@@ -24,8 +24,8 @@ const buy = (html, u) => (u === '/' ? html.match(/<section\s+id="comprar"[\s\S]*
 const bar = (html) => (html.match(/<div\s+class="utility-bar g-bar[\s\S]*?<\/div>\s*<\/div>/) || [''])[0];
 const addToCart = async (id) => { const fd = new FormData(); fd.append('id', String(id)); fd.append('quantity', '1'); await fetch(B + '/cart/add.js', { method: 'POST', body: fd }); };
 const WANT = ['1 pulsera Ideal para ti 19,99 €',
-  '2 + 1 de regalo Recibes 3 pulseras Perfecto para regalar 10,00 € por pulsera Ahorras 29,98 € 29,99 €',
-  'Mejor precio por pulsera 3 + 2 de regalo Recibes 5 pulseras Para ti y para compartir 8,00 € por pulsera Ahorras 59,96 € 39,99 €'];
+  '2 + 1 de regalo Recibes 3 pulseras Perfecto para regalar 10,00 € por pulsera Ahorras 9,99 € 29,99 €', // D41: ahorro solo sobre las 2 pagadas
+  'Mejor precio por pulsera 3 + 2 de regalo Recibes 5 pulseras Para ti y para compartir 8,00 € por pulsera Ahorras 19,98 € 39,99 €']; // D41: solo las 3 pagadas
 
 module.exports = async function (browser) {
   // 1 · Configuración: ajustes de envío con confirmación (desactivada por defecto), barra GARELON, campaña, España
@@ -42,8 +42,8 @@ module.exports = async function (browser) {
   const offers = [ti.sections.compra.blocks.oferta.settings, tp.sections.main.blocks.oferta.settings];
   ok('U4 home y ficha: etiqueta de campaña «Especial octubre · Mes del Rosario»; distintivo en la 3.ª tarjeta; textos de las tarjetas',
     offers.every(o => o.show_promo === true && o.promo_text === CAMPAIGN && o.badge_pack === '3' && o.badge_text === 'Mejor precio por pulsera' && o.sub_1 === 'Ideal para ti' && o.sub_2 === 'Perfecto para regalar' && o.sub_3 === 'Para ti y para compartir'));
-  const faq = [tp, ti].map(t => Object.values(t.sections).flatMap(s => Object.values(s.blocks || {})).find(b => b.settings && b.settings.question === '¿Qué incluye mi pedido?'));
-  ok('U5 FAQ «¿Qué incluye mi pedido?» sin «1, 2 o 3 unidades» (cada opción dice cuántas pulseras recibes)', faq.every(b => b && !/1, 2 o 3/.test(b.settings.answer) && /cuántas recibes en total/.test(b.settings.answer)));
+  const faq = [tp, ti].map(t => Object.values(t.sections).flatMap(s => Object.values(s.blocks || {})).find(b => b.settings && /^¿Qué (incluye mi pedido|recibo con cada oferta)\?$/.test(b.settings.question))); // D41 renombra la pregunta
+  ok('U5 FAQ «¿Qué incluye mi pedido?» sin «1, 2 o 3 unidades» (cada opción dice cuántas pulseras recibes)', faq.every(b => b && !/1, 2 o 3/.test(b.settings.answer) && /cuántas (pulseras )?recibes en total/.test(b.settings.answer)));
   const fg = json('sections/footer-group.json').sections.footer.settings; const hs = hg.sections.header.settings;
   ok('U6 España, único mercado: sin selector de país ni de idioma en la cabecera ni en el pie', fg.enable_country_selector === false && fg.enable_language_selector === false && hs.enable_country_selector === false && hs.enable_language_selector === false);
 
@@ -93,7 +93,7 @@ module.exports = async function (browser) {
     ok(`U18 ${n}: sin preselección del pack grande, un solo distintivo, sin precio tachado ni urgencia`, JSON.stringify(radios) === '[true,false,false]' && count(s, /class="g-offer__badge"/g) === 1 && !/g-offer__was/.test(s) && !/quedan|últimas|cuenta atrás|solo hoy/i.test(text(s)), radios);
     const iPromo = s.indexOf('class="g-offer__promo"');
     ok(`U19 ${n}: la etiqueta de campaña va encima de «Elige tu oferta», en una línea`, iPromo > 0 && iPromo < s.indexOf('g-offer__legend') && s.includes(`<p class="g-offer__promo">${CAMPAIGN}</p>`));
-    ok(`U20 ${n}: nota de ahorro y CTA nativo «Añadir al carrito»`, /Ahorro calculado frente a comprar cada pulsera por separado\./.test(text(s)) && /<span>\s*Añadir al carrito\s*<\/span>/.test(s));
+    ok(`U20 ${n}: nota de ahorro (D41: solo las unidades pagadas) y CTA nativo «Añadir al carrito»`, /Ahorro calculado solo sobre las unidades que pagas, frente a comprarlas sueltas a 19,99 € cada una\. Las de regalo no se suman al ahorro\./.test(text(s)) && /<span>\s*Añadir al carrito\s*<\/span>/.test(s));
   }
   await setState('mode=regalocaro');
   {
@@ -108,7 +108,7 @@ module.exports = async function (browser) {
     ok('U23 opción agotada: tarjeta marcada «Agotado», radio deshabilitado visualmente y sin preselección', /g-offer__card--soldout/.test(lab[2]) && /Agotado/.test(text(lab[2])) && (() => { const ins = [...s.matchAll(/<input\s+type="radio"[^>]*>/g)].map(m => m[0]); return /class="g-offer__input disabled"/.test(ins[2]) && !/\schecked/.test(ins[2]) && /class="g-offer__input"/.test(ins[0]); })() && !/g-offer__card--soldout/.test(lab[0]));
   }
   const theme = ['snippets/garelon-offer.liquid', 'snippets/garelon-cart-option.liquid', 'snippets/garelon-pack-prices.liquid', 'snippets/garelon-pack-units.liquid', 'sections/garelon-announcement.liquid', 'snippets/garelon-shipping-note.liquid'].map(src).join('\n')
-    + JSON.stringify([tp, ti, hg]);
+    + JSON.stringify([tp, ti, hg].map(t => (t && t.sections ? { ...t, sections: Object.fromEntries(Object.entries(t.sections).filter(([k]) => k !== 'preguntas')) } : t))); // la FAQ (D41) habla de «pulseras de regalo» en general, no escribe ofertas
   ok('U24 el tema no escribe precios, cantidades ni «regalo» (salen de la variante de Shopify; desde V, en garelon-pack-units)', !/19,99|29,99|39,99|\b[35] pulseras\b|de regalo/.test(theme) && /split: '\(' \| last/.test(theme));
 
   // 4 · Carrito y cajón: cantidad real recibida, cantidad 1 por pack
@@ -158,7 +158,7 @@ module.exports = async function (browser) {
       }, root);
       ok(`U30 ${n} ${w}px: sin scroll horizontal ni errores; barra en dos líneas (≤ 80 px), enlace ≥ 44 px y plazo dentro de la pantalla`, !m.hscroll && errs.length === 0 && m.bar <= 80 && m.link >= 44 && m.eta && m.eta.l >= 0 && m.eta.r <= w && m.eta.h <= 26, m);
       ok(`U31 ${n} ${w}px: etiqueta de campaña en una sola línea`, m.promo <= 34, m.promo);
-      if (w < 750) ok(`U32 ${n} ${w}px: contador «n / 5» en cada foto y ninguno en la infografía`, m.cnt.length === 5 && m.cnt.every((x, i) => x === (x.startsWith('i:') ? 'i:-' : `${i + 1} / 5`)) && m.cnt.includes('i:-'), m.cnt);
+      if (w < 750) ok(`U32 ${n} ${w}px: contador «n / 4» en cada foto (D41) y ninguno en la infografía`, m.cnt.length === 4 && m.cnt.every((x, i) => x === (x.startsWith('i:') ? 'i:-' : `${i + 1} / 4`)) && m.cnt.includes('i:-'), m.cnt);
       else ok(`U32 ${n} ${w}px: contador oculto en la rejilla de escritorio`, m.cnt.every(x => /^(i:)?(oculto|-)$/.test(x)), m.cnt);
       if (n === 'ficha' && w < 750) ok(`U33 ficha ${w}px: «Elige tu oferta» sigue en la primera pantalla (< 844 px) con la barra en dos líneas`, m.legend < 844, m.legend);
       await page.close();

@@ -54,7 +54,7 @@ module.exports = async function phaseR(browser) {
 
   // 2 · Render: todos los caminos (galería home, Detalles, galería ficha, enlace para ampliar) → la misma familia
   const expectSrcset = WIDTHS.map(w => `/assets/${ASSET}-${w}.webp ${w}w`).join(', ');
-  for (const [u, n] of [['/', 2], [P, 1]]) {
+  for (const [u, n] of [['/', 2], [P, 2]]) { // D41: «Detalles» de la ficha usa la infografía (antes, el recorte `detalle`)
     const r = await get(u);
     const imgs = [...r.html.matchAll(/<img[^>]*infografia[^>]*>/g)].map(m => m[0]);
     const zooms = [...r.html.matchAll(/<a\s+class="g-zoom"\s+href="([^"]+)"/g)].map(m => m[1]);
@@ -85,7 +85,7 @@ module.exports = async function phaseR(browser) {
   for (const u of ['/', P]) {
     h = (await get(u)).html;
     ok(`R10 ${u} con multimedia del producto en Shopify (simulada): la galería sigue siendo la del tema y su infografía es ${ASSET}`,
-      count(h, /class="g-gallery__slide[ "]/g) === 5 && infUrls(h).length > 0 && infUrls(h).every(x => x.startsWith(`/assets/${ASSET}-`)));
+      count(h, /class="g-gallery__slide[ "]/g) === 4 && infUrls(h).length > 0 && infUrls(h).every(x => x.startsWith(`/assets/${ASSET}-`)));
   }
   await reset();
 

@@ -12,7 +12,7 @@ module.exports = async function (browser) {
   const order = [...r.html.matchAll(/id="shopify-section-template--1__(\w+)"/g)].map(x => x[1]);
   // Ronda T: opiniones antes de «Compra con tranquilidad».
   ok('F2 orden de la ficha: producto → opiniones → tranquilidad → detalles → preguntas → compra fija', JSON.stringify(order) === JSON.stringify(['main', 'opiniones', 'tranquilidad', 'detalles', 'preguntas', 'compra_fija']), order);
-  ok('F3 galería del tema: 5 imágenes, la primera prioritaria (LCP)', count(m, /class="g-gallery__slide[ "]/g) === 5 && count(r.html, /fetchpriority="high"/g) === 1 && /<img[^>]*producto-completa[^>]*loading="eager"/.test(m));
+  ok('F3 galería del tema: 4 imágenes (D41: sin `detalle`), la primera prioritaria (LCP)', count(m, /class="g-gallery__slide[ "]/g) === 4 && count(r.html, /fetchpriority="high"/g) === 1 && /<img[^>]*producto-completa[^>]*loading="eager"/.test(m));
   ok('F4 antetítulo, resumen, frase, garantías, tarjetas de oferta con precio, botón y pago dinámico', /Joyería con significado/.test(m) && /19,99 €/.test(m) && /Acero inoxidable con acabado dorado, medalla de la Virgen María, cruz y cuentas tricolor\./.test(m) && count(r.html, /Un símbolo de tu fe, contigo cada día/g) === 1 && /<variant-selects/.test(m) && /g-offer__card/.test(m) && /ProductSubmitButton-/.test(m) && /shopify-payment-button/.test(m));
   ok('F5 sin selector de cantidad en la ficha', !/quantity-input|name="quantity"/.test((m.match(/<product-info[\s\S]*?<\/product-info>/) || [''])[0]));
   ok('F6 descripción de Shopify y pestaña «Envíos y devoluciones» con políticas', /Descripción de prueba/.test(m) && /Envíos y devoluciones/.test(m) && /href="\/policies\/shipping-policy"/.test(m) && /href="\/policies\/refund-policy"/.test(m));

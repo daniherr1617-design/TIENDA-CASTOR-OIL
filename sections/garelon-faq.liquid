@@ -1,6 +1,9 @@
 {%- comment -%}
   GARELON · Preguntas frecuentes accesibles (details/summary nativos, pregunta en H3).
   Las respuestas remiten a las políticas y al contacto reales de la tienda.
+  Envío (D41): una pregunta con «Empezar con el envío confirmado» antepone «El envío es gratuito a toda
+  España.» y el plazo SOLO si el propietario los confirmó en Configuración del tema › Carrito (los mismos
+  ajustes que la barra y la nota de los packs); si no, solo se ve su respuesta. Nada escrito a mano.
 {%- endcomment -%}
 <section
   {% if section.settings.anchor != blank %}
@@ -27,7 +30,23 @@
             <h3 class="g-faq__q">{{ block.settings.question | escape }}</h3>
             <span class="g-faq__mark" aria-hidden="true"></span>
           </summary>
-          <div class="g-faq__answer rte">{% render 'garelon-contact-rte', html: block.settings.answer %}</div>
+          <div class="g-faq__answer rte">
+            {%- if block.settings.ship_facts -%}
+              {%- capture ship_line -%}
+                {%- if settings.garelon_free_shipping and settings.garelon_ship_coverage_confirmed -%}
+                  {{- 'garelon.faq.ship_free_spain' | t }} {% elsif settings.garelon_free_shipping -%}
+                  {{- 'garelon.faq.ship_free' | t }} {% endif -%}
+                {%- if settings.garelon_ship_eta_confirmed and settings.garelon_ship_eta_text != blank -%}
+                  {{- settings.garelon_ship_eta_text | escape | append: '.' -}}
+                {%- endif -%}
+              {%- endcapture -%}
+              {%- assign ship_line = ship_line | strip -%}
+              {%- if ship_line != blank -%}
+                <p class="g-faq__facts">{{ ship_line }}</p>
+              {%- endif -%}
+            {%- endif -%}
+            {% render 'garelon-contact-rte', html: block.settings.answer %}
+          </div>
         </details>
       {%- endfor -%}
     </div>
@@ -100,6 +119,13 @@
           "id": "answer",
           "label": "Respuesta",
           "info": "Enlaces útiles: /pages/contacto, /policies/shipping-policy, /policies/refund-policy."
+        },
+        {
+          "type": "checkbox",
+          "id": "ship_facts",
+          "label": "Empezar con el envío confirmado",
+          "info": "Antepone «El envío es gratuito a toda España.» y el plazo de entrega solo si los has confirmado en Configuración del tema › Carrito › «GARELON · Envío a España». No escribas el plazo en la respuesta.",
+          "default": false
         }
       ]
     }

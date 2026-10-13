@@ -51,7 +51,7 @@ print(';'.join(f.split('/')[-1]+'='+'x'.join(map(str,Image.open(f).size)) for f 
   let r = await get('/');
   ok('I6 home → 200', r.status === 200 && r.tpl === 'index');
   const hg = gallery((r.html.match(/<section\s+id="comprar"[\s\S]*?<\/product-info>/) || [''])[0]);
-  ok('I7 galería de compra (home): completa → detalle → infografía → principal → oración', JSON.stringify(slides(hg)) === JSON.stringify(['completa', 'detalle', 'infografia', 'principal', 'oracion']), slides(hg));
+  ok('I7 galería de compra (home): completa → infografía → principal → oración (D41: sin `detalle`)', JSON.stringify(slides(hg)) === JSON.stringify(['completa', 'infografia', 'principal', 'oracion']), slides(hg));
   ok('I8 galería home: alt de imagen 4 e Imagen 1 presentes', hg.includes(`alt="${esc(es.alt_completa)}"`) && hg.includes(`alt="${esc(es.alt_infografia)}"`) && !/alt=""/.test(hg));
   const det = (r.html.match(/<section\s+id="detalles"[\s\S]*?<\/section>/) || [''])[0];
   ok('I9 «Detalles de la pulsera» usa la infografía (Imagen 1) con su alt; los 5 hechos siguen', det.includes(`${INF}-1254.webp`) && !/producto-detalle-/.test(det) && /alt="Infografía «Detalles de la pulsera»/.test(det) && count(det, /class="g-fact"/g) === 5);
@@ -65,7 +65,7 @@ print(';'.join(f.split('/')[-1]+'='+'x'.join(map(str,Image.open(f).size)) for f 
   r = await get(P); const m = (r.html.match(/<main[\s\S]*?<\/main>/) || [''])[0];
   ok('I13 ficha → 200', r.status === 200 && r.tpl === 'product');
   const pg = gallery(m);
-  ok('I14 galería de la ficha: completa → principal → detalle → infografía → oración; solo la 1.ª prioritaria', JSON.stringify(slides(pg)) === JSON.stringify(['completa', 'principal', 'detalle', 'infografia', 'oracion']) && count(pg, /loading="eager"/g) === 1 && count(r.html, /fetchpriority="high"/g) === 1, slides(pg));
+  ok('I14 galería de la ficha: completa → principal → infografía → oración (D41); solo la 1.ª prioritaria', JSON.stringify(slides(pg)) === JSON.stringify(['completa', 'principal', 'infografia', 'oracion']) && count(pg, /loading="eager"/g) === 1 && count(r.html, /fetchpriority="high"/g) === 1, slides(pg));
   ok('I15 ficha: alt de imagen 4 e Imagen 1', pg.includes(`alt="${esc(es.alt_completa)}"`) && pg.includes(`alt="${esc(es.alt_infografia)}"`));
 
   // 5 · Responsive, swipe y legibilidad
@@ -82,7 +82,7 @@ print(';'.join(f.split('/')[-1]+'='+'x'.join(map(str,Image.open(f).size)) for f 
       return { sw: document.documentElement.scrollWidth, cw, shapes, inf: Math.round(inf.width), snap: getComputedStyle(track).scrollSnapType, scrolls: track.scrollWidth > track.clientWidth + 5 };
     }, sel);
     const mobile = w < 750;
-    ok(`I16 ${u === '/' ? 'home' : 'ficha'} ${w}px: sin scroll horizontal; 5 imágenes cargadas, cuadradas y sin deformar`, res.sw <= res.cw && res.shapes.length === 5 && res.shapes.every(Boolean), res);
+    ok(`I16 ${u === '/' ? 'home' : 'ficha'} ${w}px: sin scroll horizontal; 4 imágenes cargadas (D41), cuadradas y sin deformar`, res.sw <= res.cw && res.shapes.length === 4 && res.shapes.every(Boolean), res);
     if (mobile) ok(`I17 ${u === '/' ? 'home' : 'ficha'} ${w}px: carrusel deslizable (scroll-snap x) y la infografía ocupa ≥ 88 % del ancho`, /x mandatory/.test(res.snap) && res.scrolls && res.inf >= 0.88 * res.cw, res);
     if (u === '/') {
       const d = await page.evaluate(() => { const i = document.querySelector('#detalles img'); const b = i.getBoundingClientRect(); return { w: Math.round(b.width), h: Math.round(b.height), cw: document.documentElement.clientWidth }; });
@@ -109,8 +109,8 @@ print(';'.join(f.split('/')[-1]+'='+'x'.join(map(str,Image.open(f).size)) for f 
       return [...t.querySelectorAll('.g-gallery__slide')].map(s => { const b = s.getBoundingClientRect(); return Math.max(0, Math.min(b.right, tb.right) - Math.max(b.left, tb.left)) / b.width; })
         .map((v, i) => [i, v]).sort((a, b) => b[1] - a[1])[0][0]; });
     const seen = [await visible()];
-    for (let i = 0; i < 4; i++) { await swipe(); seen.push(await visible()); }
-    ok('I20 móvil 390 px: el gesto de deslizar recorre la galería (imagen 4 → … → Imagen 1 → oración)', JSON.stringify(seen) === JSON.stringify([0, 1, 2, 3, 4]), seen);
+    for (let i = 0; i < 3; i++) { await swipe(); seen.push(await visible()); }
+    ok('I20 móvil 390 px: el gesto de deslizar recorre la galería de 4 fotos (D41)', JSON.stringify(seen) === JSON.stringify([0, 1, 2, 3]), seen);
     await ctx.close();
   }
 

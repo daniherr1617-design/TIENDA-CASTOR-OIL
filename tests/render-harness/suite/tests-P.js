@@ -70,12 +70,13 @@ print(json.dumps(out))`, `${THEME}/${NEW_SRC}`, THEME, JSON.stringify(WIDTHS), A
     ok('P6 ninguna referencia activa a «Imagen 1.png» en el tema ni en tools/ (solo la nombran los comprobadores que la bloquean)', refs === '' && guards, refs);
   }
 
-  // 2 · Render de la infografía: home (galería + Detalles) y ficha (galería)
+  // 2 · Render de la infografía: home y ficha (galería + Detalles; en la ficha desde D41)
   for (const u of ['/', P]) {
     const r = await get(u);
     const imgs = [...r.html.matchAll(/<img[^>]*producto-infografia[^>]*>/g)].map(m => m[0]);
     const srcsets = imgs.map(i => (i.match(/srcset="([^"]+)"/) || [])[1] || '');
-    ok(`P7 ${u}: la infografía se sirve solo como WebP con srcset 480/720/1080/1254, sizes, width/height (sin CLS) y su alt`, imgs.length === (u === '/' ? 2 : 1) &&
+    ok(`P7 ${u}: la infografía se sirve solo como WebP con srcset 480/720/1080/1254, sizes, width/height (sin CLS) y su alt`, imgs.length === 2 && // galería + «Detalles» en home y, desde D41, también en la ficha
+     
       imgs.every(i => i.includes(`src="/assets/${ASSET}-1254.webp"`) && /sizes="[^"]+"/.test(i) && /width="1254"/.test(i) && /height="1254"/.test(i) && i.includes(`alt="${esc(es.alt_infografia)}"`)) &&
       srcsets.every(s => s === WIDTHS.map(w => `/assets/${ASSET}-${w}.webp ${w}w`).join(', ')), imgs);
     ok(`P8 ${u}: ningún asset de producto en PNG/JPG`, !/producto-[a-z]+-\d+\.(png|jpe?g)/.test(r.html));

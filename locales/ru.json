@@ -569,7 +569,6 @@
       "label": "Bracelet image gallery",
       "alt_principal": "Gold-tone rosary bracelet on a wrist, with an oval Virgin Mary medal, cross integrated into the bracelet and beads in gold, silver and rose tones",
       "alt_completa": "Full view of the gold-tone Virgin Mary rosary bracelet on an ivory background: lobster clasp, tricolour beads in gold, silver and rose, cross with Christ and an oval Virgin Mary medal with a border of small stones",
-      "alt_detalle": "Close-up of the rosary bracelet: oval Virgin Mary medal with a border of small stones, cross and tricolour beads",
       "alt_infografia": "“Bracelet details” infographic for the gold-tone Virgin Mary rosary bracelet: Virgin Mary medal, cross of Jesus, tricolour rosary beads, polished gold-tone clasp, adjustable length with rings, approx. 20 cm / 7.87 in, and a special religious gift",
       "alt_oracion": "Woman with her hands together in prayer wearing the gold-tone rosary bracelet",
       "zoom": "Enlarge",
@@ -584,6 +583,7 @@
       "unit_price": "{{ price }} per {{ unit }}",
       "save": "Save {{ amount }}",
       "saving_note": "Savings compared with buying each {{ unit }} separately.",
+      "saving_note_gift": "Savings counted only on the units you pay for, compared with buying them separately at {{ price }} each. Gift units are not added to the savings.",
       "free_shipping": "Free shipping.",
       "editor_missing": "Editor only: «Choose your offer» shows the standard picker because the product doesn't have a single «Pack» option. Customers can still buy normally. Check the option name in the block or create the variants in Products › (product) › Variants.",
       "receives": "You receive {{ contents }}",
@@ -610,6 +610,10 @@
     },
     "shipping": {
       "editor_bar_hidden": "Editor only: the shipping bar is hidden from customers until you confirm the rate, destinations or delivery time in Theme settings › Cart › “GARELON · Shipping to Spain”."
+    },
+    "faq": {
+      "ship_free_spain": "Shipping is free to all of Spain.",
+      "ship_free": "Shipping is free."
     }
   }
 }

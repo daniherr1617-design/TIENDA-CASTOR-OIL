@@ -8,6 +8,7 @@ const fs = require('fs');
 const { execSync } = require('child_process');
 const P = '/products/pulsera-rosario-virgen-maria';
 const BASE = 'b02c016'; // HEAD antes de la ronda W
+const ROUND_HEAD = '98dfa30'; // Ronda X: commit del tema de la ronda W (alcance fijado a W, como en T, U y V)
 const REPO = fs.existsSync(THEME + '/.git');
 const NOTE = 'Incluye opiniones de compradores de este mismo modelo en otra tienda online; no corresponden a pedidos de GARELON.';
 const src = (f) => fs.readFileSync(`${THEME}/${f}`, 'utf8').replace(/{%-?\s*comment\s*-?%}[\s\S]*?{%-?\s*endcomment\s*-?%}/g, '');
@@ -65,17 +66,18 @@ module.exports = async function (browser) {
   // 3 · Transparencia: nota de origen, FAQ y ninguna mención a proveedores en el texto visible
   for (const [n, u] of [['home', '/'], ['ficha', P]]) {
     const r = await get(u); const t = text(r.html);
-    ok(`W8 ${n}: nota de origen transparente tras el widget («no corresponden a pedidos de GARELON»)`, r.html.includes(`<div class="g-reviews__note rte"><p>${NOTE}</p></div>`) && /class="g-reviews__app"[\s\S]*g-reviews__note/.test(r.html));
+    // D41: la nota se reescribe y queda plegada en «Información sobre las opiniones» (W la tenía abierta con NOTE).
+    ok(`W8 ${n}: nota de origen transparente tras el widget («no corresponden a pedidos realizados en GARELON»)`, /<div class="g-reviews__note rte">[\s\S]*?No corresponden a pedidos realizados en GARELON/.test(r.html) && /class="g-reviews__app"[\s\S]*g-reviews__note/.test(r.html) && !r.html.includes(NOTE));
     ok(`W9 ${n}: sin «proveedor», AliExpress, DSers, dropshipping, terceros ni Judge.me en el texto visible`, !/proveedor|ali ?express|dsers|dropship|terceros|judge\.?me/i.test(t), (t.match(/.{40}(proveedor|aliexpress|dsers|dropship|terceros|judge\.?me).{40}/i) || [''])[0]);
     ok(`W10 ${n}: sin compras verificadas, certificados, escasez ni urgencia inventados`, !/compra verificada|verified|certificad|garant[ií]a de por vida|quedan \d|últimas unidades|cuenta atrás|\+\s?\d+[.\d]* clientes/i.test(t));
   }
   {
     const r = await get('/');
-    ok('W11 FAQ del material: «Es de acero inoxidable con acabado dorado pulido.»', /<p>Es de acero inoxidable con acabado dorado pulido\.<\/p>/.test(r.html) && !/Según la información del proveedor/.test(r.html));
+    ok('W11 FAQ del material sin «según la información del proveedor» (D41: «Está hecha de acero inoxidable con acabado dorado pulido…»)', /<p>Está hecha de acero inoxidable con acabado dorado pulido, /.test(r.html) && !/Según la información del proveedor/.test(r.html));
   }
   if (REPO) {
     const at = (f, c) => JSON.parse(execSync(`git -C ${THEME} show ${c}:${f}`).toString()).sections.opiniones;
-    const same = (f) => { const x = at(f, BASE), y = JSON.parse(fs.readFileSync(`${THEME}/${f}`, 'utf8')).sections.opiniones; delete x.settings.note; delete y.settings.note; return JSON.stringify(x) === JSON.stringify(y); };
+    const same = (f) => { const x = at(f, BASE), y = at(f, ROUND_HEAD); delete x.settings.note; delete y.settings.note; return JSON.stringify(x) === JSON.stringify(y); };
     ok('W12b Judge.me: widget, bloques y ajustes de «GARELON Opiniones» intactos en home y ficha (solo cambia la nota)', ['templates/index.json', 'templates/product.json'].every(same));
   }
   ok('W12 rendimiento: un solo widget de Judge.me por página y sin scripts nuevos (la valoración es Liquid + CSS)', ['templates/index.json', 'templates/product.json'].every(f => (fs.readFileSync(`${THEME}/${f}`, 'utf8').match(/blocks\/review_widget\//g) || []).length === 1) && !/<script|\.js/.test(src('snippets/garelon-rating.liquid')));
@@ -83,8 +85,8 @@ module.exports = async function (browser) {
   // 4 · Nombres de oferta publicados en Shopify (mode=live, opción «PACK»): unidades, precio por pulsera y carrito
   await reset(); await setState('mode=live');
   const WANT = ['1 pulsera Ideal para ti 19,99 €',
-    '2 pulseras y 1 de regalo Recibes 3 pulseras Perfecto para regalar 10,00 € por pulsera Ahorras 29,98 € 29,99 €',
-    'Mejor precio por pulsera 3 pulseras y 2 de regalo Recibes 5 pulseras Para ti y para compartir 7,00 € por pulsera Ahorras 64,96 € 34,99 €'];
+    '2 pulseras y 1 de regalo Recibes 3 pulseras Perfecto para regalar 10,00 € por pulsera Ahorras 9,99 € 29,99 €', // D41: ahorro solo sobre las pagadas
+    'Mejor precio por pulsera 3 pulseras y 2 de regalo Recibes 5 pulseras Para ti y para compartir 7,00 € por pulsera Ahorras 24,98 € 34,99 €'];
   for (const [n, u] of [['home', '/'], ['ficha', P]]) {
     const r = await get(u); const c = cards(buy(r.html, u));
     ok(`W13 ${n}: «2 pulseras y 1 de regalo · Recibes 3» (10,00 €/u) y «3 pulseras y 2 de regalo · Recibes 5» (7,00 €/u), no 15,00 € ni 11,66 €`, JSON.stringify(c) === JSON.stringify(WANT) && !/15,00|11,66/.test(c.join(' ')), c);
@@ -112,11 +114,10 @@ module.exports = async function (browser) {
   const theme = src('snippets/garelon-rating.liquid') + fs.readFileSync(`${THEME}/templates/product.json`, 'utf8') + fs.readFileSync(`${THEME}/templates/index.json`, 'utf8');
   ok('W16 el tema no escribe la nota ni el número de opiniones (4,9 / 29 salen de los metafields)', !/4[,.]9|\b29 opiniones|\b29 reseñas|★/.test(theme));
   if (REPO) {
-    const changed = execSync(`git -C ${THEME} diff --name-only ${BASE} -- assets config layout locales sections snippets templates`).toString().trim().split('\n').filter(Boolean)
-      .concat(execSync(`git -C ${THEME} ls-files --others --exclude-standard -- assets config layout locales sections snippets templates`).toString().trim().split('\n').filter(Boolean));
+    const changed = execSync(`git -C ${THEME} diff --name-only ${BASE} ${ROUND_HEAD} -- assets config layout locales sections snippets templates`).toString().trim().split('\n').filter(Boolean);
     const allowed = /^(assets\/garelon\.css|locales\/[\w.-]+\.json|sections\/(main-product|featured-product)\.liquid|snippets\/garelon-rating\.liquid|templates\/(index|product)\.json)$/;
     ok('W17 alcance: valoración (snippet, bloque rating de Dawn, CSS, locale), nota de origen y FAQ; sin tocar config, ofertas ni carrito', changed.length > 0 && changed.every(f => allowed.test(f)), changed.filter(f => !allowed.test(f)));
-    const diff = (p) => execSync(`git -C ${THEME} diff ${BASE} -- ${p}`).toString().split('\n').filter(l => /^[+-]\s/.test(l));
+    const diff = (p) => execSync(`git -C ${THEME} diff ${BASE} ${ROUND_HEAD} -- ${p}`).toString().split('\n').filter(l => /^[+-]\s/.test(l));
     const tpl = diff('templates');
     ok('W18 plantillas: solo cambian la nota de origen y la respuesta del material', tpl.length === 8 && tpl.every(l => /"note": "<p>Incluye opiniones|"answer": "<p>(Según la información del proveedor, es|Es) de acero inoxidable/.test(l)), tpl.slice(0, 4));
     const sec = diff('sections');

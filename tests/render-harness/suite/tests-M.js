@@ -14,7 +14,7 @@ const UUID = '61ccd3b1-a9f2-4160-9fe9-4fec8413e5d8';
 const WIDGET = `shopify://apps/judge-me-reviews/blocks/review_widget/${UUID}`;
 const CORE = `shopify://apps/judge-me-reviews/blocks/judgeme_core/${UUID}`;
 const VPS = [320, 360, 375, 390, 430, 768, 1024, 1440];
-const NOTE = 'Incluye opiniones de compradores de este mismo modelo en otra tienda online; no corresponden a pedidos de GARELON.';
+const NOTE = 'Estas opiniones proceden de compradores de este mismo modelo de pulsera en otra tienda online.'; // D41: nota plegada en «Información sobre las opiniones»
 
 const json = (f) => JSON.parse(fs.readFileSync(`${THEME}/${f}`, 'utf8'));
 const atBase = (f) => execSync(`git -C ${THEME} show ${BASE}:${f}`).toString();

@@ -44,9 +44,9 @@ module.exports = async function (browser) {
   }
 
   // 3 · Orden de galería
-  ok('J8 home: completa → detalle → infografía → principal → oración', JSON.stringify(slides(gallery((home.html.match(/<section\s+id="comprar"[\s\S]*?<\/product-info>/) || [''])[0]))) === JSON.stringify(['completa', 'detalle', 'infografia', 'principal', 'oracion']));
+  ok('J8 home: completa → infografía → principal → oración (D41: sin `detalle`)', JSON.stringify(slides(gallery((home.html.match(/<section\s+id="comprar"[\s\S]*?<\/product-info>/) || [''])[0]))) === JSON.stringify(['completa', 'infografia', 'principal', 'oracion']));
   const pg = gallery((prod.html.match(/<main[\s\S]*?<\/main>/) || [''])[0]);
-  ok('J9 ficha: completa → principal → detalle → infografía → oración; la 1.ª (completa) es la única eager', JSON.stringify(slides(pg)) === JSON.stringify(['completa', 'principal', 'detalle', 'infografia', 'oracion']) && /<img[^>]*producto-completa-[^>]*loading="eager"|loading="eager"[^>]*producto-completa-/.test(pg) && count(pg, /loading="eager"/g) === 1, slides(pg));
+  ok('J9 ficha: completa → principal → infografía → oración (D41); la 1.ª (completa) es la única eager', JSON.stringify(slides(pg)) === JSON.stringify(['completa', 'principal', 'infografia', 'oracion']) && /<img[^>]*producto-completa-[^>]*loading="eager"|loading="eager"[^>]*producto-completa-/.test(pg) && count(pg, /loading="eager"/g) === 1, slides(pg));
 
   // 4 · Responsive
   for (const u of ['/', P]) for (const w of VPS) {

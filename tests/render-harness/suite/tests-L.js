@@ -48,13 +48,15 @@ module.exports = async function (browser) {
 import sys, json, glob
 from PIL import Image
 print(json.dumps({f.split('/')[-1]: [Image.open(f).format, *Image.open(f).size] for f in sorted(glob.glob(sys.argv[1] + '/assets/producto-*.webp'))}))`, THEME]).toString());
-  for (const k of ['principal', 'detalle']) {
+  // D41 (2026-10-13): el propietario retira el recorte `detalle` (medalla en primer plano); `principal` sigue igual.
+  ok('L1 `detalle` retirado (D41): sin anchos en garelon-image ni assets producto-detalle-*', widthsOf('detalle').length === 0 && !Object.keys(dims).some(f => f.startsWith('producto-detalle-')));
+  for (const k of ['principal']) {
     const ws = widthsOf(k);
     ok(`L1 assets «${k}» con los anchos de garelon-image (${ws.join('/')}), cuadrados y WebP`, ws.length > 0 &&
       ws.every(w => { const d = dims[`producto-${k}-${w}.webp`]; return d && d[0] === 'WEBP' && d[1] === Number(w) && d[2] === Number(w); }) &&
       Object.keys(dims).filter(f => f.startsWith(`producto-${k}-`)).length === ws.length, ws.map(w => dims[`producto-${k}-${w}.webp`]));
   }
-  ok('L2 los anchos de las claves no cambian (principal 480/720/1080, detalle 480/600)', widthsOf('principal').join() === '480,720,1080' && widthsOf('detalle').join() === '480,600');
+  ok('L2 los anchos de `principal` no cambian (480/720/1080); `detalle` ya no existe (D41)', widthsOf('principal').join() === '480,720,1080' && widthsOf('detalle').join() === '');
 
   // 2 · Render: la imagen nueva está en todos los sitios de la antigua; el orden de las galerías no cambia
   await reset(); await setState('mode=pack3save');
@@ -66,13 +68,13 @@ print(json.dumps({f.split('/')[-1]: [Image.open(f).format, *Image.open(f).size] 
     /loading="eager"/.test(heroImg) && /alt="[^"]*cruz integrada en la pulsera[^"]*"/.test(heroImg) && !/colgante/.test(heroImg), heroImg.slice(0, 200));
   const hg = slides(gallery((home.html.match(/<section\s+id="comprar"[\s\S]*?<\/product-info>/) || [''])[0]));
   const pg = slides(gallery((prod.html.match(/<main[\s\S]*?<\/main>/) || [''])[0]));
-  ok('L4 galería de la home sin cambios: completa → detalle → infografía → principal → oración', JSON.stringify(hg) === JSON.stringify(['completa', 'detalle', 'infografia', 'principal', 'oracion']), hg);
-  ok('L5 galería de la ficha sin cambios: completa → principal → detalle → infografía → oración', JSON.stringify(pg) === JSON.stringify(['completa', 'principal', 'detalle', 'infografia', 'oracion']), pg);
+  ok('L4 galería de la home: completa → infografía → principal → oración (sin `detalle` desde D41)', JSON.stringify(hg) === JSON.stringify(['completa', 'infografia', 'principal', 'oracion']), hg);
+  ok('L5 galería de la ficha: completa → principal → infografía → oración (sin `detalle` desde D41)', JSON.stringify(pg) === JSON.stringify(['completa', 'principal', 'infografia', 'oracion']), pg);
   const detImg = (prod.html.match(/id="detalles"[\s\S]*?<\/section>/) || [''])[0];
-  ok('L6 ficha · «Detalles de la pulsera» sigue usando `detalle` (480/600)', /producto-detalle-480\.webp/.test(detImg) && /producto-detalle-600\.webp/.test(detImg));
+  ok('L6 ficha · «Detalles de la pulsera» usa la infografía aprobada (D41: sin `detalle`)', !/producto-detalle-/.test(detImg) && /producto-infografia-v\d+-1254\.webp/.test(detImg));
   const storefront = text(home.html) + text(prod.html) + home.html + prod.html;
   ok('L7 ningún alt ni texto de la tienda describe una cruz colgante', !/cruz colgante|hanging cross/i.test(storefront));
-  ok('L8 alt de `detalle` sin cambios (sigue siendo fiel)', JSON.parse(fs.readFileSync(`${THEME}/locales/es.json`, 'utf8')).garelon.gallery.alt_detalle === 'Detalle de la pulsera rosario: medalla ovalada de la Virgen María con borde de pequeñas piedras, cruz y cuentas tricolor');
+  ok('L8 alt de `detalle` retirado con la imagen (D41)', JSON.parse(fs.readFileSync(`${THEME}/locales/es.json`, 'utf8')).garelon.gallery.alt_detalle === undefined);
 
   // 3 · Responsive: la imagen nueva carga en la portada, en las galerías y en «Detalles»
   for (const u of ['/', P]) for (const w of VPS) {
@@ -84,8 +86,8 @@ print(json.dumps({f.split('/')[-1]: [Image.open(f).format, *Image.open(f).size] 
         imgs: imgs.map(i => ({ key: (i.currentSrc || i.src).match(/producto-(\w+)-/)[1], ok: i.complete && i.naturalWidth > 0, sq: i.naturalWidth === i.naturalHeight })) };
     });
     const keys = [...new Set(res.imgs.map(i => i.key))].sort();
-    ok(`L9 ${u === '/' ? 'home' : 'ficha'} ${w}px: «principal» y «detalle» cargan (cuadradas), sin scroll horizontal ni errores JS`,
-      JSON.stringify(keys) === '["detalle","principal"]' && res.imgs.every(i => i.ok && i.sq) && res.sw <= res.cw && errs.length === 0, { keys, n: res.imgs.length, bad: res.imgs.filter(i => !i.ok), sw: res.sw, errs });
+    ok(`L9 ${u === '/' ? 'home' : 'ficha'} ${w}px: «principal» carga (cuadrada) y «detalle» ya no (D41), sin scroll horizontal ni errores JS`,
+      JSON.stringify(keys) === '["principal"]' && res.imgs.every(i => i.ok && i.sq) && res.sw <= res.cw && errs.length === 0, { keys, n: res.imgs.length, bad: res.imgs.filter(i => !i.ok), sw: res.sw, errs });
     await page.close();
   }
   await reset();
@@ -103,8 +105,8 @@ print(json.dumps({f.split('/')[-1]: [Image.open(f).format, *Image.open(f).size] 
   fs.writeFileSync(oldPath, atBase(OLD_SRC));
   const dNew = crossDistance(`${THEME}/${NEW_SRC}`); const dOld = crossDistance(oldPath);
   fs.rmSync(tmp, { recursive: true, force: true });
-  ok('L12 «principal» y «detalle» salen de NUEVA IMAGEN 3.png (zona de la cruz: ≈ igual a la nueva, muy distinta de la antigua)',
-    Object.keys(dNew).length === 5 && Object.values(dNew).every(v => v < 5) && Object.values(dOld).every(v => v > 12), { dNew, dOld });
+  ok('L12 «principal» sale de NUEVA IMAGEN 3.png (zona de la cruz: ≈ igual a la nueva, muy distinta de la antigua; `detalle` retirado en D41)',
+    Object.keys(dNew).length === 3 && Object.values(dNew).every(v => v < 5) && Object.values(dOld).every(v => v > 12), { dNew, dOld });
 
   // 6 · Alcance de la ronda L: fb4b850..3a78374 (fijado al cerrar la ronda, como I/J/K)
   const changed = execSync(`git -C ${THEME} diff --name-only ${BASE} ${ROUND_HEAD} -- assets config layout sections snippets templates`).toString().trim().split('\n').filter(Boolean).sort();

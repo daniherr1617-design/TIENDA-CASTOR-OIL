@@ -12,8 +12,8 @@ const ROUND_HEAD = '6c021f3'; // Ronda W: commit del tema de la ronda V (alcance
 const REPO = fs.existsSync(THEME + '/.git');
 const NAMES = ['1 pulsera', 'Compra 2 y llévate 1 de regalo', 'Compra 3 y llévate 2 de regalo'];
 const WANT = ['1 pulsera Ideal para ti 19,99 €',
-  'Compra 2 y llévate 1 de regalo Recibes 3 pulseras Perfecto para regalar 10,00 € por pulsera Ahorras 29,98 € 29,99 €',
-  'Mejor precio por pulsera Compra 3 y llévate 2 de regalo Recibes 5 pulseras Para ti y para compartir 7,00 € por pulsera Ahorras 64,96 € 34,99 €'];
+  'Compra 2 y llévate 1 de regalo Recibes 3 pulseras Perfecto para regalar 10,00 € por pulsera Ahorras 9,99 € 29,99 €', // D41: ahorro solo sobre las pagadas
+  'Mejor precio por pulsera Compra 3 y llévate 2 de regalo Recibes 5 pulseras Para ti y para compartir 7,00 € por pulsera Ahorras 24,98 € 34,99 €'];
 const src = (f) => fs.readFileSync(`${THEME}/${f}`, 'utf8').replace(/{%-?\s*comment\s*-?%}[\s\S]*?{%-?\s*endcomment\s*-?%}/g, '').replace(/{%-?\s*schema\s*-?%}[\s\S]*?{%-?\s*endschema\s*-?%}/g, '');
 const cards = (html) => [...html.matchAll(/<label[^>]*class="g-offer__card[\s\S]*?<\/label>/g)].map(m => text(m[0]).trim());
 const buy = (html, u) => (u === '/' ? html.match(/<section\s+id="comprar"[\s\S]*?<\/product-info>/) : html.match(/<product-info[\s\S]*?<\/product-info>/) || [''])[0];
@@ -31,7 +31,7 @@ module.exports = async function (browser) {
     const lab = [...s.matchAll(/<label[^>]*class="g-offer__card[^"]*"[\s\S]*?<\/label>/g)].map(m => m[0]);
     ok(`V3 ${n}: «Mejor precio por pulsera» solo en la 3.ª tarjeta, sin preseleccionarla`, JSON.stringify(radios) === '[true,false,false]' && count(s, /class="g-offer__badge"/g) === 1 && /g-offer__badge/.test(lab[2]) && /g-offer__card--badge/.test(lab[2]), radios);
     ok(`V4 ${n}: sin precio tachado (ni en las tarjetas ni en el precio de Dawn, que no está «en oferta»), sin porcentajes, sin «más vendido» ni urgencia`, !/g-offer__was|price--on-sale/.test(s) && !/\d+ ?%|m[aá]s vendid|m[aá]s popular|quedan|últimas|cuenta atrás/i.test(text(s)));
-    ok(`V5 ${n}: el ahorro se explica (frente a comprar cada pulsera por separado) y la 1.ª tarjeta no dice «Recibes»`, /Ahorro calculado frente a comprar cada pulsera por separado\./.test(text(s)) && !/Recibes/.test(text(lab[0])));
+    ok(`V5 ${n}: el ahorro se explica (D41: solo las pulseras pagadas, frente a comprarlas sueltas) y la 1.ª tarjeta no dice «Recibes»`, /Ahorro calculado solo sobre las unidades que pagas, frente a comprarlas sueltas a 19,99 € cada una\./.test(text(s)) && !/Recibes/.test(text(lab[0])));
   }
   await setState('mode=final&soldout=4102');
   {

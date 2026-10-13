@@ -90,7 +90,7 @@
       "settings": {
         "enable_sticky_info": true,
         "garelon_media": "theme",
-        "garelon_gallery_keys": "completa,principal,detalle,infografia,oracion",
+        "garelon_gallery_keys": "completa,principal,infografia,oracion",
         "color_scheme": "scheme-1",
         "media_size": "large",
         "constrain_to_viewport": true,
@@ -174,16 +174,17 @@
         "judge_me_reviews_review_widget_garelon"
       ],
       "settings": {
-        "eyebrow": "Opiniones reales",
+        "eyebrow": "Valoraciones",
         "heading": "Opiniones sobre esta pulsera",
         "show_summary": true,
         "summary_with_app": false,
         "hide_without_reviews": true,
-        "note": "<p>Incluye opiniones de compradores de este mismo modelo en otra tienda online; no corresponden a pedidos de GARELON.</p>",
+        "note": "<p>Estas opiniones proceden de compradores de este mismo modelo de pulsera en otra tienda online. Las hemos incorporado a nuestra tienda con su puntuación y, cuando las tienen, sus fotos.</p><p>No corresponden a pedidos realizados en GARELON, por lo que no son compras verificadas en nuestra tienda.</p>",
         "color_scheme": "scheme-1",
         "anchor": "opiniones",
         "padding_top": 48,
-        "padding_bottom": 48
+        "padding_bottom": 48,
+        "note_label": "Información sobre las opiniones"
       }
     },
     "detalles": {
@@ -201,7 +202,8 @@
           "type": "item",
           "settings": {
             "icon": "medalla",
-            "title": "Medalla de la Virgen María"
+            "title": "Medalla de la Virgen María",
+            "text": "Medalla ovalada con la imagen de la Virgen María, rodeada de detalles brillantes."
           }
         },
         "d3": {
@@ -240,8 +242,8 @@
         "layout": "list",
         "eyebrow": "Detalles",
         "heading": "Detalles de la pulsera",
-        "image_key": "detalle",
-        "image_alt": "Detalle de la pulsera rosario: medalla ovalada de la Virgen María con borde de pequeñas piedras, cruz y cuentas tricolor",
+        "image_key": "infografia",
+        "image_alt": "Infografía «Detalles de la pulsera» de la Pulsera Rosario Virgen María Dorada: medalla de la Virgen María, cruz de Jesús, cuentas de rosario tricolor, cierre de acabado dorado pulido, largo ajustable con anillas, aprox. 20 cm / 7,87 in, y regalo religioso especial",
         "color_scheme": "scheme-2",
         "anchor": "detalles",
         "padding_top": 56,
@@ -255,56 +257,64 @@
           "type": "question",
           "settings": {
             "question": "¿De qué material está hecha?",
-            "answer": "<p>Es de acero inoxidable con acabado dorado pulido.</p>"
+            "answer": "<p>Está hecha de acero inoxidable con acabado dorado pulido, que le da un brillo cálido y elegante. Las cuentas combinan tonos dorado, plateado y rosado.</p><p>Solo describimos lo que hemos podido comprobar del producto. Si tienes sensibilidad a algún metal, escríbenos desde nuestra <a href=\"/pages/contacto\" title=\"Contacto\">página de contacto</a> antes de comprar y resolveremos tu duda.</p>"
+          }
+        },
+        "p_medalla": {
+          "type": "question",
+          "settings": {
+            "question": "¿Cómo es la medalla de la Virgen María?",
+            "answer": "<p>Es una medalla ovalada con la imagen de la Virgen María, rodeada de detalles brillantes. Va integrada en la cadena, unida por sus dos extremos, y es la pieza que más destaca del diseño.</p>"
           }
         },
         "p2": {
           "type": "question",
           "settings": {
-            "question": "¿Qué elementos tiene?",
-            "answer": "<p>Una medalla de la Virgen María, una cruz y cuentas de rosario tricolor, con detalles en tonos dorado, plateado y rosado.</p>"
+            "question": "¿Cómo son el crucifijo y las cuentas?",
+            "answer": "<p>El crucifijo, una cruz con la figura de Cristo, forma parte de la propia pulsera: la cadena se une a él por los dos extremos de su eje largo, así que no cuelga.</p><p>Las cuentas de rosario son tricolor, en tonos dorado, plateado y rosado, y se reparten a lo largo de la cadena junto a la medalla y el crucifijo.</p>"
           }
         },
         "p3": {
           "type": "question",
           "settings": {
             "question": "¿Qué longitud tiene y cómo se ajusta?",
-            "answer": "<p>La pulsera tiene una longitud aproximada de 20 cm y cuenta con 3 aros para ajustar el cierre.</p>"
-          }
-        },
-        "p5": {
-          "type": "question",
-          "settings": {
-            "question": "¿Qué incluye mi pedido?",
-            "answer": "<p>Recibirás todas las pulseras del pack que elijas. Cada opción indica cuántas recibes en total, y el carrito lo repite antes de pagar.</p>"
-          }
-        },
-        "p6": {
-          "type": "question",
-          "settings": {
-            "question": "¿Es una buena opción para regalar?",
-            "answer": "<p>Sí. Puede ser un detalle con significado para regalar en un momento especial.</p>"
+            "answer": "<p>Mide aproximadamente 20 cm (7,87 pulgadas). El cierre de mosquetón se engancha en cualquiera de sus 3 aros, así que puedes elegir el que mejor se adapte a tu muñeca para llevarla más ajustada o más holgada.</p>"
           }
         },
         "p7": {
           "type": "question",
           "settings": {
             "question": "¿Puedo llevarla a diario?",
-            "answer": "<p>Está pensada para llevarla en el día a día o regalarla en un momento especial.</p>"
+            "answer": "<p>Sí. Está pensada para llevarla en el día a día, sola o junto a otras pulseras, y también para regalarla en un momento especial.</p>"
+          }
+        },
+        "p5": {
+          "type": "question",
+          "settings": {
+            "question": "¿Qué recibo con cada oferta?",
+            "answer": "<p>Recibes todas las pulseras de la oferta que elijas, también las de regalo, y todas son el mismo modelo. Cada tarjeta indica cuántas pulseras recibes en total y cuánto sale cada una, y el carrito lo repite antes de pagar.</p><p>Las pulseras de regalo van en el mismo pedido, sin coste adicional.</p>"
+          }
+        },
+        "p6": {
+          "type": "question",
+          "settings": {
+            "question": "¿Es una buena opción para regalar?",
+            "answer": "<p>Sí. Es un detalle con significado para alguien especial. Si eliges una oferta con varias pulseras, puedes quedarte una y regalar las demás.</p><p>Si quieres que llegue directamente a otra persona, indica su dirección de entrega al completar el pedido.</p>"
           }
         },
         "p8": {
           "type": "question",
           "settings": {
-            "question": "¿Cuándo recibiré mi pedido?",
-            "answer": "<p>Consulta los plazos y condiciones de entrega en nuestra <a href=\"/policies/shipping-policy\" title=\"Política de envíos\">política de envíos</a>.</p>"
+            "question": "¿Cuánto cuesta el envío y cuándo recibiré mi pedido?",
+            "answer": "<p>Cuando enviemos tu pedido, te mandaremos un correo con el número de seguimiento para que sepas en todo momento dónde está. Encontrarás los plazos y las condiciones de entrega en nuestra <a href=\"/policies/shipping-policy\" title=\"Política de envíos\">política de envíos</a>.</p>",
+            "ship_facts": true
           }
         },
         "p9": {
           "type": "question",
           "settings": {
             "question": "¿Puedo devolver mi pedido?",
-            "answer": "<p>En compras online dispones de 14 días naturales desde la recepción del pedido para ejercer tu derecho de desistimiento. Consulta las condiciones en nuestra <a href=\"/policies/refund-policy\" title=\"Política de devoluciones\">política de devoluciones y reembolsos</a>.</p>"
+            "answer": "<p>Sí. En compras online dispones de 14 días naturales desde la recepción del pedido para ejercer tu derecho de desistimiento, sin necesidad de indicar el motivo. Escríbenos desde nuestra <a href=\"/pages/contacto\" title=\"Contacto\">página de contacto</a> con tu número de pedido y te explicaremos los pasos.</p><p>Además, si la pulsera presenta una falta de conformidad, te ampara la garantía legal aplicable. Consulta todas las condiciones en nuestra <a href=\"/policies/refund-policy\" title=\"Política de devoluciones\">política de devoluciones y reembolsos</a>.</p>"
           }
         },
         "p10": {
@@ -317,11 +327,12 @@
       },
       "block_order": [
         "p1",
+        "p_medalla",
         "p2",
         "p3",
+        "p7",
         "p5",
         "p6",
-        "p7",
         "p8",
         "p9",
         "p10"

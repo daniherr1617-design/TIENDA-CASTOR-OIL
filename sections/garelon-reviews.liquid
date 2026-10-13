@@ -97,9 +97,20 @@
           <div class="g-reviews__app">{% render block %}</div>
         {%- endif -%}
       {%- endfor -%}
-      {%- comment -%} La nota sobre el origen solo acompaña a opiniones visibles (resumen o widget). {%- endcomment -%}
+      {%- comment -%}
+        La nota sobre el origen solo acompaña a opiniones visibles (resumen o widget). Con «Texto del enlace»
+        (D41) va plegada tras un enlace discreto, «Información sobre las opiniones», que la despliega sin JS
+        (details/summary nativos); sin texto del enlace, la nota se muestra abierta como antes.
+      {%- endcomment -%}
       {%- if section.settings.note != blank and has_visible_reviews -%}
-        <div class="g-reviews__note rte">{{ section.settings.note }}</div>
+        {%- if section.settings.note_label != blank -%}
+          <details class="g-reviews__info">
+            <summary class="g-reviews__info-link">{{ section.settings.note_label | escape }}</summary>
+            <div class="g-reviews__note rte">{{ section.settings.note }}</div>
+          </details>
+        {%- else -%}
+          <div class="g-reviews__note rte">{{ section.settings.note }}</div>
+        {%- endif -%}
       {%- endif -%}
     </div>
   </section>
@@ -159,7 +170,14 @@
       "type": "richtext",
       "id": "note",
       "label": "Nota sobre el origen de las opiniones",
-      "info": "Por ejemplo, si importas opiniones de otra tienda, indícalo aquí."
+      "info": "Por ejemplo, si importas opiniones de otra tienda, indícalo aquí: de dónde proceden, cómo se obtuvieron y si son compras verificadas."
+    },
+    {
+      "type": "text",
+      "id": "note_label",
+      "label": "Texto del enlace a la nota",
+      "info": "La nota se muestra plegada tras este enlace (p. ej. «Información sobre las opiniones»). Vacío: la nota se ve abierta.",
+      "default": "Información sobre las opiniones"
     },
     {
       "type": "color_scheme",

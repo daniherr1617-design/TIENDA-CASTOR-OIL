@@ -38,8 +38,8 @@ module.exports = async function phaseO() {
     const q = (re) => faq.find(x => re.test(x.question)) || {};
     const ship = q(/cu[aá]ndo recibir/i), ret = q(/puedo devolver/i);
     ok(`O4 ${f}: FAQ de entrega → /policies/shipping-policy, sin plazos ni países escritos`, /href="\/policies\/shipping-policy"/.test(ship.answer || '') && !/\d+\s*(d[ií]as|semanas)|internacional/i.test(ship.answer || ''), ship);
-    ok(`O5 ${f}: FAQ de devoluciones = desistimiento de 14 días naturales desde la recepción → /policies/refund-policy, corta (≤ 300 caracteres)`,
-      /14 días naturales desde la recepción/.test(ret.answer || '') && /desistimiento/.test(ret.answer || '') && /href="\/policies\/refund-policy"/.test(ret.answer || '') && text(ret.answer || '').length <= 300, ret);
+    ok(`O5 ${f}: FAQ de devoluciones = desistimiento de 14 días naturales desde la recepción → /policies/refund-policy, completa pero breve (≤ 700 caracteres; D41 pide respuestas más completas)`,
+      /14 días naturales desde la recepción/.test(ret.answer || '') && /desistimiento/.test(ret.answer || '') && /href="\/policies\/refund-policy"/.test(ret.answer || '') && text(ret.answer || '').length <= 700, ret);
     const routes = [...JSON.stringify(tpl).matchAll(/(\/(?:policies|pages)\/[a-z0-9-]+)/g)].map(m => m[1]);
     ok(`O6 ${f}: solo rutas legales controladas`, routes.length > 0 && routes.every(x => LEGAL_ROUTES.includes(x)), [...new Set(routes)]);
   }

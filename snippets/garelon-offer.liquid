@@ -7,8 +7,10 @@
   siguen igual. Todo sale de Shopify: precio, precio comparado, disponibilidad.
 
   - Precio comparado tachado: solo si esa variante tiene compare_at_price > price.
-  - Ahorro: con precio comparado, frente a él; si no, frente a comprar las unidades sueltas
-    al precio del pack de 1 (solo si es > 0). Nunca se inventa.
+  - Ahorro: con precio comparado, frente a él; si no, frente a comprar sueltas, al precio del pack
+    de 1, SOLO las unidades que se pagan (D41): en «2 pulseras y 1 de regalo» cuentan 2, no 3; las de
+    regalo no suman ahorro. Solo si es > 0. Nunca se inventa. El precio por unidad sí reparte el
+    precio entre todas las unidades que se reciben.
   - Textos que hablan de ahorro («ahorr…») solo se muestran si ese pack ahorra de verdad.
   - Un distintivo con «mejor precio» solo se muestra en el pack con el precio por unidad más bajo.
   - Unidades que recibe el cliente: garelon-pack-units, desde el valor de la variante
@@ -54,6 +56,7 @@
     assign unit_name = block.settings.unit_singular | default: 'unidad'
     assign badge_pack = block.settings.badge_pack | append: ''
     assign used_pack_basis = false
+    assign has_gift = false
 
     # Pack con el precio por unidad más bajo (de los precios reales de Shopify). Un distintivo que habla
     # de «mejor precio» solo se pinta en ese pack, y solo si es el único con ese precio por unidad.
@@ -138,6 +141,11 @@
             endif
             assign slot_key = forloop.index | append: ''
 
+            assign paid = units
+            if name_first > 0 and name_first < units
+              assign paid = name_first
+              assign has_gift = true
+            endif
             assign compare_saving = 0
             assign pack_saving = 0
             assign unit_price = 0
@@ -146,11 +154,13 @@
                 assign compare_saving = v.compare_at_price | minus: v.price
               endif
               if base_price and units > 1
-                assign reference = base_price | times: units
+                assign per_unit = v.price | times: 1.0 | divided_by: units | round
+                if per_unit < base_price
+                  assign unit_price = per_unit
+                endif
+                assign reference = base_price | times: paid
                 assign pack_saving = reference | minus: v.price
-                if pack_saving > 0
-                  assign unit_price = v.price | times: 1.0 | divided_by: units | round
-                else
+                if pack_saving < 0
                   assign pack_saving = 0
                 endif
               endif
@@ -248,7 +258,12 @@
       </div>
     </fieldset>
     {%- if used_pack_basis -%}
-      <p class="g-offer__note">{{ 'garelon.offer.saving_note' | t: unit: unit_name }}</p>
+      {%- if has_gift -%}
+        {%- assign base_money = base_price | money -%}
+        <p class="g-offer__note">{{ 'garelon.offer.saving_note_gift' | t: price: base_money }}</p>
+      {%- else -%}
+        <p class="g-offer__note">{{ 'garelon.offer.saving_note' | t: unit: unit_name }}</p>
+      {%- endif -%}
     {%- endif -%}
     {%- comment -%}
       Impuestos y envío: nota común con el carrito (garelon-shipping-note). «Envío gratis» es el
