@@ -16,7 +16,7 @@ Todo el JavaScript de Dawn está sin tocar.
 |---|---|
 | Home | `templates/index.json` |
 | Ficha | `templates/product.json` |
-| Portada | `sections/garelon-hero.liquid` |
+| Portada (fuera de la home desde D44; en el editor) | `sections/garelon-hero.liquid` |
 | Compra de la home | `sections/featured-product.liquid` (Dawn + bloques GARELON) |
 | Compra de la ficha | `sections/main-product.liquid` (Dawn + bloques GARELON) |
 | Tarjetas «Elige tu oferta» (packs) | Bloque `garelon_offer` → `snippets/garelon-offer.liquid` |

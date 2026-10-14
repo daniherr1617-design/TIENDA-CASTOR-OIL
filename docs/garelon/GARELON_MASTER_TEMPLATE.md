@@ -105,15 +105,16 @@ Las dos confirmaciones están **desmarcadas** por defecto y no van en `settings_
 - Móvil: menú · logo centrado · carrito, sin solapes desde 320 px. Búsqueda desactivada por defecto.
 - `garelon.js` cierra el menú móvil al pulsar un ancla de la misma página.
 
-### 3.3 Portada · `garelon-hero`
-- H1 de la home, imagen LCP (`eager`, `fetchpriority=high`), un CTA principal hacia `/#comprar`.
-- `show_price` existe en el schema (por defecto `true`), pero **la home lo tiene desactivado por decisión del propietario**: el precio se descubre en los packs.
+### 3.3 Portada · `garelon-hero` (fuera de la home desde D44)
+- **Desde D44 la home empieza por la compra** (§3.4): la portada no está en `templates/index.json`. La sección sigue en el tema y puede añadirse desde el editor.
+- Si se vuelve a usar: H1, imagen LCP (`eager`, `fetchpriority=high`) y un CTA principal hacia `/#comprar`; hay que desactivar «Primera sección de la página» en la compra (`garelon_check` impide dos H1 o una home sin H1). `show_price` existe en el schema (por defecto `true`); el precio se descubre en los packs.
 
 ### 3.4 Bloque de compra · `featured-product` (home) / `main-product` (ficha)
 Formulario oficial de Dawn. Orden de bloques (D37, D43): título, valoración, precio, **garantías** (bloque `confianza`, sin frase), oferta, botones de compra (con pago dinámico) y **frase** debajo del botón (bloque `frase`, sin garantías). D37 había bajado toda la confianza debajo del botón para subir «Elige tu oferta»; D43 devuelve las garantías arriba a petición del propietario. En la ficha también: antetítulo y resumen (antes de la oferta), descripción y pestaña «Envíos y devoluciones».
 - `garelon_media`: `theme` (imágenes fieles del tema, valor de las plantillas) o `shopify` (multimedia del producto, default del schema). Se pasa a `shopify` solo cuando la multimedia del producto esté revisada.
 - `garelon_gallery_keys`: orden de la galería del tema (claves de §4).
 - `garelon_anchor` (solo home): ancla `comprar`, destino de todos los CTA.
+- `garelon_primary` (solo home, D44): «Primera sección de la página». Activo en la home: el título pasa de H2 a **H1** y la primera foto de la galería se carga `eager` con `fetchpriority=high` (LCP). Desactivado por defecto (comportamiento de Dawn).
 
 ### 3.5 Galería · `snippets/garelon-gallery.liquid`
 Sin JS. En móvil, contador decorativo «1 / 5» en cada foto (D38, `aria-hidden`; la infografía no lo lleva para no tapar su texto; oculto desde 750 px) y scroll-snap con **todas las imágenes a todo el ancho** (D37: con fotos al 86 % y la infografía al 100 %, la pista tomaba la altura de la infografía y dejaba un hueco bajo la primera foto). La infografía se ve entera, sin recorte. Desde 750 px, rejilla de 2 columnas **sin huecos** (D42): la primera foto a todo el ancho, las demás fotos de dos en dos y la infografía al final a todo el ancho (`order`), con «Ampliar» debajo sin descuadrar ninguna fila; si quedan fotos impares, la última también va a todo el ancho (`g-gallery__slide--full`, calculado en el snippet). Solo la primera imagen de la ficha es `eager`. La infografía enlaza a su versión grande para ampliarla. Los textos alternativos salen de `garelon.gallery.alt_<clave>`.
@@ -215,7 +216,7 @@ Así no se pierde información fiscal ni se inventan afirmaciones nuevas. Si se 
 - **Infografías con texto:** enlace a la versión grande («Ampliar», debajo de la imagen, nunca encima), ancho completo en móvil y sin esquinas redondeadas que recorten la imagen (D35). **WebP lossless** (D34): el WebP con pérdida submuestrea el color y aclara líneas finas y textos. El mayor ancho es el de la fuente, nunca más (sin ampliar).
 - **Fuente inmutable de `infografia`:** `NUEVA IMAGEN 1.png`, con el SHA-256 de su versión aprobada vigente fijado en `tools/garelon_infografia.py` (`SOURCE_SHA256`; hoy la versión sin líneas indicadoras, D36). Si el propietario la sustituye, la anterior pasa a `RETIRED_SOURCE_SHA256` y la familia sube de versión. `--build` genera los anchos del snippet (reducción proporcional LANCZOS → WebP lossless) y `--check` comprueba fuente, proporción, píxeles por zonas, que no haya PNG y que no vuelva la fuente retirada. `build_zip.py` y `validate.js` lo ejecutan; ninguna otra imagen puede ser su fuente. **Familia versionada (D35, D36):** `assets/producto-infografia-v3-<ancho>.webp` (`assign asset` en `garelon-image`); las familias `producto-infografia-<ancho>.webp` y `producto-infografia-v2-<ancho>.webp` están retiradas y el comprobador bloquea sus nombres, sus referencias y sus versiones antiguas por SHA-256. `--identify IMAGEN` dice si una imagen descargada de la tienda es la fuente (y rechaza una copia con algo añadido, aunque esté recomprimida).
 - **Sustituir una fuente** (misma clave): la nueva imagen a la raíz, la antigua fuera del repo, y se regeneran todos los anchos de la clave. Para `infografia`, además: nuevo SHA-256 en `tools/garelon_infografia.py`, una familia con versión nueva (`-v3`, para que ninguna URL antigua se confunda), `--build` y entrada en el Decision Log. Hoy: `infografia` ← `NUEVA IMAGEN 1.png` (D33); `principal`/`detalle` ← `NUEVA IMAGEN 3.png` (D29).
-- **LCP:** solo la imagen de la portada (home) y la primera de la galería (ficha) son `eager`.
+- **LCP:** solo la primera foto de la galería es `eager`: en la ficha y, desde D44, en la compra de la home (`garelon_primary`).
 - **Multimedia de Shopify:** puede traer imágenes del proveedor con claims no verificados. Por eso las plantillas usan `garelon_media: theme` hasta revisarla.
 
 **Añadir o cambiar una clave:**
@@ -242,7 +243,7 @@ Así no se pierde información fiscal ni se inventan afirmaciones nuevas. Si se 
 
 | Texto | Dónde |
 |---|---|
-| Portada, compra, confianza, packs, tranquilidad, opiniones, significado, detalles, regalo, FAQ, cierre | `templates/index.json` |
+| Compra (primera desde D44), confianza, packs, opiniones, tranquilidad, significado, detalles, regalo, FAQ, cierre | `templates/index.json` |
 | Ficha: antetítulo, resumen, pestaña, secciones | `templates/product.json` |
 | Barra superior, navegación | `sections/header-group.json` |
 | Pie (bloque Ayuda) | `sections/footer-group.json` |

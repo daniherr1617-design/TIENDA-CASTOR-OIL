@@ -234,7 +234,7 @@ def collect(repo):
         tjs = open(os.path.join(hp, 'suite', 'tests.js'), encoding='utf-8').read() if os.path.isfile(os.path.join(hp, 'suite', 'tests.js')) else ''
         # Fases A…Z como cadena y, desde la ronda AA (D44), extras de dos letras en la lista.
         m = re.search(r"const PHASES = (?:\[\.\.\.)?'([A-Z]+)'((?:\s*,\s*'[A-Z]+')*)", tjs)
-        phases = (m.group(1) + ''.join(' ' + x for x in re.findall(r"'([A-Z]+)'", m.group(2)))) if m else 'NO DISPONIBLE'
+        phases = (list(m.group(1)) + re.findall(r"'([A-Z]+)'", m.group(2))) if m else 'NO DISPONIBLE'
         snap['render_harness'] = {'path': 'tests/render-harness', 'phases': phases,
                                   'deps': pkg.get('dependencies', {}), 'lock': os.path.isfile(os.path.join(hp, 'package-lock.json'))}
     snap['tools'] = sorted(f for f in os.listdir(os.path.join(repo, 'tools'))) if os.path.isdir(os.path.join(repo, 'tools')) else []

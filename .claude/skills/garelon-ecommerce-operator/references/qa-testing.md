@@ -44,7 +44,7 @@ Todo está versionado en `tests/render-harness/` (`tests/render-harness/README.m
 - Un endpoint de estado (`/__state?mode=…`) cambia el escenario (también `freeship=0|1` para el ajuste «Envío gratis» y `taxes=included|excluded|duties|both`) y una cabecera de respuesta indica la plantilla usada.
 - **Playwright + Chromium** (en este entorno: `/opt/pw-browsers`, sin descargar navegadores) ejecuta el JS real de Dawn. `standard-events.js` de Shopify se sustituye por un stub.
 
-- Fases `suite/tests.js` (A) y `suite/tests-B.js`…: una por ronda de trabajo. **Una ronda nueva añade su fase** (y la letra en `PHASES`), con su propia prueba de alcance fijada a su commit base. Muchas pruebas son específicas del producto actual: en una migración se adaptan, nunca se borran para obtener verde.
+- Fases `suite/tests.js` (A) y `suite/tests-B.js`…: una por ronda de trabajo. **Una ronda nueva añade su fase** (y la letra en `PHASES`; tras la Z siguen AA, AB…), con su propia prueba de alcance fijada a su commit base. Muchas pruebas son específicas del producto actual: en una migración se adaptan, nunca se borran para obtener verde.
 
 Al informar, di cuántas pruebas se ejecutaron (en el repo y en el ZIP descomprimido, donde se saltan las que necesitan git) y en qué escenarios. El total actual está en `current-store-state.md`.
 

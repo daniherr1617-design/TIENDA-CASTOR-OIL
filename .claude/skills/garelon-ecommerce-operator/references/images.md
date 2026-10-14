@@ -47,7 +47,7 @@ Para cada imagen, una fila:
 4. Información (infografía con medidas y características).
 5. Contexto o emoción (lifestyle).
 
-Ajusta según lo que la página enseñó justo antes: en la home, la portada ya muestra una imagen, así que la galería de compra no la repite al principio. El orden vigente está en `current-store-state.md`.
+Ajusta según lo que la página enseñó justo antes: en la home, desde D44 la galería de compra abre la página (sin portada), así que su primera foto es la LCP y debe enseñar el producto con claridad. El orden vigente está en `current-store-state.md`.
 
 ## Pipeline técnico (Master §4)
 

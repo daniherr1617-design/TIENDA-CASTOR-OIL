@@ -102,7 +102,7 @@ Por eso, en los informes se distingue `PROBADO LOCALMENTE` / `ZIP DESCOMPRIMIDO`
 
 ## 8. Mantenimiento
 
-- **Pruebas de una ronda nueva:** se añaden en `suite/tests-<letra>.js` y la letra se añade a `PHASES` en `suite/tests.js`.
+- **Pruebas de una ronda nueva:** se añaden en `suite/tests-<letra>.js` y la letra se añade a `PHASES` en `suite/tests.js`. Tras la Z, las fases siguen con dos letras (`AA`, `AB`…), añadidas al final de la lista `PHASES` (ronda AA, D44).
 - **Alcance de cada ronda:** las pruebas que comparan con git («archivos tocados», «plantillas intactas salvo…») se fijan al rango de commits de esa ronda (I25-I27 y J19-J21: hasta `955bcc3`; K23-K26: `c265802..974eadd`; L13-L17: `fb4b850..3a78374`; M23-M26: `8d7e8fd..a1b03ef`; N15-N18 comparan con `a15a2c3`). Así no fallan cuando una ronda posterior cambia otros archivos, y la ronda nueva tiene su propia prueba de alcance.
 - **Cambio de producto:** muchas pruebas son específicas de la Pulsera Rosario (textos, claves de imagen, handle). Hay que adaptarlas en la migración (`docs/garelon/GARELON_MIGRATION_PROMPT_TEMPLATE.md`).
 - **Lo que no se versiona:** `node_modules/`, capturas, logs, trazas, ZIPs y resultados (`.gitignore`). Las capturas de comprobación visual se guardan fuera del repo.

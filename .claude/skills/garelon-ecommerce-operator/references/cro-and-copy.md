@@ -23,7 +23,7 @@ Jerarquía visual · un CTA claro · packs con ahorro real · `compare_at_price`
 
 ## Estructura de la página (lo aprobado hoy)
 
-- **Portada:** producto y beneficio, un CTA («Elegir mi …» → `/#comprar`), **sin «A partir de X €»**.
+- **Inicio de la home (D44):** la compra va primero, sin portada; el título del producto es el H1. Si vuelve una portada: producto y beneficio, un CTA («Elegir mi …» → `/#comprar`), **sin «A partir de X €»**.
 - **Compra (D37, D43):** título, valoración real (si existe), «Elige tu oferta» (precio dentro de cada tarjeta; pack de 3 como foco editorial con «Mejor precio por pulsera», sin preseleccionarlo), texto de campaña si lo hay, «Impuestos incluidos. Envío gratis.» (si el envío es gratis; el mismo texto en el cajón y en `/cart`), Añadir al carrito y pago dinámico, y **debajo** la frase emocional (una vez). Las 3 garantías van **antes de «Elige tu oferta»** (D43), en una franja compacta.
 - Después: opiniones → «Compra con tranquilidad» → significado → detalles → regalo → FAQ → cierre. El orden real está en el snapshot.
 - **Ahorro con regalo (D41):** el «Ahorras X €» cuenta solo las unidades pagadas frente a comprarlas sueltas; las de regalo no suman. No usar «Ahorra 24,98 €» en anuncios sin decir la base (3 sueltas a 19,99 €).

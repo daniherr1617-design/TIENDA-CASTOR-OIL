@@ -25,7 +25,7 @@ Cada punto se marca con el lugar donde se probó: `PROBADO LOCALMENTE`, `ZIP DES
 - [ ] 🅲 Cada clave tiene todos sus anchos (`tools/garelon_check.py`) y un texto alternativo en español fiel a la imagen.
 - [ ] 🅲 Infografía con texto: WebP lossless que salen solo de su fuente aprobada, sin recorte ni ampliación (`python3 tools/garelon_infografia.py`; con fuente nueva, SHA-256 actualizado, familia con versión nueva y `--build`).
 - [ ] 🅿 Infografía en la vista previa: abrir «Ampliar» (o la imagen en una pestaña nueva); la URL es de la familia versionada vigente (hoy `producto-infografia-v3-`) y la imagen descargada pasa `tools/garelon_infografia.py --identify`.
-- [ ] 🅲 Orden de galería razonado en la home y en la ficha, sin repetir lo que la portada acaba de enseñar.
+- [ ] 🅲 Orden de galería razonado en la home y en la ficha (en la home la galería de compra abre la página desde D44: su primera foto es la LCP).
 - [ ] 🅲 Solo la imagen LCP es `eager`.
 - [ ] 🅿 Las imágenes mejoradas no cambian el producto (verificación del propietario).
 - [ ] 🆂 La multimedia del producto en Shopify no trae imágenes con claims no verificados (antes de pasar `garelon_media` a `shopify`).
@@ -38,7 +38,7 @@ Cada punto se marca con el lugar donde se probó: `PROBADO LOCALMENTE`, `ZIP DES
 ## 4. Móvil y responsive
 - [ ] 🅲 Sin scroll horizontal a 320, 360, 375, 390, 430, 768, 1024 y 1440 px.
 - [ ] 🅲 Cabecera móvil: menú · logo · carrito sin solapes.
-- [ ] 🅲 Portada: H1 y CTA en la primera pantalla del móvil; sin precio en la portada.
+- [ ] 🅲 Home: la compra es lo primero (D44); su título es el único H1 y está en la primera pantalla del móvil, y «Elige tu oferta» llega con un desplazamiento corto.
 - [ ] 🅲 Tarjetas de packs simétricas (y las de cualquier sección con etiquetas); texto bajo los packs en una línea a 320 px.
 - [ ] 🅲 «Para regalar» (si se usa) y la FAQ de regalo: idea genérica, sin enumerar ocasiones concretas salvo petición expresa del propietario (D31); sin rejilla vacía.
 - [ ] 🅲 Objetivos táctiles ≥ 44 px; compra fija en la ficha móvil.

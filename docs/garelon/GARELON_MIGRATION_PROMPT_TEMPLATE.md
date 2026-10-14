@@ -101,7 +101,7 @@ F4 · Assets y puntos acoplados al producto (Master Template §7)
 F5 · Home (templates/index.json)
   - Mantén la estructura salvo que el producto exija otra; index.json siempre instalable (R17).
     Único bloque de app permitido: el Review Widget oficial de Judge.me en «GARELON Opiniones» (D30).
-  - Portada sin precio y con un CTA a /#comprar; packs con el bloque garelon_offer.
+  - La home empieza por la compra (D44: sin portada, «Primera sección de la página» activo, título = H1); packs con el bloque garelon_offer.
 
 F6 · Ficha (templates/product.json)
   - Coherente con la home, con galería en {{GALLERY_ORDER_PRODUCT}} y compra fija.
