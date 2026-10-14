@@ -100,10 +100,10 @@ module.exports = async function (browser) {
     ok('X17 galería de la home: completa → infografía → principal → oración (sin `detalle`)', JSON.stringify(slides(gallery(buy(home, '/')))) === JSON.stringify(['completa', 'infografia', 'principal', 'oracion']), slides(gallery(buy(home, '/'))));
     ok('X18 galería de la ficha: completa → principal → infografía → oración (sin `detalle`)', JSON.stringify(slides(gallery(pdp))) === JSON.stringify(['completa', 'principal', 'infografia', 'oracion']), slides(gallery(pdp)));
     const det = (pdp.match(/<section[^>]*id="detalles"[\s\S]*?<\/section>/) || [''])[0];
-    ok('X19 ficha · «Detalles de la pulsera» usa la infografía aprobada (como la home)', /producto-infografia-v3-1254\.webp/.test(det) && /alt="Infografía «Detalles de la pulsera»/.test(det));
+    ok('X19 ficha · «Detalles de la pulsera» usa la infografía aprobada (como la home)', det.includes(`${T.assetBase('infografia')}-1254.webp`) && /alt="Infografía «Detalles de la pulsera»/.test(det));
     ok('X20 ninguna página sirve producto-detalle ni su alt', !/producto-detalle|Detalle de la pulsera rosario: medalla/.test(home + pdp));
   }
-  ok('X21 assets: producto-detalle-*.webp retirados; las demás fotos siguen', !fs.readdirSync(`${THEME}/assets`).some(f => /^producto-detalle-/.test(f)) && ['producto-principal-1080.webp', 'producto-completa-1080.webp', 'producto-oracion-1080.webp', 'producto-infografia-v3-1254.webp'].every(f => fs.existsSync(`${THEME}/assets/${f}`)));
+  ok('X21 assets: producto-detalle-*.webp retirados; las demás fotos siguen', !fs.readdirSync(`${THEME}/assets`).some(f => /^producto-detalle-/.test(f)) && ['producto-principal-1080.webp', 'producto-completa-1080.webp', 'producto-oracion-1080.webp', `${T.assetBase('infografia')}-1254.webp`].every(f => fs.existsSync(`${THEME}/assets/${f}`)));
   ok('X22 el selector de imagen de las secciones ya no ofrece `detalle`', ['sections/garelon-details.liquid', 'sections/garelon-hero.liquid', 'sections/garelon-image-text.liquid', 'snippets/garelon-image.liquid', 'snippets/garelon-gallery.liquid'].every(f => !/"value": "detalle"|when 'detalle'/.test(fs.readFileSync(`${THEME}/${f}`, 'utf8'))));
 
   // 5 · Sin regresiones: navegador, carrito y móvil

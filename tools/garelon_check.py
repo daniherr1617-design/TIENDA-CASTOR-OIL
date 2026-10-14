@@ -795,7 +795,7 @@ def check_image_keys(theme):
     keys = {}
     for key, widths in re.findall(r"when '([\w-]+)'\s*assign widths = '([\d,]+)'", src):
         keys[key] = widths.split(',')
-        # Familia versionada de una clave (p. ej. infografia → producto-infografia-v3, D35-D36); si no, producto-<clave>.
+        # Familia versionada de una clave (p. ej. infografia → producto-infografia-v4, D35-D36, D45); si no, producto-<clave>.
         m = re.search(r"if key == '%s'\s*assign asset = '([\w-]+)'" % re.escape(key), src)
         base = m.group(1) if m else f'producto-{key}'
         for w in keys[key]:

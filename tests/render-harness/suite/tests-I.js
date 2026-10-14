@@ -39,7 +39,7 @@ print(';'.join(f.split('/')[-1]+'='+'x'.join(map(str,Image.open(f).size)) for f 
   ok('I2 assets cuadrados al ancho de su nombre (sin recortes ni deformación)', dims.split(';').every(p => { const [n, d] = p.split('='); const w = n.match(/-(\d+)\.webp/)[1]; return d === `${w}x${w}`; }), dims);
   const REPO = fs.existsSync(`${THEME}/.git`); // I3, I25-I28: solo en el repositorio (el ZIP no lleva PNG, .md ni git)
   // Ronda P: «NUEVA IMAGEN 1.png» (flechas corregidas por el propietario) sustituye a «Imagen 1.png» como fuente de `infografia`.
-  if (REPO) ok('I3 originales conservados como fuente («NUEVA IMAGEN 1.png» e «imagen 4.png»)', fs.existsSync(`${THEME}/NUEVA IMAGEN 1.png`) && fs.existsSync(`${THEME}/imagen 4.png`));
+  if (REPO) ok('I3 originales conservados como fuente («NUEVA IMAGEN 1.png» y, desde D45, «NUEVA IMAGEN 4.png»)', fs.existsSync(`${THEME}/NUEVA IMAGEN 1.png`) && fs.existsSync(`${THEME}/NUEVA IMAGEN 4.png`));
   const snip = fs.readFileSync(`${THEME}/snippets/garelon-image.liquid`, 'utf8');
   ok('I4 claves en el sistema GARELON existente (garelon-image), sin sistema paralelo', /when 'completa'\s*assign widths = '480,720,1080'/.test(snip) && /when 'infografia'\s*assign widths = '480,720,1080,1254'/.test(snip) && fs.readdirSync(`${THEME}/snippets`).filter(f => /^garelon-.*(gallery|galeria)/.test(f)).length === 1);
 

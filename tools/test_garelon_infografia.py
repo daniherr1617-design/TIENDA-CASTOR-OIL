@@ -26,7 +26,7 @@ SOURCE = 'NUEVA IMAGEN 1.png'
 
 
 def asset(t, w):
-    return f'{t}/theme/assets/producto-infografia-v3-{w}.webp'
+    return f'{t}/theme/assets/producto-infografia-v4-{w}.webp'
 
 
 def resave(t, w, fn, **kw):
@@ -117,7 +117,7 @@ def m_v2_ref(t):
 
 
 def m_snippet_v2(t):
-    edit_snippet(t, "assign asset = 'producto-infografia-v3'", "assign asset = 'producto-infografia-v2'")
+    edit_snippet(t, "assign asset = 'producto-infografia-v4'", "assign asset = 'producto-infografia-v2'")
 
 
 def m_retired_source(t):
@@ -127,7 +127,7 @@ def m_retired_source(t):
 
 
 def m_unversioned(t):
-    edit_snippet(t, "    assign asset = 'producto-infografia-v3'\n", '')
+    edit_snippet(t, "    assign asset = 'producto-infografia-v4'\n", '')
 
 
 def m_editor_override(t):

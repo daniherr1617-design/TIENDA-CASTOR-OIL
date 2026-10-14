@@ -9,6 +9,7 @@ const STUB = fs.readFileSync(path.join(__dirname, '..', 'fixtures', 'standard-ev
 const { execSync } = require('child_process');
 const P = '/products/pulsera-rosario-virgen-maria';
 const BASE = '67c09df'; // HEAD antes de la ronda AA
+const ROUND_HEAD = 'f0a502b'; // Ronda AB: commit del tema de la ronda AA (alcance fijado a AA, como en T…Z)
 const REPO = fs.existsSync(THEME + '/.git');
 const json = (f) => JSON.parse(fs.readFileSync(`${THEME}/${f}`, 'utf8').replace(/^\s*\/\*[\s\S]*?\*\/\s*/, ''));
 const buy = (html) => (html.match(/<section\s+id="comprar"[\s\S]*?<\/product-info>/) || [''])[0];
@@ -79,15 +80,14 @@ module.exports = async function (browser) {
 
   // 5 · Alcance: solo la plantilla de inicio y el ajuste de la compra
   if (REPO) {
-    const changed = execSync(`git -C ${THEME} diff --name-only ${BASE} -- assets config layout locales sections snippets templates`).toString().trim().split('\n').filter(Boolean)
-      .concat(execSync(`git -C ${THEME} ls-files --others --exclude-standard -- assets config layout locales sections snippets templates`).toString().trim().split('\n').filter(Boolean));
+    const changed = execSync(`git -C ${THEME} diff --name-only ${BASE} ${ROUND_HEAD} -- assets config layout locales sections snippets templates`).toString().trim().split('\n').filter(Boolean);
     ok('AA11 alcance: solo templates/index.json y sections/featured-product.liquid (sin CSS, ficha, packs, opiniones, FAQ, imágenes, locales ni ajustes)',
       changed.length === 2 && changed.every(f => /^(templates\/index\.json|sections\/featured-product\.liquid)$/.test(f)), changed);
     const at = (f) => JSON.parse(execSync(`git -C ${THEME} show ${BASE}:${f}`).toString().replace(/^\s*\/\*[\s\S]*?\*\/\s*/, ''));
     const before = at('templates/index.json'); const now = json('templates/index.json');
     const strip = (t) => { const c = JSON.parse(JSON.stringify(t)); delete c.sections.portada; c.order = c.order.filter(x => x !== 'portada'); delete c.sections.compra.settings.garelon_primary; return c; };
     ok('AA12 index.json: fuera de la portada y del nuevo ajuste no cambia nada (orden, packs, campaña, opiniones, FAQ, imágenes, textos)', JSON.stringify(strip(before)) === JSON.stringify(strip(now)));
-    const sec = execSync(`git -C ${THEME} diff -U0 ${BASE} -- sections/featured-product.liquid`).toString().split('\n').filter(l => /^[+-][^+-]/.test(l));
+    const sec = execSync(`git -C ${THEME} diff -U0 ${BASE} ${ROUND_HEAD} -- sections/featured-product.liquid`).toString().split('\n').filter(l => /^[+-][^+-]/.test(l));
     ok('AA13 featured-product: solo el ajuste «Primera sección de la página», la etiqueta del título (h2 → h1 con el ajuste) y la foto prioritaria',
       sec.every(l => /garelon_primary|title_tag|"type": "checkbox"|"label": "Primera sección|"default": false|"info": "Actívalo|^\+\s*[{}],?$|^\+\s*\{%- liquid|^\+\s*-%\}|^\+\s*(assign|if|endif)\b|^-\s*<\/?h2|garelon-gallery/.test(l)) && sec.filter(l => /^-/.test(l)).length === 3, sec);
   }

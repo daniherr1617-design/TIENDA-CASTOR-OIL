@@ -5,7 +5,7 @@ const fs = require('fs'); const path = require('path');
 const THEME = path.resolve(process.env.THEME || path.join(__dirname, '..', '..', '..'));
 const B = 'http://localhost:' + (process.env.PORT || 8810);
 // Tras la Z, las rondas siguen con AA, AB… (ronda AA, D44).
-const PHASES = [...'ABCDEFGHIJKLMNOPQRSTUVWXYZ', 'AA']; const PH = PHASES.indexOf(process.env.PHASE || PHASES[PHASES.length - 1]);
+const PHASES = [...'ABCDEFGHIJKLMNOPQRSTUVWXYZ', 'AA', 'AB']; const PH = PHASES.indexOf(process.env.PHASE || PHASES[PHASES.length - 1]);
 const at = (p) => PHASES.indexOf(p) <= PH;
 const results = []; const ok = (n, c, i) => results.push([c ? 'PASS' : 'FAIL', n, i === undefined ? '' : JSON.stringify(i).slice(0, 300)]);
 const setState = (q) => fetch(`${B}/__state?${q}`).then(r => r.json());
@@ -37,7 +37,7 @@ async function launchChromium() {
   }
 }
 // Nombre base de los WebP de una clave: producto-<clave>, salvo una familia versionada en garelon-image
-// (infografia → producto-infografia-v3 desde la ronda S, D36; v2 en la ronda R, D35).
+// (infografia → producto-infografia-v4 desde la ronda AB, D45; v3 en las rondas S…AA, D36; v2 en la ronda R, D35).
 function assetBase(key) {
   const snip = fs.readFileSync(path.join(THEME, 'snippets', 'garelon-image.liquid'), 'utf8');
   const m = snip.match(new RegExp(`if key == '${key}'\\s*assign asset = '([\\w-]+)'`));

@@ -3,22 +3,22 @@
 
 La ÚNICA fuente autorizada de la clave `infografia` es «NUEVA IMAGEN 1.png» (raíz del repo,
 subida y aprobada por el propietario). Es inmutable: esta herramienta solo la lee, nunca la
-reescribe. Su versión vigente es la que fija SOURCE_SHA256 (snapshot aprobado actual, D36: sin las
-líneas indicadoras, que el propietario quitó a propósito). El único proceso permitido es:
+reescribe. Su versión vigente es la que fija SOURCE_SHA256 (snapshot aprobado actual, D45: la imagen 1 nueva
+que el propietario subió a main el 2026-10-14). El único proceso permitido es:
 
     NUEVA IMAGEN 1.png → reducción proporcional (LANCZOS, solo si el ancho es menor) → WebP lossless
 
 Sin IA, sin recorte, sin reencuadre, sin filtros y sin ampliar. Los anchos salen del snippet
 `snippets/garelon-image.liquid` (when 'infografia'), no de esta herramienta.
 
-Familia versionada (D35, D36): assets/producto-infografia-v3-<ancho>.webp. Cada versión de la fuente
+Familia versionada (D35, D36, D45): assets/producto-infografia-v4-<ancho>.webp. Cada versión de la fuente
 tiene su propia familia, con un nombre (y una URL) que no se repite. Las familias anteriores
-(producto-infografia-<ancho>.webp y producto-infografia-v2-<ancho>.webp) están retiradas: ni sus
+(producto-infografia-<ancho>.webp, -v2- y -v3-) están retiradas: ni sus
 archivos ni sus referencias pueden volver al tema, y el contenido de sus versiones se reconoce por su
 SHA-256 (RETIRED_SHA256). Las versiones anteriores de la fuente, también (RETIRED_SOURCE_SHA256).
 
 Uso:
-  python3 tools/garelon_infografia.py --build           genera assets/producto-infografia-v3-<ancho>.webp
+  python3 tools/garelon_infografia.py --build           genera assets/producto-infografia-v4-<ancho>.webp
   python3 tools/garelon_infografia.py                   comprueba el repositorio (lo mismo que --check)
   python3 tools/garelon_infografia.py --check --theme CARPETA [--source PNG]
                                                         comprueba otra copia del tema (p. ej. el ZIP
@@ -44,18 +44,19 @@ HERE = os.path.dirname(os.path.abspath(__file__))
 ROOT = os.path.dirname(HERE)
 KEY = 'infografia'
 SOURCE = 'NUEVA IMAGEN 1.png'
-# Snapshot aprobado actual (D36, 2026-10-06): la versión sin líneas indicadoras que el propietario subió a main
-# (a173b6a, con el nombre «IMAGENN 1.png»), copiada byte a byte como «NUEVA IMAGEN 1.png».
-SOURCE_SHA256 = '0e0ad4ea3ce30ddad5e66408ce3f37d8b85808655556248533dc00c6bc0700eb'
+# Snapshot aprobado actual (D45, 2026-10-14): la imagen 1 nueva que el propietario subió a main (d697947, con el
+# nombre «NUEVA IMAGEN 1.png»), copiada byte a byte.
+SOURCE_SHA256 = 'e22f0ca37d5aa31c3b61af2d109ac3bc2fcb2210264cba9cf2983c0c2a380ef2'
 # Versiones anteriores de «NUEVA IMAGEN 1.png»: retiradas, nunca pueden volver a ser fuente.
 RETIRED_SOURCE_SHA256 = {
     '3795161cabb89ae32b7a4d9ac9acb8b770dc76f62c5795817743a9a6ddb3db0e': 'versión anterior (main 4365050, D33-D35, con líneas indicadoras)',
+    '0e0ad4ea3ce30ddad5e66408ce3f37d8b85808655556248533dc00c6bc0700eb': 'versión anterior (main a173b6a «IMAGENN 1.png», D36-D44)',
 }
 SOURCE_SIZE = (1254, 1254)
 OLD_SOURCES = ['Imagen 1.png']  # retiradas: nunca pueden volver a ser fuente
-VERSION = 'v3'
-ASSET = 'producto-%s-%s' % (KEY, VERSION)  # familia versionada (D35, D36): nombre nuevo, sin caché ni referencias antiguas
-# Familias anteriores, retiradas (producto-infografia-<ancho> y producto-infografia-v2-<ancho>). Sus versiones
+VERSION = 'v4'
+ASSET = 'producto-%s-%s' % (KEY, VERSION)  # familia versionada (D35, D36, D45): nombre nuevo, sin caché ni referencias antiguas
+# Familias anteriores, retiradas (producto-infografia-<ancho>, -v2-<ancho> y -v3-<ancho>). Sus versiones
 # (solo el SHA-256; los archivos no se recuperan) no pueden volver al tema con ningún nombre.
 OLD_FAMILY = re.compile(r'producto-%s-(?!%s\b)' % (KEY, VERSION))
 RETIRED_SHA256 = {
@@ -71,6 +72,10 @@ RETIRED_SHA256 = {
     '707fd828d158ac2211b61bf2d800dc08d86c9197a50e55d8c5682e9e86b80195': 'producto-infografia-v2-720.webp de la fuente anterior (894ec79, con líneas indicadoras)',
     '1dc83de577d2140a864001b93665787add2dbd07a33a53edc51a7caaaeb0c89e': 'producto-infografia-v2-1080.webp de la fuente anterior (894ec79, con líneas indicadoras)',
     '956073f8ca2f8775550fd30820ac4a009703e211efd33660168d385ea2f5b530': 'producto-infografia-v2-1254.webp de la fuente anterior (894ec79, con líneas indicadoras)',
+    'f7937b899c1baab2ced75cb3bd20fc324e1518bc36442fe208a9c772d5160e05': 'producto-infografia-v3-480.webp de la fuente anterior (a173b6a, D36-D44)',
+    'c3575c74d10683564a05c0a1ac1c7b31aac42d2fdcc0dcc97d5caa7906f184b0': 'producto-infografia-v3-720.webp de la fuente anterior (a173b6a, D36-D44)',
+    '39cac4fe1a0f0f703c4a2d915fe8d5e0ec6c431e3e5aedf64ab7a7654a3e1bec': 'producto-infografia-v3-1080.webp de la fuente anterior (a173b6a, D36-D44)',
+    '018b8cee4582ebc57c5d5c2d59937025466a52e314e957736e07dc5dd01d43a6': 'producto-infografia-v3-1254.webp de la fuente anterior (a173b6a, D36-D44)',
 }
 ENCODE = dict(lossless=True, quality=100, method=6)  # lossless: sin submuestreo de color en líneas y textos
 

@@ -6,7 +6,7 @@
   - image: imagen elegida en el editor (image_picker) o blank (con key 'infografia' no se usa)
   - key: clave del asset del tema: 'principal' | 'completa' | 'infografia' | 'oracion' | 'none' (el recorte 'detalle' se retiró en D41)
     ('infografia' lleva texto: se envuelve en un enlace a la versión grande para poder ampliarla.
-    Es siempre la familia versionada assets/producto-infografia-v3-<ancho>.webp, generada solo desde
+    Es siempre la familia versionada assets/producto-infografia-v4-<ancho>.webp, generada solo desde
     «NUEVA IMAGEN 1.png» con tools/garelon_infografia.py: no la sustituye la imagen del editor)
   - alt: texto alternativo (si la imagen del editor tiene alt propio, manda ese)
   - sizes: atributo sizes
@@ -44,7 +44,7 @@
   endcase
   assign asset = 'producto-' | append: key
   if key == 'infografia'
-    assign asset = 'producto-infografia-v3'
+    assign asset = 'producto-infografia-v4'
   endif
 -%}
 {%- if use_editor -%}

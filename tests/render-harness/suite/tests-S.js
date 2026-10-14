@@ -15,7 +15,7 @@ const REPO_ROOT = path.resolve(__dirname, '..', '..', '..');
 const IS_REPO = path.resolve(THEME) === REPO_ROOT;
 const TOOL = path.join(REPO_ROOT, 'tools', 'garelon_infografia.py');
 const SRC = path.join(REPO_ROOT, 'NUEVA IMAGEN 1.png');
-const OWNER_UPLOAD = ['a173b6a', 'IMAGENN 1.png']; // subida del propietario a main (2026-10-06)
+const OWNER_UPLOAD = ['d697947', 'NUEVA IMAGEN 1.png']; // última subida del propietario a main (2026-10-14, D45; antes a173b6a «IMAGENN 1.png»)
 const PREVIOUS_SHA256 = '3795161cabb89ae32b7a4d9ac9acb8b770dc76f62c5795817743a9a6ddb3db0e'; // versión anterior, retirada
 const P = '/products/pulsera-rosario-virgen-maria';
 const VPS = [320, 360, 375, 390, 430, 768, 1024, 1440];
@@ -92,18 +92,18 @@ module.exports = async function phaseS(browser) {
 
   // 2 · Familia v3: solo ella en el tema, generada desde la fuente vigente
   const inf = fs.readdirSync(`${THEME}/assets`).filter(f => f.includes('infografia')).sort();
-  ok('S4 assets/: solo producto-infografia-v3-{480,720,1080,1254}.webp; nada de la familia antigua ni de la v2',
-    ASSET === 'producto-infografia-v3' && ASSET === tool.asset && JSON.stringify(inf) === JSON.stringify([480, 720, 1080, 1254].map(w => `${ASSET}-${w}.webp`).sort()), inf);
+  ok(`S4 assets/: solo ${ASSET}-{480,720,1080,1254}.webp (familia vigente; v4 desde D45); nada de las familias antiguas`,
+    /^producto-infografia-v\d+$/.test(ASSET) && ASSET === tool.asset && JSON.stringify(inf) === JSON.stringify([480, 720, 1080, 1254].map(w => `${ASSET}-${w}.webp`).sort()), inf);
   const leftovers = [];
   for (const d of ['config', 'layout', 'locales', 'sections', 'snippets', 'templates']) {
-    for (const f of fs.readdirSync(`${THEME}/${d}`)) if (/producto-infografia-(?:v2\b|\d)/.test(fs.readFileSync(`${THEME}/${d}/${f}`, 'utf8'))) leftovers.push(`${d}/${f}`);
+    for (const f of fs.readdirSync(`${THEME}/${d}`)) if (/producto-infografia-(?:v[23]\b|\d)/.test(fs.readFileSync(`${THEME}/${d}/${f}`, 'utf8'))) leftovers.push(`${d}/${f}`);
   }
   for (const u of ['/', P, '/cart', '/pages/contacto', '/ruta-inexistente-garelon']) {
-    if (/producto-infografia-(?:v2\b|\d)/.test((await get(u)).html)) leftovers.push(u);
+    if (/producto-infografia-(?:v[23]\b|\d)/.test((await get(u)).html)) leftovers.push(u);
   }
-  ok('S5 ninguna referencia activa a producto-infografia-<ancho> ni a producto-infografia-v2-<ancho> (archivos del tema y páginas servidas)', leftovers.length === 0, leftovers);
+  ok('S5 ninguna referencia activa a producto-infografia-<ancho>, -v2-<ancho> ni -v3-<ancho> (archivos del tema y páginas servidas)', leftovers.length === 0, leftovers);
   const chk = spawnSync('python3', [TOOL, '--check', '--theme', THEME, '--source', SRC], { encoding: 'utf8' });
-  ok('S6 tools/garelon_infografia.py --check: los 4 WebP v3 son lossless, sin recorte ni ampliación, píxel a píxel la fuente vigente y sin diferencias concentradas',
+  ok('S6 tools/garelon_infografia.py --check: los 4 WebP de la familia vigente son lossless, sin recorte ni ampliación, píxel a píxel la fuente vigente y sin diferencias concentradas',
     chk.status === 0 && /0\.000, máxima 0\/255/.test(chk.stdout), chk.stdout.trim().split('\n').slice(-6));
 
   // 3 · Navegador: lo que se ve en los 3 sitios y en la imagen ampliada es la fuente vigente, sin nada añadido.
