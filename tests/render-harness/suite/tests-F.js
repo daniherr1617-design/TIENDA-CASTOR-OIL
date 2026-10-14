@@ -82,7 +82,8 @@ module.exports = async function (browser) {
   {
     const { page, errs } = await openPage(browser, '/', { width: 390, height: 844 });
     const t = await page.evaluate(() => ({ h1: document.querySelectorAll('h1').length, compra: !!document.getElementById('comprar'), sticky: !!document.querySelector('[data-garelon-sticky]') }));
-    ok('F22 tienda sin productos: home con su H1, sin compra ni errores JS', t.h1 === 1 && !t.compra && errs.length === 0, { t, errs });
+    // D44: el H1 de la home es el título del producto; sin producto no hay compra ni H1 duplicado.
+    ok('F22 tienda sin productos: home sin compra, como mucho un H1 y sin errores JS', t.h1 <= 1 && !t.compra && errs.length === 0, { t, errs });
     await page.close();
   }
   await setState('reset=1&catalog=ok&mode=pack3save');

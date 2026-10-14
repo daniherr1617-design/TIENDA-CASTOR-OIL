@@ -289,6 +289,25 @@ def ok_jm_removed(t):
         sec.pop('blocks'); sec.pop('block_order'); jsave(p, d)
 
 
+
+HERO = {'type': 'garelon-hero', 'settings': {'eyebrow': 'Joyería con significado', 'heading': 'Pulsera Rosario Virgen María',
+                                             'button_label': 'Elegir mi pulsera', 'anchor': 'inicio'}}
+
+
+def m_hero_back(t):
+    """La portada vuelve encima de la compra, que sigue siendo «Primera sección»: dos H1 (D44)."""
+    idx = jload(f'{t}/templates/index.json')
+    idx['sections']['portada'] = HERO; idx['order'].insert(0, 'portada'); jsave(f'{t}/templates/index.json', idx)
+
+
+def m_home_no_h1(t):
+    idx = jload(f'{t}/templates/index.json')
+    idx['sections']['compra']['settings']['garelon_primary'] = False; jsave(f'{t}/templates/index.json', idx)
+
+
+def ok_hero_back_coherent(t):
+    m_hero_back(t); m_home_no_h1(t)
+
 MUTATIONS = [
     ('falta templates/index.json', m_remove('templates/index.json')),
     ('falta layout/theme.liquid', m_remove('layout/theme.liquid')),
@@ -352,12 +371,15 @@ MUTATIONS = [
     ('garantía con plazo de entrega escrito a mano', m_text('templates/product.json', 'Pago seguro', 'Entrega en 5–10 días naturales')),
     ('selector de país activo en el pie (la tienda vende solo en España)',
      m_text('sections/footer-group.json', '"enable_country_selector": false', '"enable_country_selector": true')),
+    ('portada otra vez encima de la compra principal: dos H1 en la home (D44)', m_hero_back),
+    ('home sin H1: la compra deja de ser la primera sección y no hay portada (D44)', m_home_no_h1),
 ]
 
 # Cambios válidos que NO deben dar error (sin falsos positivos).
 VALID = [
     ('«Envío gratis» desactivado y garantía cambiada a «Envío con seguimiento»', ok_free_shipping_off_coherent),
     ('sin el Review Widget de Judge.me (tema instalable igualmente)', ok_jm_removed),
+    ('portada de vuelta con la compra sin «Primera sección»: un solo H1 (D44)', ok_hero_back_coherent),
 ]
 
 

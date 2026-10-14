@@ -620,6 +620,30 @@ def check_trust_unique(theme):
                     err(f'{rel} › {sid}', 'frase de confianza duplicada en dos bloques (D43: una sola vez, debajo del botón)')
 
 
+def check_single_h1(theme):
+    """D44: la compra abre la portada y su título es el H1 (`garelon_primary`). En cada plantilla hay
+    como mucho un H1 (portada con título, compra principal o ficha) y la home tiene exactamente uno:
+    volver a añadir «GARELON Portada» exige desactivar «Primera sección de la página» en la compra."""
+    for fn in sorted(os.listdir(os.path.join(theme.root, 'templates'))):
+        if not fn.endswith('.json'):
+            continue
+        rel = f'templates/{fn}'
+        data = load_json(theme.root, rel) or {}
+        order = data.get('order') or []
+        h1 = []
+        for sid, sec in (data.get('sections') or {}).items():
+            if sid not in order or sec.get('disabled'):
+                continue
+            st, cfg = sec.get('type'), sec.get('settings') or {}
+            if st == 'main-product' or (st == 'featured-product' and cfg.get('garelon_primary') is True) \
+                    or (st == 'garelon-hero' and str(cfg.get('heading', '')).strip()):
+                h1.append(sid)
+        if len(h1) > 1:
+            err(rel, f'{len(h1)} H1 en la página ({", ".join(h1)}): deja solo uno (D44)')
+        if fn == 'index.json' and order and not h1:
+            err(rel, 'la home no tiene H1: activa «Primera sección de la página» en la compra o añade «GARELON Portada» (D44)')
+
+
 # ---------------------------------------------------------------- España, único mercado (D38)
 SPAIN_CLAIM_RE = re.compile(r'toda\s+Espa[ñn]a|toda\s+la\s+pen[ií]nsula|\b\d{1,2}\s*(?:[–-]|a)\s*\d{1,2}\s+d[ií]as(?:\s+(?:naturales|h[aá]biles|laborables))?', re.I)
 
@@ -881,6 +905,7 @@ def main(argv):
     check_free_shipping(theme)
     check_spain_shipping(theme)
     check_trust_unique(theme)
+    check_single_h1(theme)
     check_legal_claims(theme)
     check_contact(theme)
 

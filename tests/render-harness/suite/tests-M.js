@@ -77,7 +77,7 @@ module.exports = async function (browser) {
   ok('M11 home: orden encabezado → widget de Judge.me → nota de origen', iH > 0 && iH < iW && iW < iN, { iH, iW, iN });
   ok('M12 home: con el widget no se duplica la valoración (sin resumen GARELON, sin estrellas propias, sin recuento)', !/g-reviews__summary|g-reviews__score|class="g-stars"|g-reviews__count/.test(s));
   ok('M13 home: un solo título GARELON en la sección (el del widget lo apaga Judge.me) y sin «Reseñas de clientes»/«Customer Reviews» del tema', (s.match(/class="h1 g-head__title"/g) || []).length === 1 && !/Reseñas de clientes|Customer Reviews/.test(s.replace(/<div class="test-app-block[\s\S]*$/, '')));
-  ok('M14 home: el resto de la página sigue (portada, compra con packs, detalles, FAQ)', r.status === 200 && /g-hero/.test(r.html) && /id="comprar"/.test(r.html) && /g-offer/.test(r.html) && /id="preguntas-frecuentes"/.test(r.html));
+  ok('M14 home: el resto de la página sigue (compra con packs, detalles, FAQ; sin portada desde D44)', r.status === 200 && /id="comprar"/.test(r.html) && /g-offer/.test(r.html) && /id="preguntas-frecuentes"/.test(r.html));
 
   // 4 · Estados: nunca «0 opiniones»; sin app ni valoración, invisible; sin app pero con valoración, resumen de respaldo
   const states = {};

@@ -12,8 +12,9 @@ module.exports = async function (browser) {
   let r = await get('/');
   const order = [...r.html.matchAll(/id="shopify-section-template--1__(\w+)"/g)].map(m => m[1]);
   // Ronda T: opiniones antes de «Compra con tranquilidad».
-  ok('E1 orden de la home', JSON.stringify(order) === JSON.stringify(['portada', 'compra', 'opiniones', 'tranquilidad', 'significado', 'detalles', 'regalo', 'preguntas', 'cierre']), order);
-  const ids = ['inicio', 'comprar', 'significado', 'detalles', 'regalo', 'preguntas-frecuentes'];
+  // Ronda AA (D44): sin portada; el resto, en el mismo orden.
+  ok('E1 orden de la home', JSON.stringify(order) === JSON.stringify(['compra', 'opiniones', 'tranquilidad', 'significado', 'detalles', 'regalo', 'preguntas', 'cierre']), order);
+  const ids = ['comprar', 'significado', 'detalles', 'regalo', 'preguntas-frecuentes'];
   ok('E2 anclas de la home existen (incluidas las del menú y los CTA)', ids.every(i => new RegExp(`id="${i}"`).test(r.html)), ids.filter(i => !new RegExp(`id="${i}"`).test(r.html)));
   const hrefs = [...r.html.matchAll(/href="\/#([\w-]+)"/g)].map(m => m[1]);
   ok('E3 todo enlace /#ancla apunta a una sección existente', hrefs.every(h => ids.includes(h)), [...new Set(hrefs)]);
@@ -28,13 +29,14 @@ module.exports = async function (browser) {
   const qs = [...m.matchAll(/<h3 class="g-faq__q">([^<]+)<\/h3>/g)].map(x => x[1]);
   ok('E8 FAQ: las 10 preguntas (D41) en details/summary con H3', qs.length === 10 && JSON.stringify(qs) === JSON.stringify(FAQ.map(f => f[0])) && count(m, /<details class="g-faq__item"/g) === 10, qs);
   ok('E9 FAQ remite a envíos, devoluciones y contacto', /href="\/policies\/shipping-policy"/.test(m) && count(m, /href="\/policies\/refund-policy"/g) >= 3 && /href="\/pages\/contacto"/.test(m));
-  ok('E10 cierre: «Elegir mi pulsera» → /#comprar; como mucho 3 CTA de compra en la home', /Una joya con significado/.test(m) && count(m, /href="\/#comprar"/g) <= 3 && count(m, /href="\/#comprar"/g) >= 2, count(m, /href="\/#comprar"/g));
+  // D44: sin el botón de la portada queda el del cierre.
+  ok('E10 cierre: «Elegir mi pulsera» → /#comprar; como mucho 3 CTA de compra en la home', /Una joya con significado/.test(m) && count(m, /href="\/#comprar"/g) <= 3 && count(m, /href="\/#comprar"/g) >= 1 && /href="\/#comprar"[^>]*>\s*Elegir mi pulsera/.test(m), count(m, /href="\/#comprar"/g));
   ok('E11 sin claims prohibidos, urgencia ni reseñas inventadas en el texto visible', !FORBIDDEN.test(vt), (vt.match(FORBIDDEN) || [])[0]);
   ok('E12 la frase de fe aparece una sola vez', count(r.html, /Un símbolo de tu fe, contigo cada día/g) === 1);
   const heads = [...m.matchAll(/<h([1-3])[\s>]/g)].map(x => +x[1]);
-  ok('E13 jerarquía de títulos: 1 H1 (portada) y H2 por sección', heads.filter(h => h === 1).length === 1 && heads[0] === 1 && heads.filter(h => h === 2).length >= 7, heads.join(''));
+  ok('E13 jerarquía de títulos: 1 H1 (título del producto en la compra, D44) y H2 por sección (≥ 6: el título de la compra ya no es H2)', heads.filter(h => h === 1).length === 1 && heads[0] === 1 && heads.filter(h => h === 2).length >= 6, heads.join(''));
   const imgs = [...m.matchAll(/<img\b[^>]*>/g)].map(x => x[0]);
-  ok('E14 imágenes del contenido: todas con alt, width y height; solo la portada eager', imgs.length >= 6 && imgs.every(i => /alt="[^"]+"/.test(i) && /width="\d+"/.test(i) && /height="\d+"/.test(i)) && imgs.filter(i => /loading="eager"/.test(i)).length === 1 && imgs.filter(i => !/loading="eager"/.test(i)).every(i => /loading="lazy"/.test(i)), imgs.filter(i => !/alt="[^"]+"/.test(i)).slice(0, 2));
+  ok('E14 imágenes del contenido: todas con alt, width y height; solo la primera foto de la compra eager (D44)', imgs.length >= 6 && imgs.every(i => /alt="[^"]+"/.test(i) && /width="\d+"/.test(i) && /height="\d+"/.test(i)) && imgs.filter(i => /loading="eager"/.test(i)).length === 1 && imgs.filter(i => !/loading="eager"/.test(i)).every(i => /loading="lazy"/.test(i)), imgs.filter(i => !/alt="[^"]+"/.test(i)).slice(0, 2));
   // Ronda M (D30, decisión del propietario): el Review Widget oficial de Judge.me es la única referencia de app
   // permitida en index.json; se descuenta y cualquier otra «shopify://» sigue fallando.
   const idx = fs.readFileSync(T.THEME + '/templates/index.json', 'utf8').split('shopify://apps/judge-me-reviews/blocks/review_widget/61ccd3b1-a9f2-4160-9fe9-4fec8413e5d8').join('');

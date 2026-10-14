@@ -10,13 +10,14 @@ module.exports = async function (browser) {
   await reset();
   let r = await get('/');
   const order = [...r.html.matchAll(/id="shopify-section-template--1__(\w+)"/g)].map(m => m[1]);
-  ok('D1 home: portada → compra (#comprar)', order[0] === 'portada' && order[1] === 'compra' && /<section\s+id="comprar"/.test(r.html), order);
+  // Ronda AA (D44): sin portada, la compra es lo primero de la home.
+  ok('D1 home: la compra (#comprar) es la primera sección', order[0] === 'compra' && /<section\s+id="comprar"/.test(r.html), order);
   let s = section(r.html);
   ok('D2 una sola variante: sin selector, sin tabla de packs y sin aviso para el cliente', !/variant-selects|g-packs|g-offer|g-editor-note/.test(s));
-  ok('D3 galería con las 4 imágenes del tema (completa → infografía → principal → oración; D41: sin `detalle`), lazy, con alt', count(s, /class="g-gallery__slide[ "]/g) === 4 && /producto-completa-1080[\s\S]*producto-infografia-v\d+-1254[\s\S]*producto-principal-1080[\s\S]*producto-oracion-1080/.test(s) && count(s, /loading="lazy"/g) >= 4 && !/alt=""/.test((s.match(/<div class="g-gallery"[\s\S]*?<\/ul>/) || [''])[0]));
+  ok('D3 galería con las 4 imágenes del tema (completa → infografía → principal → oración; D41: sin `detalle`), la primera eager (D44: LCP de la home) y el resto lazy, con alt', count(s, /class="g-gallery__slide[ "]/g) === 4 && /producto-completa-1080[\s\S]*producto-infografia-v\d+-1254[\s\S]*producto-principal-1080[\s\S]*producto-oracion-1080/.test(s) && (() => { const g = [...((s.match(/<div class="g-gallery"[\s\S]*?<\/ul>/) || [''])[0]).matchAll(/<img\b[^>]*>/g)].map(x => x[0]); return g.length === 4 && /loading="eager"/.test(g[0]) && g.slice(1).every(i => /loading="lazy"/.test(i)); })() && !/alt=""/.test((s.match(/<div class="g-gallery"[\s\S]*?<\/ul>/) || [''])[0]));
   // Ronda T: la frase y las garantías van debajo del botón para subir los packs en móvil.
   ok('D4 frase de fe una sola vez en la página, después del botón', count(r.html, /Un símbolo de tu fe, contigo cada día\./g) === 1 && s.indexOf('ProductSubmitButton') > 0 && s.indexOf('g-trust__phrase') > s.indexOf('ProductSubmitButton'));
-  ok('D5 título del producto como H2 (el H1 es la portada) y botón de pago dinámico', /<h2 class="product__title h1"/.test(s) && /shopify-payment-button/.test(s));
+  ok('D5 título del producto como H1 de la home (D44, sin portada) y botón de pago dinámico', /<h1 class="product__title h1"/.test(s) && count(r.html, /<h1[\s>]/g) === 1 && /shopify-payment-button/.test(s));
   ok('D6 sin selector de cantidad (cada pack = una variante con cantidad 1)', !/quantity-input|name="quantity"/.test(s));
   ok('D7 un único Product JSON-LD en la home', count(r.html, /"@type":\s*"Product"/g) === 1, count(r.html, /"@type":\s*"Product"/g));
   ok('D8 sin claims prohibidos en la home', !/14 ?k|oro real|chapad|hipoalerg|waterproof|resistente al agua|no se oxida|bendici|protecci[oó]n|milagro|suerte|energ[ií]a/i.test(visibleText(r.html)));
@@ -44,9 +45,9 @@ module.exports = async function (browser) {
   await setState('mode=pack3save&reset=1');
   {
     const { page, errs } = await openPage(browser, '/', { width: 390, height: 844 });
-    await page.click('.g-hero__button'); await page.waitForTimeout(700);
+    // D44: sin portada, la compra ya está en la primera pantalla al abrir la home (sin clic previo).
     const top = await page.evaluate(() => document.getElementById('comprar').getBoundingClientRect().top);
-    ok('D18 «Elegir mi pulsera» lleva a #comprar', Math.abs(top) < 120 && page.url().endsWith('/#comprar'), { top, url: page.url() });
+    ok('D18 al abrir la home la compra (#comprar) empieza en la primera pantalla, bajo la cabecera', top >= 0 && top < 160, { top, url: page.url() });
     await page.click('label:has-text("2 pulseras")'); await page.waitForTimeout(900);
     const price = await page.evaluate(() => document.querySelector('[id^="price-"] .price-item--regular, [id^="price-"] .price-item--sale').textContent.trim());
     const idv = await page.evaluate(() => document.querySelector('#comprar form[id^="product-form-template"] input[name="id"]').value);

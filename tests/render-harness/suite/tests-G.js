@@ -128,7 +128,8 @@ module.exports = async function (browser) {
   r = await get('/ruta-inexistente-garelon'); ok('G36 ruta inexistente → 404', r.status === 404 && r.tpl === '404');
   const idxJson = JSON.parse(idx);
   // Ronda T: opiniones antes de tranquilidad y confianza después del botón.
-  ok('G37 index.json: 9 secciones en orden y la compra con titulo → valoracion → precio → confianza (garantías) → oferta → comprar → frase (D43)', idxJson.order.join() === 'portada,compra,opiniones,tranquilidad,significado,detalles,regalo,preguntas,cierre' && idxJson.sections.compra.block_order.join() === 'titulo,valoracion,precio,confianza,oferta,comprar,frase');
+  // Ronda AA (D44): sin portada; las otras 8 secciones conservan el orden.
+  ok('G37 index.json: 8 secciones en orden (sin portada, D44) y la compra con titulo → valoracion → precio → confianza (garantías) → oferta → comprar → frase (D43)', idxJson.order.join() === 'compra,opiniones,tranquilidad,significado,detalles,regalo,preguntas,cierre' && idxJson.sections.compra.block_order.join() === 'titulo,valoracion,precio,confianza,oferta,comprar,frase');
 
   // 10 · Responsive de la ficha (la home la cubre D24).
   for (const [w, h] of [[320, 640], [360, 740], [375, 667], [390, 844], [430, 932], [768, 1024], [1024, 768], [1440, 900]]) {

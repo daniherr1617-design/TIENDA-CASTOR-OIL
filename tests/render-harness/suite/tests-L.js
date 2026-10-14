@@ -61,11 +61,12 @@ print(json.dumps({f.split('/')[-1]: [Image.open(f).format, *Image.open(f).size] 
   // 2 · Render: la imagen nueva está en todos los sitios de la antigua; el orden de las galerías no cambia
   await reset(); await setState('mode=pack3save');
   const home = await get('/'); const prod = await get(P);
-  const hero = (home.html.match(/<section[^>]*class="[^"]*g-hero[\s\S]*?<\/section>/) || [''])[0];
-  const heroImg = (hero.match(/<img[^>]*producto-principal-[^>]*>/) || [''])[0];
-  ok('L3 portada: imagen `principal` (eager, srcset 480/720/1080) con alt fiel «cruz integrada en la pulsera»',
+  // Ronda AA (D44): la portada sale de la home; `principal` sigue en la galería de la compra (lazy: la LCP es la primera foto).
+  const buyHome = (home.html.match(/<section\s+id="comprar"[\s\S]*?<\/product-info>/) || [''])[0];
+  const heroImg = (buyHome.match(/<img[^>]*producto-principal-[^>]*>/) || [''])[0];
+  ok('L3 home: imagen `principal` en la galería de la compra (srcset 480/720/1080) con alt fiel «cruz integrada en la pulsera»',
     /producto-principal-480\.webp/.test(heroImg) && /producto-principal-720\.webp/.test(heroImg) && /producto-principal-1080\.webp/.test(heroImg) &&
-    /loading="eager"/.test(heroImg) && /alt="[^"]*cruz integrada en la pulsera[^"]*"/.test(heroImg) && !/colgante/.test(heroImg), heroImg.slice(0, 200));
+    /alt="[^"]*cruz integrada en la pulsera[^"]*"/.test(heroImg) && !/colgante/.test(heroImg), heroImg.slice(0, 200));
   const hg = slides(gallery((home.html.match(/<section\s+id="comprar"[\s\S]*?<\/product-info>/) || [''])[0]));
   const pg = slides(gallery((prod.html.match(/<main[\s\S]*?<\/main>/) || [''])[0]));
   ok('L4 galería de la home: completa → infografía → principal → oración (sin `detalle` desde D41)', JSON.stringify(hg) === JSON.stringify(['completa', 'infografia', 'principal', 'oracion']), hg);

@@ -232,8 +232,10 @@ def collect(repo):
     if os.path.isfile(os.path.join(hp, 'package.json')):
         pkg = load_json(os.path.join(hp, 'package.json')) or {}
         tjs = open(os.path.join(hp, 'suite', 'tests.js'), encoding='utf-8').read() if os.path.isfile(os.path.join(hp, 'suite', 'tests.js')) else ''
-        m = re.search(r"const PHASES = '([A-Z]+)'", tjs)
-        snap['render_harness'] = {'path': 'tests/render-harness', 'phases': m.group(1) if m else 'NO DISPONIBLE',
+        # Fases A…Z como cadena y, desde la ronda AA (D44), extras de dos letras en la lista.
+        m = re.search(r"const PHASES = (?:\[\.\.\.)?'([A-Z]+)'((?:\s*,\s*'[A-Z]+')*)", tjs)
+        phases = (m.group(1) + ''.join(' ' + x for x in re.findall(r"'([A-Z]+)'", m.group(2)))) if m else 'NO DISPONIBLE'
+        snap['render_harness'] = {'path': 'tests/render-harness', 'phases': phases,
                                   'deps': pkg.get('dependencies', {}), 'lock': os.path.isfile(os.path.join(hp, 'package-lock.json'))}
     snap['tools'] = sorted(f for f in os.listdir(os.path.join(repo, 'tools'))) if os.path.isdir(os.path.join(repo, 'tools')) else []
     snap['locales_with_garelon'] = len([f for f in os.listdir(os.path.join(repo, 'locales'))

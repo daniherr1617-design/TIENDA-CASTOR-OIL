@@ -8,6 +8,7 @@ const fs = require('fs');
 const { execSync } = require('child_process');
 const P = '/products/pulsera-rosario-virgen-maria';
 const BASE = '4c2f562'; // HEAD antes de la ronda Z
+const ROUND_HEAD = '4f37217'; // Ronda AA: commit del tema de la ronda Z (alcance fijado a Z, como en T…Y)
 const REPO = fs.existsSync(THEME + '/.git');
 const CHIPS = ['Envío gratis + seguimiento', 'Pago seguro', '14 días para cambiar de opinión'];
 const PHRASE = 'Un símbolo de tu fe, contigo cada día.';
@@ -72,15 +73,14 @@ module.exports = async function (browser) {
 
   // 4 · Alcance: solo la posición y la disposición de la confianza
   if (REPO) {
-    const changed = execSync(`git -C ${THEME} diff --name-only ${BASE} -- assets config layout locales sections snippets templates`).toString().trim().split('\n').filter(Boolean)
-      .concat(execSync(`git -C ${THEME} ls-files --others --exclude-standard -- assets config layout locales sections snippets templates`).toString().trim().split('\n').filter(Boolean));
+    const changed = execSync(`git -C ${THEME} diff --name-only ${BASE} ${ROUND_HEAD} -- assets config layout locales sections snippets templates`).toString().trim().split('\n').filter(Boolean);
     const allowed = /^(assets\/garelon\.css|snippets\/garelon-trust\.liquid|sections\/(main-product|featured-product)\.liquid|templates\/(index|product)\.json)$/;
     ok('Z9 alcance: confianza (CSS, snippet, límite del bloque y plantillas); sin precios, packs, opiniones, FAQ, galería ni envío', changed.length > 0 && changed.every(f => allowed.test(f)), changed.filter(f => !allowed.test(f)));
-    const at = (f) => JSON.parse(execSync(`git -C ${THEME} show ${BASE}:${f}`).toString());
+    const at = (f, c = BASE) => JSON.parse(execSync(`git -C ${THEME} show ${c}:${f}`).toString());
     const strip = (t, sid) => { const c = JSON.parse(JSON.stringify(t)); const s = c.sections[sid]; delete s.blocks.confianza; delete s.blocks.frase; s.block_order = s.block_order.filter(b => b !== 'confianza' && b !== 'frase'); return c; };
-    ok('Z10 plantillas: fuera de la confianza no cambia nada (ofertas, botones, opiniones, FAQ, galería…)', [['templates/product.json', 'main'], ['templates/index.json', 'compra']].every(([f, sid]) => JSON.stringify(strip(at(f), sid)) === JSON.stringify(strip(json(f), sid))));
-    const sec = execSync(`git -C ${THEME} diff ${BASE} -- sections/main-product.liquid sections/featured-product.liquid`).toString().split('\n').filter(l => /^[+-]\s/.test(l));
+    ok('Z10 plantillas: fuera de la confianza no cambia nada (ofertas, botones, opiniones, FAQ, galería…)', [['templates/product.json', 'main'], ['templates/index.json', 'compra']].every(([f, sid]) => JSON.stringify(strip(at(f), sid)) === JSON.stringify(strip(at(f, ROUND_HEAD), sid))));
+    const sec = execSync(`git -C ${THEME} diff ${BASE} ${ROUND_HEAD} -- sections/main-product.liquid sections/featured-product.liquid`).toString().split('\n').filter(l => /^[+-]\s/.test(l));
     ok('Z11 secciones: solo sube el límite de bloques «GARELON Confianza» de 1 a 2 (garantías y frase)', sec.length === 4 && sec.every(l => /^[-+]\s+"limit": [12],$/.test(l)), sec);
-    ok('Z12 config/settings_data.json y locales sin cambios', execSync(`git -C ${THEME} diff --name-only ${BASE} -- config/settings_data.json locales`).toString().trim() === '');
+    ok('Z12 config/settings_data.json y locales sin cambios', execSync(`git -C ${THEME} diff --name-only ${BASE} ${ROUND_HEAD} -- config/settings_data.json locales`).toString().trim() === '');
   }
 };

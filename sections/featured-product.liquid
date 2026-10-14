@@ -87,7 +87,7 @@
         <div class="grid__item product__media-wrapper">
           {%- if section.settings.garelon_media == 'theme' -%}
             {%- comment -%} GARELON: imágenes fieles del tema mientras la multimedia de Shopify no esté revisada. {%- endcomment -%}
-            {%- render 'garelon-gallery', keys: section.settings.garelon_gallery_keys -%}
+            {%- render 'garelon-gallery', keys: section.settings.garelon_gallery_keys, eager: section.settings.garelon_primary -%}
           {%- elsif placeholder == false -%}
             {% render 'product-media-gallery', product: product, variant_images: variant_images, limit: 1 %}
           {%- else -%}
@@ -137,13 +137,19 @@
                     {{- block.settings.text -}}
                   </p>
                 {%- when 'title' -%}
-                  <h2 class="product__title {{ block.settings.heading_size }}" {{ block.shopify_attributes }}>
+                  {%- liquid
+                    assign title_tag = 'h2'
+                    if section.settings.garelon_primary
+                      assign title_tag = 'h1'
+                    endif
+                  -%}
+                  <{{ title_tag }} class="product__title {{ block.settings.heading_size }}" {{ block.shopify_attributes }}>
                     {%- unless placeholder -%}
                       {{ product.title | escape }}
                     {%- else -%}
                       {{ 'onboarding.product_title' | t }}
                     {%- endunless -%}
-                  </h2>
+                  </{{ title_tag }}>
                 {%- when 'price' -%}
                   <div id="price-{{ section.id }}"{% if garelon_offer_on %} class="g-price--offer visually-hidden"{% endif %} role="status" {{ block.shopify_attributes }}>
                     {%- render 'price',
@@ -1797,6 +1803,13 @@
       "id": "garelon_anchor",
       "label": "Ancla de la sección",
       "info": "Sin #. Los botones «Elegir mi pulsera» apuntan a /#comprar."
+    },
+    {
+      "type": "checkbox",
+      "id": "garelon_primary",
+      "label": "Primera sección de la página",
+      "default": false,
+      "info": "Actívalo si la compra abre la página: el título pasa a ser el H1 y la primera foto se carga con prioridad. Desactívalo si hay otra sección con H1 encima (p. ej. «GARELON Portada»)."
     },
     {
       "type": "select",
