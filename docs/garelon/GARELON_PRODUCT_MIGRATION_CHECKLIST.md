@@ -23,8 +23,8 @@ Cada punto se marca con el lugar donde se probó: `PROBADO LOCALMENTE`, `ZIP DES
 - [ ] 🅲 Se revisaron **todas** las imágenes del brief, con una decisión y un motivo para cada una.
 - [ ] 🅲 Los assets `producto-*` son solo redimensionados, recortados sin ampliar o convertidos; no hay producto alterado.
 - [ ] 🅲 Cada clave tiene todos sus anchos (`tools/garelon_check.py`) y un texto alternativo en español fiel a la imagen.
-- [ ] 🅲 Infografía con texto: WebP lossless que salen solo de su fuente aprobada, sin recorte ni ampliación (`python3 tools/garelon_infografia.py`; con fuente nueva, SHA-256 actualizado, familia con versión nueva y `--build`).
-- [ ] 🅿 Infografía en la vista previa: abrir «Ampliar» (o la imagen en una pestaña nueva); la URL es de la familia versionada vigente (hoy `producto-infografia-v3-`) y la imagen descargada pasa `tools/garelon_infografia.py --identify`.
+- [ ] 🅲 Fotos del producto: WebP que salen solo de sus fuentes aprobadas, sin recorte ni ampliación (`python3 tools/garelon_fotos.py --check`; con fuente nueva, SHA-256 actualizado y `--build`).
+- [ ] 🅿 Fotos en la vista previa: galería de la home y de la ficha con las fotos vigentes, sin huecos ni imágenes rotas, y sin fotos retiradas en la multimedia del producto.
 - [ ] 🅲 Orden de galería razonado en la home y en la ficha (en la home la galería de compra abre la página desde D44: su primera foto es la LCP).
 - [ ] 🅲 Solo la imagen LCP es `eager`.
 - [ ] 🅿 Las imágenes mejoradas no cambian el producto (verificación del propietario).
