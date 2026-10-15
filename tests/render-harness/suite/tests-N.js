@@ -69,7 +69,8 @@ module.exports = async function (browser) {
 
   // 5 · «GARELON Detalles» sigue siendo reutilizable
   const det = ((await get('/')).html.match(/<section[^>]*id="detalles"[\s\S]*?<\/section>/) || [''])[0];
-  ok('N12 «Detalles de la pulsera» (layout list) sigue con su rejilla, imagen y 5 hechos', (det.match(/class="g-fact"/g) || []).length === 5 && /g-details__grid/.test(det) && /g-details__media/.test(det));
+  if (T.at('AD')) ok('N12 «Detalles de la pulsera» (D47: tarjetas compactas, sin imagen) sigue con su rejilla y 6 hechos', (det.match(/class="g-spec"/g) || []).length === 6 && /g-details__grid/.test(det) && !/g-details__media/.test(det));
+  else ok('N12 «Detalles de la pulsera» (layout list) sigue con su rejilla, imagen y 5 hechos', (det.match(/class="g-fact"/g) || []).length === 5 && /g-details__grid/.test(det) && /g-details__media/.test(det));
   await setState('chips=1'); const withChips = regalo((await get('/')).html);
   ok('N13 con bloques (etiquetas de prueba inyectadas), «Etiquetas» sigue pintando la rejilla y las 6 tarjetas', (withChips.match(/<li class="g-chip"/g) || []).length === 6 && /g-details__grid/.test(withChips) && /<ul class="g-chips"/.test(withChips));
   await setState('chips=0');

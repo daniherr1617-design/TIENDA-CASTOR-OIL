@@ -44,9 +44,9 @@ module.exports = async function (browser) {
   }
 
   // 3 · Orden de galería
-  ok('J8 home: completa → infografía → principal → oración (D41: sin `detalle`)', JSON.stringify(slides(gallery((home.html.match(/<section\s+id="comprar"[\s\S]*?<\/product-info>/) || [''])[0]))) === JSON.stringify(['completa', 'infografia', 'principal', 'oracion']));
+  ok('J8 home: completa → infografía → principal → oración (D41: sin `detalle`)', JSON.stringify(slides(gallery((home.html.match(/<section\s+id="comprar"[\s\S]*?<\/product-info>/) || [''])[0]))) === JSON.stringify(T.at('AD') ? ['completa', 'principal', 'oracion'] : ['completa', 'infografia', 'principal', 'oracion'])); // D47: sin infografía
   const pg = gallery((prod.html.match(/<main[\s\S]*?<\/main>/) || [''])[0]);
-  ok('J9 ficha: completa → principal → infografía → oración (D41); la 1.ª (completa) es la única eager', JSON.stringify(slides(pg)) === JSON.stringify(['completa', 'principal', 'infografia', 'oracion']) && /<img[^>]*producto-completa-[^>]*loading="eager"|loading="eager"[^>]*producto-completa-/.test(pg) && count(pg, /loading="eager"/g) === 1, slides(pg));
+  ok('J9 ficha: completa → principal → infografía → oración (D41); la 1.ª (completa) es la única eager', JSON.stringify(slides(pg)) === JSON.stringify(T.at('AD') ? ['completa', 'principal', 'oracion'] : ['completa', 'principal', 'infografia', 'oracion']) && /<img[^>]*producto-completa-[^>]*loading="eager"|loading="eager"[^>]*producto-completa-/.test(pg) && count(pg, /loading="eager"/g) === 1, slides(pg));
 
   // 4 · Responsive
   for (const u of ['/', P]) for (const w of VPS) {
@@ -74,7 +74,7 @@ module.exports = async function (browser) {
     await page.click('label:has-text("2 pulseras")'); await page.waitForTimeout(900);
     const st = await page.evaluate(() => ({ id: document.querySelector('#comprar form[id^="product-form-template"] input[name="id"]').value, tax: document.querySelector('.g-offer__tax').innerText.trim() }));
     ok('J13 al cambiar a «2 pulseras» la variante cambia (4102) y el texto de envío se mantiene', st.id === '4102' && st.tax === 'Impuestos incluidos. Envío gratis.', st);
-    await page.click('#comprar [id^="ProductSubmitButton-"]'); await page.waitForTimeout(1200);
+    await T.clickAtc(page, '#comprar [id^="ProductSubmitButton-"]'); await page.waitForTimeout(1200);
     const s = await (await fetch(T.B + '/__state')).json();
     ok('J14 añadir al carrito: 1 línea, cantidad 1, sin errores JS', s.cart.length === 1 && s.cart[0].quantity === 1 && errs.length === 0, { cart: s.cart, errs });
     await page.close();

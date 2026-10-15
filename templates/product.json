@@ -76,7 +76,7 @@
             "show_dynamic_checkout": true,
             "show_gift_card_recipient": false,
             "garelon_buy_now": true,
-            "garelon_mobile_wallets": false
+            "garelon_mobile_wallets": true
           }
         },
         "descripcion": {
@@ -107,7 +107,7 @@
       "settings": {
         "enable_sticky_info": true,
         "garelon_media": "theme",
-        "garelon_gallery_keys": "completa,principal,infografia,oracion",
+        "garelon_gallery_keys": "completa,principal,oracion",
         "color_scheme": "scheme-1",
         "media_size": "large",
         "constrain_to_viewport": true,
@@ -227,7 +227,15 @@
           "type": "item",
           "settings": {
             "icon": "cruz",
-            "title": "Cruz y cuentas tricolor",
+            "title": "Cruz integrada",
+            "text": "Forma parte de la pulsera."
+          }
+        },
+        "d6": {
+          "type": "item",
+          "settings": {
+            "icon": "cuentas",
+            "title": "Cuentas tricolor",
             "text": "Cuentas en tonos dorado, plateado y rosado."
           }
         },
@@ -252,19 +260,19 @@
         "d1",
         "d2",
         "d3",
+        "d6",
         "d4",
         "d5"
       ],
       "settings": {
-        "layout": "list",
+        "layout": "compact",
         "eyebrow": "Detalles",
         "heading": "Detalles de la pulsera",
-        "image_key": "infografia",
-        "image_alt": "Infografía «Detalles de la pulsera» de la Pulsera Rosario Virgen María Dorada: medalla de la Virgen María, cruz de Jesús, cuentas de rosario tricolor, cierre de acabado dorado pulido, largo ajustable con anillas, aprox. 20 cm / 7,87 in, y regalo religioso especial",
+        "image_key": "none",
         "color_scheme": "scheme-2",
         "anchor": "detalles",
-        "padding_top": 56,
-        "padding_bottom": 56
+        "padding_top": 40,
+        "padding_bottom": 40
       }
     },
     "preguntas": {

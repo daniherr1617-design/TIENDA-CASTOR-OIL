@@ -12,7 +12,7 @@ module.exports = async function (browser) {
   const order = [...r.html.matchAll(/id="shopify-section-template--1__(\w+)"/g)].map(x => x[1]);
   // Ronda T: opiniones antes de «Compra con tranquilidad».
   ok('F2 orden de la ficha: producto → opiniones → tranquilidad → detalles → preguntas → compra fija', JSON.stringify(order) === JSON.stringify(['main', 'opiniones', 'tranquilidad', 'detalles', 'preguntas', 'compra_fija']), order);
-  ok('F3 galería del tema: 4 imágenes (D41: sin `detalle`), la primera prioritaria (LCP)', count(m, /class="g-gallery__slide[ "]/g) === 4 && count(r.html, /fetchpriority="high"/g) === 1 && /<img[^>]*producto-completa[^>]*loading="eager"/.test(m));
+  ok(`F3 galería del tema: ${T.at('AD') ? '3 imágenes (D47: sin infografía)' : '4 imágenes (D41: sin `detalle`)'}, la primera prioritaria (LCP)`, count(m, /class="g-gallery__slide[ "]/g) === (T.at('AD') ? 3 : 4) && count(r.html, /fetchpriority="high"/g) === 1 && /<img[^>]*producto-completa[^>]*loading="eager"/.test(m));
   ok('F4 antetítulo, resumen, frase, garantías, tarjetas de oferta con precio, botón y pago dinámico', /Joyería con significado/.test(m) && /19,99 €/.test(m) && /Acero inoxidable con acabado dorado, medalla de la Virgen María, cruz y cuentas tricolor\./.test(m) && count(r.html, /Un símbolo de tu fe, contigo cada día/g) === 1 && /<variant-selects/.test(m) && /g-offer__card/.test(m) && /ProductSubmitButton-/.test(m) && /shopify-payment-button/.test(m));
   ok('F5 sin selector de cantidad en la ficha', !/quantity-input|name="quantity"/.test((m.match(/<product-info[\s\S]*?<\/product-info>/) || [''])[0]));
   ok('F6 descripción de Shopify y pestaña «Envíos y devoluciones» con políticas', /Descripción de prueba/.test(m) && /Envíos y devoluciones/.test(m) && /href="\/policies\/shipping-policy"/.test(m) && /href="\/policies\/refund-policy"/.test(m));
@@ -28,7 +28,7 @@ module.exports = async function (browser) {
     const hiddenAtTop = await page.evaluate(() => { const s = document.querySelector('[data-garelon-sticky]'); return !s.classList.contains('is-visible') && s.hasAttribute('inert'); });
     await page.click('label:has-text("3 pulseras")'); await page.waitForTimeout(900);
     const url = page.url();
-    await page.evaluate(() => window.scrollTo(0, document.querySelector('[id^="ProductSubmitButton-"]').getBoundingClientRect().bottom + window.scrollY + 300)); await page.waitForTimeout(600);
+    await page.evaluate(() => window.scrollTo(0, [...document.querySelectorAll('[data-garelon-buy-now], [id^="ProductSubmitButton-"]')].find(b => b.offsetParent !== null).getBoundingClientRect().bottom + window.scrollY + 300) /* D47: en móvil el botón visible es «Comprar ahora» */); await page.waitForTimeout(600);
     const st = await page.evaluate(() => { const s = document.querySelector('[data-garelon-sticky]'); return { vis: s.classList.contains('is-visible'), inert: s.hasAttribute('inert'), price: s.querySelector('[data-sticky-price]').textContent.trim(), label: s.querySelector('[data-sticky-button]').textContent.trim(), h: Math.round(s.querySelector('[data-sticky-button]').getBoundingClientRect().height) }; });
     ok('F11 elegir «3 pulseras» en la ficha actualiza la URL (?variant=4103)', /variant=4103/.test(url), url);
     // D46: en móvil la compra fija pulsa «Comprar ahora» (antes «Añadir al carrito»).

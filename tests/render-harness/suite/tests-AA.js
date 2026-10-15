@@ -70,7 +70,7 @@ module.exports = async function (browser) {
     const { page, errs } = await openPage(browser, '/', { width: 1440, height: 900 });
     await page.click('#comprar label:has-text("3 pulseras")'); await page.waitForTimeout(900);
     const idv = await page.evaluate(() => document.querySelector('#comprar form[id^="product-form-template"] input[name="id"]').value);
-    await page.click('#comprar [id^="ProductSubmitButton-"]'); await page.waitForTimeout(1200);
+    await T.clickAtc(page, '#comprar [id^="ProductSubmitButton-"]'); await page.waitForTimeout(1200);
     const st = await (await fetch(B + '/__state')).json(); const last = st.log[st.log.length - 1] || {};
     const drawer = await page.evaluate(() => { const d = document.querySelector('cart-drawer'); return d && d.classList.contains('active') ? d.innerText : ''; });
     ok('AA10 escritorio: elegir «3 pulseras» y «Añadir al carrito» desde la home envía la variante 4103 × 1 y abre el cajón', idv === '4103' && last.id === '4103' && st.cart.length === 1 && st.cart[0].quantity === 1 && /3 pulseras/.test(drawer) && errs.length === 0, { idv, last, errs });

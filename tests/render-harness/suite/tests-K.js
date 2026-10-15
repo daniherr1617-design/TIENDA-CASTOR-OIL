@@ -107,7 +107,7 @@ module.exports = async function (browser) {
   {
     const { page, errs } = await openPage(browser, '/', { width: 390, height: 844 });
     await page.click('label:has-text("2 pulseras")'); await page.waitForTimeout(700);
-    await page.click('#comprar [id^="ProductSubmitButton-"]'); await page.waitForTimeout(1300);
+    await T.clickAtc(page, '#comprar [id^="ProductSubmitButton-"]'); await page.waitForTimeout(1300);
     const st = await page.evaluate(() => { const d = document.querySelector('cart-drawer'); const n = d && d.querySelector('.tax-note'); return { open: !!d && d.classList.contains('active'), note: n ? n.innerText.trim() : null }; });
     ok('K20 navegador: tras «Añadir al carrito» el cajón se abre (re-renderizado por Dawn) con «Impuestos incluidos. Envío gratis.»', st.open && st.note === FREE && errs.length === 0, { st, errs });
     await page.close();

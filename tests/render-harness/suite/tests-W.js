@@ -102,7 +102,7 @@ module.exports = async function (browser) {
     const { page, errs } = await openPage(browser, P, { width: 390, height: 844 });
     await page.click('main label:has-text("3 pulseras y 2 de regalo")'); await page.waitForTimeout(800);
     const id = await page.evaluate(() => document.querySelector('main form[id^="product-form-"] input[name="id"]').value);
-    await page.click('main .product-form__submit'); await page.waitForTimeout(1500);
+    await T.clickAtc(page, 'main .product-form__submit'); await page.waitForTimeout(1500);
     const d = await page.evaluate(() => { const c = document.querySelector('cart-drawer'); return c && c.classList.contains('active') ? c.innerText.replace(/\s+/g, ' ') : ''; });
     const s = await (await fetch(B + '/__state')).json();
     ok('W15 navegador con valoración visible: 3.ª oferta → id 4103 → cajón «Recibes 5 pulseras (3 pulseras y 2 de regalo)», 34,99 €, cantidad 1', id === '4103' && /Recibes 5 pulseras \(3 pulseras y 2 de regalo\)/.test(d) && /34,99/.test(d) && JSON.stringify(s.cart) === '[{"id":4103,"quantity":1}]' && errs.length === 0, [id, d.slice(0, 160)]);

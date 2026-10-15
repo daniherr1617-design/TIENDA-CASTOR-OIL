@@ -58,7 +58,7 @@ module.exports = async function (browser) {
     const { page, errs } = await openPage(browser, P, { width: 390, height: 844 });
     await page.click('main label:has-text("Compra 3 y llévate 2 de regalo")'); await page.waitForTimeout(800);
     const sel = await page.evaluate(() => ({ id: document.querySelector('main form[id^="product-form-"] input[name="id"]').value, url: location.search }));
-    await page.click('main .product-form__submit'); await page.waitForTimeout(1500);
+    await T.clickAtc(page, 'main .product-form__submit'); await page.waitForTimeout(1500);
     const d = await page.evaluate(() => { const c = document.querySelector('cart-drawer'); return c && c.classList.contains('active') ? c.innerText.replace(/\s+/g, ' ') : ''; });
     const s = await (await fetch(B + '/__state')).json();
     ok('V10 navegador: 3.ª oferta → id 4103, cajón con «Recibes 5 pulseras (Compra 3 y llévate 2 de regalo)», 34,99 €, cantidad 1', sel.id === '4103' && /variant=4103/.test(sel.url) && /Recibes 5 pulseras \(Compra 3 y llévate 2 de regalo\)/.test(d) && /34,99/.test(d) && JSON.stringify(s.cart) === '[{"id":4103,"quantity":1}]' && errs.length === 0, [sel, d.slice(0, 200)]);

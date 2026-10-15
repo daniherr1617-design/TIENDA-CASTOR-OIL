@@ -109,7 +109,8 @@ module.exports = async function (browser) {
 
   r = await get('/');
   const det = (r.html.match(/id="detalles"[\s\S]*?<\/section>/) || [''])[0];
-  ok('H15 «Detalles de la pulsera» sigue en lista (layout list sin cambios)', /class="g-facts"/.test(det) && count(det, /class="g-fact"/g) === 5 && !/g-chips/.test(det));
+  if (T.at('AD')) ok('H15 «Detalles de la pulsera» en tarjetas compactas (D47: 6 tarjetas, sin etiquetas)', /class="g-specs"/.test(det) && count(det, /class="g-spec"/g) === 6 && !/g-chips/.test(det));
+  else ok('H15 «Detalles de la pulsera» sigue en lista (layout list sin cambios)', /class="g-facts"/.test(det) && count(det, /class="g-fact"/g) === 5 && !/g-chips/.test(det));
 
   // 4 · Opiniones
   await setState('reviews=both'); r = await get('/');

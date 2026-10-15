@@ -129,7 +129,7 @@ module.exports = async function (browser) {
     await page.focus('main .g-offer__input'); await page.keyboard.press('ArrowDown'); await page.waitForTimeout(700); await page.keyboard.press('ArrowDown'); await page.waitForTimeout(900);
     const k = await page.evaluate(() => ({ id: document.querySelector('main form[id^="product-form-"] input[name="id"]').value, url: location.search }));
     ok('U27 teclado: flechas → 3.ª opción, id 4103 y ?variant=4103', k.id === '4103' && /variant=4103/.test(k.url), k);
-    await page.click('main .product-form__submit'); await page.waitForTimeout(1500);
+    await T.clickAtc(page, 'main .product-form__submit'); await page.waitForTimeout(1500);
     const d = await page.evaluate(() => { const c = document.querySelector('cart-drawer'); return c && c.classList.contains('active') ? c.innerText.replace(/\s+/g, ' ') : ''; });
     const s = await (await fetch(B + '/__state')).json();
     ok('U28 navegador: 3.ª opción → cajón con «Recibes 5 pulseras (3 + 2 de regalo)», 39,99 €, cantidad 1, sin errores', /Recibes 5 pulseras \(3 \+ 2 de regalo\)/.test(d) && /39,99/.test(d) && JSON.stringify(s.cart) === '[{"id":4103,"quantity":1}]' && errs.length === 0, d.slice(0, 220));
@@ -158,7 +158,8 @@ module.exports = async function (browser) {
       }, root);
       ok(`U30 ${n} ${w}px: sin scroll horizontal ni errores; barra en dos líneas (≤ 80 px), enlace ≥ 44 px y plazo dentro de la pantalla`, !m.hscroll && errs.length === 0 && m.bar <= 80 && m.link >= 44 && m.eta && m.eta.l >= 0 && m.eta.r <= w && m.eta.h <= 26, m);
       ok(`U31 ${n} ${w}px: etiqueta de campaña en una sola línea`, m.promo <= 34, m.promo);
-      if (w < 750) ok(`U32 ${n} ${w}px: contador «n / 4» en cada foto (D41) y ninguno en la infografía`, m.cnt.length === 4 && m.cnt.every((x, i) => x === (x.startsWith('i:') ? 'i:-' : `${i + 1} / 4`)) && m.cnt.includes('i:-'), m.cnt);
+      if (w < 750 && T.at('AD')) ok(`U32 ${n} ${w}px: contador «n / 3» en cada foto (D47: 3 fotos, sin infografía)`, JSON.stringify(m.cnt) === JSON.stringify(['1 / 3', '2 / 3', '3 / 3']), m.cnt);
+      else if (w < 750) ok(`U32 ${n} ${w}px: contador «n / 4» en cada foto (D41) y ninguno en la infografía`, m.cnt.length === 4 && m.cnt.every((x, i) => x === (x.startsWith('i:') ? 'i:-' : `${i + 1} / 4`)) && m.cnt.includes('i:-'), m.cnt);
       else ok(`U32 ${n} ${w}px: contador oculto en la rejilla de escritorio`, m.cnt.every(x => /^(i:)?(oculto|-)$/.test(x)), m.cnt);
       if (n === 'ficha' && w < 750) ok(`U33 ficha ${w}px: «Elige tu oferta» empieza al pie de la primera pantalla (< 870 px) con la barra en dos líneas y las garantías encima (D43; antes < 844 px)`, m.legend < 870, m.legend);
       await page.close();

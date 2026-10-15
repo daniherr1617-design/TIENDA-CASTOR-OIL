@@ -48,6 +48,9 @@ function scenario() {
   // 29,99 € y «Compra 3 y llévate 2 de regalo» (5 pulseras) 34,99 €, SOLO como datos simulados.
   if (m === 'final') return { options: ['Pack'], rows: [[['1 pulsera'], 1999], [['Compra 2 y llévate 1 de regalo'], 2999], [['Compra 3 y llévate 2 de regalo'], 3499]] };
   if (m === 'live') return { options: ['PACK'], rows: [[['1 pulsera'], 1999], [['2 pulseras y 1 de regalo'], 2999], [['3 pulseras y 2 de regalo'], 3499]] }; // nombres publicados en Shopify el 2026-10-13
+  // Ronda AD (D47): nombres y precios que el propietario pide el 2026-10-15: «2 pulseras y 1 de regalo» (3) 29,99 € y
+  // «3 pulseras y 1 de regalo» (4) 34,99 €, SOLO como datos simulados (opción «PACK», como en Shopify).
+  if (m === 'd47') return { options: ['PACK'], rows: [[['1 pulsera'], 1999], [['2 pulseras y 1 de regalo'], 2999], [['3 pulseras y 1 de regalo'], 3499]] };
   if (m === 'regalocaro') return { options: ['Pack'], rows: [[['1 pulsera'], 1999], [['2 + 1 de regalo (3 pulseras)'], 2999], [['3 + 2 de regalo (5 pulseras)'], 5499]] };
   if (m === 'pack3save') return { options: ['Pack'], rows: [[['1 pulsera'], 1999], [['2 pulseras'], 3499], [['3 pulseras'], 4799]] };
   if (m === 'compare') return { options: ['Pack'], rows: [[['1 pulsera'], 1999, 2499], [['2 pulseras'], 3499, 3998], [['3 pulseras'], 4799, null]] };
@@ -177,7 +180,11 @@ const filters = {
   font_modify: (x, k, v) => x && x.slug ? Object.assign({}, x, k === 'weight' ? { weight: v === 'bold' ? 700 : v === 'bolder' ? 700 : Number(v) || x.weight } : { style: v }) : x,
   font_url: (x) => x && x.slug ? `/__fonts/${x.slug}/files/${x.slug}-latin-${x.weight}-${x.style}.woff2` : '',
   standard_event_data: () => '{}', structured_data: (p) => JSON.stringify({ '@context': 'http://schema.org', '@type': p && p.title ? 'Product' : 'Thing', name: p && p.title }), json: (x) => JSON.stringify(x ?? null),
-  payment_button: () => '<div class="shopify-payment-button"><button type="button" class="shopify-payment-button__button shopify-payment-button__button--unbranded">Comprar ahora</button></div>',
+  // Ronda AD (D47): wallet=1 simula que Shopify ofrece un método acelerado nativo (botón con marca, p. ej. Apple Pay)
+  // con su enlace «Más opciones de pago»; sin él, el botón genérico de Dawn. SOLO TEST: no es el componente real.
+  payment_button: () => state.wallet
+    ? '<div class="shopify-payment-button"><button type="button" class="shopify-payment-button__button shopify-payment-button__button--branded" data-testid="wallet">Apple Pay</button><button type="button" class="shopify-payment-button__more-options">Más opciones de pago</button></div>'
+    : '<div class="shopify-payment-button"><button type="button" class="shopify-payment-button__button shopify-payment-button__button--unbranded">Comprar ahora</button></div>',
   payment_terms: () => '', escape_once: (x) => x, url_escape: (x) => encodeURIComponent(x), url_encode: (x) => encodeURIComponent(x), within: (u) => u, image_padding_bottom: () => '100%',
   item_count_for_variant: (cart, id) => { const l = state.cart.find(x => x.id === Number(id)); return l ? l.quantity : 0; },
   payment_type_svg_tag: () => '', payment_type_img_url: () => '', default_errors: () => '', customer_login_link: (t) => `<a href="/account/login">${t}</a>`,
@@ -301,9 +308,9 @@ http.createServer(async (req, res) => {
     if (p.startsWith('/assets/')) { const fp = path.join(T, decodeURIComponent(p)); return fs.readFile(fp, (e, d) => { if (e) { res.writeHead(404); return res.end(); } res.writeHead(200, { 'Content-Type': types[path.extname(fp)] || 'application/octet-stream' }); res.end(d); }); }
     if (p === '/__state') { const q = u.searchParams;
       for (const k of ['mode', 'catalog', 'contact', 'refund', 'shipping', 'cookies', 'legal', 'reviews', 'freeship', 'taxes', 'countries', 'ship', 'rating', 'rcount']) if (q.has(k)) state[k] = q.get(k);
-      for (const k of ['design', 'noindex', 'accounts', 'media', 'chips', 'contactinfo', 'editorimg']) if (q.has(k)) state[k] = q.get(k) === '1';
+      for (const k of ['design', 'noindex', 'accounts', 'media', 'chips', 'contactinfo', 'editorimg', 'wallet']) if (q.has(k)) state[k] = q.get(k) === '1';
       if (q.has('soldout')) state.soldout = q.get('soldout').split(',').filter(Boolean).map(Number);
-      if (q.has('reset')) { state.cart = []; state.log = []; if (!q.has('freeship')) state.freeship = ''; if (!q.has('taxes')) state.taxes = 'included'; if (!q.has('chips')) state.chips = false; if (!q.has('editorimg')) state.editorimg = false; if (!q.has('countries')) state.countries = '1'; if (!q.has('ship')) state.ship = ''; if (!q.has('rating')) state.rating = ''; if (!q.has('rcount')) state.rcount = ''; }
+      if (q.has('reset')) { state.cart = []; state.log = []; if (!q.has('freeship')) state.freeship = ''; if (!q.has('taxes')) state.taxes = 'included'; if (!q.has('chips')) state.chips = false; if (!q.has('editorimg')) state.editorimg = false; if (!q.has('wallet')) state.wallet = false; if (!q.has('countries')) state.countries = '1'; if (!q.has('ship')) state.ship = ''; if (!q.has('rating')) state.rating = ''; if (!q.has('rcount')) state.rcount = ''; }
       if (q.has('reload')) L = loadSettings();
       res.writeHead(200, { 'Content-Type': 'application/json' }); return res.end(JSON.stringify(state)); }
     if (p === '/cart.js' || p === '/cart.json') { res.setHeader('Content-Type', 'application/json'); const c = cartDrop(); return res.end(JSON.stringify({ item_count: c.item_count, items: c.items.map(i => ({ id: i.id, quantity: i.quantity, variant_id: i.id })), total_price: c.total_price })); }

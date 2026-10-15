@@ -69,10 +69,11 @@ print(json.dumps({f.split('/')[-1]: [Image.open(f).format, *Image.open(f).size] 
     /alt="[^"]*cruz integrada en la pulsera[^"]*"/.test(heroImg) && !/colgante/.test(heroImg), heroImg.slice(0, 200));
   const hg = slides(gallery((home.html.match(/<section\s+id="comprar"[\s\S]*?<\/product-info>/) || [''])[0]));
   const pg = slides(gallery((prod.html.match(/<main[\s\S]*?<\/main>/) || [''])[0]));
-  ok('L4 galería de la home: completa → infografía → principal → oración (sin `detalle` desde D41)', JSON.stringify(hg) === JSON.stringify(['completa', 'infografia', 'principal', 'oracion']), hg);
-  ok('L5 galería de la ficha: completa → principal → infografía → oración (sin `detalle` desde D41)', JSON.stringify(pg) === JSON.stringify(['completa', 'principal', 'infografia', 'oracion']), pg);
+  ok('L4 galería de la home: completa → infografía → principal → oración (sin `detalle` desde D41)', JSON.stringify(hg) === JSON.stringify(T.at('AD') ? ['completa', 'principal', 'oracion'] : ['completa', 'infografia', 'principal', 'oracion']) /* D47 */, hg);
+  ok('L5 galería de la ficha: completa → principal → infografía → oración (sin `detalle` desde D41)', JSON.stringify(pg) === JSON.stringify(T.at('AD') ? ['completa', 'principal', 'oracion'] : ['completa', 'principal', 'infografia', 'oracion']) /* D47 */, pg);
   const detImg = (prod.html.match(/id="detalles"[\s\S]*?<\/section>/) || [''])[0];
-  ok('L6 ficha · «Detalles de la pulsera» usa la infografía aprobada (D41: sin `detalle`)', !/producto-detalle-/.test(detImg) && /producto-infografia-v\d+-1254\.webp/.test(detImg));
+  // D47 (ronda AD): «Detalles» sin imagen (AD7).
+  if (!T.at('AD')) ok('L6 ficha · «Detalles de la pulsera» usa la infografía aprobada (D41: sin `detalle`)', !/producto-detalle-/.test(detImg) && /producto-infografia-v\d+-1254\.webp/.test(detImg));
   const storefront = text(home.html) + text(prod.html) + home.html + prod.html;
   ok('L7 ningún alt ni texto de la tienda describe una cruz colgante', !/cruz colgante|hanging cross/i.test(storefront));
   ok('L8 alt de `detalle` retirado con la imagen (D41)', JSON.parse(fs.readFileSync(`${THEME}/locales/es.json`, 'utf8')).garelon.gallery.alt_detalle === undefined);
@@ -100,7 +101,9 @@ print(json.dumps({f.split('/')[-1]: [Image.open(f).format, *Image.open(f).size] 
     locs.filter(f => f !== 'es.json').every(f => /cross integrated into the bracelet/.test(alt(f))) && locs.every(f => !/colgante|hanging/i.test(alt(f))));
 
   if (!REPO) return;
-  // 5 · Origen: la nueva fuente alimenta los assets; la antigua ya no
+  // 5 · Origen: la nueva fuente alimenta los assets; la antigua ya no. Desde la ronda AD (D47) «principal» sale de
+  // «IMAGEN 3.png» y «NUEVA IMAGEN 3.png» está retirada: lo comprueban AD1-AD3; aquí sigue el alcance de la ronda L.
+  if (!T.at('AD')) {
   ok('L11 fuente nueva en el repositorio y la antigua retirada (como en main)', fs.existsSync(`${THEME}/${NEW_SRC}`) && !fs.existsSync(`${THEME}/${OLD_SRC}`));
   const tmp = fs.mkdtempSync(path.join(os.tmpdir(), 'garelon-old3-')); const oldPath = path.join(tmp, 'old.png');
   fs.writeFileSync(oldPath, atBase(OLD_SRC));
@@ -108,6 +111,7 @@ print(json.dumps({f.split('/')[-1]: [Image.open(f).format, *Image.open(f).size] 
   fs.rmSync(tmp, { recursive: true, force: true });
   ok('L12 «principal» sale de NUEVA IMAGEN 3.png (zona de la cruz: ≈ igual a la nueva, muy distinta de la antigua; `detalle` retirado en D41)',
     Object.keys(dNew).length === 3 && Object.values(dNew).every(v => v < 5) && Object.values(dOld).every(v => v > 12), { dNew, dOld });
+  }
 
   // 6 · Alcance de la ronda L: fb4b850..3a78374 (fijado al cerrar la ronda, como I/J/K)
   const changed = execSync(`git -C ${THEME} diff --name-only ${BASE} ${ROUND_HEAD} -- assets config layout sections snippets templates`).toString().trim().split('\n').filter(Boolean).sort();

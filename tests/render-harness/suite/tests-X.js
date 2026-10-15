@@ -72,7 +72,7 @@ module.exports = async function (browser) {
   // 3 · Medalla y preguntas frecuentes
   for (const [n, u] of [['home', '/'], ['ficha', P]]) {
     const html = (await get(u)).html; const det = (html.match(/<section[^>]*id="detalles"[\s\S]*?<\/section>/) || [''])[0]; const f = faq(html);
-    ok(`X11 ${n}: tarjeta «Medalla de la Virgen María» con su descripción, como las demás`, new RegExp(`Medalla de la Virgen María[\\s\\S]{0,200}${MEDAL}`).test(text(det)) && count(det, /class="g-fact__text"/g) === 5, text(det).slice(0, 300));
+    ok(`X11 ${n}: tarjeta «Medalla de la Virgen María» con su descripción, como las demás`, new RegExp(`Medalla de la Virgen María[\\s\\S]{0,200}${MEDAL}`).test(text(det)) && count(det, T.at('AD') ? /class="g-spec__text"/g : /class="g-fact__text"/g) === (T.at('AD') ? 6 : 5), text(det).slice(0, 300)); // D47: 6 tarjetas compactas
     const qs = f.map(x => text((x.match(/<h3[\s\S]*?<\/h3>/) || [''])[0]).trim());
     ok(`X12 ${n}: 10 preguntas en orden (producto, oferta, regalo, envío, devoluciones, ayuda)`, JSON.stringify(qs) === JSON.stringify(QS), qs);
     const t = text(f.join(' '));
@@ -97,13 +97,13 @@ module.exports = async function (browser) {
   await setState('mode=live');
   {
     const home = (await get('/')).html; const pdp = (await get(P)).html;
-    ok('X17 galería de la home: completa → infografía → principal → oración (sin `detalle`)', JSON.stringify(slides(gallery(buy(home, '/')))) === JSON.stringify(['completa', 'infografia', 'principal', 'oracion']), slides(gallery(buy(home, '/'))));
-    ok('X18 galería de la ficha: completa → principal → infografía → oración (sin `detalle`)', JSON.stringify(slides(gallery(pdp))) === JSON.stringify(['completa', 'principal', 'infografia', 'oracion']), slides(gallery(pdp)));
+    ok('X17 galería de la home: completa → infografía → principal → oración (sin `detalle`)', JSON.stringify(slides(gallery(buy(home, '/')))) === JSON.stringify(T.at('AD') ? ['completa', 'principal', 'oracion'] : ['completa', 'infografia', 'principal', 'oracion']), slides(gallery(buy(home, '/'))));
+    ok('X18 galería de la ficha: completa → principal → infografía → oración (sin `detalle`)', JSON.stringify(slides(gallery(pdp))) === JSON.stringify(T.at('AD') ? ['completa', 'principal', 'oracion'] : ['completa', 'principal', 'infografia', 'oracion']), slides(gallery(pdp)));
     const det = (pdp.match(/<section[^>]*id="detalles"[\s\S]*?<\/section>/) || [''])[0];
-    ok('X19 ficha · «Detalles de la pulsera» usa la infografía aprobada (como la home)', det.includes(`${T.assetBase('infografia')}-1254.webp`) && /alt="Infografía «Detalles de la pulsera»/.test(det));
+    if (!T.at('AD')) ok('X19 ficha · «Detalles de la pulsera» usa la infografía aprobada (como la home)', det.includes(`${T.assetBase('infografia')}-1254.webp`) && /alt="Infografía «Detalles de la pulsera»/.test(det));
     ok('X20 ninguna página sirve producto-detalle ni su alt', !/producto-detalle|Detalle de la pulsera rosario: medalla/.test(home + pdp));
   }
-  ok('X21 assets: producto-detalle-*.webp retirados; las demás fotos siguen', !fs.readdirSync(`${THEME}/assets`).some(f => /^producto-detalle-/.test(f)) && ['producto-principal-1080.webp', 'producto-completa-1080.webp', 'producto-oracion-1080.webp', `${T.assetBase('infografia')}-1254.webp`].every(f => fs.existsSync(`${THEME}/assets/${f}`)));
+  ok('X21 assets: producto-detalle-*.webp retirados; las demás fotos siguen', !fs.readdirSync(`${THEME}/assets`).some(f => /^producto-detalle-/.test(f)) && ['producto-principal-1080.webp', 'producto-completa-1080.webp', 'producto-oracion-1080.webp', ...(T.at('AD') ? [] : [`${T.assetBase('infografia')}-1254.webp`])].every(f => fs.existsSync(`${THEME}/assets/${f}`)));
   ok('X22 el selector de imagen de las secciones ya no ofrece `detalle`', ['sections/garelon-details.liquid', 'sections/garelon-hero.liquid', 'sections/garelon-image-text.liquid', 'snippets/garelon-image.liquid', 'snippets/garelon-gallery.liquid'].every(f => !/"value": "detalle"|when 'detalle'/.test(fs.readFileSync(`${THEME}/${f}`, 'utf8'))));
 
   // 5 · Sin regresiones: navegador, carrito y móvil
@@ -111,7 +111,7 @@ module.exports = async function (browser) {
   {
     const { page, errs } = await openPage(browser, P, { width: 390, height: 844 });
     await page.click('main label:has-text("3 pulseras y 2 de regalo")'); await page.waitForTimeout(800);
-    await page.click('main .product-form__submit'); await page.waitForTimeout(1500);
+    await T.clickAtc(page, 'main .product-form__submit'); await page.waitForTimeout(1500);
     const d = await page.evaluate(() => { const c = document.querySelector('cart-drawer'); return c && c.classList.contains('active') ? c.innerText.replace(/\s+/g, ' ') : ''; });
     const s = await (await fetch(B + '/__state')).json();
     ok('X23 navegador: 3.ª oferta → cajón «Recibes 5 pulseras (3 pulseras y 2 de regalo)», 34,99 €, cantidad 1', /Recibes 5 pulseras \(3 pulseras y 2 de regalo\)/.test(d) && /34,99/.test(d) && JSON.stringify(s.cart) === '[{"id":4103,"quantity":1}]' && errs.length === 0, d.slice(0, 160));
@@ -123,7 +123,8 @@ module.exports = async function (browser) {
       const cs = [...document.querySelectorAll('main .g-offer__card')];
       return { hs: document.documentElement.scrollWidth > innerWidth, over: cs.some(c => c.scrollWidth > c.clientWidth + 1), save: cs.map(c => (c.querySelector('.g-offer__save') || {}).textContent || ''), slides: document.querySelectorAll('main .g-gallery__slide').length, count: (document.querySelector('main .g-gallery__count') || {}).textContent || '' };
     });
-    ok(`X24 ${w}px: sin scroll horizontal ni desbordes; ahorros 9,99 / 24,98 €; galería de 4 fotos`, !m.hs && !m.over && JSON.stringify(m.save) === '["","Ahorras 9,99 €","Ahorras 24,98 €"]' && m.slides === 4 && (w >= 750 || m.count === '1 / 4') && errs.length === 0, m);
+    const NS = T.at('AD') ? 3 : 4; // D47: 3 fotos
+    ok(`X24 ${w}px: sin scroll horizontal ni desbordes; ahorros 9,99 / 24,98 €; galería de ${NS} fotos`, !m.hs && !m.over && JSON.stringify(m.save) === '["","Ahorras 9,99 €","Ahorras 24,98 €"]' && m.slides === NS && (w >= 750 || m.count === `1 / ${NS}`) && errs.length === 0, m);
     await page.close();
   }
   await reset();

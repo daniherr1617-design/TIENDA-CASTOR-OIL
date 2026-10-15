@@ -1,6 +1,7 @@
 {%- comment -%}
   GARELON · Lista de hechos verificables (con icono) o etiquetas, con imagen opcional y nota.
-  Se usa para «Detalles de la pulsera» (lista + imagen) y «Para regalar» (solo encabezado y entradilla).
+  Se usa para «Detalles de la pulsera» (tarjetas compactas, sin imagen desde D47) y «Para regalar»
+  (solo encabezado y entradilla).
   Sin bloques, sin imagen y sin nota, la sección es solo su encabezado: no se pinta ni la lista ni la
   rejilla (sin huecos). Con bloques, «Lista con icono» y «Etiquetas» funcionan igual que siempre.
 {%- endcomment -%}
@@ -8,10 +9,6 @@
   assign has_media = false
   if section.settings.image != blank or section.settings.image_key != 'none'
     assign has_media = true
-  endif
-  assign media_text = false
-  if section.settings.image_key == 'infografia'
-    assign media_text = true
   endif
   assign has_items = false
   if section.blocks.size > 0
@@ -26,7 +23,7 @@
   {% if section.settings.anchor != blank %}
     id="{{ section.settings.anchor | handleize }}"
   {% endif %}
-  class="g-details g-details--{{ section.settings.layout }} color-{{ section.settings.color_scheme }} gradient g-section g-section--{{ section.id }}{% if has_media %} g-details--media{% endif %}{% if media_text %} g-details--media-text{% endif %}"
+  class="g-details g-details--{{ section.settings.layout }} color-{{ section.settings.color_scheme }} gradient g-section g-section--{{ section.id }}{% if has_media %} g-details--media{% endif %}"
 >
   {%- style -%}
     .g-section--{{ section.id }} { --g-pt: {{ section.settings.padding_top }}px; --g-pb: {{ section.settings.padding_bottom }}px; }
@@ -68,6 +65,21 @@
               </li>
             {%- endfor -%}
           </ul>
+        {%- elsif section.settings.layout == 'compact' -%}
+          {%- comment -%} D47: tarjetas pequeñas (2 columnas en móvil, 3 desde 750 px), icono junto al título. {%- endcomment -%}
+          <ul class="g-specs" role="list">
+            {%- for block in section.blocks -%}
+              <li class="g-spec" {{ block.shopify_attributes }}>
+                <h3 class="g-spec__title">
+                  <span class="g-spec__icon">{%- render 'garelon-icon', icon: block.settings.icon -%}</span>
+                  {{- block.settings.title | escape -}}
+                </h3>
+                {%- if block.settings.text != blank -%}
+                  <p class="g-spec__text">{{ block.settings.text | escape }}</p>
+                {%- endif -%}
+              </li>
+            {%- endfor -%}
+          </ul>
         {%- else -%}
           <ul class="g-facts" role="list">
             {%- for block in section.blocks -%}
@@ -106,6 +118,7 @@
       "label": "Diseño",
       "options": [
         { "value": "list", "label": "Lista con icono" },
+        { "value": "compact", "label": "Tarjetas compactas" },
         { "value": "chips", "label": "Etiquetas" }
       ],
       "default": "list"
@@ -128,8 +141,7 @@
     {
       "type": "image_picker",
       "id": "image",
-      "label": "Imagen",
-      "info": "Con la infografía del tema se usa siempre la aprobada (esta imagen no la sustituye)."
+      "label": "Imagen"
     },
     {
       "type": "select",
@@ -138,9 +150,8 @@
       "options": [
         { "value": "none", "label": "Ninguna" },
         { "value": "completa", "label": "Pulsera completa (vista general)" },
-        { "value": "infografia", "label": "Infografía de detalles (con texto)" },
         { "value": "principal", "label": "Pulsera en la muñeca" },
-        { "value": "oracion", "label": "Manos en oración" }
+        { "value": "oracion", "label": "Pulsera puesta (mano en la muñeca)" }
       ],
       "default": "none"
     },

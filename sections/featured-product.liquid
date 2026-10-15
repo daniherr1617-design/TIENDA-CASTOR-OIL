@@ -1091,14 +1091,14 @@
           "id": "garelon_buy_now",
           "default": true,
           "label": "Botón «Comprar ahora» en móvil",
-          "info": "Solo en pantallas de menos de 750 px. Lleva al pago de Shopify con el pack elegido; «Añadir al carrito» sigue debajo. El escritorio no cambia."
+          "info": "Solo en pantallas de menos de 750 px: es el único botón principal (allí no se muestra «Añadir al carrito») y lleva al pago de Shopify con el pack elegido. El escritorio no cambia."
         },
         {
           "type": "checkbox",
           "id": "garelon_mobile_wallets",
           "default": false,
           "label": "Botones de pago acelerado también en móvil",
-          "info": "Con «Comprar ahora» activo, los métodos acelerados que tengas activados (PayPal, Shop Pay…) salen al principio del pago de Shopify, en «Pago exprés». Actívalo para mostrarlos también bajo los botones en móvil."
+          "info": "Muestra bajo «Comprar ahora» los botones nativos de pago acelerado que Shopify ofrezca (Apple Pay, Google Pay…, solo si están activados en la tienda y el dispositivo los admite). Sin botón genérico «Comprar ya». Desactivado, salen igualmente al principio del pago de Shopify."
         }
       ]
     },
@@ -1845,7 +1845,7 @@
       "id": "garelon_gallery_keys",
       "label": "Imágenes del tema (orden)",
       "default": "principal,completa,oracion",
-      "info": "Claves separadas por comas: principal, completa, infografia, oracion."
+      "info": "Claves separadas por comas: completa, principal, oracion."
     },
     {
       "type": "color_scheme",

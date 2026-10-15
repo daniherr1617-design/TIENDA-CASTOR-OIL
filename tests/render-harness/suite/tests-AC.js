@@ -10,6 +10,7 @@ const fs = require('fs');
 const { execSync } = require('child_process');
 const P = '/products/pulsera-rosario-virgen-maria';
 const BASE = 'f1d3e17'; // HEAD antes de la ronda AC
+const ROUND_HEAD = '045ee0a'; // Ronda AD: commit del tema de la ronda AC (alcance fijado a AC, como en T…AB)
 const REPO = fs.existsSync(THEME + '/.git');
 const buy = (html) => (html.match(/<section\s+id="comprar"[\s\S]*?<\/product-info>/) || [''])[0];
 const main = (html) => (html.match(/<product-info[\s\S]*?<\/product-info>/) || [''])[0];
@@ -27,14 +28,15 @@ module.exports = async function (browser) {
       && s.indexOf('ProductSubmitButton-') < s.indexOf('data-garelon-buy-now') && s.indexOf('data-garelon-buy-now') < s.lastIndexOf('</form>'), btn.slice(0, 200));
     ok(`AC2 ${name}: solo rutas nativas de Shopify (/cart/update.js, /checkout, /cart), sin variant IDs escritos en el tema`,
       /data-update-url="\/cart\/update\.js"/.test(btn) && /data-checkout-url="\/checkout"/.test(btn) && /data-cart-url="\/cart"/.test(btn) && !/\/cart\/\d+:\d+/.test(s));
-    ok(`AC3 ${name}: botones con clase de compra rápida y sin pagos acelerados repetidos en móvil (ajuste por defecto)`, /product-form__buttons g-buy--now g-buy--no-wallets/.test(s));
+    // Desde la ronda AD (D47) el pago acelerado nativo se permite en móvil (AD18-AD19): sin la clase g-buy--no-wallets.
+    ok(`AC3 ${name}: botones con clase de compra rápida${T.at('AD') ? ' (pago acelerado nativo permitido en móvil desde D47)' : ' y sin pagos acelerados repetidos en móvil (ajuste por defecto)'}`, T.at('AD') ? /product-form__buttons g-buy--now"/.test(s) : /product-form__buttons g-buy--now g-buy--no-wallets/.test(s));
   }
   for (const f of ['templates/index.json', 'templates/product.json']) {
     const j = JSON.parse(fs.readFileSync(`${THEME}/${f}`, 'utf8'));
     const sec = j.sections[f.includes('index') ? 'compra' : 'main'];
     const bb = Object.values(sec.blocks).find(b => b.type === 'buy_buttons');
-    ok(`AC4 ${f}: «Comprar ahora» activo, pagos acelerados en móvil desactivados y pago dinámico intacto (escritorio)`,
-      bb.settings.garelon_buy_now === true && bb.settings.garelon_mobile_wallets === false && bb.settings.show_dynamic_checkout === true, bb.settings);
+    ok(`AC4 ${f}: «Comprar ahora» activo, pagos acelerados en móvil ${T.at('AD') ? 'permitidos (D47)' : 'desactivados'} y pago dinámico intacto (escritorio)`,
+      bb.settings.garelon_buy_now === true && bb.settings.garelon_mobile_wallets === T.at('AD') && bb.settings.show_dynamic_checkout === true, bb.settings); // D47: true desde la ronda AD
   }
   for (const f of ['sections/featured-product.liquid', 'sections/main-product.liquid']) {
     const schema = JSON.parse(fs.readFileSync(`${THEME}/${f}`, 'utf8').split('{% schema %}')[1].split('{% endschema %}')[0]);
@@ -62,7 +64,10 @@ module.exports = async function (browser) {
           bnBg: getComputedStyle(bn).backgroundColor, pay: pay ? getComputedStyle(pay).display : 'none', legend: r(root.querySelector('.g-offer__legend')).top + scrollY,
           sw: document.documentElement.scrollWidth, cw: document.documentElement.clientWidth };
       });
-      ok(`AC7 ${name} ${w}px: «Comprar ahora» relleno, a todo el ancho y ≥ 44 px, encima de «Añadir al carrito» (contorno, ≥ 44 px); sin pagos repetidos ni scroll horizontal`,
+      // Desde la ronda AD (D47) «Añadir al carrito» no se muestra en móvil: «Comprar ahora» es el único botón (AD14).
+      if (T.at('AD')) ok(`AC7 ${name} ${w}px: «Comprar ahora» relleno, a todo el ancho y ≥ 44 px, sin «Añadir al carrito» visible (D47) ni scroll horizontal`,
+        m.bn.h >= 44 && Math.abs(m.bn.w - m.wrapW) <= 1 && m.atcH === 0 && !/rgba\(0, 0, 0, 0\)/.test(m.bnBg) && m.sw <= m.cw && errs.length === 0, { ...m, errs });
+      else ok(`AC7 ${name} ${w}px: «Comprar ahora» relleno, a todo el ancho y ≥ 44 px, encima de «Añadir al carrito» (contorno, ≥ 44 px); sin pagos repetidos ni scroll horizontal`,
         m.bn.h >= 44 && Math.abs(m.bn.w - m.wrapW) <= 1 && m.bn.b <= m.atcT && m.atcH >= 44 && /rgba\(0, 0, 0, 0\)|transparent/.test(m.atcBg) && !/rgba\(0, 0, 0, 0\)/.test(m.bnBg)
         && m.pay === 'none' && m.sw <= m.cw && errs.length === 0, { ...m, errs });
       if (w === 390 && name === 'home') ok('AC8 home 390×844: «Elige tu oferta» empieza en la primera pantalla y «Comprar ahora» queda por encima de 1300 px (antes «Añadir al carrito» a 1349 px)', m.legend < 844 && m.bn.t + 0 < 1300, m);
@@ -132,7 +137,7 @@ module.exports = async function (browser) {
   {
     await reset(); await setState(LIVE);
     const { page, errs } = await openPage(browser, '/', { width: 390, height: 844 });
-    await page.click('[id^="ProductSubmitButton-"]'); await page.waitForTimeout(1200); // «Añadir al carrito» (1 pulsera) abre el cajón
+    await T.clickAtc(page, '[id^="ProductSubmitButton-"]'); await page.waitForTimeout(1200); // «Añadir al carrito» (1 pulsera) abre el cajón
     const drawer = await page.evaluate(() => document.querySelector('cart-drawer').classList.contains('active'));
     await page.keyboard.press('Escape'); await page.waitForTimeout(500);
     await page.click('.g-offer__card:has-text("2 pulseras y 1 de regalo")'); await page.waitForTimeout(900);
@@ -202,13 +207,12 @@ module.exports = async function (browser) {
 
   // 9 · Alcance: solo compra rápida en móvil (botones, ajustes, compra fija, CSS, JS, textos y plantillas)
   if (REPO) {
-    const changed = execSync(`git -C ${THEME} diff --name-only ${BASE} -- assets config layout sections snippets templates`).toString().trim().split('\n').filter(Boolean)
-      .concat(execSync(`git -C ${THEME} ls-files --others --exclude-standard -- assets config layout sections snippets templates`).toString().trim().split('\n').filter(Boolean)).sort();
+    const changed = execSync(`git -C ${THEME} diff --name-only ${BASE} ${ROUND_HEAD} -- assets config layout sections snippets templates`).toString().trim().split('\n').filter(Boolean).sort();
     ok('AC20 alcance: garelon.css, garelon.js, buy-buttons, compra fija, ajustes de las dos secciones de compra y las dos plantillas (sin imágenes, precios ni layout)',
       JSON.stringify(changed) === JSON.stringify(['assets/garelon.css', 'assets/garelon.js', 'sections/featured-product.liquid', 'sections/garelon-sticky-cta.liquid', 'sections/main-product.liquid', 'snippets/buy-buttons.liquid', 'templates/index.json', 'templates/product.json']), changed);
-    const loc = execSync(`git -C ${THEME} diff -U0 ${BASE} -- locales`).toString().split('\n').filter(l => /^[+-][^+-]/.test(l));
+    const loc = execSync(`git -C ${THEME} diff -U0 ${BASE} ${ROUND_HEAD} -- locales`).toString().split('\n').filter(l => /^[+-][^+-]/.test(l));
     ok('AC21 locales: solo se añaden los textos garelon.buy (31 idiomas, 4 líneas cada uno), sin borrar nada', loc.every(l => l[0] === '+') && loc.length === 31 * 4, loc.length);
-    const sec = execSync(`git -C ${THEME} diff -U0 ${BASE} -- sections/featured-product.liquid sections/main-product.liquid`).toString().split('\n').filter(l => /^[+-][^+-]/.test(l));
+    const sec = execSync(`git -C ${THEME} diff -U0 ${BASE} ${ROUND_HEAD} -- sections/featured-product.liquid sections/main-product.liquid`).toString().split('\n').filter(l => /^[+-][^+-]/.test(l));
     ok('AC22 secciones de compra: solo se añaden los dos ajustes del bloque de botones (sin quitar nada)', sec.filter(l => l[0] === '-').every(l => /^-\s*}$/.test(l)) && sec.some(l => /garelon_buy_now/.test(l)), sec.filter(l => l[0] === '-'));
   }
 };

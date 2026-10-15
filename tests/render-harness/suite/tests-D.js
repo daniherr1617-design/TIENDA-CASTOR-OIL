@@ -14,7 +14,9 @@ module.exports = async function (browser) {
   ok('D1 home: la compra (#comprar) es la primera sección', order[0] === 'compra' && /<section\s+id="comprar"/.test(r.html), order);
   let s = section(r.html);
   ok('D2 una sola variante: sin selector, sin tabla de packs y sin aviso para el cliente', !/variant-selects|g-packs|g-offer|g-editor-note/.test(s));
-  ok('D3 galería con las 4 imágenes del tema (completa → infografía → principal → oración; D41: sin `detalle`), la primera eager (D44: LCP de la home) y el resto lazy, con alt', count(s, /class="g-gallery__slide[ "]/g) === 4 && /producto-completa-1080[\s\S]*producto-infografia-v\d+-1254[\s\S]*producto-principal-1080[\s\S]*producto-oracion-1080/.test(s) && (() => { const g = [...((s.match(/<div class="g-gallery"[\s\S]*?<\/ul>/) || [''])[0]).matchAll(/<img\b[^>]*>/g)].map(x => x[0]); return g.length === 4 && /loading="eager"/.test(g[0]) && g.slice(1).every(i => /loading="lazy"/.test(i)); })() && !/alt=""/.test((s.match(/<div class="g-gallery"[\s\S]*?<\/ul>/) || [''])[0]));
+  // D47 (ronda AD): 3 fotos, sin infografía.
+  const NG = T.at('AD') ? 3 : 4;
+  ok(`D3 galería con las ${NG} imágenes del tema (${T.at('AD') ? 'completa → principal → oración; D47: sin infografía' : 'completa → infografía → principal → oración; D41: sin `detalle`'}), la primera eager (D44: LCP de la home) y el resto lazy, con alt`, count(s, /class="g-gallery__slide[ "]/g) === NG && (T.at('AD') ? /producto-completa-1080[\s\S]*producto-principal-1080[\s\S]*producto-oracion-1080/ : /producto-completa-1080[\s\S]*producto-infografia-v\d+-1254[\s\S]*producto-principal-1080[\s\S]*producto-oracion-1080/).test(s) && (() => { const g = [...((s.match(/<div class="g-gallery"[\s\S]*?<\/ul>/) || [''])[0]).matchAll(/<img\b[^>]*>/g)].map(x => x[0]); return g.length === NG && /loading="eager"/.test(g[0]) && g.slice(1).every(i => /loading="lazy"/.test(i)); })() && !/alt=""/.test((s.match(/<div class="g-gallery"[\s\S]*?<\/ul>/) || [''])[0]));
   // Ronda T: la frase y las garantías van debajo del botón para subir los packs en móvil.
   ok('D4 frase de fe una sola vez en la página, después del botón', count(r.html, /Un símbolo de tu fe, contigo cada día\./g) === 1 && s.indexOf('ProductSubmitButton') > 0 && s.indexOf('g-trust__phrase') > s.indexOf('ProductSubmitButton'));
   ok('D5 título del producto como H1 de la home (D44, sin portada) y botón de pago dinámico', /<h1 class="product__title h1"/.test(s) && count(r.html, /<h1[\s>]/g) === 1 && /shopify-payment-button/.test(s));
@@ -52,7 +54,7 @@ module.exports = async function (browser) {
     const price = await page.evaluate(() => document.querySelector('[id^="price-"] .price-item--regular, [id^="price-"] .price-item--sale').textContent.trim());
     const idv = await page.evaluate(() => document.querySelector('#comprar form[id^="product-form-template"] input[name="id"]').value);
     ok('D19 elegir «2 pulseras» actualiza precio (34,99 €) y variante del formulario (4102)', /34,99/.test(price) && idv === '4102', { price, idv });
-    await page.click('#comprar [id^="ProductSubmitButton-"]'); await page.waitForTimeout(1200);
+    await T.clickAtc(page, '#comprar [id^="ProductSubmitButton-"]'); await page.waitForTimeout(1200);
     const st = await (await fetch(B + '/__state')).json();
     const last = st.log[st.log.length - 1] || {};
     ok('D20 «Añadir al carrito» envía la variante del pack (4102) con cantidad 1 (sin quantity = 1 en Shopify)', last.id === '4102' && (last.quantity === undefined || last.quantity === '1') && st.cart.length === 1 && st.cart[0].quantity === 1, last);
@@ -80,7 +82,7 @@ module.exports = async function (browser) {
       return { sw: document.documentElement.scrollWidth, cw: document.documentElement.clientWidth, n: cards.length, hs: rects.map(r => Math.round(r.height)), oneCol: new Set(rects.map(r => Math.round(r.left))).size === 1, prices,
         chipCols: new Set(chips.map(c => Math.round(c.left))).size, chipRows: new Set(chips.map(c => Math.round(c.top))).size, chipH: chips.map(c => Math.round(c.height)), quoteH: Math.round(q.height),
         chipN: chips.length, lastFull: chips.length % 2 === 0 || Math.abs(chips[chips.length - 1].width - document.querySelector('#comprar .g-trust__grid').getBoundingClientRect().width) < 1,
-        btn: Math.round(document.querySelector('#comprar [id^="ProductSubmitButton-"]').getBoundingClientRect().height) }; });
+        btn: Math.round([...document.querySelectorAll('#comprar [data-garelon-buy-now], #comprar [id^="ProductSubmitButton-"]')].find(b => b.offsetParent !== null).getBoundingClientRect().height) /* D47: botón visible */ }; });
     ok(`D24 ${w}px: compra sin scroll horizontal; 3 tarjetas apiladas ≥ 44 px con el precio dentro; 3 garantías en una fila de 3 de la misma altura, sin hueco (≥ 44 px; D43, antes 2 columnas con la impar a lo ancho); frase compacta (≤ 80 px); botón ≥ 44 px`, m.sw <= m.cw && m.n === 3 && m.oneCol && m.hs.every(x => x >= 44) && m.prices.every(Boolean) && m.chipN === 3 && m.chipCols === 3 && m.chipRows === 1 && new Set(m.chipH).size === 1 && m.chipH.every(x => x >= 44) && m.btn >= 44 && m.quoteH <= 80 && errs.length === 0, m);
     await page.close();
   }

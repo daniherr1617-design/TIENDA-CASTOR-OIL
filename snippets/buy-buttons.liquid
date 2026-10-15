@@ -25,7 +25,8 @@
 
       # GARELON (D46): «Comprar ahora» solo en móvil (< 750 px). Pone en el carrito exactamente la variante
       # elegida con su cantidad (/cart/update.js, nativo) y abre el pago de Shopify; si el carrito ya tenía
-      # otros productos, abre el carrito para revisarlos. «Añadir al carrito» sigue debajo y el escritorio no cambia.
+      # otros productos, abre el carrito para revisarlos. Desde D47 es el único botón principal en móvil
+      # («Añadir al carrito» se oculta con CSS en esa zona); el escritorio no cambia.
       assign garelon_buy_now = false
       if block.settings.garelon_buy_now and gift_card_recipient_feature_active == false
         assign garelon_buy_now = true

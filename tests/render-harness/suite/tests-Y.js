@@ -82,12 +82,12 @@ module.exports = async function (browser) {
       const full = (s) => Math.abs(s.w - m.tw) <= 1;
       ok(`Y9 ${n} ${w}px: cada fila se llena (una imagen a todo el ancho o dos mitades): ningún hueco`,
         rows.every(r => (r.length === 1 && full(r[0])) || (r.length === 2 && r.every(s => Math.abs(s.w - half) <= 1) && r[0].x === 0 && Math.abs(r[1].x + r[1].w - m.tw) <= 1)), rows.map(r => r.map(s => `${s.key}:${s.w}`)));
-      ok(`Y10 ${n} ${w}px: foto completa arriba, principal y oración al lado, infografía al final a todo el ancho`,
-        JSON.stringify(rows.map(r => r.map(s => s.key))) === JSON.stringify([['completa'], ['principal', 'oracion'], ['infografia']]), rows.map(r => r.map(s => s.key)));
+      ok(`Y10 ${n} ${w}px: foto completa arriba, principal y oración al lado${T.at('AD') ? ' (D47: sin infografía)' : ', infografía al final a todo el ancho'}`,
+        JSON.stringify(rows.map(r => r.map(s => s.key))) === JSON.stringify(T.at('AD') ? [['completa'], ['principal', 'oracion']] : [['completa'], ['principal', 'oracion'], ['infografia']]), rows.map(r => r.map(s => s.key)));
       ok(`Y11 ${n} ${w}px: todas las imágenes cuadradas y las de la misma fila terminan a la misma altura`,
         m.sl.every(s => Math.abs(s.iw - s.ih) <= 1) && rows.every(r => r.every(s => Math.abs(s.ib - r[0].ib) <= 1)), m.sl);
       const last = rows[rows.length - 1][0];
-      ok(`Y12 ${n} ${w}px: «Ampliar» queda bajo la infografía, al pie de la galería (no descuadra ninguna fila)`, m.hintTop >= last.ib - 1 && m.hintBottom <= m.th + 1 && m.sl.every(s => s.ib <= m.hintTop + 1), [m.hintTop, m.hintBottom, m.th, last.ib]);
+      if (!T.at('AD')) ok(`Y12 ${n} ${w}px: «Ampliar» queda bajo la infografía, al pie de la galería (no descuadra ninguna fila)`, m.hintTop >= last.ib - 1 && m.hintBottom <= m.th + 1 && m.sl.every(s => s.ib <= m.hintTop + 1), [m.hintTop, m.hintBottom, m.th, last.ib]);
       ok(`Y13 ${n} ${w}px: sin scroll horizontal ni errores`, await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth) && errs.length === 0, errs);
       await page.close();
     }
@@ -100,15 +100,16 @@ module.exports = async function (browser) {
         const sl = [...tr.querySelectorAll('.g-gallery__slide')];
         return { display: cs.display, snap: cs.scrollSnapType, tw: Math.round(tr.clientWidth), ws: sl.map(li => Math.round(li.getBoundingClientRect().width)), orders: sl.map(li => getComputedStyle(li).order), count: (tr.querySelector('.g-gallery__count') || {}).textContent || '', hs: document.documentElement.scrollWidth > innerWidth };
       }, root);
-      ok(`Y14 ${n} ${w}px: en móvil sigue el carrusel deslizable a todo el ancho, en el mismo orden y con «1 / 4»`,
-        m.display === 'flex' && /x/.test(m.snap) && m.ws.length === 4 && m.ws.every(x => Math.abs(x - m.tw) <= 1) && m.orders.every(o => o === '0') && m.count === '1 / 4' && !m.hs && errs.length === 0, m);
+      const NS = T.at('AD') ? 3 : 4; // D47: 3 fotos
+      ok(`Y14 ${n} ${w}px: en móvil sigue el carrusel deslizable a todo el ancho, en el mismo orden y con «1 / ${NS}»`,
+        m.display === 'flex' && /x/.test(m.snap) && m.ws.length === NS && m.ws.every(x => Math.abs(x - m.tw) <= 1) && m.orders.every(o => o === '0') && m.count === `1 / ${NS}` && !m.hs && errs.length === 0, m);
       await page.close();
     }
   }
   {
     const snip = fs.readFileSync(`${THEME}/snippets/garelon-gallery.liquid`, 'utf8');
     ok('Y15 galería: si sobran fotos impares, la última también va a todo el ancho (claves configurables sin huecos)', /assign odd_halves = halves \| modulo: 2/.test(snip) && /odd_halves == 1 and n == last_half/.test(snip));
-    ok('Y16 galería: solo las 4 imágenes aprobadas (sin `detalle` ni imágenes nuevas)', ['templates/index.json', 'templates/product.json'].every(f => { const k = Object.values(json(f).sections).map(s => s.settings && s.settings.garelon_gallery_keys).find(Boolean); return k.split(',').sort().join() === 'completa,infografia,oracion,principal'; }));
+    ok(`Y16 galería: solo las ${T.at('AD') ? '3 imágenes aprobadas (D47: sin infografía)' : '4 imágenes aprobadas'} (sin \`detalle\` ni imágenes nuevas)`, ['templates/index.json', 'templates/product.json'].every(f => { const k = Object.values(json(f).sections).map(s => s.settings && s.settings.garelon_gallery_keys).find(Boolean); return k.split(',').sort().join() === (T.at('AD') ? 'completa,oracion,principal' : 'completa,infografia,oracion,principal'); }));
   }
   await reset();
 

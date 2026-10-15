@@ -82,14 +82,14 @@ module.exports = async function (browser) {
         const R = document.querySelector(root); const top = (s) => { const e = R.querySelector(s); return e ? Math.round(e.getBoundingClientRect().top + scrollY) : null; };
         const tr = R.querySelector('.g-gallery__track'); const sl = [...R.querySelectorAll('.g-gallery__slide')];
         const info = R.querySelector('.g-gallery__slide img[src*="infografia"]');
-        return { title: top('.product__title'), legend: top('.g-offer__legend'), card1: top('.g-offer__card'), atc: top('.product-form__submit'), trust: top('.g-trust--chips'), phrase: top('.g-trust__phrase'),
+        return { title: top('.product__title'), legend: top('.g-offer__legend'), card1: top('.g-offer__card'), atc: (() => { const b = [...R.querySelectorAll('[data-garelon-buy-now], .product-form__submit')].find(x => x.offsetParent !== null); return b ? Math.round(b.getBoundingClientRect().top + scrollY) : null; })() /* D47: botón visible */, trust: top('.g-trust--chips'), phrase: top('.g-trust__phrase'),
           gap: Math.round(tr.getBoundingClientRect().bottom - sl[0].getBoundingClientRect().bottom), widths: sl.map(s => Math.round(s.getBoundingClientRect().width)), track: Math.round(tr.getBoundingClientRect().width),
           info: info && { w: info.getBoundingClientRect().width, h: info.getBoundingClientRect().height, fit: getComputedStyle(info).objectFit, nw: info.naturalWidth, nh: info.naturalHeight },
           hscroll: document.documentElement.scrollWidth > window.innerWidth };
       }, root);
       ok(`T19 ${n} ${w}px: sin scroll horizontal y sin errores JS`, !m.hscroll && errs.length === 0, errs);
       ok(`T20 ${n} ${w}px: título → garantías → «Elige tu oferta» → botón → frase (D43)`, m.title < m.trust && m.trust < m.legend && m.legend < m.card1 && m.card1 < m.atc && m.atc < m.phrase, m);
-      ok(`T21 ${n} ${w}px: infografía entera (cuadrada, sin recorte)`, m.info && Math.abs(m.info.w - m.info.h) <= 1 && m.info.nw === m.info.nh, m.info);
+      if (!T.at('AD')) ok(`T21 ${n} ${w}px: infografía entera (cuadrada, sin recorte)`, m.info && Math.abs(m.info.w - m.info.h) <= 1 && m.info.nw === m.info.nh, m.info);
       if (w < 750) {
         ok(`T22 ${n} ${w}px: galería móvil sin hueco (cada foto al ancho de la pista; bajo la 1.ª solo queda la línea «Ampliar», ≤ 32 px)`, m.widths.every(x => Math.abs(x - m.track) <= 1) && m.gap <= 32, [m.gap, m.widths, m.track]);
         // Antes de la ronda T (aa9c01a, mode=real, 390×844): ficha «Elige tu oferta» a 868 px y botón a 1308 px.
@@ -131,7 +131,7 @@ module.exports = async function (browser) {
   {
     const { page, errs } = await openPage(browser, P, { width: 390, height: 844 });
     await page.click('main label:has-text("3 pulseras")'); await page.waitForTimeout(800);
-    await page.click('main .product-form__submit'); await page.waitForTimeout(1500);
+    await T.clickAtc(page, 'main .product-form__submit'); await page.waitForTimeout(1500);
     const d = await page.evaluate(() => { const c = document.querySelector('cart-drawer'); return c && c.classList.contains('active') ? c.innerText.replace(/\s+/g, ' ') : ''; });
     const s = await (await fetch(B + '/__state')).json();
     ok('T30 navegador: pack de 3 → cajón abierto con «Tu pack incluye 3 pulseras», 34,99 €, cantidad 1', /Tu pack incluye 3 pulseras/.test(d) && /34,99/.test(d) && JSON.stringify(s.cart) === '[{"id":4103,"quantity":1}]' && errs.length === 0, d.slice(0, 200));

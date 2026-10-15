@@ -25,13 +25,21 @@ const OLD_SRC = 'Imagen 1.png';
 const VPS = [320, 360, 375, 390, 430, 768, 1024, 1440];
 const es = JSON.parse(fs.readFileSync(`${THEME}/locales/es.json`, 'utf8')).garelon.gallery;
 const snippet = fs.readFileSync(`${THEME}/snippets/garelon-image.liquid`, 'utf8');
-const WIDTHS = ((snippet.match(/when 'infografia'\s*assign widths = '([\d,]+)'/) || [])[1] || '').split(',').filter(Boolean).map(Number);
+// Desde la ronda AD (D47) la infografía no existe: el alcance histórico de la ronda P (P29) usa sus anchos de entonces.
+const WIDTHS = T.at('AD') ? [480, 720, 1080, 1254] : ((snippet.match(/when 'infografia'\s*assign widths = '([\d,]+)'/) || [])[1] || '').split(',').filter(Boolean).map(Number);
 const esc = (s) => s.replace(/&/g, '&amp;').replace(/"/g, '&quot;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
 const contactHrefs = (html) => [...html.matchAll(/href="(\/(?:pages\/contact[a-z-]*|policies\/contact-information))"/g)].map(m => m[1]);
 const PAGES = ['/', P, '/cart', '/ruta-inexistente-garelon'];
 
 module.exports = async function phaseP(browser) {
   await reset();
+  // Ronda AD (D47): la infografía se retira de la tienda; P1-P11 (fuente, WebP y render de la infografía) los sustituyen
+  // AD4-AD5 (ni assets ni referencias). Contacto (P12-P28) y el alcance de la ronda P siguen.
+  if (!T.at('AD')) await infografiaP(browser);
+  await contactoP(browser);
+};
+
+async function infografiaP(browser) {
   // 1 · Fuente y assets de la infografía
   if (REPO) {
     const src = `${THEME}/${NEW_SRC}`;
@@ -100,6 +108,9 @@ print(json.dumps(out))`, `${THEME}/${NEW_SRC}`, THEME, JSON.stringify(WIDTHS), A
     await page.close();
   }
 
+}
+
+async function contactoP(browser) {
   // 3 · Contacto: plantilla y formulario nativo (escenario normal: página «contacto» con la plantilla «contact»)
   let r = await get('/pages/contacto');
   const form = (r.html.match(/<form[^>]*id="ContactForm"[\s\S]*?<\/form>/) || [''])[0];
@@ -215,4 +226,4 @@ print(json.dumps(out))`, `${THEME}/${NEW_SRC}`, THEME, JSON.stringify(WIDTHS), A
   const removed = (f) => execSync(`git -C ${THEME} diff -U0 ${BASE} ${ROUND_HEAD} -- ${f}`).toString().split('\n').filter(l => /^-[^-]/.test(l));
   ok('P31 garelon.css y el formulario de Dawn solo ganan líneas (nada del formulario nativo se quita)', removed('assets/garelon.css').length === 0 && removed('sections/contact-form.liquid').length === 0,
     [...removed('assets/garelon.css'), ...removed('sections/contact-form.liquid')]);
-};
+}

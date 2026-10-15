@@ -30,6 +30,14 @@ print(json.dumps(out))`;
 
 module.exports = async function (browser) {
   await reset();
+  // Ronda AD (D47): el propietario sustituye todas las fotos por «IMAGEN 1/2/3.png» y retira la infografía. Lo que
+  // estas pruebas comprobaban en el árbol actual (fuentes y WebP de D45, galerías con infografía) lo cubren AD1-AD8;
+  // aquí solo queda el alcance de la ronda AB, fijado a su commit.
+  if (!T.at('AD')) await currentTree(browser);
+  scope();
+};
+
+async function currentTree(browser) {
   // 1 · Fuentes: byte a byte las del propietario; la antigua «imagen 4.png» retirada; el resto de fuentes intacto
   if (REPO) {
     const blob = (rev, f) => spawnSync('git', ['-C', THEME, 'cat-file', 'blob', `${rev}:${f}`], { maxBuffer: 64 * 1024 * 1024 }).stdout;
@@ -77,6 +85,9 @@ module.exports = async function (browser) {
     await page.close();
   }
 
+}
+
+function scope() {
   // 5 · Alcance: solo los WebP de las dos imágenes y el nombre de la familia de la infografía
   if (REPO) {
     const changed = execSync(`git -C ${THEME} diff --name-only ${BASE} ${ROUND_HEAD} -- assets config layout locales sections snippets templates`).toString().trim().split('\n').filter(Boolean);
@@ -89,4 +100,4 @@ module.exports = async function (browser) {
     ok('AB12 fuentes: solo «NUEVA IMAGEN 1.png» (sustituida), «NUEVA IMAGEN 4.png» (nueva) e «imagen 4.png» (retirada)',
       JSON.stringify(src) === JSON.stringify(['NUEVA IMAGEN 1.png', 'NUEVA IMAGEN 4.png', 'imagen 4.png']), src);
   }
-};
+}

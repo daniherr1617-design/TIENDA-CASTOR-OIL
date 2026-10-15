@@ -69,7 +69,7 @@ module.exports = async function (browser) {
       others: [...document.querySelectorAll('#comprar .g-offer__input:not(:checked) + .g-offer__card')].map(e => getComputedStyle(e).borderColor) }));
     ok('G19 pulsar la tarjeta «3 pulseras» la marca al instante y Dawn actualiza variante (4103) y precio (47,99 €)', instant === '3 pulseras' && st.checked === '3 pulseras' && st.idv === '4103' && /47,99/.test(st.hidden), st);
     ok('G20 la tarjeta elegida destaca (borde dorado #86672f) y las demás no', st.sel === 'rgb(134, 103, 47)' && before === st.sel && st.others.every(x => x !== st.sel), st);
-    await page.click('#comprar [id^="ProductSubmitButton-"]'); await page.waitForTimeout(1200);
+    await T.clickAtc(page, '#comprar [id^="ProductSubmitButton-"]'); await page.waitForTimeout(1200);
     const s2 = await (await fetch(B + '/__state')).json(); const last = s2.log[s2.log.length - 1] || {};
     const drawer = await page.evaluate(() => { const d = document.querySelector('cart-drawer'); return d && d.classList.contains('active') ? d.innerText : ''; });
     ok('G21 Añadir al carrito: variante 4103 con cantidad 1 y cajón con «3 pulseras» × 47,99 €', last.id === '4103' && (last.quantity === undefined || last.quantity === '1') && /3 pulseras/.test(drawer) && /47,99/.test(drawer), { last, drawer: drawer.slice(0, 160) });
@@ -93,7 +93,7 @@ module.exports = async function (browser) {
   {
     const { page, errs } = await openPage(browser, P, { width: 390, height: 844 });
     await page.click('.g-offer__card:has-text("2 pulseras")'); await page.waitForTimeout(900);
-    await page.evaluate(() => window.scrollTo(0, document.querySelector('[id^="ProductSubmitButton-"]').getBoundingClientRect().bottom + window.scrollY + 300)); await page.waitForTimeout(600);
+    await page.evaluate(() => window.scrollTo(0, [...document.querySelectorAll('[data-garelon-buy-now], [id^="ProductSubmitButton-"]')].find(b => b.offsetParent !== null).getBoundingClientRect().bottom + window.scrollY + 300) /* D47: en móvil el botón visible es «Comprar ahora» */); await page.waitForTimeout(600);
     const st = await page.evaluate(() => ({ url: location.search, sticky: document.querySelector('[data-sticky-price]').textContent.trim(), vis: document.querySelector('[data-garelon-sticky]').classList.contains('is-visible') }));
     ok('G25 ficha: tarjeta «2 pulseras» → ?variant=4102 y la compra fija muestra 34,99 €', /variant=4102/.test(st.url) && /34,99/.test(st.sticky) && st.vis, st);
     ok('G26 ficha sin errores JS', errs.length === 0, errs);

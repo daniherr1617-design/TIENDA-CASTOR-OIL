@@ -2,23 +2,22 @@
   GARELON · Galería con las imágenes fieles del producto incluidas en el tema.
   Sustituye a la multimedia de Shopify mientras esta no esté revisada (la que importa el
   proveedor puede traer imágenes con claims no verificados). Sin JS: deslizable en móvil
-  (scroll-snap) y en rejilla desde 750 px. En móvil, cada foto lleva «1 / 5» para que se vea que hay
-  más (sin JS, decorativo; la infografía no lo lleva para no tapar su texto).
+  (scroll-snap) y en rejilla desde 750 px. En móvil, cada foto lleva «1 / 3» para que se vea que hay
+  más (sin JS, decorativo).
 
   Rejilla de escritorio sin huecos (D42): la primera foto ocupa todo el ancho; las demás fotos van de
-  dos en dos; la infografía cierra la galería a todo el ancho (legible, con «Ampliar» debajo sin
-  descuadrar ninguna fila). Si quedan fotos impares, la última también va a todo el ancho.
-  En móvil el orden y el deslizamiento no cambian.
+  dos en dos. Si quedan fotos impares, la última también va a todo el ancho.
+  En móvil el orden y el deslizamiento no cambian. Desde D47 solo hay tres fotos (sin infografía).
 
   Parámetros:
-  - keys: claves separadas por comas, en el orden de la historia (p. ej. 'principal,completa,infografia,oracion')
+  - keys: claves separadas por comas, en el orden de la historia (p. ej. 'completa,principal,oracion')
   - eager: true si es la imagen principal de la página (ficha de producto)
 
   Uso: {% render 'garelon-gallery', keys: 'principal,completa,oracion', eager: true %}
 {%- endcomment -%}
 {%- liquid
   assign list = keys | default: 'principal' | split: ','
-  assign known = 'principal,completa,infografia,oracion' | split: ','
+  assign known = 'principal,completa,oracion' | split: ','
   assign total = 0
   assign halves = 0
   assign last_half = 0
@@ -26,7 +25,7 @@
     assign k = raw | strip
     if known contains k
       assign total = total | plus: 1
-      if total > 1 and k != 'infografia'
+      if total > 1
         assign halves = halves | plus: 1
         assign last_half = total
       endif
@@ -45,8 +44,6 @@
             assign alt = 'garelon.gallery.alt_principal' | t
           when 'completa'
             assign alt = 'garelon.gallery.alt_completa' | t
-          when 'infografia'
-            assign alt = 'garelon.gallery.alt_infografia' | t
           when 'oracion'
             assign alt = 'garelon.gallery.alt_oracion' | t
           else
@@ -59,8 +56,8 @@
       -%}
       {%- if alt != '' -%}
         {%- assign n = n | plus: 1 -%}
-        <li class="g-gallery__slide{% if key == 'infografia' %} g-gallery__slide--wide{% endif %}{% if n == 1 or key == 'infografia' or odd_halves == 1 and n == last_half %} g-gallery__slide--full{% endif %}">
-          {%- if total > 1 and key != 'infografia' -%}
+        <li class="g-gallery__slide{% if n == 1 or odd_halves == 1 and n == last_half %} g-gallery__slide--full{% endif %}">
+          {%- if total > 1 -%}
             <span class="g-gallery__count" aria-hidden="true">{{ n }} / {{ total }}</span>
           {%- endif -%}
           {%- render 'garelon-image',

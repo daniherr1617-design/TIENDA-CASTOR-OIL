@@ -18,6 +18,14 @@ const CLAIMS = /14\s*K|gold plated|hipoalerg|waterproof|resistente al agua|no se
 
 module.exports = async function (browser) {
   await reset();
+  const REPO = fs.existsSync(`${THEME}/.git`); // I3, I25-I28: solo en el repositorio (el ZIP no lleva PNG, .md ni git)
+  // Ronda AD (D47): la infografía y estas fotos se sustituyen por «IMAGEN 1/2/3.png»; I1-I20 describían esas imágenes
+  // en el árbol actual y los cubren AD1-AD8. Siguen la compra (I21-I24) y el alcance de la ronda I, fijado a su commit.
+  if (!T.at('AD')) await imagesI(browser, REPO);
+  await afterImages(browser, REPO);
+};
+
+async function imagesI(browser, REPO) {
   // 1 · Assets
   const bad = [];
   for (const [k, ws] of Object.entries(WEBP)) for (const w of ws) {
@@ -37,7 +45,6 @@ module.exports = async function (browser) {
 from PIL import Image;import glob
 print(';'.join(f.split('/')[-1]+'='+'x'.join(map(str,Image.open(f).size)) for f in sorted(glob.glob('${THEME}/assets/producto-[ci]*.webp'))))"`).toString().trim();
   ok('I2 assets cuadrados al ancho de su nombre (sin recortes ni deformación)', dims.split(';').every(p => { const [n, d] = p.split('='); const w = n.match(/-(\d+)\.webp/)[1]; return d === `${w}x${w}`; }), dims);
-  const REPO = fs.existsSync(`${THEME}/.git`); // I3, I25-I28: solo en el repositorio (el ZIP no lleva PNG, .md ni git)
   // Ronda P: «NUEVA IMAGEN 1.png» (flechas corregidas por el propietario) sustituye a «Imagen 1.png» como fuente de `infografia`.
   if (REPO) ok('I3 originales conservados como fuente («NUEVA IMAGEN 1.png» y, desde D45, «NUEVA IMAGEN 4.png»)', fs.existsSync(`${THEME}/NUEVA IMAGEN 1.png`) && fs.existsSync(`${THEME}/NUEVA IMAGEN 4.png`));
   const snip = fs.readFileSync(`${THEME}/snippets/garelon-image.liquid`, 'utf8');
@@ -113,14 +120,17 @@ print(';'.join(f.split('/')[-1]+'='+'x'.join(map(str,Image.open(f).size)) for f 
     ok('I20 móvil 390 px: el gesto de deslizar recorre la galería de 4 fotos (D41)', JSON.stringify(seen) === JSON.stringify([0, 1, 2, 3]), seen);
     await ctx.close();
   }
+}
 
+async function afterImages(browser, REPO) {
+  let r;
   // 6 · Compra y variantes siguen funcionando con la galería nueva
   await setState('mode=pack3save&reset=1');
   {
     const { page, errs } = await openPage(browser, '/', { width: 390, height: 844 });
     await page.click('label:has-text("3 pulseras")'); await page.waitForTimeout(900);
     const idv = await page.evaluate(() => document.querySelector('#comprar form[id^="product-form-template"] input[name="id"]').value);
-    await page.click('#comprar [id^="ProductSubmitButton-"]'); await page.waitForTimeout(1200);
+    await T.clickAtc(page, '#comprar [id^="ProductSubmitButton-"]'); await page.waitForTimeout(1200);
     const s = await (await fetch(B + '/__state')).json();
     const drawer = await page.evaluate(() => { const d = document.querySelector('cart-drawer'); return d && d.classList.contains('active') ? d.innerText : ''; });
     ok('I21 home: variante «3 pulseras» (4103) → carrito con 1 unidad y cajón abierto', idv === '4103' && s.cart.length === 1 && s.cart[0].quantity === 1 && /3 pulseras/.test(drawer), { idv, cart: s.cart.length });
@@ -147,4 +157,4 @@ print(';'.join(f.split('/')[-1]+'='+'x'.join(map(str,Image.open(f).size)) for f 
   // 8 · Documentación: aprobadas por el propietario, sin «descartadas» vigentes
   const doc = fs.readFileSync(`${THEME}/GARELON-RECONSTRUCCION-LIMPIA.md`, 'utf8');
   ok('I28 documentación: verificación del propietario registrada y sin «Descartada» para estas imágenes', /Verificación del propietario:\*\* `Imagen 1\.png` e `imagen 4\.png` corresponden al producto real y están aprobadas para uso en la tienda/.test(doc) && !/`(imagen 4|Imagen 1)\.png`[^\n]*\*\*Descartada/.test(doc));
-};
+}
