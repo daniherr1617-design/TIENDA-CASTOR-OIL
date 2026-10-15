@@ -8,6 +8,7 @@ const fs = require('fs');
 const { execSync, execFileSync, spawnSync } = require('child_process');
 const P = '/products/pulsera-rosario-virgen-maria';
 const BASE = '8be0746'; // HEAD antes de la ronda AB
+const ROUND_HEAD = '8aaf012'; // Ronda AC: commit del tema de la ronda AB (alcance fijado a AB, como en T…AA)
 const OWNER_UPLOAD = 'd697947'; // subida del propietario a main (2026-10-14): «NUEVA IMAGEN 1.png» y «NUEVA IMAGEN 4.png»
 const REPO = fs.existsSync(THEME + '/.git');
 const INF = T.assetBase('infografia');
@@ -78,15 +79,13 @@ module.exports = async function (browser) {
 
   // 5 · Alcance: solo los WebP de las dos imágenes y el nombre de la familia de la infografía
   if (REPO) {
-    const changed = execSync(`git -C ${THEME} diff --name-only ${BASE} -- assets config layout locales sections snippets templates`).toString().trim().split('\n').filter(Boolean)
-      .concat(execSync(`git -C ${THEME} ls-files --others --exclude-standard -- assets config layout locales sections snippets templates`).toString().trim().split('\n').filter(Boolean));
+    const changed = execSync(`git -C ${THEME} diff --name-only ${BASE} ${ROUND_HEAD} -- assets config layout locales sections snippets templates`).toString().trim().split('\n').filter(Boolean);
     ok('AB10 alcance: solo producto-completa-*.webp, producto-infografia-v3/v4-*.webp y snippets/garelon-image.liquid (sin CSS, plantillas, secciones, textos ni ajustes)',
       changed.length === 12 && changed.every(f => /^(assets\/producto-completa-(480|720|1080)\.webp|assets\/producto-infografia-v[34]-(480|720|1080|1254)\.webp|snippets\/garelon-image\.liquid)$/.test(f)), changed);
-    const sn = execSync(`git -C ${THEME} diff -U0 ${BASE} -- snippets/garelon-image.liquid`).toString().split('\n').filter(l => /^[+-][^+-]/.test(l));
+    const sn = execSync(`git -C ${THEME} diff -U0 ${BASE} ${ROUND_HEAD} -- snippets/garelon-image.liquid`).toString().split('\n').filter(l => /^[+-][^+-]/.test(l));
     ok('AB11 garelon-image.liquid: solo cambia v3 → v4 en el nombre de la familia (2 líneas)',
       sn.length === 4 && sn.filter(l => l[0] === '-').every(l => l.includes('producto-infografia-v3')) && sn.filter(l => l[0] === '-').map(l => l.slice(1).replace(/v3/g, 'v4')).join() === sn.filter(l => l[0] === '+').map(l => l.slice(1)).join(), sn);
-    const src = execSync(`git -C ${THEME} diff --name-only ${BASE} -- '*.png'`).toString().trim().split('\n').filter(Boolean)
-      .concat(execSync(`git -C ${THEME} ls-files --others --exclude-standard -- '*.png'`).toString().trim().split('\n').filter(Boolean)).sort();
+    const src = execSync(`git -C ${THEME} diff --name-only ${BASE} ${ROUND_HEAD} -- '*.png'`).toString().trim().split('\n').filter(Boolean).sort();
     ok('AB12 fuentes: solo «NUEVA IMAGEN 1.png» (sustituida), «NUEVA IMAGEN 4.png» (nueva) e «imagen 4.png» (retirada)',
       JSON.stringify(src) === JSON.stringify(['NUEVA IMAGEN 1.png', 'NUEVA IMAGEN 4.png', 'imagen 4.png']), src);
   }

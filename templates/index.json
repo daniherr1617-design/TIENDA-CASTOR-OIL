@@ -63,7 +63,9 @@
           "type": "buy_buttons",
           "settings": {
             "show_dynamic_checkout": true,
-            "show_gift_card_recipient": false
+            "show_gift_card_recipient": false,
+            "garelon_buy_now": true,
+            "garelon_mobile_wallets": false
           }
         }
       },
@@ -405,6 +407,12 @@
         "padding_top": 56,
         "padding_bottom": 64
       }
+    },
+    "compra_fija": {
+      "type": "garelon-sticky-cta",
+      "settings": {
+        "color_scheme": "scheme-4"
+      }
     }
   },
   "order": [
@@ -415,6 +423,7 @@
     "detalles",
     "regalo",
     "preguntas",
-    "cierre"
+    "cierre",
+    "compra_fija"
   ]
 }

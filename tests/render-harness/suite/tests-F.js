@@ -31,11 +31,12 @@ module.exports = async function (browser) {
     await page.evaluate(() => window.scrollTo(0, document.querySelector('[id^="ProductSubmitButton-"]').getBoundingClientRect().bottom + window.scrollY + 300)); await page.waitForTimeout(600);
     const st = await page.evaluate(() => { const s = document.querySelector('[data-garelon-sticky]'); return { vis: s.classList.contains('is-visible'), inert: s.hasAttribute('inert'), price: s.querySelector('[data-sticky-price]').textContent.trim(), label: s.querySelector('[data-sticky-button]').textContent.trim(), h: Math.round(s.querySelector('[data-sticky-button]').getBoundingClientRect().height) }; });
     ok('F11 elegir «3 pulseras» en la ficha actualiza la URL (?variant=4103)', /variant=4103/.test(url), url);
-    ok('F12 compra fija: oculta arriba; aparece al pasar el botón con el precio del pack (47,99 €) y «Añadir al carrito» (≥ 44 px)', hiddenAtTop && st.vis && !st.inert && /47,99/.test(st.price) && /Añadir al carrito/.test(st.label) && st.h >= 44, st);
-    await page.click('[data-sticky-button]'); await page.waitForTimeout(1200);
+    // D46: en móvil la compra fija pulsa «Comprar ahora» (antes «Añadir al carrito»).
+    ok('F12 compra fija: oculta arriba; aparece al pasar el botón con el precio del pack (47,99 €) y «Comprar ahora» (≥ 44 px)', hiddenAtTop && st.vis && !st.inert && /47,99/.test(st.price) && /Comprar ahora/.test(st.label) && st.h >= 44, st);
+    await page.click('[data-sticky-button]'); await page.waitForURL(/\/checkout/, { timeout: 5000 }).catch(() => {});
     const s2 = await (await fetch(B + '/__state')).json(); const last = s2.log[s2.log.length - 1] || {};
-    const drawer = await page.evaluate(() => { const d = document.querySelector('cart-drawer'); return d && d.classList.contains('active'); });
-    ok('F13 la compra fija añade el pack elegido (4103) con cantidad 1 y abre el cajón', last.id === '4103' && (last.quantity === undefined || last.quantity === '1') && drawer, last);
+    // D46: el pack elegido (4103) con cantidad 1 va directo al pago (simulado), sin pasar por el cajón.
+    ok('F13 la compra fija pone el pack elegido (4103) con cantidad 1 en el carrito y abre el pago', JSON.stringify(last.update) === JSON.stringify({ 4103: 1 }) && /\/checkout$/.test(page.url()), { last, url: page.url() });
     ok('F14 sin errores JS en la ficha', errs.length === 0, errs);
     await page.close();
   }

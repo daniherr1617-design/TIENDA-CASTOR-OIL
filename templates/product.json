@@ -74,7 +74,9 @@
           "type": "buy_buttons",
           "settings": {
             "show_dynamic_checkout": true,
-            "show_gift_card_recipient": false
+            "show_gift_card_recipient": false,
+            "garelon_buy_now": true,
+            "garelon_mobile_wallets": false
           }
         },
         "descripcion": {

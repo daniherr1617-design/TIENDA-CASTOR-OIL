@@ -19,7 +19,7 @@ const AFTER = ['compra', 'opiniones', 'tranquilidad', 'significado', 'detalles',
 module.exports = async function (browser) {
   // 1 · Plantilla: solo sale la portada y la compra se marca como primera sección
   const idx = json('templates/index.json');
-  ok('AA1 index.json: sin «portada» (GARELON Portada); las otras 8 secciones en el mismo orden', JSON.stringify(idx.order) === JSON.stringify(AFTER) && !idx.sections.portada && !Object.values(idx.sections).some(s => s.type === 'garelon-hero'), idx.order);
+  ok('AA1 index.json: sin «portada» (GARELON Portada); las otras 8 secciones en el mismo orden', JSON.stringify(idx.order.filter(x => x !== 'compra_fija')) === JSON.stringify(AFTER) /* D46: compra fija al final */ && !idx.sections.portada && !Object.values(idx.sections).some(s => s.type === 'garelon-hero'), idx.order);
   ok('AA2 la compra lleva «Primera sección de la página» (H1 + foto prioritaria); la sección sigue disponible en el editor', idx.sections.compra.settings.garelon_primary === true && fs.existsSync(`${THEME}/sections/garelon-hero.liquid`));
 
   // 2 · Render: compra primero, un H1, una LCP
@@ -84,7 +84,7 @@ module.exports = async function (browser) {
     ok('AA11 alcance: solo templates/index.json y sections/featured-product.liquid (sin CSS, ficha, packs, opiniones, FAQ, imágenes, locales ni ajustes)',
       changed.length === 2 && changed.every(f => /^(templates\/index\.json|sections\/featured-product\.liquid)$/.test(f)), changed);
     const at = (f) => JSON.parse(execSync(`git -C ${THEME} show ${BASE}:${f}`).toString().replace(/^\s*\/\*[\s\S]*?\*\/\s*/, ''));
-    const before = at('templates/index.json'); const now = json('templates/index.json');
+    const before = at('templates/index.json'); const now = JSON.parse(execSync(`git -C ${THEME} show ${ROUND_HEAD}:templates/index.json`).toString().replace(/^\s*\/\*[\s\S]*?\*\/\s*/, '')); // alcance fijado a AA
     const strip = (t) => { const c = JSON.parse(JSON.stringify(t)); delete c.sections.portada; c.order = c.order.filter(x => x !== 'portada'); delete c.sections.compra.settings.garelon_primary; return c; };
     ok('AA12 index.json: fuera de la portada y del nuevo ajuste no cambia nada (orden, packs, campaña, opiniones, FAQ, imágenes, textos)', JSON.stringify(strip(before)) === JSON.stringify(strip(now)));
     const sec = execSync(`git -C ${THEME} diff -U0 ${BASE} ${ROUND_HEAD} -- sections/featured-product.liquid`).toString().split('\n').filter(l => /^[+-][^+-]/.test(l));

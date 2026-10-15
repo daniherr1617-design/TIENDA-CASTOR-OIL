@@ -319,6 +319,22 @@ http.createServer(async (req, res) => {
       for (const sid of String(fd.get('sections') || '').split(',').filter(Boolean)) sections[sid] = await renderSection(sid, sid, {}, {}, []);
       return res.end(JSON.stringify({ id, variant_id: id, quantity: qty, title: `${prod.title} - ${v.title}`, variant_title: v.title, key: `${id}:k`, sections }));
     }
+    // SOLO TEST (D46): /cart/update.js de la Cart API de Shopify: fija la cantidad de cada variante de
+    // `updates` (la añade si no está; 0 la quita) y devuelve el carrito. Agotada o inexistente: 422.
+    if ((p === '/cart/update' || p === '/cart/update.js') && req.method === 'POST') {
+      const chunks = []; for await (const c of req) chunks.push(c); const body = JSON.parse(Buffer.concat(chunks).toString() || '{}');
+      state.log.push({ update: body.updates }); const prod = buildProduct(null); res.setHeader('Content-Type', 'application/json');
+      for (const [k, q] of Object.entries(body.updates || {})) {
+        const id = Number(k); const qty = Number(q); const v = prod.variants.find(x => x.id === id);
+        if (!v || (!v.available && qty > 0)) { res.writeHead(422); return res.end(JSON.stringify({ status: 422, message: 'Cart Error', description: 'Agotado' })); }
+        const line = state.cart.find(l => l.id === id); if (qty === 0) state.cart = state.cart.filter(l => l.id !== id); else if (line) line.quantity = qty; else state.cart.push({ id, quantity: qty });
+      }
+      CURRENT = globals({ pageType: 'cart', pathname: '/cart' }, prod); const c = cartDrop();
+      return res.end(JSON.stringify({ item_count: c.item_count, items: c.items.map(i => ({ id: i.id, variant_id: i.id, quantity: i.quantity })), total_price: c.total_price }));
+    }
+    // SOLO TEST (D46): el pago de Shopify no existe en local; esta página solo deja ver qué llegó al pago.
+    if (p === '/checkout') { const c = cartDrop(); res.setHeader('Content-Type', 'text/html; charset=utf-8'); res.setHeader('X-Test-Template', 'checkout-simulado');
+      return res.end(`<!doctype html><title>Pago simulado</title><h1>PAGO SIMULADO (SOLO TEST)</h1><ul id="lines">${c.items.map(i => `<li data-variant="${i.id}" data-qty="${i.quantity}">${i.id} × ${i.quantity}</li>`).join('')}</ul>`); }
     if ((p === '/cart/change' || p === '/cart/change.js') && req.method === 'POST') {
       const chunks = []; for await (const c of req) chunks.push(c); const body = JSON.parse(Buffer.concat(chunks).toString() || '{}');
       const idx = Number(body.line) - 1; if (state.cart[idx]) { if (Number(body.quantity) === 0) state.cart.splice(idx, 1); else state.cart[idx].quantity = Number(body.quantity); }

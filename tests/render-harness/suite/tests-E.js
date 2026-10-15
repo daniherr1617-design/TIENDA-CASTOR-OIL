@@ -13,7 +13,8 @@ module.exports = async function (browser) {
   const order = [...r.html.matchAll(/id="shopify-section-template--1__(\w+)"/g)].map(m => m[1]);
   // Ronda T: opiniones antes de «Compra con tranquilidad».
   // Ronda AA (D44): sin portada; el resto, en el mismo orden.
-  ok('E1 orden de la home', JSON.stringify(order) === JSON.stringify(['compra', 'opiniones', 'tranquilidad', 'significado', 'detalles', 'regalo', 'preguntas', 'cierre']), order);
+  // Ronda AC (D46): compra fija (barra inferior en móvil) al final.
+  ok('E1 orden de la home', JSON.stringify(order) === JSON.stringify(['compra', 'opiniones', 'tranquilidad', 'significado', 'detalles', 'regalo', 'preguntas', 'cierre', 'compra_fija']), order);
   const ids = ['comprar', 'significado', 'detalles', 'regalo', 'preguntas-frecuentes'];
   ok('E2 anclas de la home existen (incluidas las del menú y los CTA)', ids.every(i => new RegExp(`id="${i}"`).test(r.html)), ids.filter(i => !new RegExp(`id="${i}"`).test(r.html)));
   const hrefs = [...r.html.matchAll(/href="\/#([\w-]+)"/g)].map(m => m[1]);

@@ -1416,3 +1416,128 @@ body {
 .footer__localization .disclosure__button {
   min-height: 4.4rem;
 }
+
+/* ---------- D46 · Compra rápida en móvil ----------
+   «Comprar ahora» (snippets/buy-buttons.liquid + assets/garelon.js) solo por debajo de 750 px, con el
+   precio del pack elegido dentro del botón; «Añadir al carrito» queda debajo como alternativa.
+   Bloque de compra más compacto en móvil (menos aire entre título, valoración, garantías y ofertas).
+   Nada de esto aplica en escritorio ni en tableta. */
+.g-buy-now {
+  display: none;
+}
+@media screen and (max-width: 749px) {
+  .g-buy--now {
+    display: flex;
+    flex-direction: column;
+  }
+  /* En el HTML va después de «Añadir al carrito» (Dawn usa el primer submit); en móvil se ve primero. */
+  .g-buy-now {
+    order: -1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 0.2rem 0.8rem;
+    min-height: 5.6rem;
+    margin-bottom: 1rem;
+    font-size: 1.7rem;
+    font-weight: 600;
+    letter-spacing: 0.02em;
+  }
+  .g-buy-now__price {
+    font-weight: 600;
+  }
+  .g-buy-now__price::before {
+    content: '·';
+    margin-right: 0.8rem;
+    opacity: 0.75;
+  }
+  .g-buy-now[aria-busy='true'] {
+    cursor: progress;
+    opacity: 0.8;
+  }
+  .g-buy-now[aria-busy='true']::before {
+    content: '';
+    width: 1.6rem;
+    height: 1.6rem;
+    border: 2px solid currentColor;
+    border-right-color: transparent;
+    border-radius: 50%;
+    animation: g-spin 0.8s linear infinite;
+  }
+  /* Con «Comprar ahora» delante, «Añadir al carrito» pasa a alternativa: contorno, sin relleno. */
+  .g-buy--now .product-form__submit,
+  .g-buy--now .product-form__submit.button--secondary {
+    min-height: 4.8rem;
+    margin-bottom: 0;
+    background-color: transparent;
+    color: var(--g-ink);
+    font-size: 1.5rem;
+  }
+  .g-buy--now .product-form__submit::after,
+  .g-buy--now .product-form__submit.button--secondary::after {
+    box-shadow: 0 0 0 1px var(--g-ink);
+  }
+  .g-buy--now .product-form__submit:hover:not([disabled]),
+  .g-buy--now .product-form__submit.button--secondary:hover:not([disabled]) {
+    background-color: var(--g-accent-soft);
+  }
+  .g-buy--now .product-form__submit[disabled],
+  .g-buy--now .product-form__submit.button--secondary[disabled] {
+    background-color: transparent;
+    color: rgba(42, 38, 34, 0.55);
+  }
+  .g-buy-now[disabled] {
+    background-color: rgba(42, 38, 34, 0.35);
+  }
+  /* Los métodos acelerados ya salen al principio del pago de Shopify («Pago exprés»); en móvil no se
+     repiten bajo los botones salvo que se active «Botones de pago acelerado también en móvil». */
+  .g-buy--no-wallets .shopify-payment-button {
+    display: none;
+  }
+
+  /* Bloque de compra compacto (home y ficha). */
+  .featured-product .product__info-container > * + *,
+  .product--medium .product__info-container > * + *,
+  .product .product__info-container > * + * {
+    margin-top: 1rem;
+    margin-bottom: 1rem;
+  }
+  .product .product__title h1,
+  .product h1.product__title,
+  .featured-product .product__title {
+    font-size: 2.6rem;
+    line-height: 1.22;
+  }
+  .product .g-rating {
+    margin: -0.6rem 0 0;
+  }
+  .product .g-trust--n3 {
+    margin-top: 0.6rem;
+  }
+  .product .g-trust--n3 .g-trust__chip {
+    padding: 0.6rem 0.3rem;
+    font-size: 1.15rem;
+  }
+  .product .g-offer__legend {
+    margin-bottom: 1rem;
+  }
+
+  /* La compra fija no tapa el pie (enlaces legales) al final de la página. */
+  body:has([data-garelon-sticky]) .footer {
+    padding-bottom: calc(7.6rem + env(safe-area-inset-bottom));
+  }
+  .g-sticky__title {
+    font-weight: 600;
+  }
+}
+@keyframes g-spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .g-buy-now[aria-busy='true']::before {
+    animation: none;
+  }
+}

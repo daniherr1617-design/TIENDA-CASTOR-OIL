@@ -22,6 +22,21 @@
       if block.settings.show_dynamic_checkout and gift_card_recipient_feature_active == false
         assign show_dynamic_checkout = true
       endif
+
+      # GARELON (D46): «Comprar ahora» solo en móvil (< 750 px). Pone en el carrito exactamente la variante
+      # elegida con su cantidad (/cart/update.js, nativo) y abre el pago de Shopify; si el carrito ya tenía
+      # otros productos, abre el carrito para revisarlos. «Añadir al carrito» sigue debajo y el escritorio no cambia.
+      assign garelon_buy_now = false
+      if block.settings.garelon_buy_now and gift_card_recipient_feature_active == false
+        assign garelon_buy_now = true
+      endif
+      assign garelon_buttons_class = ''
+      if garelon_buy_now
+        assign garelon_buttons_class = ' g-buy--now'
+        unless block.settings.garelon_mobile_wallets
+          assign garelon_buttons_class = garelon_buttons_class | append: ' g-buy--no-wallets'
+        endunless
+      endif
     -%}
 
     <product-form
@@ -60,7 +75,7 @@
           {%- render 'gift-card-recipient-form', product: product, form: form, section: section -%}
         {%- endif -%}
 
-        <div class="product-form__buttons">
+        <div class="product-form__buttons{{ garelon_buttons_class }}">
           {%- liquid
             assign check_against_inventory = true
             if product.selected_or_first_available_variant.inventory_management != 'shopify' or product.selected_or_first_available_variant.inventory_policy == 'continue'
@@ -93,6 +108,45 @@
             </span>
             {%- render 'loading-spinner' -%}
           </button>
+          {%- if garelon_buy_now -%}
+            {%- comment -%}
+              Va después de «Añadir al carrito» (Dawn toma el primer botón submit como el suyo) y en móvil se
+              pinta primero con CSS (order). Sin JS hace lo mismo que «Añadir al carrito» de Dawn (/cart/add).
+            {%- endcomment -%}
+            <button
+              type="submit"
+              class="button button--full-width button--primary g-buy-now"
+              data-garelon-buy-now
+              data-checkout-url="{{ routes.root_url | append: '/checkout' | replace: '//', '/' }}"
+              data-cart-url="{{ routes.cart_url }}"
+              data-update-url="{{ routes.cart_update_url }}.js"
+              data-error="{{ 'garelon.buy.error' | t | escape }}"
+              data-now-text="{{ 'garelon.buy.now' | t | escape }}"
+              data-add-text="{{ 'products.product.add_to_cart' | t | escape }}"
+              {% if product.selected_or_first_available_variant.available == false
+                or quantity_rule_soldout
+                or product.selected_or_first_available_variant == null
+              %}
+                disabled
+              {% endif %}
+            >
+              {%- comment -%} Agotado o sin variante: el mismo texto que «Añadir al carrito», sin precio. {%- endcomment -%}
+              {%- if product.selected_or_first_available_variant == null -%}
+                <span class="g-buy-now__label">{{ 'products.product.unavailable' | t }}</span>
+                <span class="g-buy-now__price" data-buy-now-price hidden></span>
+              {%- elsif product.selected_or_first_available_variant.available == false or quantity_rule_soldout -%}
+                <span class="g-buy-now__label">{{ 'products.product.sold_out' | t }}</span>
+                <span class="g-buy-now__price" data-buy-now-price hidden>
+                  {{- product.selected_or_first_available_variant.price | money -}}
+                </span>
+              {%- else -%}
+                <span class="g-buy-now__label">{{ 'garelon.buy.now' | t }}</span>
+                <span class="g-buy-now__price" data-buy-now-price>
+                  {{- product.selected_or_first_available_variant.price | money -}}
+                </span>
+              {%- endif -%}
+            </button>
+          {%- endif -%}
           {%- if show_dynamic_checkout -%}
             {{ form | payment_button }}
           {%- endif -%}

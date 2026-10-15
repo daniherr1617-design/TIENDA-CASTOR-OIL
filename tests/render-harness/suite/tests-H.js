@@ -141,5 +141,5 @@ module.exports = async function (browser) {
   r = await get('/pages/contacto'); ok('H28 contacto → 200 con formulario', r.status === 200 && /form[^>]*contact/i.test(r.html));
   let idx = null; try { idx = JSON.parse(fs.readFileSync(`${THEME}/templates/index.json`, 'utf8')); } catch (e) {}
   // Ronda AA (D44): la portada sale de la home; las otras 8 secciones conservan su orden.
-  ok('H29 templates/index.json existe, es JSON válido y conserva las 8 secciones en orden (sin portada, D44)', idx && JSON.stringify(idx.order) === JSON.stringify(['compra', 'opiniones', 'tranquilidad', 'significado', 'detalles', 'regalo', 'preguntas', 'cierre']), idx && idx.order);
+  ok('H29 templates/index.json existe, es JSON válido y conserva las 8 secciones en orden (sin portada, D44) y la compra fija al final (D46)', idx && JSON.stringify(idx.order) === JSON.stringify(['compra', 'opiniones', 'tranquilidad', 'significado', 'detalles', 'regalo', 'preguntas', 'cierre', 'compra_fija']), idx && idx.order);
 };

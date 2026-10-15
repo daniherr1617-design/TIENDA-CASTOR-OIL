@@ -541,6 +541,10 @@
     }
   },
   "garelon": {
+    "buy": {
+      "now": "Comprar ahora",
+      "error": "No se ha podido abrir el pago. Inténtalo de nuevo o usa «Añadir al carrito»."
+    },
     "legal": {
       "contact": "Contacto",
       "shipping_policy": "Envíos",

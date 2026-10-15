@@ -529,6 +529,10 @@
     }
   },
   "garelon": {
+    "buy": {
+      "now": "Buy now",
+      "error": "Checkout could not be opened. Please try again or use “Add to cart”."
+    },
     "legal": {
       "contact": "Contact",
       "shipping_policy": "Shipping",
