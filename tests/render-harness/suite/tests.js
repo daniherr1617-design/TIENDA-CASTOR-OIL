@@ -5,16 +5,28 @@ const fs = require('fs'); const path = require('path');
 const THEME = path.resolve(process.env.THEME || path.join(__dirname, '..', '..', '..'));
 const B = 'http://localhost:' + (process.env.PORT || 8810);
 // Tras la Z, las rondas siguen con AA, AB… (ronda AA, D44).
-const PHASES = [...'ABCDEFGHIJKLMNOPQRSTUVWXYZ', 'AA', 'AB', 'AC', 'AD']; const PH = PHASES.indexOf(process.env.PHASE || PHASES[PHASES.length - 1]);
+const PHASES = [...'ABCDEFGHIJKLMNOPQRSTUVWXYZ', 'AA', 'AB', 'AC', 'AD', 'AE']; const PH = PHASES.indexOf(process.env.PHASE || PHASES[PHASES.length - 1]);
 const at = (p) => PHASES.indexOf(p) <= PH;
 // Fases que solo probaban algo que el propietario retiró: no se ejecutan desde la ronda indicada (con PHASE anterior, sí).
 // Q, R y S validaban la infografía «NUEVA IMAGEN 1.png» (fuente, familia versionada, píxel a píxel); D47 la retira de la
 // tienda y AD4-AD5 comprueban que no vuelve (assets, referencias y textos).
 const RETIRED = { Q: 'AD', R: 'AD', S: 'AD' };
 const RETIRED_WHY = { Q: 'infografía retirada (D47)', R: 'infografía retirada (D47)', S: 'infografía retirada (D47)' };
-const results = []; const ok = (n, c, i) => results.push([c ? 'PASS' : 'FAIL', n, i === undefined ? '' : JSON.stringify(i).slice(0, 300)]);
+const results = [];
+// Pruebas sustituidas por una decisión posterior del propietario: se listan como SUSTITUIDA y no cuentan (como RETIRED con
+// las fases). D48 (ronda AE, 2026-10-16): el ahorro se calcula sobre TODAS las pulseras que se reciben, con su porcentaje,
+// y la plantilla muestra solo 2 ofertas con «Recomendado» en la 2.ª. Lo que estas pruebas comprobaban del ahorro D41 (solo
+// las pagadas, sin porcentajes) y del distintivo en la 3.ª ya no es lo pedido; AE1-AE5 y AE15-AE17 prueban lo vigente.
+const SUPERSEDED = [[/^(D10|T2|T6|U4|U16|U20|U22|V1|V4|V5|W13|X1|X2|X3|X4|X24|AD9) /, 'AE', 'ahorro sobre todas las pulseras con porcentaje y solo 2 ofertas (D48)']];
+const ok = (n, c, i) => {
+  const sup = SUPERSEDED.find(([re, from]) => re.test(n) && at(from));
+  results.push([sup ? 'SUSTITUIDA' : c ? 'PASS' : 'FAIL', n + (sup ? ` [${sup[2]}]` : ''), i === undefined ? '' : JSON.stringify(i).slice(0, 300)]);
+};
 const setState = (q) => fetch(`${B}/__state?${q}`).then(r => r.json());
-const reset = () => setState('mode=single&soldout=&design=0&catalog=ok&contact=ok&refund=ok&shipping=ok&cookies=none&legal=policy&contactinfo=0&noindex=0&reviews=none&accounts=1&media=0&freeship=&taxes=included&reset=1');
+// Ronda AE (D48): las fases anteriores a AE prueban «Elige tu oferta» con los ajustes de la v1.25 (offer=v125);
+// desde AE, con los de las plantillas (solo 2 ofertas).
+const OFFER = { legacy: true };
+const reset = () => setState(`offer=${OFFER.legacy ? 'v125' : ''}&` + 'mode=single&soldout=&design=0&catalog=ok&contact=ok&refund=ok&shipping=ok&cookies=none&legal=policy&contactinfo=0&noindex=0&reviews=none&accounts=1&media=0&freeship=&taxes=included&reset=1');
 const get = async (u) => { const r = await fetch(B + u, { redirect: 'manual' }); const t = await r.text(); return { status: r.status, tpl: r.headers.get('x-test-template'), html: t }; };
 const count = (s, re) => (s.match(re) || []).length;
 const text = (html) => html.replace(/<script[\s\S]*?<\/script>/g, '').replace(/<style[\s\S]*?<\/style>/g, '').replace(/<[^>]+>/g, ' ').replace(/\s+/g, ' ');
@@ -65,7 +77,7 @@ async function clickAtc(page, sel) {
   if (visible) return page.click(sel);
   return page.$eval(sel, (b) => b.click());
 }
-module.exports = { at, ok, get, setState, reset, count, text, B, THEME, SCRATCH, openPage, assetBase, approvedSourceSha, clickAtc };
+module.exports = { OFFER, at, ok, get, setState, reset, count, text, B, THEME, SCRATCH, openPage, assetBase, approvedSourceSha, clickAtc };
 
 async function phaseA(browser) {
   await reset();
@@ -95,11 +107,13 @@ async function phaseA(browser) {
   try { await phaseA(browser); } catch (e) { ok('EXCEPCIÓN fase A', false, String(e.stack)); }
   for (const p of PHASES.slice(1)) {
     if (!at(p) || !fs.existsSync(`${SCRATCH}/tests-${p}.js`)) continue;
+    OFFER.legacy = PHASES.indexOf(p) < PHASES.indexOf('AE');
     if (RETIRED[p] && at(RETIRED[p])) { console.log(`# fase ${p} retirada desde la ronda ${RETIRED[p]}: ${RETIRED_WHY[p]}`); continue; }
     try { await require(`${SCRATCH}/tests-${p}.js`)(browser); } catch (e) { ok(`EXCEPCIÓN fase ${p}`, false, String(e.stack)); }
   }
   await browser.close();
   for (const r of results) console.log(r.join('\t'));
   const fail = results.filter(r => r[0] === 'FAIL').length;
-  console.log(`TOTAL ${results.length - fail}/${results.length}`); process.exit(fail ? 1 : 0);
+  const sup = results.filter(r => r[0] === 'SUSTITUIDA').length; if (sup) console.log(`# ${sup} pruebas sustituidas por decisiones posteriores (no cuentan)`);
+  console.log(`TOTAL ${results.length - fail - sup}/${results.length - sup}`); process.exit(fail ? 1 : 0);
 })();

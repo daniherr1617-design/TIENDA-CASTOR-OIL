@@ -7,10 +7,10 @@
   siguen igual. Todo sale de Shopify: precio, precio comparado, disponibilidad.
 
   - Precio comparado tachado: solo si esa variante tiene compare_at_price > price.
-  - Ahorro: con precio comparado, frente a él; si no, frente a comprar sueltas, al precio del pack
-    de 1, SOLO las unidades que se pagan (D41): en «2 pulseras y 1 de regalo» cuentan 2, no 3; las de
-    regalo no suman ahorro. Solo si es > 0. Nunca se inventa. El precio por unidad sí reparte el
-    precio entre todas las unidades que se reciben.
+  - Ahorro: con precio comparado, frente a él; si no, frente a comprar por separado, al precio del pack
+    de 1, TODAS las unidades que se reciben (D48, sustituye a D41): «2 pulseras y 1 de regalo» (3) a
+    29,99 € frente a 3 × 19,99 € ahorra 29,98 €. Con su porcentaje sobre esa misma referencia, redondeado.
+    Solo si es > 0. Nunca se inventa. El precio por unidad reparte el precio entre todas las unidades.
   - Textos que hablan de ahorro («ahorr…») solo se muestran si ese pack ahorra de verdad.
   - Un distintivo con «mejor precio» solo se muestra en el pack con el precio por unidad más bajo.
   - Unidades que recibe el cliente: garelon-pack-units, desde el valor de la variante
@@ -18,6 +18,10 @@
     Si no coinciden con el primer número del nombre, la tarjeta lo aclara: «Recibes 3 pulseras».
     Con paréntesis, el título es el valor sin él. Las tarjetas (textos, distintivo) se asignan por
     posición: 1.ª, 2.ª y 3.ª variante en el orden de Shopify.
+  - Tarjetas visibles (D48): «Las 2 primeras» oculta del selector las variantes a partir de la 3.ª
+    (no se pintan ni cuentan para el distintivo ni la nota); la variante sigue existiendo en Shopify.
+  - Nombre visible por tarjeta (title_N): solo sustituye al valor de la variante si dice las mismas
+    unidades que recibe el cliente («2 pulseras + 1 GRATIS» → 3); si no, se usa el valor de Shopify.
   - Sin la opción de packs (o con más de una opción), el selector normal de Dawn.
 
   Parámetros: product, block, product_form_id, check (true = solo escribe «on» si las tarjetas
@@ -53,6 +57,10 @@
         assign base_price = v1.price
       endif
     endfor
+    assign max_slots = pack_option.values.size
+    if block.settings.packs_visible == '2'
+      assign max_slots = 2
+    endif
     assign unit_name = block.settings.unit_singular | default: 'unidad'
     assign badge_pack = block.settings.badge_pack | append: ''
     assign used_pack_basis = false
@@ -73,7 +81,7 @@
       endcapture
       assign b_units = u | split: '|' | first | plus: 0
       assign b_slot = forloop.index
-      if bv and b_units > 0
+      if bv and b_units > 0 and b_slot <= max_slots
         assign b_unit = bv.price | times: 1.0 | divided_by: b_units
         if best_unit == nil or b_unit < best_unit
           assign best_unit = b_unit
@@ -123,6 +131,9 @@
             if v == blank
               assign v = product.variants | where: 'option1', value.name | first
             endif
+            if forloop.index > max_slots
+              assign v = nil
+            endif
             capture u
               render 'garelon-pack-units', name: value.name
             endcapture
@@ -140,25 +151,45 @@
               assign qty_text = 'garelon.offer.units_count' | t: count: units
             endif
             assign slot_key = forloop.index | append: ''
+            case slot_key
+              when '1'
+                assign title_override = block.settings.title_1
+              when '2'
+                assign title_override = block.settings.title_2
+              when '3'
+                assign title_override = block.settings.title_3
+              else
+                assign title_override = ''
+            endcase
+            if title_override != blank
+              capture tu
+                render 'garelon-pack-units', name: title_override
+              endcapture
+              assign title_units = tu | split: '|' | first | plus: 0
+              if title_units == units
+                assign card_title = title_override
+              endif
+            endif
 
-            assign paid = units
-            if name_first > 0 and name_first < units
-              assign paid = name_first
+            if v and name_first > 0 and name_first < units
               assign has_gift = true
             endif
             assign compare_saving = 0
             assign pack_saving = 0
             assign unit_price = 0
+            assign reference = 0
+            assign save_pct = 0
             if v
               if v.compare_at_price > v.price
                 assign compare_saving = v.compare_at_price | minus: v.price
+                assign save_pct = compare_saving | times: 100.0 | divided_by: v.compare_at_price | round
               endif
               if base_price and units > 1
                 assign per_unit = v.price | times: 1.0 | divided_by: units | round
                 if per_unit < base_price
                   assign unit_price = per_unit
                 endif
-                assign reference = base_price | times: paid
+                assign reference = base_price | times: units
                 assign pack_saving = reference | minus: v.price
                 if pack_saving < 0
                   assign pack_saving = 0
@@ -169,6 +200,7 @@
             if saving == 0 and pack_saving > 0
               assign saving = pack_saving
               assign used_pack_basis = true
+              assign save_pct = pack_saving | times: 100.0 | divided_by: reference | round
             endif
 
             case slot_key
@@ -235,7 +267,13 @@
                     {%- endif -%}
                     {%- if saving > 0 -%}
                       {%- assign saving_money = saving | money -%}
-                      <span class="g-offer__save">{{ 'garelon.offer.save' | t: amount: saving_money }}</span>
+                      <span class="g-offer__save">
+                        {%- if save_pct > 0 -%}
+                          {{- 'garelon.offer.save_percent' | t: amount: saving_money, percent: save_pct -}}
+                        {%- else -%}
+                          {{- 'garelon.offer.save' | t: amount: saving_money -}}
+                        {%- endif -%}
+                      </span>
                     {%- endif -%}
                   </span>
                 {%- endif -%}

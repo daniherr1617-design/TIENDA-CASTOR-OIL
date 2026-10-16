@@ -809,6 +809,39 @@
           "content": "Las tarjetas siguen el orden de las variantes en Shopify. Si el valor lleva la cantidad entre paréntesis, p. ej. «2 + 1 de regalo (3 pulseras)», la tarjeta muestra «2 + 1 de regalo», «Recibes 3 pulseras» y el precio por pulsera con esas 3 unidades."
         },
         {
+          "type": "select",
+          "id": "packs_visible",
+          "label": "Tarjetas visibles",
+          "options": [
+            {
+              "value": "all",
+              "label": "Todas las variantes"
+            },
+            {
+              "value": "2",
+              "label": "Solo las 2 primeras"
+            }
+          ],
+          "default": "all",
+          "info": "Oculta del selector las variantes a partir de la 3.ª; siguen existiendo en Shopify. Para retirarlas del todo, bórralas o desactívalas en Shopify Admin."
+        },
+        {
+          "type": "text",
+          "id": "title_1",
+          "label": "1.ª tarjeta: nombre visible",
+          "info": "Vacío = el nombre de la variante en Shopify. Solo se usa si dice las mismas unidades que recibe el cliente."
+        },
+        {
+          "type": "text",
+          "id": "title_2",
+          "label": "2.ª tarjeta: nombre visible"
+        },
+        {
+          "type": "text",
+          "id": "title_3",
+          "label": "3.ª tarjeta: nombre visible"
+        },
+        {
           "type": "text",
           "id": "sub_1",
           "label": "1.ª tarjeta",

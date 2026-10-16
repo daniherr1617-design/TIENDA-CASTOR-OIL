@@ -49,12 +49,14 @@
             "heading": "Elige tu oferta",
             "option_name": "Pack",
             "unit_singular": "pulsera",
+            "packs_visible": "2",
+            "title_2": "2 pulseras + 1 GRATIS",
             "sub_1": "Ideal para ti",
             "sub_2": "Perfecto para regalar",
             "sub_3": "Para ti y para compartir",
             "show_unit_price": true,
-            "badge_pack": "3",
-            "badge_text": "Mejor precio por pulsera",
+            "badge_pack": "2",
+            "badge_text": "Recomendado",
             "show_promo": true,
             "promo_text": "Especial octubre · Mes del Rosario"
           }

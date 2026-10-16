@@ -571,8 +571,9 @@
     "offer": {
       "unit_price": "{{ price }} per {{ unit }}",
       "save": "Save {{ amount }}",
+      "save_percent": "Save {{ amount }} ({{ percent }}%)",
       "saving_note": "Savings compared with buying each {{ unit }} separately.",
-      "saving_note_gift": "Savings counted only on the units you pay for, compared with buying them separately at {{ price }} each. Gift units are not added to the savings.",
+      "saving_note_gift": "Savings compared with buying every unit you receive separately at {{ price }} each, gift included.",
       "free_shipping": "Free shipping.",
       "editor_missing": "Editor only: «Choose your offer» shows the standard picker because the product doesn't have a single «Pack» option. Customers can still buy normally. Check the option name in the block or create the variants in Products › (product) › Variants.",
       "receives": "You receive {{ contents }}",

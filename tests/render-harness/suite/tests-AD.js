@@ -12,6 +12,7 @@ const fs = require('fs');
 const { execSync, spawnSync } = require('child_process');
 const P = '/products/pulsera-rosario-virgen-maria';
 const BASE = '4b031c6'; // HEAD antes de la ronda AD
+const ROUND_HEAD = '260cd8e'; // Ronda AE: commit del tema de la ronda AD (alcance fijado a AD, como en T…AC)
 const OWNER_UPLOAD = '8ee1206'; // subida del propietario a main (2026-10-15): «IMAGEN 1.png», «IMAGEN 2.png», «IMAGEN 3.png»
 const REPO = fs.existsSync(THEME + '/.git');
 const D47 = 'mode=d47&reviews=both&rating=4.9&rcount=28';
@@ -226,15 +227,15 @@ module.exports = async function (browser) {
 
   // 9 · Alcance frente a la v1.24: solo imágenes, galería, detalles, botones móviles, textos alternativos y plantillas
   if (REPO) {
-    const changed = execSync(`git -C ${THEME} diff --name-only ${BASE} -- assets config layout locales sections snippets templates`).toString().trim().split('\n').filter(Boolean)
-      .concat(execSync(`git -C ${THEME} ls-files --others --exclude-standard -- assets config layout locales sections snippets templates`).toString().trim().split('\n').filter(Boolean)).sort();
+    const changed = execSync(`git -C ${THEME} diff --name-only ${BASE} ${ROUND_HEAD} -- assets config layout locales sections snippets templates`).toString().trim().split('\n').filter(Boolean)
+      .sort();
     const allowed = /^(assets\/producto-(completa|principal|oracion)-(480|720|1080)\.webp|assets\/producto-infografia-v4-(480|720|1080|1254)\.webp|assets\/garelon\.css|locales\/[\w.-]+\.json|sections\/(featured-product|main-product|garelon-details|garelon-hero|garelon-image-text)\.liquid|snippets\/(garelon-image|garelon-gallery|garelon-pack-units|buy-buttons)\.liquid|templates\/(index|product)\.json)$/;
     const bad = changed.filter(f => !allowed.test(f));
     ok('AD25 alcance: solo fotos, CSS, textos alternativos, secciones con selector de imagen o de compra, galería, detalles, botones y las dos plantillas (sin layout, config, JS, cabecera, pie, opiniones ni FAQ)', bad.length === 0 && !changed.includes('assets/garelon.js'), bad);
-    const tpl = execSync(`git -C ${THEME} diff -U0 ${BASE} -- templates`).toString().split('\n').filter(l => /^[+-]\s/.test(l)).map(l => l.trim());
+    const tpl = execSync(`git -C ${THEME} diff -U0 ${BASE} ${ROUND_HEAD} -- templates`).toString().split('\n').filter(l => /^[+-]\s/.test(l)).map(l => l.trim());
     const okTpl = tpl.every(l => /gallery_keys|garelon_mobile_wallets|"image_key"|"image_alt"|"layout"|"padding_(top|bottom)"|"icon"|"title"|"text"|"type": "item"|"settings": \{|^[+-]\s*"d[1-6]"|^[+-]\s*\}|^[+-]\s*"d6": \{/.test(l));
     ok('AD26 plantillas: solo cambian galería, pago acelerado en móvil, imagen/alt de «Detalles» y «Significado», y los bloques y el diseño de «Detalles»', okTpl, tpl.filter(l => !/gallery_keys|garelon_mobile_wallets|"image_key"|"image_alt"|"layout"|"padding_(top|bottom)"|"icon"|"title"|"text"|"type": "item"|"settings": \{|^[+-]\s*"d[1-6]"|^[+-]\s*\}|^[+-]\s*"d6": \{/.test(l)));
-    const loc = execSync(`git -C ${THEME} diff -U0 ${BASE} -- locales`).toString().split('\n').filter(l => /^[+-]\s/.test(l));
+    const loc = execSync(`git -C ${THEME} diff -U0 ${BASE} ${ROUND_HEAD} -- locales`).toString().split('\n').filter(l => /^[+-]\s/.test(l));
     ok('AD27 locales: solo se retiran los textos de la infografía («alt_infografia», «Ampliar») y cambia el texto alternativo de la foto de la IMAGEN 2', loc.every(l => /alt_infografia|"zoom|alt_oracion|"alt_completa"/.test(l)), loc.filter(l => !/alt_infografia|"zoom|alt_oracion|"alt_completa"/.test(l)).slice(0, 5));
   }
 };

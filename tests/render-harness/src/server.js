@@ -269,6 +269,12 @@ async function renderTemplate(file, only) {
   const tpl = readJson(file); let out = '';
   for (const sid of tpl.order) { if (only && sid !== only) continue; const s = tpl.sections[sid]; if (s.disabled) continue;
     const blocks = JSON.parse(JSON.stringify(s.blocks || {})); let order = [...(s.block_order || [])];
+    // SOLO TEST (ronda AE, D48): offer=v125 pinta «Elige tu oferta» con los ajustes de la v1.25 (las 3 variantes, distintivo
+    // «Mejor precio por pulsera» en la 3.ª, sin nombre visible propio) para que las fases anteriores sigan probando esa lógica.
+    if (state.offer === 'v125') for (const b of Object.values(blocks)) if (b.type === 'garelon_offer' && b.settings) {
+      for (const k of ['packs_visible', 'title_1', 'title_2', 'title_3']) delete b.settings[k];
+      Object.assign(b.settings, { badge_pack: '3', badge_text: 'Mejor precio por pulsera' });
+    }
     // SOLO TEST: reviews=app|both simula que la app de reseñas está instalada; none|summary, que no lo está
     // (Shopify no pinta los bloques de una app ausente). Los bloques de app versionados en la plantilla
     // (Judge.me, ronda M) se pintan solo con la app «instalada»; si la sección no trae ninguno, se simula
@@ -307,7 +313,7 @@ http.createServer(async (req, res) => {
     if (p.startsWith('/__fonts/')) { const fp = path.join(FONTS_DIR, p.slice(9)); return fs.readFile(fp, (e, d) => { if (e) { res.writeHead(404); return res.end(); } res.writeHead(200, { 'Content-Type': 'font/woff2' }); res.end(d); }); }
     if (p.startsWith('/assets/')) { const fp = path.join(T, decodeURIComponent(p)); return fs.readFile(fp, (e, d) => { if (e) { res.writeHead(404); return res.end(); } res.writeHead(200, { 'Content-Type': types[path.extname(fp)] || 'application/octet-stream' }); res.end(d); }); }
     if (p === '/__state') { const q = u.searchParams;
-      for (const k of ['mode', 'catalog', 'contact', 'refund', 'shipping', 'cookies', 'legal', 'reviews', 'freeship', 'taxes', 'countries', 'ship', 'rating', 'rcount']) if (q.has(k)) state[k] = q.get(k);
+      for (const k of ['mode', 'catalog', 'contact', 'refund', 'shipping', 'cookies', 'legal', 'reviews', 'freeship', 'taxes', 'countries', 'ship', 'rating', 'rcount', 'offer']) if (q.has(k)) state[k] = q.get(k);
       for (const k of ['design', 'noindex', 'accounts', 'media', 'chips', 'contactinfo', 'editorimg', 'wallet']) if (q.has(k)) state[k] = q.get(k) === '1';
       if (q.has('soldout')) state.soldout = q.get('soldout').split(',').filter(Boolean).map(Number);
       if (q.has('reset')) { state.cart = []; state.log = []; if (!q.has('freeship')) state.freeship = ''; if (!q.has('taxes')) state.taxes = 'included'; if (!q.has('chips')) state.chips = false; if (!q.has('editorimg')) state.editorimg = false; if (!q.has('wallet')) state.wallet = false; if (!q.has('countries')) state.countries = '1'; if (!q.has('ship')) state.ship = ''; if (!q.has('rating')) state.rating = ''; if (!q.has('rcount')) state.rcount = ''; }
