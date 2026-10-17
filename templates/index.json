@@ -49,14 +49,15 @@
             "heading": "Elige tu oferta",
             "option_name": "Pack",
             "unit_singular": "pulsera",
-            "packs_visible": "2",
-            "title_2": "2 pulseras + 1 GRATIS",
+            "packs_visible": "all",
             "sub_1": "Ideal para ti",
             "sub_2": "Perfecto para regalar",
             "sub_3": "Para ti y para compartir",
             "show_unit_price": true,
             "badge_pack": "2",
             "badge_text": "Recomendado",
+            "badge2_pack": "3",
+            "badge2_text": "Mayor ahorro",
             "show_promo": true,
             "promo_text": "Especial octubre · Mes del Rosario"
           }
@@ -322,7 +323,7 @@
           "type": "question",
           "settings": {
             "question": "¿Qué recibo con cada oferta?",
-            "answer": "<p>Recibes todas las pulseras de la oferta que elijas, también las de regalo, y todas son el mismo modelo. Cada opción te indica cuántas pulseras recibes en total y cuánto sale cada una, y lo verás de nuevo en el carrito antes de pagar.</p><p>Las pulseras de regalo van incluidas en el mismo pedido, sin coste adicional.</p>"
+            "answer": "<p>Recibes todas las pulseras de la oferta que elijas, y todas son el mismo modelo. Cada opción te indica cuántas pulseras recibes en total y cuánto sale cada una, y lo verás de nuevo en el carrito antes de pagar.</p>"
           }
         },
         "p6": {

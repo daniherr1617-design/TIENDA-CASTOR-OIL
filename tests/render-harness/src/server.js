@@ -51,6 +51,9 @@ function scenario() {
   // Ronda AD (D47): nombres y precios que el propietario pide el 2026-10-15: «2 pulseras y 1 de regalo» (3) 29,99 € y
   // «3 pulseras y 1 de regalo» (4) 34,99 €, SOLO como datos simulados (opción «PACK», como en Shopify).
   if (m === 'd47') return { options: ['PACK'], rows: [[['1 pulsera'], 1999], [['2 pulseras y 1 de regalo'], 2999], [['3 pulseras y 1 de regalo'], 3499]] };
+  // Ronda AF (D49): ofertas definitivas del propietario (2026-10-17), sin regalos: 1 / 2 / 3 pulseras a 19,99 / 29,99 /
+  // 34,99 €, SOLO como datos simulados (opción «PACK», como en Shopify). El tema no conoce ni escribe estos importes.
+  if (m === 'd49') return { options: ['PACK'], rows: [[['1 pulsera'], 1999], [['2 pulseras'], 2999], [['3 pulseras'], 3499]] };
   if (m === 'regalocaro') return { options: ['Pack'], rows: [[['1 pulsera'], 1999], [['2 + 1 de regalo (3 pulseras)'], 2999], [['3 + 2 de regalo (5 pulseras)'], 5499]] };
   if (m === 'pack3save') return { options: ['Pack'], rows: [[['1 pulsera'], 1999], [['2 pulseras'], 3499], [['3 pulseras'], 4799]] };
   if (m === 'compare') return { options: ['Pack'], rows: [[['1 pulsera'], 1999, 2499], [['2 pulseras'], 3499, 3998], [['3 pulseras'], 4799, null]] };
@@ -272,7 +275,7 @@ async function renderTemplate(file, only) {
     // SOLO TEST (ronda AE, D48): offer=v125 pinta «Elige tu oferta» con los ajustes de la v1.25 (las 3 variantes, distintivo
     // «Mejor precio por pulsera» en la 3.ª, sin nombre visible propio) para que las fases anteriores sigan probando esa lógica.
     if (state.offer === 'v125') for (const b of Object.values(blocks)) if (b.type === 'garelon_offer' && b.settings) {
-      for (const k of ['packs_visible', 'title_1', 'title_2', 'title_3']) delete b.settings[k];
+      for (const k of ['packs_visible', 'title_1', 'title_2', 'title_3', 'badge2_pack', 'badge2_text']) delete b.settings[k];
       Object.assign(b.settings, { badge_pack: '3', badge_text: 'Mejor precio por pulsera' });
     }
     // SOLO TEST: reviews=app|both simula que la app de reseñas está instalada; none|summary, que no lo está

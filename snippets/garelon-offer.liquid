@@ -8,20 +8,22 @@
 
   - Precio comparado tachado: solo si esa variante tiene compare_at_price > price.
   - Ahorro: con precio comparado, frente a él; si no, frente a comprar por separado, al precio del pack
-    de 1, TODAS las unidades que se reciben (D48, sustituye a D41): «2 pulseras y 1 de regalo» (3) a
-    29,99 € frente a 3 × 19,99 € ahorra 29,98 €. Con su porcentaje sobre esa misma referencia, redondeado.
-    Solo si es > 0. Nunca se inventa. El precio por unidad reparte el precio entre todas las unidades.
+    de 1, las mismas unidades del pack (D49; sin regalos): «2 pulseras» frente a 2 × el precio de «1 pulsera».
+    Con su porcentaje sobre esa misma referencia, redondeado. Solo si es > 0. Nunca se inventa.
+    El precio por unidad reparte el precio del pack entre sus unidades.
   - Textos que hablan de ahorro («ahorr…») solo se muestran si ese pack ahorra de verdad.
-  - Un distintivo con «mejor precio» solo se muestra en el pack con el precio por unidad más bajo.
+  - Dos distintivos editoriales (D49: «Recomendado» destacado en la 2.ª, «Mayor ahorro» discreto en la 3.ª).
+    Uno que hable de «mejor precio» o de «ahorro» solo se muestra en el pack con el precio por unidad más bajo
+    (el mismo que ahorra el mayor porcentaje). Si los dos van al mismo pack, se pinta el primero.
   - Unidades que recibe el cliente: garelon-pack-units, desde el valor de la variante
-    («Compra 2 y llévate 1 de regalo» → 3; «2 + 1 de regalo (3 pulseras)» → 3; «2 pulseras» → 2).
+    («2 pulseras» → 2; los nombres antiguos con regalo se siguen contando tal y como los escribe Shopify).
     Si no coinciden con el primer número del nombre, la tarjeta lo aclara: «Recibes 3 pulseras».
     Con paréntesis, el título es el valor sin él. Las tarjetas (textos, distintivo) se asignan por
     posición: 1.ª, 2.ª y 3.ª variante en el orden de Shopify.
-  - Tarjetas visibles (D48): «Las 2 primeras» oculta del selector las variantes a partir de la 3.ª
+  - Tarjetas visibles: «Las 2 primeras» oculta del selector las variantes a partir de la 3.ª
     (no se pintan ni cuentan para el distintivo ni la nota); la variante sigue existiendo en Shopify.
   - Nombre visible por tarjeta (title_N): solo sustituye al valor de la variante si dice las mismas
-    unidades que recibe el cliente («2 pulseras + 1 GRATIS» → 3); si no, se usa el valor de Shopify.
+    unidades que recibe el cliente; si no, se usa el valor de Shopify.
   - Sin la opción de packs (o con más de una opción), el selector normal de Dawn.
 
   Parámetros: product, block, product_form_id, check (true = solo escribe «on» si las tarjetas
@@ -63,11 +65,11 @@
     endif
     assign unit_name = block.settings.unit_singular | default: 'unidad'
     assign badge_pack = block.settings.badge_pack | append: ''
+    assign badge2_pack = block.settings.badge2_pack | append: ''
     assign used_pack_basis = false
-    assign has_gift = false
 
     # Pack con el precio por unidad más bajo (de los precios reales de Shopify). Un distintivo que habla
-    # de «mejor precio» solo se pinta en ese pack, y solo si es el único con ese precio por unidad.
+    # de «mejor precio» o de «ahorro» solo se pinta en ese pack, y solo si es el único con ese precio por unidad.
     assign best_slot = ''
     assign best_unit = nil
     assign best_ties = 0
@@ -96,8 +98,16 @@
       assign best_slot = ''
     endif
     assign badge_lc = block.settings.badge_text | downcase
-    if badge_lc contains 'mejor precio' and badge_pack != best_slot
-      assign badge_pack = 'none'
+    if badge_lc contains 'mejor precio' or badge_lc contains 'ahorro'
+      if badge_pack != best_slot
+        assign badge_pack = 'none'
+      endif
+    endif
+    assign badge2_lc = block.settings.badge2_text | downcase
+    if badge2_lc contains 'mejor precio' or badge2_lc contains 'ahorro'
+      if badge2_pack != best_slot
+        assign badge2_pack = 'none'
+      endif
     endif
   -%}
   <variant-selects
@@ -171,9 +181,6 @@
               endif
             endif
 
-            if v and name_first > 0 and name_first < units
-              assign has_gift = true
-            endif
             assign compare_saving = 0
             assign pack_saving = 0
             assign unit_price = 0
@@ -219,8 +226,15 @@
             endif
 
             assign show_badge = false
+            assign badge_label = ''
+            assign badge_class = ''
             if badge_pack == slot_key and block.settings.badge_text != blank
               assign show_badge = true
+              assign badge_label = block.settings.badge_text
+            elsif badge2_pack == slot_key and block.settings.badge2_text != blank
+              assign show_badge = true
+              assign badge_label = block.settings.badge2_text
+              assign badge_class = ' g-offer__badge--soft'
             endif
 
             assign input_id = section.id | append: '-' | append: pack_option.position | append: '-' | append: forloop.index0
@@ -246,7 +260,7 @@
               class="g-offer__card{% if show_badge %} g-offer__card--badge{% endif %}{% unless value.available %} g-offer__card--soldout{% endunless %}"
             >
               {%- if show_badge -%}
-                <span class="g-offer__badge">{{ block.settings.badge_text | escape }}</span>
+                <span class="g-offer__badge{{ badge_class }}">{{ badge_label | escape }}</span>
               {%- endif -%}
               <span class="g-offer__radio" aria-hidden="true"></span>
               <span class="g-offer__body">
@@ -296,12 +310,8 @@
       </div>
     </fieldset>
     {%- if used_pack_basis -%}
-      {%- if has_gift -%}
-        {%- assign base_money = base_price | money -%}
-        <p class="g-offer__note">{{ 'garelon.offer.saving_note_gift' | t: price: base_money }}</p>
-      {%- else -%}
-        <p class="g-offer__note">{{ 'garelon.offer.saving_note' | t: unit: unit_name }}</p>
-      {%- endif -%}
+      {%- assign base_money = base_price | money -%}
+      <p class="g-offer__note">{{ 'garelon.offer.saving_note' | t: price: base_money, unit: unit_name }}</p>
     {%- endif -%}
     {%- comment -%}
       Impuestos y envío: nota común con el carrito (garelon-shipping-note). «Envío gratis» es el

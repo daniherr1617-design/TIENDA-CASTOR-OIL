@@ -9,6 +9,7 @@ const fs = require('fs');
 const { execSync } = require('child_process');
 const P = '/products/pulsera-rosario-virgen-maria';
 const BASE = '7bb0856'; // HEAD antes de la ronda AE
+const ROUND_HEAD = '5a1a3e6'; // Ronda AF: commit del tema de la ronda AE (alcance fijado a AE, como en T…AD)
 const REPO = fs.existsSync(THEME + '/.git');
 const buy = (html, u) => ((u === '/' ? html.match(/<section\s+id="comprar"[\s\S]*?<\/product-info>/) : html.match(/<product-info[\s\S]*?<\/product-info>/)) || [''])[0];
 const offer = (html) => (html.match(/<variant-selects[\s\S]*?<\/variant-selects>/) || [''])[0];
@@ -55,7 +56,8 @@ module.exports = async function (browser) {
     ok(`AE6 ${u === '/' ? 'home' : 'ficha'} ${w}px: dos tarjetas visibles, sin espacio vacío tras la 2.ª ni scroll horizontal`, m.n === 2 && m.gap === 0 && m.sw <= m.cw && errs.length === 0, { ...m, errs });
     await page.close();
   }
-  for (const [name, u] of [['home', '/'], ['ficha', P]]) {
+  // Desde la ronda AF (D49) la tarjeta «2 pulseras + 1 GRATIS» ya no existe: AE7 y AE8 (sustituidas por AF8 y AF9) no se ejecutan.
+  if (!T.at('AF')) for (const [name, u] of [['home', '/'], ['ficha', P]]) {
     for (const [label, id, price] of [['1 pulsera', 4101, '19,99'], ['2 pulseras + 1 GRATIS', 4102, '29,99']]) {
       await reset(); await setState('mode=live');
       const { page, errs } = await openPage(browser, u, { width: 390, height: 844 });
@@ -69,7 +71,7 @@ module.exports = async function (browser) {
       await page.close();
     }
   }
-  for (const [name, u] of [['home', '/'], ['ficha', P]]) {
+  if (!T.at('AF')) for (const [name, u] of [['home', '/'], ['ficha', P]]) {
     await reset(); await setState('mode=live');
     const { page, errs } = await openPage(browser, u, { width: 1440, height: 900 });
     await page.click('.g-offer__card:has-text("1 pulsera")'); await page.waitForTimeout(700);
@@ -119,11 +121,10 @@ module.exports = async function (browser) {
   const src = ['snippets/garelon-offer.liquid', 'templates/index.json', 'templates/product.json'].map(f => fs.readFileSync(`${THEME}/${f}`, 'utf8').replace(/\{%-?\s*comment\s*-?%\}[\s\S]*?\{%-?\s*endcomment\s*-?%\}/g, '')).join('\n');
   ok('AE10 sin precios, ahorros ni porcentajes escritos en el tema (19,99 / 29,99 / 29,98 / 10,00 / 50 %)', !/19[,.]99|29[,.]99|29[,.]98|10[,.]00|50 ?%/.test(src));
   if (REPO) {
-    const changed = execSync(`git -C ${THEME} diff --name-only ${BASE} -- assets config layout locales sections snippets templates`).toString().trim().split('\n').filter(Boolean)
-      .concat(execSync(`git -C ${THEME} ls-files --others --exclude-standard -- assets config layout locales sections snippets templates`).toString().trim().split('\n').filter(Boolean)).sort();
+    const changed = execSync(`git -C ${THEME} diff --name-only ${BASE} ${ROUND_HEAD} -- assets config layout locales sections snippets templates`).toString().trim().split('\n').filter(Boolean).sort();
     const bad = changed.filter(f => !/^(locales\/[\w-]+(\.default)?\.json|sections\/(featured-product|main-product)\.liquid|snippets\/garelon-offer\.liquid|templates\/(index|product)\.json)$/.test(f));
     ok('AE11 alcance: solo el selector de ofertas, su esquema en las dos secciones, sus textos y las dos plantillas (sin CSS, JS, carrito, cabecera, pie, opiniones, envío ni FAQ)', bad.length === 0, bad);
-    const diff = (p) => execSync(`git -C ${THEME} diff -U0 ${BASE} -- ${p}`).toString().split('\n').filter(l => /^[+-][^+-]/.test(l));
+    const diff = (p) => execSync(`git -C ${THEME} diff -U0 ${BASE} ${ROUND_HEAD} -- ${p}`).toString().split('\n').filter(l => /^[+-][^+-]/.test(l));
     const tpl = diff('templates');
     ok('AE12 plantillas: solo «Tarjetas visibles», el nombre de la 2.ª tarjeta y el distintivo «Recomendado» en la 2.ª', tpl.every(l => /^[+-]\s*"(packs_visible|title_2|badge_pack|badge_text)"/.test(l)), tpl);
     const loc = diff('locales');

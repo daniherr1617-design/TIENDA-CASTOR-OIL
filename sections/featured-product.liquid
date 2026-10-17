@@ -806,7 +806,7 @@
         },
         {
           "type": "paragraph",
-          "content": "Las tarjetas siguen el orden de las variantes en Shopify. Si el valor lleva la cantidad entre paréntesis, p. ej. «2 + 1 de regalo (3 pulseras)», la tarjeta muestra «2 + 1 de regalo», «Recibes 3 pulseras» y el precio por pulsera con esas 3 unidades."
+          "content": "Las tarjetas siguen el orden de las variantes en Shopify y cada una compra su variante real, p. ej. «1 pulsera», «2 pulseras», «3 pulseras». El precio por pulsera y el ahorro se calculan con los precios de Shopify frente a comprar esas mismas pulseras por separado."
         },
         {
           "type": "select",
@@ -899,7 +899,38 @@
           "id": "badge_text",
           "label": "Texto del distintivo",
           "default": "Recomendado",
-          "info": "Distintivo editorial. Un texto con «mejor precio» solo se ve si ese pack tiene de verdad el precio por unidad más bajo. «Más popular» o «Más vendido» solo si tus datos de ventas reales lo demuestran."
+          "info": "Distintivo editorial. Un texto con «mejor precio» o «ahorro» solo se ve si ese pack tiene de verdad el precio por unidad más bajo. «Más popular» o «Más vendido» solo si tus datos de ventas reales lo demuestran."
+        },
+        {
+          "type": "select",
+          "id": "badge2_pack",
+          "label": "Pack con el 2.º distintivo",
+          "options": [
+            {
+              "value": "none",
+              "label": "Ninguno"
+            },
+            {
+              "value": "1",
+              "label": "1.ª tarjeta"
+            },
+            {
+              "value": "2",
+              "label": "2.ª tarjeta"
+            },
+            {
+              "value": "3",
+              "label": "3.ª tarjeta"
+            }
+          ],
+          "default": "none",
+          "info": "Tono suave, para que el primer distintivo siga siendo el destacado. Si coincide con el primero, se ve el primero."
+        },
+        {
+          "type": "text",
+          "id": "badge2_text",
+          "label": "Texto del 2.º distintivo",
+          "info": "Las mismas reglas que el primero: «Mayor ahorro» o «Mejor precio» solo en el pack con el precio por unidad más bajo."
         },
         {
           "type": "header",

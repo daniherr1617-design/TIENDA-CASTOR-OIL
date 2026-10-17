@@ -5,7 +5,7 @@ const fs = require('fs'); const path = require('path');
 const THEME = path.resolve(process.env.THEME || path.join(__dirname, '..', '..', '..'));
 const B = 'http://localhost:' + (process.env.PORT || 8810);
 // Tras la Z, las rondas siguen con AA, AB… (ronda AA, D44).
-const PHASES = [...'ABCDEFGHIJKLMNOPQRSTUVWXYZ', 'AA', 'AB', 'AC', 'AD', 'AE']; const PH = PHASES.indexOf(process.env.PHASE || PHASES[PHASES.length - 1]);
+const PHASES = [...'ABCDEFGHIJKLMNOPQRSTUVWXYZ', 'AA', 'AB', 'AC', 'AD', 'AE', 'AF']; const PH = PHASES.indexOf(process.env.PHASE || PHASES[PHASES.length - 1]);
 const at = (p) => PHASES.indexOf(p) <= PH;
 // Fases que solo probaban algo que el propietario retiró: no se ejecutan desde la ronda indicada (con PHASE anterior, sí).
 // Q, R y S validaban la infografía «NUEVA IMAGEN 1.png» (fuente, familia versionada, píxel a píxel); D47 la retira de la
@@ -17,7 +17,11 @@ const results = [];
 // las fases). D48 (ronda AE, 2026-10-16): el ahorro se calcula sobre TODAS las pulseras que se reciben, con su porcentaje,
 // y la plantilla muestra solo 2 ofertas con «Recomendado» en la 2.ª. Lo que estas pruebas comprobaban del ahorro D41 (solo
 // las pagadas, sin porcentajes) y del distintivo en la 3.ª ya no es lo pedido; AE1-AE5 y AE15-AE17 prueban lo vigente.
-const SUPERSEDED = [[/^(D10|T2|T6|U4|U16|U20|U22|V1|V4|V5|W13|X1|X2|X3|X4|X24|AD9) /, 'AE', 'ahorro sobre todas las pulseras con porcentaje y solo 2 ofertas (D48)']];
+// D49 (ronda AF, 2026-10-17): vuelven las 3 ofertas, sin regalos (1 / 2 / 3 pulseras), con «Recomendado» en la 2.ª y
+// «Mayor ahorro» en la 3.ª; la nota del ahorro ya no habla de regalo. AE1-AE9 y AE15/AE17 probaban las 2 ofertas con regalo
+// de D48 en las plantillas y G10 la nota antigua; AF1-AF19 prueban lo vigente (la lógica de ahorro D48 sigue probada con offer=v125).
+const SUPERSEDED = [[/^(D10|T2|T6|U4|U16|U20|U22|V1|V4|V5|W13|X1|X2|X3|X4|X24|AD9) /, 'AE', 'ahorro sobre todas las pulseras con porcentaje y solo 2 ofertas (D48)'],
+  [/^(G10|AE1|AE2|AE3|AE4|AE5|AE6|AE7|AE8|AE9|AE15|AE17) /, 'AF', '3 ofertas sin regalos, «Recomendado» y «Mayor ahorro», nota del ahorro nueva (D49)']];
 const ok = (n, c, i) => {
   const sup = SUPERSEDED.find(([re, from]) => re.test(n) && at(from));
   results.push([sup ? 'SUSTITUIDA' : c ? 'PASS' : 'FAIL', n + (sup ? ` [${sup[2]}]` : ''), i === undefined ? '' : JSON.stringify(i).slice(0, 300)]);
