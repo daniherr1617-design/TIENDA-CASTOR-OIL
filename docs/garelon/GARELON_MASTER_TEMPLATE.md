@@ -132,13 +132,15 @@ Tarjetas clicables que **son** los radios del `<variant-selects>` de Dawn: Dawn 
 | `sub_1..3` | Texto corto de la 1.ª, 2.ª y 3.ª tarjeta, **por posición** en el orden de variantes de Shopify (D38; `badge_pack` también). Un texto que hable de ahorro («ahorr…») se oculta solo si ese pack no ahorra de verdad |
 | `badge_pack` / `badge_text` | Distintivo editorial en un pack (`badge_pack` por defecto `none`). El texto por defecto del schema es «Recomendado». Un texto que diga «mejor precio» solo se pinta si ese pack tiene, con los precios de Shopify, el precio por unidad más bajo y sin empate (si no, no hay distintivo). «Más popular», «Más vendido» o similares solo con datos de ventas reales (R9); `tools/garelon_check.py` impide que un default de schema los traiga |
 | `show_unit_price` | Precio por unidad, solo en packs con ahorro real |
+| `packs_visible` | `all` (todas las variantes) o `2` (solo las 2 primeras; D48). Las ocultas siguen en Shopify: para retirarlas del todo, Admin |
+| `title_1..3` | Nombre visible de cada tarjeta (D48). Solo se usa si dice las mismas unidades que recibe el cliente según la variante; si no, el valor de Shopify. El carrito y el checkout muestran siempre el valor de Shopify |
 | `show_promo` / `promo_text` | Etiqueta corta de campaña o promoción **encima de las tarjetas** (D38; antes, debajo), apagada por defecto en el schema, sin contador ni fechas. Para campañas temáticas (se retira desactivándola en el editor) |
 
 Bajo las tarjetas va la nota de impuestos y envío común (`garelon-shipping-note`, §3.17). El bloque **no tiene** ajuste de envío propio: lo decide el ajuste global «Envío gratis».
 
 Reglas de cálculo:
 - **Precio tachado:** solo si la variante tiene `compare_at_price > price` en Shopify.
-- **Ahorro:** con `compare_at_price` real, comparación − precio. Sin él, `precio(pack de 1) × pagadas − precio(pack)`, donde «pagadas» es el primer número del nombre cuando habla de regalo (D41: las de regalo no suman) y, si no, todas las unidades; solo si es > 0. Nota: con regalo, «Ahorro calculado solo sobre las unidades que pagas, frente a comprarlas sueltas a <precio de 1> cada una. Las de regalo no se suman al ahorro.»; sin regalo, «Ahorro calculado frente a comprar cada <unidad> por separado.». El precio por unidad reparte el precio entre todas las unidades que se reciben.
+- **Ahorro (D48, sustituye a D41):** con `compare_at_price` real, comparación − precio. Sin él, `precio(pack de 1) × unidades recibidas − precio(pack)`, también las de regalo; solo si es > 0, con su porcentaje sobre esa misma referencia, redondeado («Ahorras 29,98 € (50 %)»). Nota: con regalo, «Ahorro calculado frente a comprar por separado, a <precio de 1> cada una, todas las unidades que recibes, también la de regalo.»; sin regalo, «Ahorro calculado frente a comprar cada <unidad> por separado.». El precio por unidad reparte el precio entre todas las unidades que se reciben.
 - **Degradación:** sin una única opción de packs (otra opción, dos opciones), selector normal de Dawn y precio de Dawn visible, con aviso solo en el editor. Con una sola variante, ni selector ni tarjetas.
 
 ### 3.8 Bloques disponibles sin usar
