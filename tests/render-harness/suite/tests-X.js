@@ -110,7 +110,7 @@ module.exports = async function (browser) {
   await reset(); await setState('mode=live&reviews=both');
   {
     const { page, errs } = await openPage(browser, P, { width: 390, height: 844 });
-    await page.click('main label:has-text("3 pulseras y 2 de regalo")'); await page.waitForTimeout(800);
+    await page.click('main ' + T.card('3 pulseras y 2 de regalo')); await page.waitForTimeout(800);
     await T.clickAtc(page, 'main .product-form__submit'); await page.waitForTimeout(1500);
     const d = await page.evaluate(() => { const c = document.querySelector('cart-drawer'); return c && c.classList.contains('active') ? c.innerText.replace(/\s+/g, ' ') : ''; });
     const s = await (await fetch(B + '/__state')).json();

@@ -6,6 +6,7 @@ const fs = require('fs');
 const { execSync } = require('child_process');
 const P = '/products/pulsera-rosario-virgen-maria';
 const BASE = 'e598934'; // commit del tema antes de la ronda AH
+const ROUND_HEAD = 'acfbcb4'; // Ronda AI: commit del tema de la ronda AH (alcance fijado a AH)
 const REPO = fs.existsSync(THEME + '/.git');
 const buy = (html, u) => ((u === '/' ? html.match(/<section\s+id="comprar"[\s\S]*?<\/product-info>/) : html.match(/<product-info[\s\S]*?<\/product-info>/)) || [''])[0];
 const offer = (html) => (html.match(/<variant-selects[\s\S]*?<\/variant-selects>/) || [''])[0];
@@ -28,9 +29,8 @@ module.exports = async function (browser) {
   const css = fs.readFileSync(`${THEME}/assets/garelon.css`, 'utf8'); const snip = fs.readFileSync(`${THEME}/snippets/garelon-offer.liquid`, 'utf8');
   ok('AH3 sin restos del tono suave (CSS y snippet)', !/badge--soft/.test(css) && !/badge--soft|badge_class/.test(snip));
   if (REPO) {
-    const changed = execSync(`git -C ${THEME} diff --name-only ${BASE} -- assets config layout locales sections snippets templates`).toString().trim().split('\n').filter(Boolean)
-      .concat(execSync(`git -C ${THEME} ls-files --others --exclude-standard -- assets config layout locales sections snippets templates`).toString().trim().split('\n').filter(Boolean)).sort();
-    const sec = execSync(`git -C ${THEME} diff -U0 ${BASE} -- sections`).toString().split('\n').filter(l => /^[+-][^+-]/.test(l));
+    const changed = execSync(`git -C ${THEME} diff --name-only ${BASE} ${ROUND_HEAD} -- assets config layout locales sections snippets templates`).toString().trim().split('\n').filter(Boolean).sort();
+    const sec = execSync(`git -C ${THEME} diff -U0 ${BASE} ${ROUND_HEAD} -- sections`).toString().split('\n').filter(l => /^[+-][^+-]/.test(l));
     ok('AH4 alcance: solo el CSS del distintivo, el snippet de ofertas y la ayuda del 2.º distintivo en el esquema', JSON.stringify(changed) === JSON.stringify(['assets/garelon.css', 'sections/featured-product.liquid', 'sections/main-product.liquid', 'snippets/garelon-offer.liquid']) && sec.every(l => /"info": "(Tono suave|Mismo estilo)/.test(l)), [changed, sec]);
   }
 };

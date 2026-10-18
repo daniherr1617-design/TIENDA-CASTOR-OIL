@@ -15,15 +15,14 @@
   - Dos distintivos editoriales con el mismo estilo (D49, D51: «Para ti y para regalar» en la 2.ª, «Mayor ahorro» en la 3.ª).
     Uno que hable de «mejor precio» o de «ahorro» solo se muestra en el pack con el precio por unidad más bajo
     (el mismo que ahorra el mayor porcentaje). Si los dos van al mismo pack, se pinta el primero.
-  - Unidades que recibe el cliente: garelon-pack-units, desde el valor de la variante
-    («2 pulseras» → 2; los nombres antiguos con regalo se siguen contando tal y como los escribe Shopify).
-    Si no coinciden con el primer número del nombre, la tarjeta lo aclara: «Recibes 3 pulseras».
-    Con paréntesis, el título es el valor sin él. Las tarjetas (textos, distintivo) se asignan por
-    posición: 1.ª, 2.ª y 3.ª variante en el orden de Shopify.
+  - Unidades: garelon-pack-units, el primer número del valor de la variante, sin regalos (D52):
+    «2 pulseras» → 2, y un nombre antiguo sin renombrar («2 pulseras y 1 de regalo») también → 2.
+    El nombre de la tarjeta sale de esas unidades («2 pulseras»), nunca del texto de regalo de Shopify.
+    Las tarjetas (textos, distintivo) se asignan por posición: 1.ª, 2.ª y 3.ª variante en el orden de Shopify.
   - Tarjetas visibles: «Las 2 primeras» oculta del selector las variantes a partir de la 3.ª
     (no se pintan ni cuentan para el distintivo ni la nota); la variante sigue existiendo en Shopify.
   - Nombre visible por tarjeta (title_N): solo sustituye al valor de la variante si dice las mismas
-    unidades que recibe el cliente; si no, se usa el valor de Shopify.
+    unidades que recibe el cliente y no habla de regalo; si no, el nombre por unidades.
   - Sin la opción de packs (o con más de una opción), el selector normal de Dawn.
 
   Parámetros: product, block, product_form_id, check (true = solo escribe «on» si las tarjetas
@@ -148,17 +147,9 @@
               render 'garelon-pack-units', name: value.name
             endcapture
             assign units = u | split: '|' | first | plus: 0
-            assign name_first = u | split: '|' | last | plus: 0
             assign card_title = value.name
-            if value.name contains '('
-              assign title_part = value.name | split: '(' | first | strip
-              if title_part != blank
-                assign card_title = title_part
-              endif
-            endif
-            assign qty_text = ''
-            if units > 0 and units != name_first
-              assign qty_text = 'garelon.offer.units_count' | t: count: units
+            if units > 0
+              assign card_title = 'garelon.offer.units_count' | t: count: units
             endif
             assign slot_key = forloop.index | append: ''
             case slot_key
@@ -176,7 +167,15 @@
                 render 'garelon-pack-units', name: title_override
               endcapture
               assign title_units = tu | split: '|' | first | plus: 0
+              assign title_lc = title_override | downcase
+              assign title_ok = false
               if title_units == units
+                assign title_ok = true
+              endif
+              if title_lc contains 'regalo' or title_lc contains 'gratis' or title_lc contains '+'
+                assign title_ok = false
+              endif
+              if title_ok
                 assign card_title = title_override
               endif
             endif
@@ -263,9 +262,6 @@
               <span class="g-offer__radio" aria-hidden="true"></span>
               <span class="g-offer__body">
                 <span class="g-offer__name">{{ card_title | escape }}</span>
-                {%- if qty_text != blank -%}
-                  <span class="g-offer__qty">{{ 'garelon.offer.receives' | t: contents: qty_text }}</span>
-                {%- endif -%}
                 {%- if sub != blank -%}
                   <span class="g-offer__sub">{{ sub | escape }}</span>
                 {%- endif -%}

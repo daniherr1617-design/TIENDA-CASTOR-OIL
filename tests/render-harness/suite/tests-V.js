@@ -56,7 +56,7 @@ module.exports = async function (browser) {
   await reset(); await setState('mode=final');
   {
     const { page, errs } = await openPage(browser, P, { width: 390, height: 844 });
-    await page.click('main label:has-text("Compra 3 y llévate 2 de regalo")'); await page.waitForTimeout(800);
+    await page.click('main ' + T.card('Compra 3 y llévate 2 de regalo')); await page.waitForTimeout(800);
     const sel = await page.evaluate(() => ({ id: document.querySelector('main form[id^="product-form-"] input[name="id"]').value, url: location.search }));
     await T.clickAtc(page, 'main .product-form__submit'); await page.waitForTimeout(1500);
     const d = await page.evaluate(() => { const c = document.querySelector('cart-drawer'); return c && c.classList.contains('active') ? c.innerText.replace(/\s+/g, ' ') : ''; });

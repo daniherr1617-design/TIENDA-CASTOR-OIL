@@ -575,7 +575,6 @@
       "saving_note": "Ahorro frente a comprar por separado las mismas unidades, a {{ price }} cada {{ unit }}. No es una rebaja sobre un precio anterior.",
       "free_shipping": "Envío gratis.",
       "editor_missing": "Solo en el editor: «Elige tu oferta» muestra el selector normal porque el producto no tiene una única opción «Pack» (p. ej. «1 pulsera», «2 pulseras», «3 pulseras»). Los clientes compran con normalidad. Revisa el nombre de la opción en el bloque o crea las variantes en Productos › (producto) › Variantes.",
-      "receives": "Recibes {{ contents }}",
       "units_count": {
         "one": "{{ count }} pulsera",
         "other": "{{ count }} pulseras"
@@ -594,8 +593,7 @@
     "cart": {
       "taxes_at_checkout": "Impuestos calculados en la pantalla de pago.",
       "pack_includes": "Tu pack incluye {{ contents }}",
-      "pack_includes_one": "Incluye {{ contents }}",
-      "pack_receives": "Recibes {{ contents }} ({{ offer }})"
+      "pack_includes_one": "Incluye {{ contents }}"
     },
     "shipping": {
       "editor_bar_hidden": "Solo en el editor: la barra de envío está oculta para los clientes hasta que confirmes la tarifa, los destinos o el plazo en Configuración del tema › Carrito › «GARELON · Envío a España»."

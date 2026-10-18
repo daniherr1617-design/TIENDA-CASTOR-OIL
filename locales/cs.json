@@ -587,7 +587,6 @@
       "saving_note": "Savings compared with buying the same units separately at {{ price }} per {{ unit }}. Not a discount on a previous price.",
       "free_shipping": "Free shipping.",
       "editor_missing": "Editor only: «Choose your offer» shows the standard picker because the product doesn't have a single «Pack» option. Customers can still buy normally. Check the option name in the block or create the variants in Products › (product) › Variants.",
-      "receives": "You receive {{ contents }}",
       "units_count": {
         "one": "{{ count }} bracelet",
         "other": "{{ count }} bracelets"
@@ -606,8 +605,7 @@
     "cart": {
       "taxes_at_checkout": "Taxes calculated at checkout.",
       "pack_includes": "Your pack includes {{ contents }}",
-      "pack_includes_one": "Includes {{ contents }}",
-      "pack_receives": "You receive {{ contents }} ({{ offer }})"
+      "pack_includes_one": "Includes {{ contents }}"
     },
     "shipping": {
       "editor_bar_hidden": "Editor only: the shipping bar is hidden from customers until you confirm the rate, destinations or delivery time in Theme settings › Cart › “GARELON · Shipping to Spain”."

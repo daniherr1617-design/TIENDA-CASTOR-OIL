@@ -5,7 +5,7 @@ const fs = require('fs'); const path = require('path');
 const THEME = path.resolve(process.env.THEME || path.join(__dirname, '..', '..', '..'));
 const B = 'http://localhost:' + (process.env.PORT || 8810);
 // Tras la Z, las rondas siguen con AA, AB… (ronda AA, D44).
-const PHASES = [...'ABCDEFGHIJKLMNOPQRSTUVWXYZ', 'AA', 'AB', 'AC', 'AD', 'AE', 'AF', 'AG', 'AH']; const PH = PHASES.indexOf(process.env.PHASE || PHASES[PHASES.length - 1]);
+const PHASES = [...'ABCDEFGHIJKLMNOPQRSTUVWXYZ', 'AA', 'AB', 'AC', 'AD', 'AE', 'AF', 'AG', 'AH', 'AI']; const PH = PHASES.indexOf(process.env.PHASE || PHASES[PHASES.length - 1]);
 const at = (p) => PHASES.indexOf(p) <= PH;
 // Fases que solo probaban algo que el propietario retiró: no se ejecutan desde la ronda indicada (con PHASE anterior, sí).
 // Q, R y S validaban la infografía «NUEVA IMAGEN 1.png» (fuente, familia versionada, píxel a píxel); D47 la retira de la
@@ -26,7 +26,12 @@ const SUPERSEDED = [[/^(D10|T2|T6|U4|U16|U20|U22|V1|V4|V5|W13|X1|X2|X3|X4|X24|AD
   // quieras»; T1 y las pruebas AF que fijaban «Recomendado» o «Perfecto para regalar» las sustituyen AG1-AG7.
   [/^(T1|AF1|AF5|AF6|AF7|AF11|AF19) /, 'AG', 'etiqueta «Para ti y para regalar» en el pack de 2 (D50)'],
   // D51 (ronda AH, 2026-10-18): los dos distintivos con el mismo color (se retira el tono suave); AH1-AH4 sustituyen a AG2.
-  [/^AG2 /, 'AH', 'los dos distintivos con el mismo color (D51)']];
+  [/^AG2 /, 'AH', 'los dos distintivos con el mismo color (D51)'],
+  // D52 (ronda AI, 2026-10-18): sin regalos en ninguna parte. Las unidades son el primer número del valor de la variante y
+  // la tarjeta, la compra fija y el carrito dicen «N pulseras» aunque Shopify siga con «… y 1 de regalo»; ya no hay
+  // «Recibes N pulseras (… de regalo)». Estas pruebas esperaban esos textos o la suma de regalos; AI1-AI12 prueban lo vigente.
+  // AC10 fijaba la altura del botón con la línea «Recibes N» en las tarjetas, que desaparece.
+  [/^(U21|U24|U25|U28|V7|V10|V11|W14|W15|X23|AC10|AC11|AD11|AD16|AD21) /, 'AI', 'sin regalos: unidades y nombres por el primer número (D52)']];
 const ok = (n, c, i) => {
   const sup = SUPERSEDED.find(([re, from]) => re.test(n) && at(from));
   results.push([sup ? 'SUSTITUIDA' : c ? 'PASS' : 'FAIL', n + (sup ? ` [${sup[2]}]` : ''), i === undefined ? '' : JSON.stringify(i).slice(0, 300)]);
@@ -86,7 +91,14 @@ async function clickAtc(page, sel) {
   if (visible) return page.click(sel);
   return page.$eval(sel, (b) => b.click());
 }
-module.exports = { OFFER, at, ok, get, setState, reset, count, text, B, THEME, SCRATCH, openPage, assetBase, approvedSourceSha, clickAtc };
+// Ronda AI (D52): la tarjeta ya no muestra el nombre con regalo de Shopify sino sus unidades («2 pulseras y 1 de regalo» →
+// «2 pulseras»). Las fases anteriores que pulsan una tarjeta por ese nombre la localizan, desde AI, por sus unidades.
+const card = (label) => {
+  if (!at('AI')) return `.g-offer__card:has-text("${label}")`;
+  const n = Number((label.split('(')[0].match(/\d+/) || ['1'])[0]);
+  return `.g-offer__card:has(.g-offer__name:text-is("${n === 1 ? '1 pulsera' : n + ' pulseras'}"))`;
+};
+module.exports = { card, OFFER, at, ok, get, setState, reset, count, text, B, THEME, SCRATCH, openPage, assetBase, approvedSourceSha, clickAtc };
 
 async function phaseA(browser) {
   await reset();

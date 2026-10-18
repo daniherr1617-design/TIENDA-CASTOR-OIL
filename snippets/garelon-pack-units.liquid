@@ -1,54 +1,23 @@
 {%- comment -%}
-  GARELON · Unidades que recibe el cliente con un valor de la opción «Pack». Escribe «unidades|primer número».
+  GARELON · Unidades de un valor de la opción «Pack». Escribe «unidades|primer número» (los dos iguales desde D52).
   Fuente única para las tarjetas «Elige tu oferta», la lista de precios por pack y la línea del carrito.
 
-  - Con paréntesis, el primer número de dentro: «2 + 1 de regalo (3 pulseras)» → 3.
-  - Con «regalo» (o «gratis», «gift», «free»), la suma de los números: «Compra 2 y llévate 1 de regalo» → 3,
-    «3 pulseras y 1 de regalo» → 4 (D47; antes «Compra 3 y llévate 2 de regalo» → 5).
-  - Si no, el primer número: «1 pulsera» → 1, «3 pulseras» → 3.
-  El «primer número» sirve para decidir si la tarjeta tiene que aclarar «Recibes N …» (cuando no coincide).
-  Nada se escribe en el tema: todo sale del nombre de la variante en Shopify.
+  Sin regalos (D52): las unidades son el primer número del nombre, sin contar lo que vaya entre paréntesis
+  ni sumar unidades de regalo. «1 pulsera» → 1, «2 pulseras» → 2, «3 pulseras» → 3; un nombre antiguo que aún
+  no se haya renombrado en Shopify («2 pulseras y 1 de regalo») también da 2. Nada se escribe en el tema.
 
   Uso: {% capture u %}{% render 'garelon-pack-units', name: value.name %}{% endcapture %}
        assign units = u | split: '|' | first | plus: 0
 {%- endcomment -%}
 {%- liquid
-  assign src = name | default: ''
-  assign has_paren = false
-  if src contains '('
-    assign has_paren = true
-    assign src = src | split: '(' | last
-  endif
-  assign words = src | replace: ')', ' ' | replace: '+', ' ' | split: ' '
-  assign n_first = 0
-  assign n_sum = 0
+  assign src = name | default: '' | split: '(' | first | replace: '+', ' '
+  assign words = src | split: ' '
+  assign units = 0
   for w in words
     assign n = w | plus: 0
-    if n > 0
-      if n_first == 0
-        assign n_first = n
-      endif
-      assign n_sum = n_sum | plus: n
+    if n > 0 and units == 0
+      assign units = n
     endif
   endfor
-
-  assign name_first = n_first
-  if has_paren
-    assign units = n_first
-    assign lead = name | split: '(' | first | replace: '+', ' ' | split: ' '
-    assign name_first = 0
-    for w in lead
-      assign n = w | plus: 0
-      if n > 0 and name_first == 0
-        assign name_first = n
-      endif
-    endfor
-  else
-    assign units = n_first
-    assign lc = name | downcase
-    if lc contains 'regalo' or lc contains 'gratis' or lc contains 'gift' or lc contains 'free'
-      assign units = n_sum
-    endif
-  endif
-  echo units | append: '|' | append: name_first
+  echo units | append: '|' | append: units
 -%}

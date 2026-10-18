@@ -100,7 +100,7 @@ module.exports = async function (browser) {
     for (const [label, id, price] of packs) {
       await reset(); await setState(LIVE);
       const { page, errs } = await openPage(browser, u, { width: 390, height: 844 });
-      await page.click(`.g-offer__card:has-text("${label}")`); await page.waitForTimeout(900);
+      await page.click(T.card(label)); await page.waitForTimeout(900);
       await page.evaluate(() => window.scrollTo(0, document.body.scrollHeight)); await page.waitForTimeout(600);
       const st = await page.evaluate(() => ({ btn: document.querySelector('[data-garelon-buy-now]').textContent.replace(/\s+/g, ' ').trim(),
         title: document.querySelector('[data-sticky-title]').textContent.trim(), price: document.querySelector('[data-sticky-price]').textContent.trim(),
@@ -121,7 +121,7 @@ module.exports = async function (browser) {
   {
     await reset(); await setState(LIVE);
     const { page, errs } = await openPage(browser, '/', { width: 390, height: 844 });
-    await page.click('.g-offer__card:has-text("3 pulseras y 2 de regalo")'); await page.waitForTimeout(900);
+    await page.click(T.card('3 pulseras y 2 de regalo')); await page.waitForTimeout(900);
     await page.click('[data-garelon-buy-now]'); await page.waitForURL(/\/checkout$/, { timeout: 5000 }).catch(() => {});
     await page.goBack({ waitUntil: 'networkidle' }); await page.waitForTimeout(500);
     await page.waitForTimeout(900);
@@ -140,7 +140,7 @@ module.exports = async function (browser) {
     await T.clickAtc(page, '[id^="ProductSubmitButton-"]'); await page.waitForTimeout(1200); // «Añadir al carrito» (1 pulsera) abre el cajón
     const drawer = await page.evaluate(() => document.querySelector('cart-drawer').classList.contains('active'));
     await page.keyboard.press('Escape'); await page.waitForTimeout(500);
-    await page.click('.g-offer__card:has-text("2 pulseras y 1 de regalo")'); await page.waitForTimeout(900);
+    await page.click(T.card('2 pulseras y 1 de regalo')); await page.waitForTimeout(900);
     await page.click('[data-garelon-buy-now]'); await page.waitForURL(/\/cart$/, { timeout: 5000 }).catch(() => {});
     const st = await (await fetch(B + '/__state')).json();
     ok('AC14 «Añadir al carrito» sigue igual (cajón); con otro pack ya en el carrito, «Comprar ahora» lo conserva y abre el carrito para revisar antes de pagar',
@@ -152,7 +152,7 @@ module.exports = async function (browser) {
   {
     await reset(); await setState(LIVE + '&soldout=4102');
     const { page } = await openPage(browser, '/', { width: 390, height: 844 });
-    await page.click('.g-offer__card:has-text("2 pulseras y 1 de regalo")'); await page.waitForTimeout(900);
+    await page.click(T.card('2 pulseras y 1 de regalo')); await page.waitForTimeout(900);
     await page.evaluate(() => window.scrollTo(0, document.body.scrollHeight)); await page.waitForTimeout(600);
     const dis = await page.evaluate(() => { const bn = document.querySelector('[data-garelon-buy-now]'); return { bn: bn.disabled, text: bn.innerText.replace(/\s+/g, ' ').trim(), atc: document.querySelector('[id^="ProductSubmitButton-"]').disabled, sticky: document.querySelector('[data-sticky-button]').textContent.trim(), stickyDis: document.querySelector('[data-sticky-button]').disabled }; });
     ok('AC15 pack agotado: «Comprar ahora» desactivado y con «Agotado» sin precio, igual que «Añadir al carrito» y la compra fija', dis.bn && dis.atc && dis.text === 'Agotado' && dis.sticky === 'Agotado' && dis.stickyDis, dis);

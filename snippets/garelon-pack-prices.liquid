@@ -3,9 +3,9 @@
 
   Un pack es UNA variante de la opción «Pack» (p. ej. «1 pulsera», «2 pulseras», «3 pulseras»)
   y se añade al carrito con cantidad 1 (el selector es el de Dawn). Las unidades salen de
-  garelon-pack-units («Compra 2 y llévate 1 de regalo» → 3). Aquí solo se informa:
+  garelon-pack-units (primer número del valor, sin regalos, D52). Aquí solo se informa:
   precio de cada pack y, SOLO si los precios reales lo justifican, precio por unidad y ahorro
-  frente a comprar sueltas solo las unidades que se pagan (las de regalo no suman ahorro, D41). Nada escrito a mano.
+  frente a comprar sueltas esas mismas unidades. Nada escrito a mano.
 
   Si el producto no tiene la opción «Pack», el cliente no ve nada; en el editor sale un aviso.
 
@@ -53,21 +53,21 @@
             render 'garelon-pack-units', name: value.name
           endcapture
           assign units = u | split: '|' | first | plus: 0
-          assign paid = u | split: '|' | last | plus: 0
-          if paid < 1 or paid > units
-            assign paid = units
+          assign row_name = value.name
+          if units > 0
+            assign row_name = 'garelon.offer.units_count' | t: count: units
           endif
           assign savings = 0
           assign unit_price = 0
           if base_price and units > 1 and v
-            assign reference = base_price | times: paid
+            assign reference = base_price | times: units
             assign savings = reference | minus: v.price
             assign unit_price = v.price | times: 1.0 | divided_by: units | round
           endif
         -%}
         {%- if v -%}
           <li class="g-packs__row{% if v.available == false %} g-packs__row--soldout{% endif %}">
-            <span class="g-packs__name">{{ value.name | escape }}</span>
+            <span class="g-packs__name">{{ row_name | escape }}</span>
             <span class="g-packs__price">{{ v.price | money }}</span>
             {%- if savings > 0 -%}
               {%- assign savings_money = savings | money -%}
