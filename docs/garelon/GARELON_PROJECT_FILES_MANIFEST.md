@@ -23,7 +23,7 @@ Son los que se suben al proyecto de ChatGPT (`GARELON-PROJECT-DOCS-LATEST.zip`, 
 <!-- manifest:start -->
 | Documento | Versión | Fecha | Commit fuente | Líneas | SHA-256 |
 |---|---|---|---|---|---|
-| `GARELON_PROYECTO_PROMPT_MAESTRO_COMPLETO.md` | 3.16 | 2026-10-13 | `4f37217` | 390 | `3b9eb5c5eed2e034dca36c4e2399ae3f841a80ee6d30c4b8856fedc9f2dbfbab` |
+| `GARELON_PROYECTO_PROMPT_MAESTRO_COMPLETO.md` | 3.16 | 2026-10-13 | `4f37217` | 390 | `f8b6409202b542ba5d8f6513fe360036f641c826aea175d7a7d7c62851e47da4` |
 | `GARELON_MASTER_TEMPLATE.md` | 3.15 | 2026-10-13 | `4f37217` | 355 | `330acdbfebdc58c83d2da18b0f1a20856d5ae8016ea6f93206b372a248a82b7f` |
 | `GARELON_PRODUCT_BRIEF_TEMPLATE.md` | 3.1 | 2026-10-03 | `974eadd` | 139 | `7e8baf9b60b5b09c1cadf7a710ebd016bcf788bf7a525d738431c5d11defccca` |
 | `GARELON_MIGRATION_PROMPT_TEMPLATE.md` | 3.3 | 2026-10-04 | `e27ae75` | 161 | `898f790f588a3e0c51ac20d01a012bf7be7fa0a8c23e421f47d77852881f1c35` |
