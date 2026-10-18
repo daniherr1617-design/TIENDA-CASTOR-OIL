@@ -276,7 +276,7 @@ async function renderTemplate(file, only) {
     // «Mejor precio por pulsera» en la 3.ª, sin nombre visible propio) para que las fases anteriores sigan probando esa lógica.
     if (state.offer === 'v125') for (const b of Object.values(blocks)) if (b.type === 'garelon_offer' && b.settings) {
       for (const k of ['packs_visible', 'title_1', 'title_2', 'title_3', 'badge2_pack', 'badge2_text']) delete b.settings[k];
-      Object.assign(b.settings, { badge_pack: '3', badge_text: 'Mejor precio por pulsera' });
+      Object.assign(b.settings, { badge_pack: '3', badge_text: 'Mejor precio por pulsera', sub_2: 'Perfecto para regalar' }); // sub_2: el de la v1.25 (D50 lo cambia)
     }
     // SOLO TEST: reviews=app|both simula que la app de reseñas está instalada; none|summary, que no lo está
     // (Shopify no pinta los bloques de una app ausente). Los bloques de app versionados en la plantilla

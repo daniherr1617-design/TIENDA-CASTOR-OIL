@@ -8,6 +8,7 @@ const fs = require('fs');
 const { execSync } = require('child_process');
 const P = '/products/pulsera-rosario-virgen-maria';
 const BASE = '2edaeff'; // HEAD antes de la ronda AF
+const ROUND_HEAD = '0b8df4c'; // Ronda AG: commit del tema de la ronda AF (alcance fijado a AF, como en T…AE)
 const REPO = fs.existsSync(THEME + '/.git');
 const buy = (html, u) => ((u === '/' ? html.match(/<section\s+id="comprar"[\s\S]*?<\/product-info>/) : html.match(/<product-info[\s\S]*?<\/product-info>/)) || [''])[0];
 const offer = (html) => (html.match(/<variant-selects[\s\S]*?<\/variant-selects>/) || [''])[0];
@@ -114,11 +115,10 @@ module.exports = async function (browser) {
   const loc = JSON.parse(fs.readFileSync(`${THEME}/locales/es.json`, 'utf8')).garelon.offer;
   ok('AF13 textos de la oferta: sin nota de regalo; la nota compara con las mismas unidades sueltas', !('saving_note_gift' in loc) && /mismas unidades/.test(loc.saving_note) && /precio anterior/.test(loc.saving_note), loc.saving_note);
   if (REPO) {
-    const changed = execSync(`git -C ${THEME} diff --name-only ${BASE} -- assets config layout locales sections snippets templates`).toString().trim().split('\n').filter(Boolean)
-      .concat(execSync(`git -C ${THEME} ls-files --others --exclude-standard -- assets config layout locales sections snippets templates`).toString().trim().split('\n').filter(Boolean)).sort();
+    const changed = execSync(`git -C ${THEME} diff --name-only ${BASE} ${ROUND_HEAD} -- assets config layout locales sections snippets templates`).toString().trim().split('\n').filter(Boolean).sort();
     const bad = changed.filter(f => !/^(assets\/garelon\.css|locales\/[\w-]+(\.default)?\.json|sections\/(featured-product|main-product)\.liquid|snippets\/garelon-offer\.liquid|templates\/(index|product)\.json)$/.test(f));
     ok('AF14 alcance: solo el selector de ofertas, su esquema, su CSS, sus textos y las dos plantillas (sin galería, imágenes, cabecera, pie, opiniones, envío, carrito, pago ni JS)', bad.length === 0, bad);
-    const diff = (p) => execSync(`git -C ${THEME} diff -U0 ${BASE} -- ${p}`).toString().split('\n').filter(l => /^[+-][^+-]/.test(l));
+    const diff = (p) => execSync(`git -C ${THEME} diff -U0 ${BASE} ${ROUND_HEAD} -- ${p}`).toString().split('\n').filter(l => /^[+-][^+-]/.test(l));
     const tpl = diff('templates');
     ok('AF15 plantillas: solo «Tarjetas visibles», el nombre de la 2.ª tarjeta, el 2.º distintivo y la respuesta de la FAQ de ofertas', tpl.every(l => /^[+-]\s*"(packs_visible|title_2|badge2_pack|badge2_text)"/.test(l) || /^[+-]\s*"answer": "<p>Recibes todas las pulseras de la oferta que elijas, (también las de regalo, )?y todas son el mismo modelo/.test(l)), tpl);
     const css = diff('assets');
