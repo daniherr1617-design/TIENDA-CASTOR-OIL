@@ -7,6 +7,7 @@ const fs = require('fs');
 const { execSync } = require('child_process');
 const P = '/products/pulsera-rosario-virgen-maria';
 const BASE = '0b8df4c'; // commit del tema antes de la ronda AG
+const ROUND_HEAD = 'e598934'; // Ronda AH: commit del tema de la ronda AG (alcance fijado a AG)
 const REPO = fs.existsSync(THEME + '/.git');
 const buy = (html, u) => ((u === '/' ? html.match(/<section\s+id="comprar"[\s\S]*?<\/product-info>/) : html.match(/<product-info[\s\S]*?<\/product-info>/)) || [''])[0];
 const offer = (html) => (html.match(/<variant-selects[\s\S]*?<\/variant-selects>/) || [''])[0];
@@ -54,9 +55,8 @@ module.exports = async function (browser) {
       o.packs_visible === 'all' && o.badge_pack === '2' && o.badge_text === 'Para ti y para regalar' && o.sub_2 === 'Una para ti y otra para quien quieras' && o.sub_1 === 'Ideal para ti' && o.sub_3 === 'Para ti y para compartir' && o.badge2_pack === '3' && o.badge2_text === 'Mayor ahorro' && o.show_promo === true, o);
   }
   if (REPO) {
-    const changed = execSync(`git -C ${THEME} diff --name-only ${BASE} -- assets config layout locales sections snippets templates`).toString().trim().split('\n').filter(Boolean)
-      .concat(execSync(`git -C ${THEME} ls-files --others --exclude-standard -- assets config layout locales sections snippets templates`).toString().trim().split('\n').filter(Boolean)).sort();
-    const tpl = execSync(`git -C ${THEME} diff -U0 ${BASE} -- templates`).toString().split('\n').filter(l => /^[+-][^+-]/.test(l));
+    const changed = execSync(`git -C ${THEME} diff --name-only ${BASE} ${ROUND_HEAD} -- assets config layout locales sections snippets templates`).toString().trim().split('\n').filter(Boolean).sort();
+    const tpl = execSync(`git -C ${THEME} diff -U0 ${BASE} ${ROUND_HEAD} -- templates`).toString().split('\n').filter(l => /^[+-][^+-]/.test(l));
     ok('AG7 alcance: solo cambian en las dos plantillas el texto del distintivo y el subtítulo de la 2.ª tarjeta', JSON.stringify(changed) === JSON.stringify(['templates/index.json', 'templates/product.json']) && tpl.length === 8 && tpl.every(l => /^[+-]\s*"(badge_text|sub_2)"/.test(l)), [changed, tpl]);
   }
 };

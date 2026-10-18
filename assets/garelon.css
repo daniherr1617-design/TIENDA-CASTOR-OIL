@@ -746,12 +746,6 @@ body {
   text-transform: uppercase;
   white-space: nowrap;
 }
-/* 2.º distintivo («Mayor ahorro», D49): mismo tamaño y sitio, tono suave para que «Recomendado» siga siendo el destacado. */
-.g-offer__badge--soft {
-  border: 1px solid var(--g-gold-line);
-  background: var(--g-accent-soft);
-  color: var(--g-accent-ink);
-}
 /* Seleccionada: borde dorado, fondo champán y punto en el radio (sin mover el contenido). */
 .g-offer__input:checked + .g-offer__card {
   border-color: var(--g-accent);

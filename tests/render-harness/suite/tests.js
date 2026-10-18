@@ -5,7 +5,7 @@ const fs = require('fs'); const path = require('path');
 const THEME = path.resolve(process.env.THEME || path.join(__dirname, '..', '..', '..'));
 const B = 'http://localhost:' + (process.env.PORT || 8810);
 // Tras la Z, las rondas siguen con AA, AB… (ronda AA, D44).
-const PHASES = [...'ABCDEFGHIJKLMNOPQRSTUVWXYZ', 'AA', 'AB', 'AC', 'AD', 'AE', 'AF', 'AG']; const PH = PHASES.indexOf(process.env.PHASE || PHASES[PHASES.length - 1]);
+const PHASES = [...'ABCDEFGHIJKLMNOPQRSTUVWXYZ', 'AA', 'AB', 'AC', 'AD', 'AE', 'AF', 'AG', 'AH']; const PH = PHASES.indexOf(process.env.PHASE || PHASES[PHASES.length - 1]);
 const at = (p) => PHASES.indexOf(p) <= PH;
 // Fases que solo probaban algo que el propietario retiró: no se ejecutan desde la ronda indicada (con PHASE anterior, sí).
 // Q, R y S validaban la infografía «NUEVA IMAGEN 1.png» (fuente, familia versionada, píxel a píxel); D47 la retira de la
@@ -24,7 +24,9 @@ const SUPERSEDED = [[/^(D10|T2|T6|U4|U16|U20|U22|V1|V4|V5|W13|X1|X2|X3|X4|X24|AD
   [/^(G10|AE1|AE2|AE3|AE4|AE5|AE6|AE7|AE8|AE9|AE15|AE17) /, 'AF', '3 ofertas sin regalos, «Recomendado» y «Mayor ahorro», nota del ahorro nueva (D49)'],
   // D50 (ronda AG, 2026-10-18): la 2.ª tarjeta pasa a «Para ti y para regalar» con el subtítulo «Una para ti y otra para quien
   // quieras»; T1 y las pruebas AF que fijaban «Recomendado» o «Perfecto para regalar» las sustituyen AG1-AG7.
-  [/^(T1|AF1|AF5|AF6|AF7|AF11|AF19) /, 'AG', 'etiqueta «Para ti y para regalar» en el pack de 2 (D50)']];
+  [/^(T1|AF1|AF5|AF6|AF7|AF11|AF19) /, 'AG', 'etiqueta «Para ti y para regalar» en el pack de 2 (D50)'],
+  // D51 (ronda AH, 2026-10-18): los dos distintivos con el mismo color (se retira el tono suave); AH1-AH4 sustituyen a AG2.
+  [/^AG2 /, 'AH', 'los dos distintivos con el mismo color (D51)']];
 const ok = (n, c, i) => {
   const sup = SUPERSEDED.find(([re, from]) => re.test(n) && at(from));
   results.push([sup ? 'SUSTITUIDA' : c ? 'PASS' : 'FAIL', n + (sup ? ` [${sup[2]}]` : ''), i === undefined ? '' : JSON.stringify(i).slice(0, 300)]);
