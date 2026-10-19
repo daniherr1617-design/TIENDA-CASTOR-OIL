@@ -31,7 +31,7 @@
           "settings": {
             "phrase": "",
             "chip_1_icon": "envio",
-            "chip_1_text": "Envío gratis + seguimiento",
+            "chip_1_text": "Oferta especial · Envío GRATIS",
             "chip_2_icon": "candado",
             "chip_2_text": "Pago seguro",
             "chip_3_icon": "devolucion",
@@ -70,7 +70,7 @@
             "badge2_pack": "3",
             "badge2_text": "Mayor ahorro",
             "show_promo": false,
-            "promo_text": "Envío gratis + seguimiento"
+            "promo_text": "Oferta especial · Envío GRATIS"
           }
         },
         "comprar": {
@@ -334,7 +334,7 @@
           "type": "question",
           "settings": {
             "question": "¿Cuánto cuesta el envío y cuándo recibiré mi pedido?",
-            "answer": "<p>En cuanto enviemos tu pedido, te llegará un correo con el número de seguimiento para que sepas dónde está en todo momento. Encontrarás los plazos y todas las condiciones de entrega en nuestra <a href=\"/policies/shipping-policy\" title=\"Política de envíos\">política de envíos</a>.</p>",
+            "answer": "<p>Encontrarás los plazos y todas las condiciones de entrega en nuestra <a href=\"/policies/shipping-policy\" title=\"Política de envíos\">política de envíos</a>.</p>",
             "ship_facts": true
           }
         },

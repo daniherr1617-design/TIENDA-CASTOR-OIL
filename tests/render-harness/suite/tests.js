@@ -5,7 +5,7 @@ const fs = require('fs'); const path = require('path');
 const THEME = path.resolve(process.env.THEME || path.join(__dirname, '..', '..', '..'));
 const B = 'http://localhost:' + (process.env.PORT || 8810);
 // Tras la Z, las rondas siguen con AA, AB… (ronda AA, D44).
-const PHASES = [...'ABCDEFGHIJKLMNOPQRSTUVWXYZ', 'AA', 'AB', 'AC', 'AD', 'AE', 'AF', 'AG', 'AH', 'AI', 'AJ', 'AK']; const PH = PHASES.indexOf(process.env.PHASE || PHASES[PHASES.length - 1]);
+const PHASES = [...'ABCDEFGHIJKLMNOPQRSTUVWXYZ', 'AA', 'AB', 'AC', 'AD', 'AE', 'AF', 'AG', 'AH', 'AI', 'AJ', 'AK', 'AL']; const PH = PHASES.indexOf(process.env.PHASE || PHASES[PHASES.length - 1]);
 const at = (p) => PHASES.indexOf(p) <= PH;
 // Fases que solo probaban algo que el propietario retiró: no se ejecutan desde la ronda indicada (con PHASE anterior, sí).
 // Q, R y S validaban la infografía «NUEVA IMAGEN 1.png» (fuente, familia versionada, píxel a píxel); D47 la retira de la
@@ -38,7 +38,12 @@ const SUPERSEDED = [[/^(D10|T2|T6|U4|U16|U20|U22|V1|V4|V5|W13|X1|X2|X3|X4|X24|AD
   [/^(B7|D3|F3|J8|J9|L4|L5|T3|T5|T10|T12|U3|U7|U15|U19|U32|X17|X18|Y3|Y10|Y14|Y16|AA6|AD4|AD6|AD8|AG1|AG4|AI1|AI4) /, 'AJ', 'cuarta foto, sin precio por pulsera y «Envío gratis + seguimiento» (D53)'],
   // D54 (ronda AK, 2026-10-19): fuera la etiqueta «Envío gratis + seguimiento» encima de las ofertas (repetía la garantía) y
   // el aviso pasa a «Estuche y elementos decorativos no incluidos.». AJ2, AJ4, G14, U31 y AG6 fijaban lo anterior (la etiqueta encendida o su texto); AK1-AK7 prueban lo vigente.
-  [/^(AJ2|AJ4|G14|U31|AG6) /, 'AK', 'sin etiqueta encima de las ofertas y aviso «Estuche y elementos decorativos no incluidos.» (D54)']];
+  [/^(AJ2|AJ4|G14|U31|AG6) /, 'AK', 'sin etiqueta encima de las ofertas y aviso «Estuche y elementos decorativos no incluidos.» (D54)'],
+  // D55 (ronda AL, 2026-10-19): ninguna mención visible al seguimiento. «Envío gratis + seguimiento» → «Oferta especial ·
+  // Envío GRATIS» (garantía y barra) y la respuesta de envío de la FAQ sin la frase del número de seguimiento. Estas pruebas
+  // fijaban el texto anterior o vetaban «GRATIS» en mayúsculas (D52, pensado para regalos; el propietario pide ahora
+  // «Envío GRATIS»). AL1-AL9 prueban lo vigente, también que no vuelve ningún texto de regalo.
+  [/^(G15|H9|H11|K13|X15|Z2|Z3|Z6|AF3|AI3|AK1|AK4) /, 'AL', 'sin seguimiento: «Oferta especial · Envío GRATIS» (D55)']];
 const ok = (n, c, i) => {
   const sup = SUPERSEDED.find(([re, from]) => re.test(n) && at(from));
   results.push([sup ? 'SUSTITUIDA' : c ? 'PASS' : 'FAIL', n + (sup ? ` [${sup[2]}]` : ''), i === undefined ? '' : JSON.stringify(i).slice(0, 300)]);

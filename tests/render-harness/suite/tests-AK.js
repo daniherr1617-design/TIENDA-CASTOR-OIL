@@ -8,6 +8,7 @@ const fs = require('fs');
 const { execSync } = require('child_process');
 const P = '/products/pulsera-rosario-virgen-maria';
 const BASE = '219434d'; // commit del tema antes de la ronda AK
+const ROUND_HEAD = '1699485'; // Ronda AL: commit del tema de la ronda AK (alcance fijado a AK)
 const REPO = fs.existsSync(THEME + '/.git');
 const NOTE = 'Estuche y elementos decorativos no incluidos.';
 const SHIP = 'Envío gratis + seguimiento';
@@ -49,9 +50,9 @@ module.exports = async function (browser) {
   }
   // 3 · Alcance: solo `show_promo` en las plantillas y `box_note` en los locales
   if (REPO) {
-    const changed = execSync(`git -C ${THEME} diff --name-only ${BASE} -- assets config layout locales sections snippets templates`).toString().trim().split('\n').filter(Boolean)
-      .concat(execSync(`git -C ${THEME} ls-files --others --exclude-standard -- assets config layout locales sections snippets templates`).toString().trim().split('\n').filter(Boolean));
-    const lines = execSync(`git -C ${THEME} diff -U0 ${BASE} -- assets config layout locales sections snippets templates`).toString().split('\n').filter(l => /^[+-][^+-]/.test(l));
+    const changed = execSync(`git -C ${THEME} diff --name-only ${BASE} ${ROUND_HEAD} -- assets config layout locales sections snippets templates`).toString().trim().split('\n').filter(Boolean)
+;
+    const lines = execSync(`git -C ${THEME} diff -U0 ${BASE} ${ROUND_HEAD} -- assets config layout locales sections snippets templates`).toString().split('\n').filter(l => /^[+-][^+-]/.test(l));
     ok('AK7 alcance: solo «show_promo» en index/product y «box_note» en los locales (sin CSS, galería, packs ni secciones)',
       changed.every(f => /^(templates\/(index|product)\.json|locales\/[\w-]+(\.default)?\.json)$/.test(f)) && lines.every(l => /^[+-]\s*"(show_promo|box_note)"/.test(l)), [changed.filter(f => !/^(templates|locales)\//.test(f)), lines.filter(l => !/"(show_promo|box_note)"/.test(l)).slice(0, 4)]);
   }

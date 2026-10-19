@@ -5,7 +5,7 @@
     "barra-envio": {
       "type": "garelon-announcement",
       "settings": {
-        "fallback_text": "Envío gratis + seguimiento",
+        "fallback_text": "Oferta especial · Envío GRATIS",
         "link_policy": true,
         "color_scheme": "scheme-3"
       }

@@ -185,15 +185,15 @@ def set_free_shipping(t, value):
 
 
 def m_free_shipping_off(t):
-    set_free_shipping(t, False)  # la garantía «Envío gratis + seguimiento» sigue en las plantillas
+    set_free_shipping(t, False)  # la garantía «Oferta especial · Envío GRATIS» sigue en las plantillas
 
 
 def ok_free_shipping_off_coherent(t):
     set_free_shipping(t, False)
-    # D53: la barra superior y la etiqueta de las ofertas también dicen «Envío gratis + seguimiento».
+    # D53/D55: la barra superior y la etiqueta de las ofertas también dicen «Oferta especial · Envío GRATIS».
     for f in ('templates/index.json', 'templates/product.json', 'sections/header-group.json'):
         p = f'{t}/{f}'
-        s = open(p, encoding='utf-8').read().replace('Envío gratis + seguimiento', 'Envío con seguimiento')
+        s = open(p, encoding='utf-8').read().replace('Oferta especial · Envío GRATIS', 'Oferta especial')
         open(p, 'w', encoding='utf-8').write(s)
 
 
@@ -201,8 +201,8 @@ def m_free_shipping_off_bar_only(t):
     ok_free_shipping_off_coherent(t)  # garantías coherentes…
     p = f'{t}/sections/header-group.json'  # …salvo el texto alternativo de la barra, que promete el envío gratis
     s = open(p, encoding='utf-8').read()
-    assert '"fallback_text": "Envío con seguimiento"' in s
-    s = s.replace('"fallback_text": "Envío con seguimiento"', '"fallback_text": "Envío gratis + seguimiento"')
+    assert '"fallback_text": "Oferta especial"' in s
+    s = s.replace('"fallback_text": "Oferta especial"', '"fallback_text": "Oferta especial · Envío GRATIS"')
     open(p, 'w', encoding='utf-8').write(s)
 
 
@@ -353,9 +353,9 @@ MUTATIONS = [
     ('FAQ pintando la respuesta sin resolver el enlace de contacto',
      m_text('sections/garelon-faq.liquid', "{% render 'garelon-contact-rte', html: block.settings.answer %}", '{{ block.settings.answer }}')),
     ('barra: «toda España» escrito a mano (sin la confirmación del propietario)',
-     m_text('sections/header-group.json', 'Envío gratis + seguimiento', '🇪🇸 Envío gratis a toda España')),
+     m_text('sections/header-group.json', 'Oferta especial · Envío GRATIS', '🇪🇸 Envío gratis a toda España')),
     ('barra: «toda la península» escrito a mano (sin la confirmación del propietario)',
-     m_text('sections/header-group.json', 'Envío gratis + seguimiento', '🇪🇸 Envío gratis a toda la península')),
+     m_text('sections/header-group.json', 'Oferta especial · Envío GRATIS', '🇪🇸 Envío gratis a toda la península')),
     ('texto por defecto de la barra con «toda España» (D42: solo la península está confirmable)',
      m_text('config/settings_schema.json', '"default": "🇪🇸 Envío gratis a toda la península"', '"default": "🇪🇸 Envío gratis a toda España"')),
     ('FAQ de envío con «toda España» en el locale (D42)',
@@ -365,7 +365,7 @@ MUTATIONS = [
     ('«toda España» visible en un snippet (fuera de comentarios)',
      m_text('snippets/garelon-gallery.liquid', '<div class="g-gallery"', '<p>Envío a toda España</p><div class="g-gallery"')),
     ('garantías de confianza duplicadas: el bloque de la frase vuelve a pintar las 3 garantías (D43)',
-     m_text('templates/product.json', '"chip_1_text": "",', '"chip_1_text": "Envío gratis + seguimiento",')),
+     m_text('templates/product.json', '"chip_1_text": "",', '"chip_1_text": "Oferta especial · Envío GRATIS",')),
     ('frase de confianza duplicada: las garantías vuelven a llevar la frase (D43)',
      m_text('templates/index.json', '"phrase": "",', '"phrase": "Un símbolo de tu fe, contigo cada día.",')),
     ('garantía con plazo de entrega escrito a mano', m_text('templates/product.json', 'Pago seguro', 'Entrega en 5–10 días naturales')),
@@ -377,7 +377,7 @@ MUTATIONS = [
 
 # Cambios válidos que NO deben dar error (sin falsos positivos).
 VALID = [
-    ('«Envío gratis» desactivado y garantía cambiada a «Envío con seguimiento»', ok_free_shipping_off_coherent),
+    ('«Envío gratis» desactivado y garantía cambiada a «Oferta especial»', ok_free_shipping_off_coherent),
     ('sin el Review Widget de Judge.me (tema instalable igualmente)', ok_jm_removed),
     ('portada de vuelta con la compra sin «Primera sección»: un solo H1 (D44)', ok_hero_back_coherent),
 ]

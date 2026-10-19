@@ -570,7 +570,7 @@ FREE_SHIPPING_RE = re.compile(r'env[ií]o\s+gratis|free\s+shipping', re.I)
 def check_free_shipping(theme):
     """Con el ajuste global «Envío gratis» (garelon_free_shipping) desactivado, ningún texto de la
     tienda en plantillas o grupos puede seguir prometiendo envío gratis (p. ej. la garantía
-    «Envío gratis + seguimiento»): packs, carrito y garantías no deben contradecirse."""
+    «Oferta especial · Envío GRATIS»): packs, carrito y garantías no deben contradecirse."""
     schema = load_json(theme.root, 'config/settings_schema.json') or []
     data = load_json(theme.root, 'config/settings_data.json') or {}
     st = next((x for g in schema for x in g.get('settings', []) if x.get('id') == 'garelon_free_shipping'), None)

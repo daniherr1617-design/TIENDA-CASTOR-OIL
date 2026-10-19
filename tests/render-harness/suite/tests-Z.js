@@ -59,7 +59,7 @@ module.exports = async function (browser) {
         const col = z.parentElement.getBoundingClientRect();
         // ¿Alguna línea de texto empieza por «+»? (el «+» va pegado a «gratis»)
         const sp = z.querySelector('.g-trust__chip span'); const rg = document.createRange(); rg.selectNodeContents(sp);
-        const lines = [...rg.getClientRects()].length; const plusAlone = (() => { const tn = sp.firstChild; const k = tn.textContent.indexOf('+'); const r1 = document.createRange(); r1.setStart(tn, k); r1.setEnd(tn, k + 1); const r0 = document.createRange(); r0.setStart(tn, k - 2); r0.setEnd(tn, k - 1); return Math.round(r1.getBoundingClientRect().top) !== Math.round(r0.getBoundingClientRect().top); })();
+        const lines = [...rg.getClientRects()].length; const plusAlone = (() => { const tn = sp.firstChild; const k = tn.textContent.indexOf('+'); if (k < 0) return false; /* D55: sin «+» */ const r1 = document.createRange(); r1.setStart(tn, k); r1.setEnd(tn, k + 1); const r0 = document.createRange(); r0.setStart(tn, k - 2); r0.setEnd(tn, k - 1); return Math.round(r1.getBoundingClientRect().top) !== Math.round(r0.getBoundingClientRect().top); })();
         return { cs, h: Math.round(zb.height), zl: Math.round(zb.left), zr: Math.round(zb.right), cl: Math.round(col.left), cr: Math.round(col.right), gapToLegend: Math.round(lg.top - zb.bottom), hs: document.documentElement.scrollWidth > innerWidth, lines, plusAlone };
       }, root);
       ok(`Z7 ${n} ${w}px: las 3 garantías en una fila, misma altura, dentro de la columna y sin desbordes`,
