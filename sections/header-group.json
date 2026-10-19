@@ -5,7 +5,7 @@
     "barra-envio": {
       "type": "garelon-announcement",
       "settings": {
-        "fallback_text": "Especial octubre · Mes del Rosario",
+        "fallback_text": "Envío gratis + seguimiento",
         "link_policy": true,
         "color_scheme": "scheme-3"
       }

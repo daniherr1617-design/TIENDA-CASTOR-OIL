@@ -36,6 +36,8 @@ SOURCES = {
     'completa': ('IMAGEN 1.png', 'ffdf23100fd1e1f1e99b6c6c92ab6c2e850ff9b28d9eb9a68062b1b1a9d82e28'),
     'oracion': ('IMAGEN 2.png', 'f6867f4f2c6a4b3200bea73eca40dc13b484ab6984923b74fd6e69ccf031e273'),
     'principal': ('IMAGEN 3.png', 'fa7904239cdb7f31a9d0f7e3671114016662c5af83b94f86318ce56fff8f5ee1'),
+    # D53: cuarta foto, subida por el propietario a main (667668c) el 2026-10-19.
+    'estuche': ('IMAGEN CON CAJA.png', 'c4787d295d1e67063bf5899579284df0150bf4d928fcd3faae2c7ee84426f115'),
 }
 RETIRED_SOURCES = ['NUEVA IMAGEN 1.png', 'NUEVA IMAGEN 3.png', 'NUEVA IMAGEN 4.png', 'imagen 2.png',
                    'imagen 3.png', 'imagen 4.png', 'Imagen 1.png', 'IMAGENN 1.png']
@@ -131,7 +133,7 @@ def main(argv):
     if errors:
         print(f'ERROR · {len(errors)} problema(s) en las fotos del producto ({theme})')
         return 1
-    print(f'OK · fotos del producto: solo IMAGEN 1/2/3, reducidas sin ampliar ni retocar ({theme})')
+    print(f'OK · fotos del producto: solo IMAGEN 1/2/3 e IMAGEN CON CAJA, reducidas sin ampliar ni retocar ({theme})')
     return 0
 
 

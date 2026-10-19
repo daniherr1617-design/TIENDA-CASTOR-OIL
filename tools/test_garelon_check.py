@@ -190,19 +190,19 @@ def m_free_shipping_off(t):
 
 def ok_free_shipping_off_coherent(t):
     set_free_shipping(t, False)
-    for f in ('index.json', 'product.json'):
-        p = f'{t}/templates/{f}'
+    # D53: la barra superior y la etiqueta de las ofertas también dicen «Envío gratis + seguimiento».
+    for f in ('templates/index.json', 'templates/product.json', 'sections/header-group.json'):
+        p = f'{t}/{f}'
         s = open(p, encoding='utf-8').read().replace('Envío gratis + seguimiento', 'Envío con seguimiento')
         open(p, 'w', encoding='utf-8').write(s)
-    # Ronda U (D38): la barra superior es «GARELON Barra de envío»; su texto alternativo no habla de envío.
 
 
 def m_free_shipping_off_bar_only(t):
     ok_free_shipping_off_coherent(t)  # garantías coherentes…
     p = f'{t}/sections/header-group.json'  # …salvo el texto alternativo de la barra, que promete el envío gratis
     s = open(p, encoding='utf-8').read()
-    assert '"fallback_text": "Especial octubre · Mes del Rosario"' in s
-    s = s.replace('"fallback_text": "Especial octubre · Mes del Rosario"', '"fallback_text": "Envío gratis con seguimiento"')
+    assert '"fallback_text": "Envío con seguimiento"' in s
+    s = s.replace('"fallback_text": "Envío con seguimiento"', '"fallback_text": "Envío gratis + seguimiento"')
     open(p, 'w', encoding='utf-8').write(s)
 
 
@@ -353,9 +353,9 @@ MUTATIONS = [
     ('FAQ pintando la respuesta sin resolver el enlace de contacto',
      m_text('sections/garelon-faq.liquid', "{% render 'garelon-contact-rte', html: block.settings.answer %}", '{{ block.settings.answer }}')),
     ('barra: «toda España» escrito a mano (sin la confirmación del propietario)',
-     m_text('sections/header-group.json', 'Especial octubre · Mes del Rosario', '🇪🇸 Envío gratis a toda España')),
+     m_text('sections/header-group.json', 'Envío gratis + seguimiento', '🇪🇸 Envío gratis a toda España')),
     ('barra: «toda la península» escrito a mano (sin la confirmación del propietario)',
-     m_text('sections/header-group.json', 'Especial octubre · Mes del Rosario', '🇪🇸 Envío gratis a toda la península')),
+     m_text('sections/header-group.json', 'Envío gratis + seguimiento', '🇪🇸 Envío gratis a toda la península')),
     ('texto por defecto de la barra con «toda España» (D42: solo la península está confirmable)',
      m_text('config/settings_schema.json', '"default": "🇪🇸 Envío gratis a toda la península"', '"default": "🇪🇸 Envío gratis a toda España"')),
     ('FAQ de envío con «toda España» en el locale (D42)',

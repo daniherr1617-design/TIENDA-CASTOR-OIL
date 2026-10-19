@@ -8,6 +8,7 @@ const fs = require('fs');
 const { execSync } = require('child_process');
 const P = '/products/pulsera-rosario-virgen-maria';
 const BASE = 'acfbcb4'; // commit del tema antes de la ronda AI
+const ROUND_HEAD = '9ccddfb'; // Ronda AJ: commit del tema de la ronda AI (alcance fijado a AI)
 const REPO = fs.existsSync(THEME + '/.git');
 const buy = (html, u) => ((u === '/' ? html.match(/<section\s+id="comprar"[\s\S]*?<\/product-info>/) : html.match(/<product-info[\s\S]*?<\/product-info>/)) || [''])[0];
 const offer = (html) => (html.match(/<variant-selects[\s\S]*?<\/variant-selects>/) || [''])[0];
@@ -78,11 +79,10 @@ module.exports = async function (browser) {
   const src = ['snippets/garelon-offer.liquid', 'snippets/garelon-pack-units.liquid', 'snippets/garelon-cart-option.liquid', 'snippets/garelon-pack-prices.liquid'].map(f => fs.readFileSync(`${THEME}/${f}`, 'utf8').replace(/\{%-?\s*comment\s*-?%\}[\s\S]*?\{%-?\s*endcomment\s*-?%\}/g, '')).join('\n');
   ok('AI10 snippets: sin precios ni ahorros escritos y sin suma de unidades de regalo', !/19[,.]99|29[,.]99|34[,.]99|9[,.]99|24[,.]98/.test(src) && !/n_sum|has_gift|pack_receives|offer\.receives/.test(src));
   if (REPO) {
-    const changed = execSync(`git -C ${THEME} diff --name-only ${BASE} -- assets config layout locales sections snippets templates`).toString().trim().split('\n').filter(Boolean)
-      .concat(execSync(`git -C ${THEME} ls-files --others --exclude-standard -- assets config layout locales sections snippets templates`).toString().trim().split('\n').filter(Boolean)).sort();
+    const changed = execSync(`git -C ${THEME} diff --name-only ${BASE} ${ROUND_HEAD} -- assets config layout locales sections snippets templates`).toString().trim().split('\n').filter(Boolean).sort();
     const bad = changed.filter(f => !/^(locales\/[\w-]+(\.default)?\.json|snippets\/garelon-(offer|pack-units|pack-prices|cart-option)\.liquid)$/.test(f));
     ok('AI11 alcance: solo los snippets de ofertas, unidades y línea del carrito y sus textos (sin CSS, JS, plantillas, secciones, imágenes ni pago)', bad.length === 0, bad);
-    const lc = execSync(`git -C ${THEME} diff -U0 ${BASE} -- locales`).toString().split('\n').filter(l => /^[+-][^+-]/.test(l));
+    const lc = execSync(`git -C ${THEME} diff -U0 ${BASE} ${ROUND_HEAD} -- locales`).toString().split('\n').filter(l => /^[+-][^+-]/.test(l));
     ok('AI12 locales: solo se retiran «receives» y «pack_receives»', lc.every(l => /^-\s*"(receives|pack_receives)"|^[+-]\s*"pack_includes_one"/.test(l)), lc.slice(0, 4));
   }
 };

@@ -4,9 +4,9 @@
 
   Parámetros:
   - image: imagen elegida en el editor (image_picker) o blank
-  - key: clave del asset del tema: 'completa' | 'principal' | 'oracion' | 'none'
-    (D47: solo las tres fotos aprobadas «IMAGEN 1/3/2.png», generadas con tools/garelon_fotos.py;
-    la infografía y el recorte 'detalle' están retirados)
+  - key: clave del asset del tema: 'completa' | 'principal' | 'oracion' | 'estuche' | 'none'
+    (D47: fotos aprobadas «IMAGEN 1/3/2.png»; D53: «IMAGEN CON CAJA.png» → 'estuche'. Generadas con
+    tools/garelon_fotos.py; la infografía y el recorte 'detalle' están retirados)
   - alt: texto alternativo (si la imagen del editor tiene alt propio, manda ese)
   - sizes: atributo sizes
   - eager: true solo para la imagen principal de la página (LCP)
@@ -35,6 +35,8 @@
     when 'oracion'
       assign widths = '480,720,1080'
     when 'completa'
+      assign widths = '480,720,1080'
+    when 'estuche'
       assign widths = '480,720,1080'
     else
       assign widths = ''

@@ -336,6 +336,13 @@ body {
     display: none;
   }
 }
+.g-gallery__note {
+  /* D53: aviso discreto bajo la galería (el estuche de la foto no se incluye). */
+  margin: 0.8rem 0 0;
+  font-size: 1.3rem;
+  line-height: 1.5;
+  color: rgba(42, 38, 34, 0.7);
+}
 .g-gallery__img {
   display: block;
   width: 100%;

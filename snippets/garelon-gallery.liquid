@@ -8,6 +8,8 @@
   Rejilla de escritorio sin huecos (D42): la primera foto ocupa todo el ancho; las demás fotos van de
   dos en dos. Si quedan fotos impares, la última también va a todo el ancho.
   En móvil el orden y el deslizamiento no cambian. Desde D47 solo hay tres fotos (sin infografía).
+  D53: cuarta foto 'estuche' (la pulsera en un estuche beige). El estuche no se incluye en el pedido,
+  así que, si la galería la muestra, debajo va el aviso discreto «garelon.gallery.box_note».
 
   Parámetros:
   - keys: claves separadas por comas, en el orden de la historia (p. ej. 'completa,principal,oracion')
@@ -17,7 +19,7 @@
 {%- endcomment -%}
 {%- liquid
   assign list = keys | default: 'principal' | split: ','
-  assign known = 'principal,completa,oracion' | split: ','
+  assign known = 'principal,completa,oracion,estuche' | split: ','
   assign total = 0
   assign halves = 0
   assign last_half = 0
@@ -33,6 +35,12 @@
   endfor
   assign odd_halves = halves | modulo: 2
   assign n = 0
+  assign box_shown = false
+  for raw in list
+    if raw contains 'estuche'
+      assign box_shown = true
+    endif
+  endfor
 -%}
 <div class="g-gallery" role="region" aria-label="{{ 'garelon.gallery.label' | t }}" tabindex="0">
   <ul class="g-gallery__track" role="list">
@@ -46,6 +54,8 @@
             assign alt = 'garelon.gallery.alt_completa' | t
           when 'oracion'
             assign alt = 'garelon.gallery.alt_oracion' | t
+          when 'estuche'
+            assign alt = 'garelon.gallery.alt_estuche' | t
           else
             assign alt = ''
         endcase
@@ -72,3 +82,6 @@
     {%- endfor -%}
   </ul>
 </div>
+{%- if box_shown -%}
+  <p class="g-gallery__note">{{ 'garelon.gallery.box_note' | t }}</p>
+{%- endif -%}
