@@ -2,3 +2,4 @@ fecha_ejecucion,tipo,ventana_desde,ventana_hasta,informe,consultas,fuentes,noved
 2026-10-07T14:59+02:00,manual,2026-09-07,2026-10-07,reports/2026-10-07.md,20,31,11,2,3,0,sí,Lectura directa de fuentes bloqueada por la red del entorno (403): solo resúmenes de WebSearch,ninguno,ok
 2026-10-07T15:53+02:00,manual,2026-10-07,2026-10-07,reports/2026-10-07-2.md,10,4,2,0,1,0,sí,Lectura directa de fuentes bloqueada por la red del entorno (EGRESS_BLOCKED): solo resúmenes de WebSearch,ninguno,ok
 2026-10-12T07:55+02:00,programada,2026-10-07,2026-10-12,reports/2026-10-12.md,12,5,2,0,1,0,sí,Entorno Default sin la red ampliada: webs oficiales y medios bloqueados (403/ENOTFOUND); solo resúmenes de WebSearch,ninguno,ok
+2026-10-19T07:55+02:00,programada,2026-10-12,2026-10-19,reports/2026-10-19.md,11,7,3,0,2,0,sí,Entorno Default sin la red ampliada: webs oficiales y medios bloqueados (403/ENOTFOUND); solo resúmenes de WebSearch,ninguno,ok

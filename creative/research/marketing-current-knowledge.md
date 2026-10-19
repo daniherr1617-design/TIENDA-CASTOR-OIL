@@ -1,6 +1,6 @@
 # Conocimiento de marketing vigente · GARELON
 
-> **Última actualización:** 2026-10-12 (`reports/2026-10-12.md`: K-META-01 actualizada con el vídeo a partir de imagen; K-MED-05 nueva).
+> **Última actualización:** 2026-10-19 (`reports/2026-10-19.md`: K-META-06 y K-TT-07 nuevas; K-ECO-02 actualizada con la tasa de tramitación).
 >
 > Aquí solo queda lo que **sigue siendo útil y vigente** para GARELON. Lo que se queda viejo o se contradice **no convive** con lo nuevo: sale del cuerpo y pasa al «Historial de cambios», que explica qué decía antes, qué dice ahora y por qué.
 
@@ -75,6 +75,15 @@ Un resumen de buscador **nunca** cuenta como verificación. Desde el 2026-10-07,
 - **Estado:** vigente
 - **Impacto GARELON:** «un símbolo de fe» sí; «tu fe», no. Ya está en las reglas del Lab.
 
+### [K-META-06] Navegación de productos dentro de la app, activada por defecto
+- **Tema:** Meta · destino del clic
+- **Fecha:** se activaría en los anuncios existentes el 2026-10-28 · comprobado 2026-10-19
+- **Fuente:** ppc.land, adsuploader.com
+- **Evidencia:** Medio especializado · FUENTE SECUNDARIA
+- **Estado:** vigente
+- **Afirmación:** al tocar el anuncio se abre primero la ficha del producto dentro de Facebook o Instagram, con datos del catálogo. Se desactiva desde el aviso de Ads Manager o en los ajustes de Advantage+ Creative y de destino.
+- **Impacto GARELON:** decidirlo en cada campaña: si se deja, el catálogo debe ser fiel (R1) y la medición contará menos visitas a la tienda.
+
 ## 3. TikTok
 
 ### [K-TT-01] Novedades de Advertising Week: Smart+ Creative Selection, Search Ads con Smart+, Buy Direct
@@ -120,6 +129,14 @@ Un resumen de buscador **nunca** cuenta como verificación. Desde el 2026-10-07,
 - **Estado:** vigente
 - **Afirmación:** cuenta lo que se dice, el texto en pantalla, la descripción (sobre todo los ~100 primeros caracteres) y los hashtags. Se recomiendan 3-5 hashtags; 20 o más cuentan como spam.
 - **Impacto GARELON:** la palabra clave («pulsera rosario») va al principio de la descripción y, si encaja, en el texto del vídeo (`COPY.md`).
+
+### [K-TT-07] La IA de TikTok Ads podría publicar creatividades que el anunciante no aprobó
+- **Tema:** TikTok Ads · creatividades automáticas
+- **Fecha:** caso National Trust el 2026-10-18; precedente de Finji en febrero de 2026 · comprobado 2026-10-19
+- **Fuente:** tomorrowspublisher.today, oecd.ai (registro de incidentes)
+- **Evidencia:** Medio especializado · FUENTE SECUNDARIA
+- **Estado:** dudoso (dos casos aislados; sin explicación de TikTok)
+- **Impacto GARELON:** desactivar desde el primer día las mejoras y creatividades automáticas (Symphony, Smart+ Creative, «Recommended Creatives», «Automatic Enhancements») y revisar cada semana lo publicado: una versión de IA podría mostrar una pulsera que no es la real (R1).
 
 ## 4. Reels y Shorts (orgánico)
 
@@ -238,10 +255,11 @@ Un resumen de buscador **nunca** cuenta como verificación. Desde el 2026-10-07,
 
 ### [K-ECO-02] UE: arancel de 3 € por partida en envíos de menos de 150 €
 - **Tema:** Logística · aduanas UE
-- **Fecha:** desde el 2026-07-01, provisional hasta el 2028-07-01 · comprobado 2026-10-07
+- **Fecha:** desde el 2026-07-01, provisional hasta el 2028-07-01 · comprobado 2026-10-19
 - **Fuente:** avalara.com, trans.info
 - **Evidencia:** Medio especializado · FUENTE SECUNDARIA (el reglamento no se ha leído)
 - **Estado:** vigente
+- **Tasa de tramitación (dudoso, FUENTE SECUNDARIA, `reports/2026-10-19.md`):** la Comisión habría propuesto 2 € por paquete además del arancel; una fuente da como plazo el 2026-11-01 y otra dice que fecha y contenido siguen en negociación. Fuentes: valueaddedresource.net, getbyrd.com.
 - **Impacto GARELON:** comprobar con un pedido real de AliExpress el coste y el plazo antes de fijar el CPA de break-even.
 
 ### [K-ECO-03] Shopify retira los script tags
@@ -321,3 +339,5 @@ Cuando una entrada cambia de criterio, se explica aquí: qué decía antes, qué
 | 2026-10-07 | K-ECO-03 | — | Entrada nueva | Deprecación de los script tags de Shopify (`reports/2026-10-07-2.md`) |
 | 2026-10-12 | K-META-01 | Mejoras de IA por defecto (sin vídeo desde imagen) | Añade el vídeo a partir de imágenes estáticas, abierto a todos el 2026-10-06 (FUENTE SECUNDARIA) | `reports/2026-10-12.md` |
 | 2026-10-12 | K-MED-05 | — | Entrada nueva (dudoso) | Enriquecimiento por IA del píxel y eventos automáticos por defecto (`reports/2026-10-12.md`) |
+| 2026-10-19 | K-META-06 · K-TT-07 | — | Entradas nuevas (K-TT-07 dudoso) | Navegación de productos por defecto y creatividades de IA no aprobadas en TikTok (`reports/2026-10-19.md`) |
+| 2026-10-19 | K-ECO-02 | Solo el arancel de 3 € | Añade la tasa de tramitación propuesta de 2 € (dudosa) | `reports/2026-10-19.md` |
