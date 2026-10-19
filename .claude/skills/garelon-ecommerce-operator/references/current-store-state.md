@@ -1,19 +1,19 @@
 # Estado actual de la tienda · SNAPSHOT
 
 <!-- snapshot-header:start -->
-> **SNAPSHOT, no verdad eterna.** Generado el 2026-10-19 desde `daniherr1617-design/tienda-castor-oil`, rama `claude/garelon-espana-cro`, **commit `1699485`** (último commit que cambió el tema).
+> **SNAPSHOT, no verdad eterna.** Generado el 2026-10-19 desde `daniherr1617-design/tienda-castor-oil`, rama `claude/garelon-espana-cro`, **commit `119e06c`** (último commit que cambió el tema).
 <!-- snapshot-header:end -->
 >
 > Antes de una tarea importante, revalida lo relevante: `python3 .claude/skills/garelon-ecommerce-operator/scripts/garelon_store_snapshot.py`. Si el repo y este archivo difieren, **manda el repo** y este archivo se regenera (DOCUMENT_SYNC). `tools/garelon_docs_check.py` avisa si el tema ha cambiado después de este commit.
 
-<!-- snapshot-commit: 1699485 -->
+<!-- snapshot-commit: 119e06c -->
 
 ## 1. Datos leídos del repositorio (generados por el script)
 
 <!-- snapshot:start -->
-- **Generado:** 2026-10-19 10:53 UTC
-- **Repositorio:** `daniherr1617-design/tienda-castor-oil` · **rama:** `claude/garelon-espana-cro` · **HEAD:** `1699485` (2026-10-19) «GARELON: sin etiqueta duplicada encima de las ofertas y aviso «Estuche y elementos decorativos no incluidos.» (D54)»
-- **Último commit que cambió el tema:** `1699485` (2026-10-19)
+- **Generado:** 2026-10-19 12:24 UTC
+- **Repositorio:** `daniherr1617-design/tienda-castor-oil` · **rama:** `claude/garelon-espana-cro` · **HEAD:** `119e06c` (2026-10-19) «GARELON: sin menciones visibles al seguimiento; «Oferta especial · Envío GRATIS» (D55)»
+- **Último commit que cambió el tema:** `119e06c` (2026-10-19)
 - **Carpetas del tema sin cambios pendientes:** sí
 - **Tema:** GARELON (Dawn) 16.0.0 · base Dawn en el commit `b2adb07`
 - **Conteos (carpetas del tema):** assets 211, config 2, layout 2, locales 51, sections 55, snippets 54, templates 13
@@ -28,12 +28,12 @@
 - **Galería home:** `completa,principal,oracion,estuche` (origen: theme) · **ficha:** `completa,principal,oracion,estuche` (origen: theme)
 - **Packs («Elige tu oferta»):** opción `Pack`, unidad «pulsera», textos «Ideal para ti» / «Una para ti y otra para quien quieras» / «Para ti y para compartir», distintivo pack 2 «Para ti y para regalar» (default del schema: «Recomendado»), promo: False, precio por unidad: False
 - **Envío gratis (ajuste global `garelon_free_shipping`, Configuración del tema › Carrito):** True (settings_data) · nota común `snippets/garelon-shipping-note.liquid` usada por `sections/featured-product.liquid`, `sections/main-cart-footer.liquid`, `sections/main-product.liquid`, `snippets/cart-drawer.liquid`, `snippets/garelon-offer.liquid`
-- **Confianza:** frase «» · chips: «Envío gratis + seguimiento» (envio) · «Pago seguro» (candado) · «14 días para cambiar de opinión» (devolucion)
+- **Confianza:** frase «» · chips: «Oferta especial · Envío GRATIS» (envio) · «Pago seguro» (candado) · «14 días para cambiar de opinión» (devolucion)
 - **Sello GARELON (rich-text):** `index:tranquilidad`=escudo, `product:tranquilidad`=escudo
 - **Opiniones:** «Opiniones sobre esta pulsera», ocultar sin opiniones: True, Review Widget de Judge.me versionado (D30): home [('review_widget', 'real_data')] · ficha [('review_widget', 'real_data')] [(bloque, review_data)], App Embeds en settings_data: [('judgeme_core', True)] [(bloque, activo)], nota: Estas opiniones proceden de compradores de este mismo modelo de pulsera en otra tienda online. Las hemos incorporado a nuestra tienda con su puntuación y, cuando las tienen, sus fotos.No corresponden a pedidos realizados en GARELON, por lo que no son compras verificadas en nuestra tienda.
 - **Compra fija (ficha):** sí
 - **Navegación:** Inicio (`/`) · Detalles (`/#detalles`) · Preguntas frecuentes (`/#preguntas-frecuentes`) · Contacto (`/pages/contacto`) · búsqueda en cabecera: False
-- **Barra superior:** GARELON Barra de envío (envío y plazo solo con confirmación; texto alternativo: «Envío gratis + seguimiento»)
+- **Barra superior:** GARELON Barra de envío (envío y plazo solo con confirmación; texto alternativo: «Oferta especial · Envío GRATIS»)
 - **Pie:** bloques brand_information, text; iconos de pago: False; newsletter: False; selector de país: False
 - **Imágenes del tema por clave:** `principal` (480/720/1080), `oracion` (480/720/1080), `completa` (480/720/1080), `estuche` (480/720/1080)
 - **Imágenes fuente en la raíz (fuera del ZIP):** `IMAGEN 1.png`, `IMAGEN 2.png`, `IMAGEN 3.png`, `IMAGEN CON CAJA.png`, `LOGO DEFINITIVO.png`, `Logo y marca.png`, `Logo.png`
@@ -41,7 +41,7 @@
 - **Esquemas de color:** scheme-1 fondo #FFFFFF / texto #2A2622 / botón #86672F, scheme-2 fondo #FAF7F2 / texto #2A2622 / botón #86672F, scheme-3 fondo #F3ECDF / texto #2A2622 / botón #2A2622, scheme-4 fondo #FFFFFF / texto #2A2622 / botón #86672F, scheme-5 fondo #F7F1E6 / texto #2A2622 / botón #86672F
 - **Locales con textos `garelon.*`:** 31
 - **Herramientas en `tools/`:** `build_zip.py`, `garelon_check.py`, `garelon_docs_check.py`, `garelon_fotos.py`, `test_garelon_check.py`, `test_garelon_docs_check.py`, `test_garelon_fotos.py`
-- **Batería de render versionada:** `tests/render-harness` · fases A-AK · dependencias fijadas: `@fontsource/inter` 5.3.0, `@fontsource/lora` 5.3.0, `@shopify/theme-check-node` 3.30.1, `liquidjs` 10.29.0, `playwright-core` 1.63.0 · con `package-lock.json`
+- **Batería de render versionada:** `tests/render-harness` · fases A-AL · dependencias fijadas: `@fontsource/inter` 5.3.0, `@fontsource/lora` 5.3.0, `@shopify/theme-check-node` 3.30.1, `liquidjs` 10.29.0, `playwright-core` 1.63.0 · con `package-lock.json`
 <!-- snapshot:end -->
 
 ## 2. Lectura humana del estado
@@ -91,6 +91,7 @@ Medida el 2026-10-15 en el commit `260cd8e` (ronda AD, D47) en este entorno, con
 - Theme Check (`@shopify/theme-check-node` 3.30.1): 0 errores y 9 avisos, los 9 `BASELINE DAWN` y 0 `GARELON`.
 - Liquid (Ruby, gema `liquid` 5.14.0) estricto: 0 errores.
 - Ronda AF (D49): fase AF (3 ofertas sin regalos en home y ficha, distintivos, cálculos dinámicos, compra directa y carrito con 1/2/3 pulseras, alcance); G10, AE1-AE9, AE15 y AE17 pasan a SUSTITUIDA. **1114/1114** en el repo y **1028/1028** en el ZIP v1.27-TRES-OFERTAS descomprimido (SHA-256 `f716f5e9…af473`), 61 sustituidas que no cuentan.
+- Ronda AL (D55): sin seguimiento visible, «Oferta especial · Envío GRATIS» en garantía y barra; fase AL y 12 pruebas antiguas como SUSTITUIDA. **1078/1078** en el repo y **981/981** en el ZIP v1.33-ENVIO-GRATIS descomprimido (SHA-256 `629eccd8…0ce3`).
 - Ronda AK (D54): sin etiqueta encima de las ofertas y aviso «Estuche y elementos decorativos no incluidos.»; fase AK (AK1-AK7), AJ2, AJ4, G14, U31 y AG6 como SUSTITUIDA. **1079/1079** en el repo y **983/983** en el ZIP v1.32-AJUSTES-FINALES descomprimido (SHA-256 `2fc7afae…a9732`).
 - Ronda AJ (D53): cuarta foto, aviso de la caja, sin precio por pulsera y «Envío gratis + seguimiento»; fase AJ (AJ1-AJ12) y 30 pruebas antiguas como SUSTITUIDA; alcance AI fijado a `9ccddfb`. **1079/1079** en el repo y **984/984** en el ZIP v1.31-ENVIO-Y-ESTUCHE descomprimido (SHA-256 `821cfc5d…82cb8`); garelon_check, fotos, Theme Check y Liquid estricto OK.
 - Ronda AI (D52): sin regalos en el tema (unidades = primer número, nombres por unidades, fuera «Recibes N»); fase AI y 15 pruebas antiguas de regalos como SUSTITUIDA. **1115/1115** en el repo y **1025/1025** en el ZIP v1.30-OFERTAS-SIN-REGALOS descomprimido (SHA-256 `9c4c7d8a…fe2fe`).
@@ -105,7 +106,7 @@ Medida el 2026-10-15 en el commit `260cd8e` (ronda AD, D47) en este entorno, con
 
 ## 5. Observaciones abiertas (no son cambios hechos)
 
-- **Campaña de octubre retirada (D53, 2026-10-19):** la barra superior (`fallback_text`) dice «Envío gratis + seguimiento»; desde D54 la etiqueta encima de las ofertas está apagada (`show_promo: false`) porque repetía la garantía. La política de envíos real (leída el 2026-10-19) ofrece envío gratis a la península con seguimiento, sin fecha de fin: **no hay cuenta atrás**. Una promoción «Envío gratis solo hoy» con temporizador solo se haría con una fecha y hora de fin reales y verificables (R9). Ya no hace falta retirar nada el 1 de noviembre.
+- **Campaña de octubre retirada (D53, 2026-10-19):** la barra superior (`fallback_text`) dice «Oferta especial · Envío GRATIS» desde D55 (antes «Envío gratis + seguimiento»); desde D54 la etiqueta encima de las ofertas está apagada (`show_promo: false`) porque repetía la garantía. La política de envíos real (leída el 2026-10-19) ofrece envío gratis a la península con seguimiento, sin fecha de fin: **no hay cuenta atrás**. Una promoción «Envío gratis solo hoy» con temporizador solo se haría con una fecha y hora de fin reales y verificables (R9). Ya no hace falta retirar nada el 1 de noviembre.
 - **Pendiente del propietario para D49 (sustituye a lo de D48):** renombrar en Admin las variantes a «2 pulseras» y «3 pulseras» (renombrar, no borrar: se conservan IDs y mapeo), mantener disponible la de 34,99 €, DSers 1/2/3 unidades y servir los pedidos antiguos con las unidades con que se compraron (checklist en `/mnt/project-files/rondas/cro-tres-ofertas/`). Pendiente de D47: sustituir la multimedia de Admin por `IMAGEN 1/3/2.png` y borrar `imagen4.png`, `Imagen_1.png`, `imagen_2.png`, `imagen_3.png` y la infografía.
 - El ZIP `GARELON-PULSERA-ROSARIO-CLEAN-v1.25-IMAGENES-PACKS.zip` (commit `260cd8e`, SHA-256 `9b67b7d2…743eb`, D47; validado 1029/1029 descomprimido; incluye todo lo anterior; sustituye a la v1.24) está pendiente de que el propietario lo suba a Shopify tras el checklist de Admin de `/mnt/project-files/rondas/cro-imagenes-packs/`.
 - Pendiente del propietario (D41, D42): confirmar el plazo real (tema 5–10 días, política 6–10) y que la tarifa de 0 € cubre toda la península, y marcar las casillas; si algún día cubre también Baleares, Canarias, Ceuta y Melilla, cambiar el texto de la barra y el locale `ship_free_spain` en una ronda nueva; instrucciones de cuidado fiables (sin ellas no hay pregunta de cuidados); rango de ajuste con los 3 aros; si los textos de las opiniones importadas están traducidos. En Shopify Admin › multimedia del producto: retirar `imagen_3.png` (muñeca, cruz colgante) e `Imagen_1.png` tras subir las aprobadas.
