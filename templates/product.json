@@ -69,7 +69,7 @@
             "badge_text": "Para ti y para regalar",
             "badge2_pack": "3",
             "badge2_text": "Mayor ahorro",
-            "show_promo": true,
+            "show_promo": false,
             "promo_text": "Envío gratis + seguimiento"
           }
         },

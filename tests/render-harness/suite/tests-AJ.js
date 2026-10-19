@@ -10,6 +10,7 @@ const fs = require('fs');
 const { execSync } = require('child_process');
 const P = '/products/pulsera-rosario-virgen-maria';
 const BASE = '9ccddfb'; // commit del tema antes de la ronda AJ
+const ROUND_HEAD = '219434d'; // Ronda AK: commit del tema de la ronda AJ (alcance fijado a AJ)
 const REPO = fs.existsSync(THEME + '/.git');
 const NOTE = 'La caja de joyería mostrada en las imágenes no está incluida.';
 const SHIP = 'Envío gratis + seguimiento';
@@ -67,16 +68,15 @@ module.exports = async function (browser) {
   }
   // 3 · Fuentes y alcance
   if (REPO) {
-    const changed = execSync(`git -C ${THEME} diff --name-only ${BASE} -- assets config layout locales sections snippets templates`).toString().trim().split('\n').filter(Boolean)
-      .concat(execSync(`git -C ${THEME} ls-files --others --exclude-standard -- assets config layout locales sections snippets templates`).toString().trim().split('\n').filter(Boolean)).sort();
+    const changed = execSync(`git -C ${THEME} diff --name-only ${BASE} ${ROUND_HEAD} -- assets config layout locales sections snippets templates`).toString().trim().split('\n').filter(Boolean).sort();
     const bad = changed.filter(f => !/^(locales\/[\w-]+(\.default)?\.json|assets\/producto-estuche-(480|720|1080)\.webp|assets\/garelon\.css|snippets\/garelon-(gallery|image)\.liquid|templates\/(index|product)\.json|sections\/header-group\.json)$/.test(f));
     ok('AJ8 alcance: galería, imagen, estilo del aviso, textos, plantillas y barra (sin secciones, JS, pago ni configuración)', bad.length === 0, bad);
-    const tpl = execSync(`git -C ${THEME} diff -U0 ${BASE} -- templates sections/header-group.json`).toString().split('\n').filter(l => /^[+-][^+-]/.test(l));
+    const tpl = execSync(`git -C ${THEME} diff -U0 ${BASE} ${ROUND_HEAD} -- templates sections/header-group.json`).toString().split('\n').filter(l => /^[+-][^+-]/.test(l));
     ok('AJ9 plantillas y barra: solo las claves de la galería, «show_unit_price» y los dos textos de campaña',
       tpl.every(l => /^[+-]\s*"(garelon_gallery_keys|show_unit_price|promo_text|fallback_text)"/.test(l)), tpl.filter(l => !/"(garelon_gallery_keys|show_unit_price|promo_text|fallback_text)"/.test(l)));
-    const lc = execSync(`git -C ${THEME} diff -U0 ${BASE} -- locales`).toString().split('\n').filter(l => /^[+-][^+-]/.test(l));
+    const lc = execSync(`git -C ${THEME} diff -U0 ${BASE} ${ROUND_HEAD} -- locales`).toString().split('\n').filter(l => /^[+-][^+-]/.test(l));
     ok('AJ10 locales: solo se añaden «alt_estuche» y «box_note» (y la coma de «alt_oracion»)', lc.every(l => /^\+\s*"(alt_estuche|box_note)"|^[+-]\s*"alt_oracion"/.test(l)), lc.filter(l => !/"(alt_estuche|box_note|alt_oracion)"/.test(l)).slice(0, 4));
-    const css = execSync(`git -C ${THEME} diff -U0 ${BASE} -- assets/garelon.css`).toString().split('\n').filter(l => /^[+-][^+-]/.test(l));
+    const css = execSync(`git -C ${THEME} diff -U0 ${BASE} ${ROUND_HEAD} -- assets/garelon.css`).toString().split('\n').filter(l => /^[+-][^+-]/.test(l));
     ok('AJ11 CSS: solo se añade el estilo del aviso (nada se borra)', css.every(l => l.startsWith('+')) && css.some(l => /g-gallery__note/.test(l)), css);
     const src = fs.readFileSync(`${THEME}/IMAGEN CON CAJA.png`); const want = execSync(`git -C ${THEME} cat-file -p 667668c:"IMAGEN CON CAJA.png" 2>/dev/null || true`, { maxBuffer: 1 << 26 });
     ok('AJ12 «IMAGEN CON CAJA.png» es byte a byte la subida del propietario a main (667668c)', want.length === 0 || Buffer.compare(src, want) === 0, { src: src.length, want: want.length });

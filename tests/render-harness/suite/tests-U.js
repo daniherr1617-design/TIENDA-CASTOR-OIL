@@ -154,7 +154,7 @@ module.exports = async function (browser) {
         const cnt = [...R.querySelectorAll('.g-gallery__slide')].map(s => { const c = s.querySelector('.g-gallery__count'); return (s.querySelector('img[src*="infografia"]') ? 'i:' : '') + (c ? (getComputedStyle(c).display === 'none' ? 'oculto' : c.textContent.trim()) : '-'); });
         return { hscroll: document.documentElement.scrollWidth > innerWidth, bar: g && Math.round(g.getBoundingClientRect().height), link: a && Math.round(a.getBoundingClientRect().height),
           eta: e && { r: Math.round(e.getBoundingClientRect().right), l: Math.round(e.getBoundingClientRect().left), h: Math.round(e.getBoundingClientRect().height) }, cnt,
-          legend: Math.round(R.querySelector('.g-offer__legend').getBoundingClientRect().top + scrollY), promo: Math.round(R.querySelector('.g-offer__promo').getBoundingClientRect().height) };
+          legend: Math.round(R.querySelector('.g-offer__legend').getBoundingClientRect().top + scrollY), promo: (p => p ? Math.round(p.getBoundingClientRect().height) : 0)(R.querySelector('.g-offer__promo')) }; // D54: sin etiqueta, 0
       }, root);
       ok(`U30 ${n} ${w}px: sin scroll horizontal ni errores; barra en dos líneas (≤ 80 px), enlace ≥ 44 px y plazo dentro de la pantalla`, !m.hscroll && errs.length === 0 && m.bar <= 80 && m.link >= 44 && m.eta && m.eta.l >= 0 && m.eta.r <= w && m.eta.h <= 26, m);
       ok(`U31 ${n} ${w}px: etiqueta de campaña en una sola línea`, m.promo <= 34, m.promo);
