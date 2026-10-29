@@ -15,7 +15,7 @@ para el producto nuevo (ventilador para enfriar comida, marca propuesta Soplito)
 
 ## Cambios 2026-10-29 (2) · solo Soplito
 - `soplito-cambios-2/`: archivos subidos tal cual a Shopify y el script `editar2.py` que los genera.
-- `product.json` también con Soplito; borradas del tema las plantillas `product.lumibaby.json` y `product.primer-latido.json` (siguen en `zendrop-premium-base/`).
+- `product.json`, `product.lumibaby.json` y `product.primer-latido.json` ahora tienen el mismo contenido de Soplito (el conector no deja borrar archivos del tema; los originales siguen en `zendrop-premium-base/`).
 - Fotos de Soplito en los bloques PAS (antes salía la imagen demo "Gadgets that Simplify Life").
 - Cabecera, pie, título y página de contraseña con "Soplito" en vez del nombre de la tienda; menús propios `soplito-principal` y `soplito-pie`.
 - Quitados "Impuesto incluido", "tecnología Shopify" y "calculados en la pantalla de pago" de `locales/es.json`.
