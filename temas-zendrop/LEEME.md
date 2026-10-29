@@ -12,3 +12,10 @@ para el producto nuevo (ventilador para enfriar comida, marca propuesta Soplito)
 - `soplito-cambios/`: los 4 archivos tal como se subieron a Shopify y el script que los genera desde la base.
 - `templates/product.soplito.json` es plantilla propia (el producto usa el sufijo `soplito`); `product.json` queda intacto.
 - Color #D2782E (tinte #FBF1EA), marca Soplito, sin valoración ni reseñas inventadas, sin cuenta atrás del carrito, testimonios vacíos.
+
+## Cambios 2026-10-29 (2) · solo Soplito
+- `soplito-cambios-2/`: archivos subidos tal cual a Shopify y el script `editar2.py` que los genera.
+- `product.json` también con Soplito; borradas del tema las plantillas `product.lumibaby.json` y `product.primer-latido.json` (siguen en `zendrop-premium-base/`).
+- Fotos de Soplito en los bloques PAS (antes salía la imagen demo "Gadgets that Simplify Life").
+- Cabecera, pie, título y página de contraseña con "Soplito" en vez del nombre de la tienda; menús propios `soplito-principal` y `soplito-pie`.
+- Quitados "Impuesto incluido", "tecnología Shopify" y "calculados en la pantalla de pago" de `locales/es.json`.
