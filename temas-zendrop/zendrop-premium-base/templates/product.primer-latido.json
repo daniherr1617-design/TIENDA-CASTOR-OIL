@@ -1,0 +1,358 @@
+{
+  "sections": {
+    "main": {
+      "type": "main-product",
+      "blocks": {
+        "urgency_pl": {
+          "type": "urgency",
+          "settings": {
+            "position": "center",
+            "padding": 0,
+            "urgency": "OFERTA DE LANZAMIENTO · ENVÍO GRATIS",
+            "text_color": "#ffffff",
+            "background_color": "#915F27"
+          }
+        },
+        "title": {
+          "type": "title",
+          "settings": {}
+        },
+        "price": {
+          "type": "price",
+          "settings": {}
+        },
+        "text_b1": {
+          "type": "text",
+          "settings": {
+            "text": "🤍 Tu ecografía grabada en cristal",
+            "text_style": "body"
+          }
+        },
+        "text_b2": {
+          "type": "text",
+          "settings": {
+            "text": "✨ Luz cálida de noche",
+            "text_style": "body"
+          }
+        },
+        "text_b3": {
+          "type": "text",
+          "settings": {
+            "text": "🚚 Envío gratis por lanzamiento",
+            "text_style": "body"
+          }
+        },
+        "buy_buttons": {
+          "type": "buy_buttons",
+          "settings": {
+            "show_dynamic_checkout": false,
+            "show_gift_card_recipient": false
+          }
+        },
+        "collapsible_garantia": {
+          "type": "collapsible_tab",
+          "settings": {
+            "heading": "30 días de garantía",
+            "icon": "check_mark",
+            "content": "<p>Pruébalo y si no te gusta te devolvemos el 100% del dinero, sin preguntas.</p>",
+            "page": ""
+          }
+        },
+        "collapsible_personalizacion": {
+          "type": "collapsible_tab",
+          "settings": {
+            "heading": "Personalización incluida",
+            "icon": "check_mark",
+            "content": "<p>Nos envías tu ecografía después de la compra y la grabamos sin coste adicional. Si no queda como esperabas, la rehacemos.</p>",
+            "page": ""
+          }
+        },
+        "collapsible_envio": {
+          "type": "collapsible_tab",
+          "settings": {
+            "heading": "Información de envío",
+            "icon": "check_mark",
+            "content": "<p>Personalizamos y grabamos tu pieza en 1 a 3 días hábiles y la entrega será efectuada en un plazo de entre <strong>4 a 8 días hábiles</strong> según país y ciudad.</p>",
+            "page": ""
+          }
+        }
+      },
+      "block_order": [
+        "urgency_pl",
+        "title",
+        "price",
+        "text_b1",
+        "text_b2",
+        "text_b3",
+        "buy_buttons",
+        "collapsible_garantia",
+        "collapsible_personalizacion",
+        "collapsible_envio"
+      ],
+      "settings": {
+        "enable_sticky_info": true,
+        "color_scheme": "scheme-1",
+        "media_size": "medium",
+        "constrain_to_viewport": true,
+        "media_fit": "contain",
+        "gallery_layout": "thumbnail_slider",
+        "media_position": "left",
+        "image_zoom": "none",
+        "mobile_thumbnails": "show",
+        "hide_variants": true,
+        "enable_video_looping": true,
+        "padding_top": 12,
+        "padding_bottom": 12
+      }
+    },
+    "divider_top": {
+      "type": "section-divider",
+      "name": "Section divider",
+      "settings": {
+        "shape": "waves_3",
+        "flip_horizontal": false,
+        "flip_vertical": false,
+        "background_color": "#ffffff",
+        "shape_color": "#915F27",
+        "padding_top": 12,
+        "padding_bottom": 0
+      }
+    },
+    "pas_1_text": {
+      "type": "rich-text",
+      "blocks": {
+        "heading_1": {
+          "type": "heading",
+          "settings": {
+            "heading": "<strong>La primera foto de tu bebé se está borrando ahora mismo</strong>",
+            "heading_size": "h1"
+          }
+        },
+        "text_1": {
+          "type": "text",
+          "settings": {
+            "text": "<p>Esa ecografía que guardas en la cartera o pegada en la nevera no está impresa en papel normal. Es papel térmico: la imagen no lleva tinta, es una reacción química sobre una capa que se degrada sola.</p>"
+          }
+        }
+      },
+      "block_order": ["heading_1", "text_1"],
+      "settings": {
+        "desktop_content_position": "center",
+        "content_alignment": "center",
+        "color_scheme": "",
+        "full_width": true,
+        "padding_top": 12,
+        "padding_bottom": 12
+      }
+    },
+    "pas_1_img": {
+      "type": "image-banner",
+      "name": "Imagen PAS 1",
+      "settings": {
+        "image_overlay_opacity": 0,
+        "image_height": "adapt",
+        "desktop_content_position": "middle-center",
+        "show_text_box": false,
+        "desktop_content_alignment": "center",
+        "color_scheme": "",
+        "image_behavior": "none",
+        "mobile_content_alignment": "center",
+        "stack_images_on_mobile": true,
+        "show_text_below": false
+      }
+    },
+    "pas_2_text": {
+      "type": "rich-text",
+      "blocks": {
+        "heading_2": {
+          "type": "heading",
+          "settings": {
+            "heading": "<strong>No es cuestión de si se borra, sino de cuándo</strong>",
+            "heading_size": "h1"
+          }
+        },
+        "text_2": {
+          "type": "text",
+          "settings": {
+            "text": "<p>El papel térmico es sensible al calor, a la luz y a la humedad, y el roce degrada la capa hasta que pierde el tinte. La vida útil habitual va de dos o tres años a apenas unos meses. La cartera, la nevera y la ventana son justo los tres peores sitios donde puede estar.</p>"
+          }
+        }
+      },
+      "block_order": ["heading_2", "text_2"],
+      "settings": {
+        "desktop_content_position": "center",
+        "content_alignment": "center",
+        "color_scheme": "scheme-2",
+        "full_width": true,
+        "padding_top": 12,
+        "padding_bottom": 12
+      }
+    },
+    "pas_2_img": {
+      "type": "image-banner",
+      "name": "Imagen PAS 2",
+      "settings": {
+        "image_overlay_opacity": 0,
+        "image_height": "adapt",
+        "desktop_content_position": "middle-center",
+        "show_text_box": false,
+        "desktop_content_alignment": "center",
+        "color_scheme": "",
+        "image_behavior": "none",
+        "mobile_content_alignment": "center",
+        "stack_images_on_mobile": true,
+        "show_text_below": false
+      }
+    },
+    "pas_3_text": {
+      "type": "rich-text",
+      "blocks": {
+        "heading_3": {
+          "type": "heading",
+          "settings": {
+            "heading": "<strong>Grábala en cristal y deja de depender del papel</strong>",
+            "heading_size": "h1"
+          }
+        },
+        "text_3": {
+          "type": "text",
+          "settings": {
+            "text": "<p>Con Primer Latido tu ecografía se graba por láser dentro de una bola de cristal montada sobre madera. No se borra, no se despega y no se amarillea. De día es una pieza de decoración; de noche se enciende con luz cálida y la ecografía aparece iluminada.</p>"
+          }
+        }
+      },
+      "block_order": ["heading_3", "text_3"],
+      "settings": {
+        "desktop_content_position": "center",
+        "content_alignment": "center",
+        "color_scheme": "",
+        "full_width": true,
+        "padding_top": 12,
+        "padding_bottom": 12
+      }
+    },
+    "pas_3_img": {
+      "type": "image-banner",
+      "name": "Imagen PAS 3",
+      "settings": {
+        "image_overlay_opacity": 0,
+        "image_height": "adapt",
+        "desktop_content_position": "middle-center",
+        "show_text_box": false,
+        "desktop_content_alignment": "center",
+        "color_scheme": "",
+        "image_behavior": "none",
+        "mobile_content_alignment": "center",
+        "stack_images_on_mobile": true,
+        "show_text_below": false
+      }
+    },
+    "ticker_pl": {
+      "type": "horizontal-ticker",
+      "blocks": {
+        "tick_1": {
+          "type": "text",
+          "settings": { "title": "Envío gratis por lanzamiento" }
+        },
+        "tick_2": {
+          "type": "text",
+          "settings": { "title": "Personalización incluida" }
+        },
+        "tick_3": {
+          "type": "text",
+          "settings": { "title": "30 días de garantía" }
+        }
+      },
+      "block_order": ["tick_1", "tick_2", "tick_3"],
+      "settings": {
+        "speed": 3,
+        "mobile_spacing": 60,
+        "desktop_spacing": 100,
+        "background": "#915F27",
+        "text": "#ffffff",
+        "mobile_text_size": 16,
+        "desktop_text_size": 18,
+        "italic_text": false,
+        "uppercase_text": false,
+        "bold_text": false,
+        "mobile_padding_top": 12,
+        "mobile_padding_bottom": 12,
+        "desktop_padding_top": 16,
+        "desktop_padding_bottom": 16
+      }
+    },
+    "comparativa_pl": {
+      "type": "comparison-table",
+      "blocks": {
+        "row_1": {
+          "type": "row",
+          "settings": { "benefit": "Se conserva toda la vida", "us": true, "others": false }
+        },
+        "row_2": {
+          "type": "row",
+          "settings": { "benefit": "Grabado con tu propia ecografía", "us": true, "others": false }
+        },
+        "row_3": {
+          "type": "row",
+          "settings": { "benefit": "Sin coste extra por personalizar", "us": true, "others": false }
+        }
+      },
+      "block_order": ["row_1", "row_2", "row_3"],
+      "name": "Comparison table",
+      "settings": {
+        "title": "¿Por qué grabarla en cristal?",
+        "heading_size": "h1",
+        "text": "<p>La diferencia entre guardar un recuerdo y perderlo poco a poco.</p>",
+        "button_label": "",
+        "link": "",
+        "button_style_secondary": false,
+        "title_cell_bg": "#915F27",
+        "title_cell_color": "#ffffff",
+        "layout": "table_second",
+        "style": "classic",
+        "logo_width": 90,
+        "mobile_logo_width": 60,
+        "us_label": "[shop_name]",
+        "us_label_size": 18,
+        "others_label": "Otros",
+        "others_label_size": 18,
+        "checkmark_color": "#53af01",
+        "x_color": "#121212",
+        "opposite_icon_colors": "original",
+        "highlighted_separator_opacity": 0,
+        "highlighted_overlay_opacity": 0,
+        "regular_separator_opacity": 10,
+        "regular_overlay_opacity": 0,
+        "minimalistic_border_opacity": 16,
+        "padding_top": 16,
+        "padding_bottom": 24
+      }
+    },
+    "divider_bottom": {
+      "type": "section-divider",
+      "name": "Section divider",
+      "settings": {
+        "shape": "waves_3",
+        "flip_horizontal": false,
+        "flip_vertical": true,
+        "background_color": "#ffffff",
+        "shape_color": "#915F27",
+        "padding_top": 0,
+        "padding_bottom": 0
+      }
+    }
+  },
+  "order": [
+    "main",
+    "divider_top",
+    "pas_1_text",
+    "pas_1_img",
+    "pas_2_text",
+    "pas_2_img",
+    "pas_3_text",
+    "pas_3_img",
+    "ticker_pl",
+    "comparativa_pl",
+    "divider_bottom"
+  ]
+}
