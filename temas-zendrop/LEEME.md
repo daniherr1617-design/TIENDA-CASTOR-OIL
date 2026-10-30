@@ -19,3 +19,6 @@ para el producto nuevo (ventilador para enfriar comida, marca propuesta Soplito)
 - Fotos de Soplito en los bloques PAS (antes salía la imagen demo "Gadgets that Simplify Life").
 - Cabecera, pie, título y página de contraseña con "Soplito" en vez del nombre de la tienda; menús propios `soplito-principal` y `soplito-pie`.
 - Quitados "Impuesto incluido", "tecnología Shopify" y "calculados en la pantalla de pago" de `locales/es.json`.
+
+## Cambios 2026-10-30 (3) · solo el gatito
+- Daniel decide vender solo el diseño gatito. `soplito-cambios-3/templates/product.soplito.json` quita la foto del gatito con el perrito (PAS 2 desactivado hasta tener infografía). Se sube a `product`, `product.soplito`, `product.lumibaby` y `product.primer-latido`.
