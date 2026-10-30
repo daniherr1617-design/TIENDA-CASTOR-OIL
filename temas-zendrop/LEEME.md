@@ -23,7 +23,7 @@ para el producto nuevo (ventilador para enfriar comida, marca propuesta Soplito)
 ## Cambios 2026-10-30 (3) · solo el gatito
 - Daniel decide vender solo el diseño gatito. `soplito-cambios-3/templates/product.soplito.json` quita la foto del gatito con el perrito (PAS 2 desactivado hasta tener infografía). Se sube a `product`, `product.soplito`, `product.lumibaby` y `product.primer-latido`.
 
-## Propuesta 2026-10-30 (4) · inspirado en el gatito (pendiente de "dale" de Daniel)
+## Cambios 2026-10-30 (4) · inspirado en el gatito (aplicado tras el "sí" de Daniel, 07:41)
 - Color caramelo #C8946A (rayas del gatito #E0C0A0, oscurecido para contraste 7:1 con texto negro) y tinte crema #FAF3EC, en lugar del naranja del perrito.
 - Texto "🐱 Un gatito que le hace compañía" y PAS 3 "mira a su gatito". Sin foto del perrito.
 - Archivos en `soplito-cambios-4/` (plantilla para product, product.soplito, product.lumibaby, product.primer-latido; y settings_data).
