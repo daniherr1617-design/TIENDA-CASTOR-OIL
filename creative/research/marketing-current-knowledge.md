@@ -1,6 +1,6 @@
 # Conocimiento de marketing vigente · GARELON
 
-> **Última actualización:** 2026-10-26 (`reports/2026-10-26.md`: K-META-07 nueva; K-ECO-02 y K-TT-07 actualizadas).
+> **Última actualización:** 2026-11-02 (`reports/2026-11-02.md`: K-META-07 reescrita con la fecha del 2026-11-20; tasa de tramitación de K-ECO-02 vigente; K-META-06 y K-TT-07 actualizadas).
 >
 > Aquí solo queda lo que **sigue siendo útil y vigente** para GARELON. Lo que se queda viejo o se contradice **no convive** con lo nuevo: sale del cuerpo y pasa al «Historial de cambios», que explica qué decía antes, qué dice ahora y por qué.
 
@@ -77,21 +77,22 @@ Un resumen de buscador **nunca** cuenta como verificación. Desde el 2026-10-07,
 
 ### [K-META-06] Navegación de productos dentro de la app, activada por defecto
 - **Tema:** Meta · destino del clic
-- **Fecha:** se activaría en los anuncios existentes el 2026-10-28 · comprobado 2026-10-26
+- **Fecha:** se activaría en los anuncios existentes el 2026-10-28 · comprobado 2026-11-02
 - **Fuente:** ppc.land, adsuploader.com
 - **Evidencia:** Medio especializado · FUENTE SECUNDARIA
 - **Estado:** vigente
 - **Afirmación:** al tocar el anuncio se abre primero la ficha del producto dentro de Facebook o Instagram, con datos del catálogo. Se desactiva desde el aviso de Ads Manager o en los ajustes de Advantage+ Creative y de destino.
+- **Estado del despliegue (FUENTE SECUNDARIA, `reports/2026-11-02.md`):** una fuente dice que se activó el 2026-10-28 según lo previsto; el test de Meta se habría hecho con unos 117.700 anunciantes del 6 al 21 de agosto de 2026. Sigue sin página de ayuda de Meta.
 - **Impacto GARELON:** decidirlo en cada campaña: si se deja, el catálogo debe ser fiel (R1) y la medición contará menos visitas a la tienda.
 
-### [K-META-07] Condiciones comerciales de Meta del 2026-10-30: funciones de IA y rastreo de webs
-- **Tema:** Meta · condiciones comerciales
-- **Fecha:** en vigor desde el 2026-10-30 · comprobado 2026-10-26
-- **Fuente:** relevantaudience.com, ppc.land
-- **Evidencia:** Medio especializado · FUENTE SECUNDARIA (texto de las condiciones sin leer)
-- **Estado:** dudoso (solo un medio atribuye al anunciante toda la responsabilidad de lo que generan las funciones de IA)
-- **Afirmación:** las condiciones se aplican a quien use Ads Manager, Business Suite o un catálogo. Añaden una cláusula de «funciones de IA» y permitirían a Meta rastrear las webs de los anunciantes para entrenar su IA.
-- **Impacto GARELON:** si la IA de Meta altera el producto, la responsabilidad podría ser nuestra: refuerza desactivar las mejoras de IA (K-META-01). Leer ambas cláusulas antes de la primera campaña.
+### [K-META-07] Condiciones de Meta desde el 2026-11-20: el anunciante asume los riesgos de la IA de Meta
+- **Tema:** Meta · condiciones comerciales y funciones de IA
+- **Fecha:** en vigor desde el 2026-11-20 (antes anunciado para el 2026-10-30) · comprobado 2026-11-02
+- **Fuente:** ppc.land, relevantaudience.com, adweek.com, glossy.co, marketingbrew.com (2026-04-21)
+- **Evidencia:** Medio especializado · FUENTE SECUNDARIA (varias fuentes citan la cláusula; el texto de las condiciones no se ha leído)
+- **Estado:** vigente
+- **Afirmación:** la cláusula de «funciones de IA» de las condiciones comerciales y de anuncios de autoservicio hace al negocio único responsable de los riesgos de esas funciones y de lo que produzcan, que «pueden equivocarse». Las condiciones permitirían además a Meta rastrear las webs de los anunciantes para entrenar su IA. Hay anunciantes que denuncian retoques de IA pese a haberse excluido (uno habla de un 5 % de sus anuncios). Meta dice que «AI creative testing» se desactiva en la configuración de la cuenta publicitaria. No está claro si la responsabilidad alcanza a funciones que el anunciante nunca activó.
+- **Impacto GARELON:** antes de la primera campaña: «AI creative testing» desactivado en la cuenta, mejoras de Advantage+ desactivadas por anuncio (K-META-01), lectura de las condiciones y revisión semanal de los anuncios publicados (R1).
 
 ## 3. TikTok
 
@@ -141,11 +142,12 @@ Un resumen de buscador **nunca** cuenta como verificación. Desde el 2026-10-07,
 
 ### [K-TT-07] La IA de TikTok Ads podría publicar creatividades que el anunciante no aprobó
 - **Tema:** TikTok Ads · creatividades automáticas
-- **Fecha:** caso National Trust el 2026-10-18; precedente de Finji en febrero de 2026 · comprobado 2026-10-26
+- **Fecha:** caso National Trust el 2026-10-18; precedente de Finji en febrero de 2026 · comprobado 2026-11-02
 - **Fuente:** tomorrowspublisher.today, oecd.ai (registro de incidentes), engadget.com
 - **Evidencia:** Medio especializado · FUENTE SECUNDARIA
 - **Estado:** dudoso (dos casos aislados; sin explicación de TikTok)
 - **Detalle del caso Finji (FUENTE SECUNDARIA, engadget.com, `reports/2026-10-26.md`):** tenía desactivados Smart Creative y Automate Creative; el soporte de TikTok lo atribuyó a un «formato de anuncios de catálogo» y ofreció una lista de exclusión sin garantías.
+- **Smart+ Catalog Ads (Oficial · FUENTE OFICIAL NO ACCESIBLE DIRECTAMENTE, `reports/2026-11-02.md`):** la ayuda de TikTok (ads.tiktok.com, vista solo en resultados de búsqueda) describe estos anuncios como campañas en las que la IA automatiza la creatividad, lo que encaja con el caso Finji.
 - **Impacto GARELON:** desactivar desde el primer día las mejoras y creatividades automáticas (Symphony, Smart+ Creative, «Recommended Creatives», «Automatic Enhancements») no usar anuncios de catálogo al principio, pedir al soporte la exclusión de modificaciones con IA y revisar cada semana lo publicado: una versión de IA podría mostrar una pulsera que no es la real (R1).
 
 ## 4. Reels y Shorts (orgánico)
@@ -265,12 +267,12 @@ Un resumen de buscador **nunca** cuenta como verificación. Desde el 2026-10-07,
 
 ### [K-ECO-02] UE: arancel de 3 € por partida en envíos de menos de 150 €
 - **Tema:** Logística · aduanas UE
-- **Fecha:** desde el 2026-07-01, provisional hasta el 2028-07-01 · comprobado 2026-10-26
+- **Fecha:** desde el 2026-07-01, provisional hasta el 2028-07-01 · comprobado 2026-11-02
 - **Fuente:** avalara.com, trans.info
 - **Evidencia:** Medio especializado · FUENTE SECUNDARIA (el reglamento no se ha leído)
 - **Estado:** vigente
-- **Tasa de tramitación (dudoso, FUENTE SECUNDARIA, `reports/2026-10-26.md`):** 2 € por artículo comprado online fuera de la UE con valor de hasta 150 €, además del arancel. El Consejo aprobó la reforma aduanera el 2026-09-03 y la tasa va en un acto delegado; se espera desde el 2026-11-01. Falta la votación final del Parlamento y la publicación oficial. Fuentes: vatupdate.com (2026-09-06), lawsociety.ie, valueaddedresource.net, getbyrd.com.
-- **Impacto GARELON:** calcular con 5 € por pedido (3 € + 2 €) desde el 2026-11-01 y comprobar con un pedido real de AliExpress el coste y el plazo antes de fijar el CPA de break-even.
+- **Tasa de tramitación (Oficial · FUENTE OFICIAL NO ACCESIBLE DIRECTAMENTE, `reports/2026-11-02.md`):** 2 € desde el 2026-11-01 según la página de la reforma aduanera de la Comisión (taxation-customs.ec.europa.eu, vista solo en resúmenes), además del arancel de 3 €. Según DHL y nShift, se cobra por artículo o línea de declaración, lleva IVA, y desde el mismo día la declaración exige un identificador de producto. Algunos países añaden tasas propias (Italia, Francia, Rumanía).
+- **Impacto GARELON:** calcular con 5 € más IVA por pedido de un artículo (3 € + 2 €) desde el 2026-11-01 y comprobar con un pedido real de AliExpress el coste y el plazo antes de fijar el CPA de break-even.
 
 ### [K-ECO-03] Shopify retira los script tags
 - **Tema:** Shopify · seguimiento y apps
@@ -354,3 +356,6 @@ Cuando una entrada cambia de criterio, se explica aquí: qué decía antes, qué
 | 2026-10-26 | K-META-07 | — | Entrada nueva (dudoso) | Condiciones comerciales de Meta del 2026-10-30 (`reports/2026-10-26.md`) |
 | 2026-10-26 | K-ECO-02 | Tasa de tramitación propuesta, fecha en negociación | Aprobada por el Consejo el 2026-09-03 y esperada desde el 2026-11-01 (sigue dudosa) | `reports/2026-10-26.md` |
 | 2026-10-26 | K-TT-07 | Dos casos, sin mecanismo | Añade que en el caso Finji el origen fue el formato de catálogo | `reports/2026-10-26.md` |
+| 2026-11-02 | K-META-07 | En vigor el 2026-10-30; responsabilidad del anunciante según un solo medio (dudoso) | En vigor el 2026-11-20; cláusula citada por varias fuentes (vigente); añade «AI creative testing» y retoques pese a la exclusión | Meta retrasó la fecha y la cláusula aparece citada en varios medios (`reports/2026-11-02.md`) |
+| 2026-11-02 | K-ECO-02 | Tasa de tramitación esperada (dudosa) | Aplicada desde el 2026-11-01 según la página de la Comisión (FUENTE OFICIAL NO ACCESIBLE DIRECTAMENTE) | `reports/2026-11-02.md` |
+| 2026-11-02 | K-META-06 · K-TT-07 | — | Estado del despliegue y ayuda oficial de Smart+ Catalog Ads | `reports/2026-11-02.md` |
