@@ -1,6 +1,6 @@
 # Conocimiento de marketing vigente · GARELON
 
-> **Última actualización:** 2026-11-02 (`reports/2026-11-02.md`: K-META-07 reescrita con la fecha del 2026-11-20; tasa de tramitación de K-ECO-02 vigente; K-META-06 y K-TT-07 actualizadas).
+> **Última actualización:** 2026-11-09 (`reports/2026-11-09.md`: K-META-07 reescrita, condiciones pausadas; K-ECO-02, K-MED-05 y K-ECO-01 actualizadas).
 >
 > Aquí solo queda lo que **sigue siendo útil y vigente** para GARELON. Lo que se queda viejo o se contradice **no convive** con lo nuevo: sale del cuerpo y pasa al «Historial de cambios», que explica qué decía antes, qué dice ahora y por qué.
 
@@ -85,14 +85,14 @@ Un resumen de buscador **nunca** cuenta como verificación. Desde el 2026-10-07,
 - **Estado del despliegue (FUENTE SECUNDARIA, `reports/2026-11-02.md`):** una fuente dice que se activó el 2026-10-28 según lo previsto; el test de Meta se habría hecho con unos 117.700 anunciantes del 6 al 21 de agosto de 2026. Sigue sin página de ayuda de Meta.
 - **Impacto GARELON:** decidirlo en cada campaña: si se deja, el catálogo debe ser fiel (R1) y la medición contará menos visitas a la tienda.
 
-### [K-META-07] Condiciones de Meta desde el 2026-11-20: el anunciante asume los riesgos de la IA de Meta
+### [K-META-07] Condiciones de Meta: la cláusula de IA del 2026-11-20 está pausada; los retoques de IA no deseados, no
 - **Tema:** Meta · condiciones comerciales y funciones de IA
-- **Fecha:** en vigor desde el 2026-11-20 (antes anunciado para el 2026-10-30) · comprobado 2026-11-02
-- **Fuente:** ppc.land, relevantaudience.com, adweek.com, glossy.co, marketingbrew.com (2026-04-21)
-- **Evidencia:** Medio especializado · FUENTE SECUNDARIA (varias fuentes citan la cláusula; el texto de las condiciones no se ha leído)
+- **Fecha:** actualización pausada el 2026-11-05, sin nueva fecha (iba a entrar en vigor el 2026-11-20) · comprobado 2026-11-09
+- **Fuente:** ppc.land, shiftdelete.net (citan a The Verge y Reuters), adweek.com, glossy.co, marketingbrew.com (2026-04-21)
+- **Evidencia:** Medio especializado · FUENTE SECUNDARIA (sin aviso de Meta ni texto de las condiciones leídos)
 - **Estado:** vigente
-- **Afirmación:** la cláusula de «funciones de IA» de las condiciones comerciales y de anuncios de autoservicio hace al negocio único responsable de los riesgos de esas funciones y de lo que produzcan, que «pueden equivocarse». Las condiciones permitirían además a Meta rastrear las webs de los anunciantes para entrenar su IA. Hay anunciantes que denuncian retoques de IA pese a haberse excluido (uno habla de un 5 % de sus anuncios). Meta dice que «AI creative testing» se desactiva en la configuración de la cuenta publicitaria. No está claro si la responsabilidad alcanza a funciones que el anunciante nunca activó.
-- **Impacto GARELON:** antes de la primera campaña: «AI creative testing» desactivado en la cuenta, mejoras de Advantage+ desactivadas por anuncio (K-META-01), lectura de las condiciones y revisión semanal de los anuncios publicados (R1).
+- **Afirmación:** Meta paralizó la actualización de sus condiciones comerciales, de catálogo de productos, de anuncios de autoservicio y de IA generativa para creatividades tras consultas de la Comisión Europea y de la CMA; siguen las condiciones anteriores. La versión pausada hacía al anunciante único responsable de los riesgos de las funciones de IA de Meta y permitía rastrear las webs de los anunciantes. Aparte de las condiciones, hay anunciantes que denuncian retoques de IA pese a haberse excluido; Meta dice que «AI creative testing» se desactiva en la configuración de la cuenta publicitaria.
+- **Impacto GARELON:** antes de la primera campaña: comprobar qué condiciones están en vigor, desactivar «AI creative testing» en la cuenta y las mejoras de Advantage+ por anuncio (K-META-01), y revisar cada semana los anuncios publicados (R1).
 
 ## 3. TikTok
 
@@ -248,31 +248,34 @@ Un resumen de buscador **nunca** cuenta como verificación. Desde el 2026-10-07,
 
 ### [K-MED-05] Píxel de Meta: enriquecimiento por IA y eventos automáticos por defecto
 - **Tema:** Meta · píxel y medición
-- **Fecha:** anunciado el 2026-04-15; eventos automáticos por defecto en píxeles añadidos desde el 2026-08-03 · comprobado 2026-10-12
+- **Fecha:** anunciado el 2026-04-15; eventos automáticos por defecto en píxeles añadidos desde el 2026-08-03 · comprobado 2026-11-09
 - **Fuente:** adexchanger.com, insights.vaizle.com, segwise.ai
 - **Evidencia:** Medio especializado · FUENTE SECUNDARIA
 - **Estado:** dudoso (las fechas varían entre fuentes; documentación de Meta sin leer)
 - **Afirmación:** el píxel añade por IA datos del producto y de la página a los eventos (desactivable en Events Manager), y los eventos automáticos vienen activados en los píxeles nuevos. Hay anunciantes que reportan eventos duplicados entre píxel y API de conversiones.
+- **Medición en el dispositivo (FUENTE SECUNDARIA, `reports/2026-11-09.md`):** el ajuste «Measure conversions on customer devices» de Events Manager empezaría a medir el 2026-11-12 (blogs de agencias).
 - **Impacto GARELON:** al instalar el píxel, revisar los eventos que crea la IA y que píxel y API de conversiones compartan event ID.
 
 ## 7. E-commerce, Shopify y logística
 
 ### [K-ECO-01] Shopify: checkout para agentes de IA
 - **Tema:** Shopify · comercio agéntico
-- **Fecha:** checkout directo con Shop Pay en EE. UU. el 2026-09-21; agentes WebMCP desde el 2026-09-28 · comprobado 2026-10-07
+- **Fecha:** checkout directo con Shop Pay en EE. UU. el 2026-09-21; agentes WebMCP desde el 2026-09-28 · comprobado 2026-11-09
 - **Fuente:** techcrunch.com (2026-09-28), modernretail.co
 - **Evidencia:** Medio especializado · FUENTE SECUNDARIA
 - **Estado:** vigente. Elegibilidad en España: NO DISPONIBLE
+- **Tercer trimestre de 2026 (FUENTE SECUNDARIA, ppc.land, `reports/2026-11-09.md`):** los pedidos referidos por asistentes de IA se multiplicaron por 3,3; Shopify presentó Canvas, constructor de tiendas con IA dentro de Sidekick.
 - **Impacto GARELON:** los datos del producto en Shopify Admin (título, descripción, multimedia) son el escaparate para agentes y feeds, así que deben ser fieles.
 
 ### [K-ECO-02] UE: arancel de 3 € por partida en envíos de menos de 150 €
 - **Tema:** Logística · aduanas UE
-- **Fecha:** desde el 2026-07-01, provisional hasta el 2028-07-01 · comprobado 2026-11-02
+- **Fecha:** desde el 2026-07-01, provisional hasta el 2028-07-01 · comprobado 2026-11-09
 - **Fuente:** avalara.com, trans.info
 - **Evidencia:** Medio especializado · FUENTE SECUNDARIA (el reglamento no se ha leído)
 - **Estado:** vigente
 - **Tasa de tramitación (Oficial · FUENTE OFICIAL NO ACCESIBLE DIRECTAMENTE, `reports/2026-11-02.md`):** 2 € desde el 2026-11-01 según la página de la reforma aduanera de la Comisión (taxation-customs.ec.europa.eu, vista solo en resúmenes), además del arancel de 3 €. Según DHL y nShift, se cobra por artículo o línea de declaración, lleva IVA, y desde el mismo día la declaración exige un identificador de producto. Algunos países añaden tasas propias (Italia, Francia, Rumanía).
-- **Impacto GARELON:** calcular con 5 € más IVA por pedido de un artículo (3 € + 2 €) desde el 2026-11-01 y comprobar con un pedido real de AliExpress el coste y el plazo antes de fijar el CPA de break-even.
+- **Unidad de cobro (Oficial · FUENTE OFICIAL NO ACCESIBLE DIRECTAMENTE, `reports/2026-11-09.md`):** según la Agencia Tributaria (sede.agenciatributaria.gob.es, vista solo en resúmenes), 2 € por categoría de artículo del envío, junto con los 3 € de arancel por categoría; reglamento delegado C(2026) 6694 del 2026-09-21. La pagan los declarantes y pueden repercutirla.
+- **Impacto GARELON:** calcular con 5 € más IVA por pedido de una categoría de artículo (3 € + 2 €) desde el 2026-11-01 y comprobar con un pedido real de AliExpress el coste y el plazo antes de fijar el CPA de break-even.
 
 ### [K-ECO-03] Shopify retira los script tags
 - **Tema:** Shopify · seguimiento y apps
@@ -359,3 +362,6 @@ Cuando una entrada cambia de criterio, se explica aquí: qué decía antes, qué
 | 2026-11-02 | K-META-07 | En vigor el 2026-10-30; responsabilidad del anunciante según un solo medio (dudoso) | En vigor el 2026-11-20; cláusula citada por varias fuentes (vigente); añade «AI creative testing» y retoques pese a la exclusión | Meta retrasó la fecha y la cláusula aparece citada en varios medios (`reports/2026-11-02.md`) |
 | 2026-11-02 | K-ECO-02 | Tasa de tramitación esperada (dudosa) | Aplicada desde el 2026-11-01 según la página de la Comisión (FUENTE OFICIAL NO ACCESIBLE DIRECTAMENTE) | `reports/2026-11-02.md` |
 | 2026-11-02 | K-META-06 · K-TT-07 | — | Estado del despliegue y ayuda oficial de Smart+ Catalog Ads | `reports/2026-11-02.md` |
+| 2026-11-09 | K-META-07 | Condiciones en vigor desde el 2026-11-20 con la cláusula de riesgos de IA para el anunciante | Actualización pausada desde el 2026-11-05 sin nueva fecha; siguen las condiciones anteriores; se mantiene el riesgo de retoques de IA | Meta la paralizó tras consultas de la Comisión Europea y la CMA (`reports/2026-11-09.md`) |
+| 2026-11-09 | K-ECO-02 | Tasa de 2 € «por artículo o por línea de declaración» | 2 € por categoría de artículo, según la Agencia Tributaria | `reports/2026-11-09.md` |
+| 2026-11-09 | K-MED-05 · K-ECO-01 | — | Medición en el dispositivo del píxel; pedidos referidos por IA en Shopify | `reports/2026-11-09.md` |

@@ -5,3 +5,4 @@ fecha_ejecucion,tipo,ventana_desde,ventana_hasta,informe,consultas,fuentes,noved
 2026-10-19T07:55+02:00,programada,2026-10-12,2026-10-19,reports/2026-10-19.md,11,7,3,0,2,0,sí,Entorno Default sin la red ampliada: webs oficiales y medios bloqueados (403/ENOTFOUND); solo resúmenes de WebSearch,ninguno,ok
 2026-10-26T07:58+01:00,programada,2026-10-19,2026-10-26,reports/2026-10-26.md,11,6,4,0,1,0,sí,Entorno Default sin la red ampliada: webs oficiales y medios bloqueados (403/ENOTFOUND); solo resúmenes de WebSearch,ninguno,ok
 2026-11-02T08:00+01:00,programada,2026-10-26,2026-11-02,reports/2026-11-02.md,11,7,3,1,1,0,sí,Entorno Default sin la red ampliada: webs oficiales y medios bloqueados (403/ENOTFOUND); solo resúmenes de WebSearch,ninguno,ok
+2026-11-09T07:55+01:00,programada,2026-11-02,2026-11-09,reports/2026-11-09.md,10,10,5,0,1,0,sí,Entorno Default sin la red ampliada: webs oficiales y medios bloqueados (403/ENOTFOUND); solo resúmenes de WebSearch,ninguno,ok
