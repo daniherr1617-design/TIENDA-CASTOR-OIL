@@ -10,7 +10,8 @@
   assign mobile_image = section.settings.image_mobile
   assign single_image = desktop_image | default: mobile_image
   assign hero_sizes = '(min-width: 1200px) 560px, (min-width: 750px) 48vw, calc(100vw - 3rem)'
-  assign hero_alt = 'Sérum para el contorno de ojos: frasco roller de vidrio ámbar de 10 ml con bola metálica, tapón negro y su caja'
+  # Solo se usa si la imagen elegida en el editor no tiene texto alternativo; la imagen del tema lleva el suyo.
+  assign hero_alt = product.title | default: shop.name
 -%}
 
 <div
@@ -21,7 +22,7 @@
   style="--g-pt: {{ section.settings.padding_top }}px; --g-pb: {{ section.settings.padding_bottom }}px;"
 >
   <div class="page-width g-hero__grid{% if section.settings.image_position == 'left' %} g-hero__grid--image-left{% endif %}{% unless section.settings.mobile_image_first %} g-hero__grid--text-first{% endunless %}">
-    <div class="g-hero__media">
+    <div class="g-hero__media{% if section.settings.show_stage %} g-hero__media--stage{% elsif section.settings.mobile_crop %} g-hero__media--crop{% endif %}">
       {%- if desktop_image != blank and mobile_image != blank -%}
         <picture>
           <source
@@ -42,7 +43,7 @@
       {%- else -%}
         {%- render 'garelon-fallback-image',
           image: single_image,
-          fallback: 'img01-producto',
+          fallback: 'principal',
           alt: hero_alt,
           sizes: hero_sizes,
           class: 'g-hero__image',
@@ -62,17 +63,44 @@
         <div class="g-hero__text">{{ section.settings.text }}</div>
       {%- endif -%}
 
-      {%- if section.settings.show_price -%}
-        {%- render 'garelon-price-inline', product: product -%}
+      {%- liquid
+        # Colores reales de la opción «Color» de Shopify (sin escribirlos a mano).
+        assign color_option = null
+        if section.settings.show_colors
+          for option in product.options_with_values
+            assign option_key = option.name | downcase | strip
+            if option_key == 'color' or option_key == 'colour' or option_key == 'colores'
+              assign color_option = option
+            endif
+          endfor
+        endif
+      -%}
+      {%- if section.settings.show_price or color_option -%}
+        <div class="g-hero__meta">
+          {%- if section.settings.show_price -%}
+            {%- render 'garelon-price-inline', product: product -%}
+          {%- endif -%}
+          {%- if color_option and color_option.values.size > 1 -%}
+            <p class="g-hero__colors">
+              <span class="g-hero__dots" aria-hidden="true">
+                {%- for value in color_option.values -%}
+                  <span class="g-choice__dot g-choice__dot--{{ value.name | handleize }}"></span>
+                {%- endfor -%}
+              </span>
+              <span>{{ color_option.values | join: ' · ' | escape }}</span>
+            </p>
+          {%- endif -%}
+        </div>
       {%- endif -%}
 
-      <div class="g-buttons">
+      <div class="g-buttons g-hero__actions">
         {%- if section.settings.button_label != blank -%}
           <a href="{{ primary_url }}" class="button button--primary">{{ section.settings.button_label | escape }}</a>
         {%- endif -%}
         {%- if section.settings.button2_label != blank and section.settings.button2_link != blank -%}
-          <a href="{{ section.settings.button2_link }}" class="button button--secondary">
+          <a href="{{ section.settings.button2_link }}" class="g-link-arrow">
             {{- section.settings.button2_label | escape -}}
+            <span aria-hidden="true">→</span>
           </a>
         {%- endif -%}
       </div>
@@ -112,7 +140,7 @@
       "type": "image_picker",
       "id": "image",
       "label": "Imagen",
-      "info": "Vacía = IMAGEN 1 (foto limpia del frasco, la caja y el tapón), incluida en el tema. Si eliges otra, que muestre el producto real y con poco texto."
+      "info": "Vacía = la imagen principal del producto incluida en el tema (foto limpia de lo que recibe el cliente). Si eliges otra, que muestre el producto real y con poco texto."
     },
     {
       "type": "image_picker",
@@ -129,6 +157,19 @@
         { "value": "left", "label": "Izquierda" }
       ],
       "default": "right"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_stage",
+      "label": "Fondo circular suave detrás del producto",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "mobile_crop",
+      "label": "Móvil: encuadrar la imagen en horizontal para acercar el producto",
+      "info": "Recorta arriba y abajo con CSS (la imagen no se modifica). Úsalo solo si el producto está en el centro de la foto. No se combina con el fondo circular.",
+      "default": false
     },
     {
       "type": "checkbox",
@@ -150,7 +191,7 @@
       "type": "text",
       "id": "heading",
       "label": "Título",
-      "default": "Una mirada con aspecto más descansado"
+      "default": "Tu producto, en una frase"
     },
     {
       "type": "checkbox",
@@ -163,13 +204,20 @@
       "type": "richtext",
       "id": "text",
       "label": "Texto",
-      "default": "<p>Sérum para el contorno de ojos con aceite de ricino y aplicador roller, diseñado para aportar hidratación y complementar tu rutina diaria de cuidado.</p>"
+      "default": "<p>Explica en una o dos frases qué es y qué incluye.</p>"
     },
     {
       "type": "checkbox",
       "id": "show_price",
       "label": "Mostrar el precio del producto",
       "info": "El precio se lee siempre de Shopify.",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "show_colors",
+      "label": "Mostrar los colores disponibles",
+      "info": "Lee los valores de la opción «Color» del producto en Shopify.",
       "default": true
     },
     {
@@ -180,7 +228,7 @@
       "type": "text",
       "id": "button_label",
       "label": "Texto del botón principal",
-      "default": "Comprar el sérum"
+      "default": "Comprar ahora"
     },
     {
       "type": "url",
@@ -192,7 +240,7 @@
       "type": "text",
       "id": "button2_label",
       "label": "Texto del botón secundario",
-      "default": "Cómo se usa"
+      "default": "Cómo funciona"
     },
     {
       "type": "url",
@@ -247,21 +295,39 @@
           "label": "Icono",
           "options": [
             { "value": "none", "label": "Ninguno" },
-            { "value": "roller", "label": "Roller" },
-            { "value": "bottle", "label": "Frasco" },
-            { "value": "steps", "label": "Reloj / rutina" },
+            { "value": "medal", "label": "Medalla" },
+            { "value": "cross", "label": "Cruz" },
+            { "value": "beads", "label": "Cuentas" },
+            { "value": "chain", "label": "Cadena" },
+            { "value": "rings", "label": "Aros de ajuste" },
+            { "value": "gem", "label": "Brillo / acabado" },
+            { "value": "material", "label": "Material" },
+            { "value": "measure", "label": "Medida" },
+            { "value": "heart", "label": "Corazón" },
+            { "value": "gift", "label": "Regalo" },
+            { "value": "star", "label": "Estrella" },
+            { "value": "calendar", "label": "Fecha / ocasión" },
             { "value": "drop", "label": "Gota" },
-            { "value": "eye", "label": "Ojo" },
             { "value": "leaf", "label": "Hoja" },
+            { "value": "sparkle", "label": "Destello" },
+            { "value": "box", "label": "Caja" },
+            { "value": "colors", "label": "Colores" },
+            { "value": "users", "label": "Personas" },
+            { "value": "home", "label": "Casa" },
+            { "value": "moon", "label": "Noche" },
+            { "value": "clock", "label": "Reloj" },
+            { "value": "truck", "label": "Envío" },
+            { "value": "return", "label": "Devolución" },
+            { "value": "chat", "label": "Contacto" },
             { "value": "check", "label": "Check" }
           ],
-          "default": "roller"
+          "default": "check"
         },
         {
           "type": "text",
           "id": "text",
           "label": "Texto",
-          "default": "Aplicador roller"
+          "default": "Característica"
         }
       ]
     }
@@ -270,9 +336,9 @@
     {
       "name": "GARELON Portada",
       "blocks": [
-        { "type": "point", "settings": { "icon": "roller", "text": "Aplicador roller" } },
-        { "type": "point", "settings": { "icon": "bottle", "text": "10 ml" } },
-        { "type": "point", "settings": { "icon": "steps", "text": "Rutina sencilla" } }
+        { "type": "point", "settings": { "icon": "check", "text": "Característica 1" } },
+        { "type": "point", "settings": { "icon": "check", "text": "Característica 2" } },
+        { "type": "point", "settings": { "icon": "check", "text": "Característica 3" } }
       ]
     }
   ]

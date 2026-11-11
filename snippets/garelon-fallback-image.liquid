@@ -2,46 +2,64 @@
   GARELON · Muestra la imagen elegida en el editor o, si está vacía, una de las
   imágenes del producto incluidas en los assets del tema.
 
-  Los assets garelon-imgNN-*.webp son IMAGEN 1, 4, 5, 7, 9 y 10 (carpeta referencias/)
-  redimensionadas a 480, 720 y 1080 px: sin recortes, sin filtros y sin cambios de texto.
+  Pulsera Rosario Virgen María. Los assets garelon-rosario-*.webp salen de las imágenes
+  de la raíz del repositorio (entregadas para esta migración), redimensionadas sin filtros:
+  - principal = «imagen 3.png» (pulsera en la muñeca: medalla, cruz colgante y cuentas
+    tricolor) · 480/720/1080
+  - detalle = la misma foto recortada en la medalla, la cruz y las cuentas (sin ampliar:
+    el recorte mide 600 px) · 480/600
+  - oracion = «imagen 2.png» (manos juntas en oración, con la pulsera en la muñeca) · 480/720/1080
+  «imagen 4.png» (pulsera completa) e «Imagen 1.png» (infografía) no se publican: muestran la
+  cruz intercalada en la cadena y no colgante, y la infografía lleva una caja de regalo que no
+  está confirmada como incluida. Ver GARELON-CAMBIOS-ROSARIO.md.
 
   Accepts:
   - image: {Object} imagen del image_picker
-  - fallback: {String} img01-producto | img10-presentacion | img07-roller | img05-ingredientes
-              | img04-uso | img09-tamano | none
+  - fallback: {String} principal | detalle | oracion | none
   - alt: {String} texto alternativo si la imagen elegida no tiene uno
   - sizes: {String}
   - class: {String}
   - eager: {Boolean} true solo para la imagen principal (LCP)
+  - src_only: {Boolean} true = solo escribe la URL del ancho menor (miniaturas de respaldo)
 {%- endcomment -%}
 {%- liquid
   assign asset_name = blank
   assign asset_alt = blank
+  assign asset_widths = '480,720,1080'
+  assign asset_height = 1080
   case fallback
-    when 'img01-producto'
-      assign asset_name = 'garelon-img01-producto'
-      assign asset_alt = 'Sérum para el contorno de ojos: frasco roller de vidrio ámbar de 10 ml con bola metálica, tapón negro y su caja'
-    when 'img10-presentacion'
-      assign asset_name = 'garelon-img10-presentacion'
-      assign asset_alt = 'Sérum contorno de ojos con roller metálico de 10 ml: ayuda a reducir la apariencia de ojeras y de bolsas, suaviza la apariencia de líneas finas, hidrata y aporta confort'
-    when 'img07-roller'
-      assign asset_name = 'garelon-img07-roller'
-      assign asset_alt = 'Técnica de masaje con roller para el contorno de ojos: primeros planos de bolsas y ojeras, el frasco con su caja y tres ventajas: aplicador metálico, uso cómodo y cuidado diario'
-    when 'img05-ingredientes'
-      assign asset_name = 'garelon-img05-ingredientes'
-      assign asset_alt = 'Ingredientes principales: aceite de ricino, Acetyl Tripeptide-1, colágeno, extracto de Boswellia Serrata y agua'
-    when 'img04-uso'
-      assign asset_name = 'garelon-img04-modo-de-uso'
-      assign asset_alt = 'Cómo usarlo en 3 pasos: limpia y seca el contorno de ojos, aplica el sérum con el roller y masajea con la bola metálica'
-    when 'img09-tamano'
-      assign asset_name = 'garelon-img09-tamano'
-      assign asset_alt = 'Tamaño del producto: caja de 8,7 cm de alto, 2,2 cm de ancho y 2,2 cm de fondo; frasco de 8,4 cm de alto y 1,9 cm de ancho'
+    when 'principal'
+      assign asset_name = 'garelon-rosario-principal'
+      assign asset_alt = 'Pulsera rosario de acabado dorado en la muñeca, con medalla ovalada de la Virgen María, cruz colgante y cuentas en tonos dorado, plateado y rosado'
+    when 'detalle'
+      assign asset_name = 'garelon-rosario-detalle'
+      assign asset_widths = '480,600'
+      assign asset_height = 600
+      assign asset_alt = 'Detalle de la pulsera rosario: medalla ovalada de la Virgen María con borde de pequeñas piedras, cruz y cuentas tricolor'
+    when 'oracion'
+      assign asset_name = 'garelon-rosario-oracion'
+      assign asset_alt = 'Mujer con las manos juntas en actitud de oración y la pulsera rosario dorada en la muñeca'
   endcase
 
   assign final_alt = alt
   if image == blank and asset_alt != blank
     assign final_alt = asset_alt
   endif
-
-  render 'garelon-image', image: image, fallback: asset_name, fallback_widths: '480,720,1080', fallback_height: 1080, alt: final_alt, sizes: sizes, class: class, eager: eager
 -%}
+{%- if src_only -%}
+  {%- if asset_name != blank -%}
+    {%- assign first_width = asset_widths | split: ',' | first -%}
+    {{- asset_name | append: '-' | append: first_width | append: '.webp' | asset_url -}}
+  {%- endif -%}
+{%- else -%}
+  {%- render 'garelon-image',
+    image: image,
+    fallback: asset_name,
+    fallback_widths: asset_widths,
+    fallback_height: asset_height,
+    alt: final_alt,
+    sizes: sizes,
+    class: class,
+    eager: eager
+  -%}
+{%- endif -%}

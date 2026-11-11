@@ -14,9 +14,14 @@
   casi todas las apps pintan ya su propio resumen y no se muestran dos.
 {%- endcomment -%}
 {%- liquid
+  # Producto: el elegido en la sección; en la ficha, el de la ficha; en el resto (tienda de un
+  # solo producto), el primero del catálogo, igual que la portada y la compra de la home.
   assign review_product = section.settings.product
   if review_product == blank and template.name == 'product'
     assign review_product = product
+  endif
+  if review_product == blank
+    assign review_product = collections.all.products.first
   endif
 
   assign app_blocks = section.blocks | where: 'type', '@app'
@@ -122,7 +127,7 @@
           <li>Bloque de app de reseñas: ninguno. Añádelo con «Añadir bloque › Apps».</li>
           <li>
             {%- if review_product == blank -%}
-              Producto de la valoración media: sin elegir. En la página de inicio, elige el sérum.
+              Producto de la valoración media: sin elegir. En la página de inicio, elige el producto.
             {%- else -%}
               Producto de la valoración media: {{ review_product.title | escape }}.
             {%- endif -%}
@@ -188,7 +193,7 @@
       "type": "product",
       "id": "product",
       "label": "Producto de la valoración media",
-      "info": "En la ficha de producto se usa el producto de la página. En la página de inicio, elige el sérum."
+      "info": "En la ficha se usa el producto de la página. En el resto, si lo dejas vacío, el primer producto de la tienda."
     },
     {
       "type": "color_scheme",

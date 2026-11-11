@@ -1,0 +1,16 @@
+{%- comment -%}
+  GARELON · Frase destacada de la zona de compra (bloque garelon_quote).
+  Franja compacta, centrada, sobre fondo champán muy claro con borde dorado fino. Va justo
+  antes de «Elige tu pack». Solo texto editorial: sin iconos ni promesas.
+
+  Accepts:
+  - block: {Object} bloque garelon_quote (settings.text)
+
+  Usage:
+  {% render 'garelon-quote', block: block %}
+{%- endcomment -%}
+{%- if block.settings.text != blank -%}
+  <div class="g-quote" {{ block.shopify_attributes }}>
+    <p class="g-quote__text">{{ block.settings.text | escape }}</p>
+  </div>
+{%- endif -%}

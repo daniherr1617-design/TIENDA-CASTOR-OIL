@@ -1,39 +1,43 @@
 {%- comment -%}
-  GARELON · Oferta de packs sobre VARIANTES REALES de Shopify
-  («1 unidad», «2 unidades», «3 unidades»).
+  GARELON · Packs sobre VARIANTES REALES de Shopify.
 
-  Qué ve el cliente ANTES de añadir al carrito:
-    OFERTA LIMITADA · Elige tu pack · 3 tarjetas seleccionables con precio del pack,
-    precio por unidad, «Ahorra X € · -N %», «Comprando por separado: Y €» e insignia
-    «Mejor precio/unidad» en el pack con el precio por unidad más bajo.
+  Caso base (Pulsera Rosario): una sola opción
+    Pack: 1 pulsera / 2 pulseras / 3 pulseras
+  = 3 variantes reales, cada una con su precio en Shopify. Si el producto tuviera además otra
+  opción real con varios valores, se muestra como botones (garelon-choice) y cada pack se
+  combina con ese valor; las opciones de UN solo valor (p. ej. «Title: Único» importado del
+  proveedor) van ocultas y marcadas.
 
-  Cada tarjeta es UNA variante. Al elegirla se selecciona esa variante y la cantidad es
-  siempre 1: el pack de 2 llega al carrito (y al proveedor) como «2 unidades» × 1.
-  Este bloque sustituye al selector de variantes Y al selector de cantidad (las secciones
-  no pintan «Selector de cantidad» si existe este bloque) y añade quantity=1 al formulario.
+  Cada pack es UNA variante y la cantidad es siempre 1: «2 pulseras» llega al carrito (y al
+  proveedor) como esa variante × 1, nunca «1 pulsera» × 2. Este bloque sustituye al selector
+  de variantes Y al de cantidad (las secciones no pintan «Selector de cantidad» si existe
+  este bloque) y añade quantity=1 al formulario.
+
+  Qué ve el cliente ANTES de añadir al carrito: «Elige tu pack» y una tarjeta por pack con su
+  etiqueta editorial (p. ej. «Individual», «Pack de 2») y el precio real de la variante.
+  Solo si los precios reales lo justifican (calculado, nada escrito a mano):
+    - «Ahorra X €»: precio de la variante de 1 × unidades − precio del pack (si es > 0).
+    - precio por unidad: precio del pack ÷ unidades (ajuste: siempre o solo con ahorro real).
+    - insignia «Mejor precio/unidad»: solo en el pack con el precio por unidad más bajo, si es
+      el único con ese precio y tiene más de 1 unidad.
+  No se usa compare_at_price.
 
   Cómo funciona:
   - Pinta el <variant-selects> de Dawn con radios compatibles (form, data-option-value-id,
-    data-product-url, data-option-name). Dawn hace el resto sin JS propio:
-    product-info.js pide la sección a Shopify, actualiza precio, stock, botón, id de la
-    variante y URL (?variant=), y vuelve a pintar estas tarjetas con los datos reales.
-  - Todo sale de variant.price (nada escrito a mano):
-      referencia  = precio de la variante de 1 unidad × unidades del pack
-      ahorro      = referencia − precio del pack (solo si es > 0)
-      por unidad  = precio del pack ÷ unidades
-    No se usa compare_at_price.
-  - Opción de packs: la indicada en «Nombre de la opción» o, si está vacío, la única opción
-    con más de un valor. Otras opciones con UN solo valor (p. ej. «Color: Único» al importar
-    de CJ) se admiten: van como campos ocultos ya marcados.
-  - Unidades: el primer número del valor («2 unidades», «Pack 2», «2PCS», «x2» → 2) o el
-    ajuste «Unidades de cada pack» (1,2,3). Debe existir un pack de 1 unidad (es la
-    referencia del ahorro).
-  - Selección inicial: la de Shopify (?variant= o la primera variante disponible). Con los
-    valores ordenados 1 → 2 → 3, es «1 unidad» salvo que esté agotada.
-  - Variante agotada: tarjeta desactivada con «Agotado», sin cifras de stock.
-  - Si el producto no cumple las condiciones: selector estándar de Dawn y, SOLO en el
-    editor de temas, un aviso «Configuración de Shopify pendiente o incorrecta para packs»
-    con el motivo exacto. El cliente nunca ve el aviso.
+    data-product-url, data-option-name). Dawn hace el resto sin JS propio: product-info.js
+    pide la sección a Shopify con los valores elegidos, actualiza precio, stock, botón, id
+    de la variante y URL (?variant=) y vuelve a pintar el bloque con los datos reales.
+  - Opción de packs: la indicada en «Nombre de la opción», la única opción con varios
+    valores, una opción llamada «Pack»/«Packs»/«Cantidad», o la única cuyos valores llevan
+    todos un número.
+  - Unidades: el primer número del valor («2 pulseras», «Pack 2», «2PCS», «x2» → 2) o el
+    ajuste «Unidades de cada pack» (1,2,3). Debe existir el pack de 1 (referencia del ahorro).
+  - Selección inicial: la de Shopify (?variant= o la primera variante disponible).
+  - Pack agotado o inexistente: tarjeta desactivada con «Agotado» / «No disponible», sin
+    cifras de stock.
+  - Si el producto no cumple las condiciones (p. ej. aún tiene una sola variante): selector
+    estándar de Dawn y, SOLO en el editor de temas, un aviso con el motivo exacto. El cliente
+    nunca ve el aviso y la tienda sigue vendiendo la variante única.
 
   Accepts:
   - product: {Object}
@@ -54,24 +58,46 @@
     assign pack_issue = 'single_variant'
   else
     assign variable_count = 0
+    assign named_option = null
+    assign numeric_option = null
+    assign numeric_count = 0
     for option in product.options_with_values
       assign current_option = option.name | strip | downcase
-      if wanted_option != blank
-        if current_option == wanted_option
-          assign pack_option = option
-        elsif option.values.size > 1
-          assign variable_count = variable_count | plus: 1
-        endif
-      elsif option.values.size > 1
-        assign variable_count = variable_count | plus: 1
+      if wanted_option != blank and current_option == wanted_option
         assign pack_option = option
       endif
+      if option.values.size > 1
+        assign variable_count = variable_count | plus: 1
+        assign last_variable = option
+        if current_option == 'pack' or current_option == 'packs' or current_option == 'cantidad'
+          assign named_option = option
+        endif
+        assign all_numeric = true
+        for value in option.values
+          assign digits_removed = value.name | remove: '0' | remove: '1' | remove: '2' | remove: '3' | remove: '4' | remove: '5' | remove: '6' | remove: '7' | remove: '8' | remove: '9'
+          if digits_removed == value.name
+            assign all_numeric = false
+            break
+          endif
+        endfor
+        if all_numeric
+          assign numeric_option = option
+          assign numeric_count = numeric_count | plus: 1
+        endif
+      endif
     endfor
-    if wanted_option != blank and pack_option == null
-      assign pack_issue = 'option_name'
-    elsif wanted_option != blank and variable_count > 0
-      assign pack_issue = 'multi_option'
-    elsif wanted_option == blank and variable_count != 1
+
+    if wanted_option != blank
+      if pack_option == null
+        assign pack_issue = 'option_name'
+      endif
+    elsif variable_count == 1
+      assign pack_option = last_variable
+    elsif named_option != null
+      assign pack_option = named_option
+    elsif numeric_count == 1
+      assign pack_option = numeric_option
+    else
       assign pack_issue = 'multi_option'
     endif
     if pack_issue != ''
@@ -85,14 +111,12 @@
     assign pack_option = null
   endif
 
-  # Primera pasada: unidades de cada valor, variante, precio de 1 unidad y mejor precio por unidad.
+  # Primera pasada: unidades de cada valor y la variante de ese pack con el resto de opciones elegidas.
+  # Se guardan en listas (mismo orden que los valores) para las pasadas siguientes.
   assign units_list = ''
+  assign variant_ids = ''
   assign seen_units = ','
-  assign base_price = null
-  assign best_unit_price = 999999999
-  assign best_count = 0
-  assign best_units = 0
-  assign any_savings = false
+  assign has_single = false
   assign first_units = 0
   if pack_option != null
     for value in pack_option.values
@@ -134,31 +158,38 @@
       if forloop.first
         assign first_units = units
       endif
+      if units == 1
+        assign has_single = true
+      endif
 
+      # Variante de este pack con el resto de opciones tal como están elegidas.
       assign pack_variant = value.variant
       if pack_variant == blank
-        assign option_key = 'option' | append: pack_option.position
-        assign pack_variant = product.variants | where: option_key, value.name | first
+        for candidate in product.variants
+          assign candidate_match = true
+          for option in product.options_with_values
+            assign option_index = option.position | minus: 1
+            if option.name == pack_option.name
+              if candidate.options[option_index] != value.name
+                assign candidate_match = false
+              endif
+            elsif candidate.options[option_index] != option.selected_value
+              assign candidate_match = false
+            endif
+          endfor
+          if candidate_match
+            assign pack_variant = candidate
+            break
+          endif
+        endfor
       endif
       if pack_variant == blank
-        assign pack_issue = 'variant'
-        assign pack_issue_value = value.name
-        break
-      endif
-
-      if units == 1
-        assign base_price = pack_variant.price
-      endif
-      assign unit_price = pack_variant.price | times: 1.0 | divided_by: units | round
-      if unit_price < best_unit_price
-        assign best_unit_price = unit_price
-        assign best_count = 1
-        assign best_units = units
-      elsif unit_price == best_unit_price
-        assign best_count = best_count | plus: 1
+        assign variant_ids = variant_ids | append: '0,'
+      else
+        assign variant_ids = variant_ids | append: pack_variant.id | append: ','
       endif
     endfor
-    if pack_issue == '' and base_price == null
+    if pack_issue == '' and has_single == false
       assign pack_issue = 'no_single'
     endif
   endif
@@ -168,19 +199,52 @@
     assign pack_mode = true
   endif
 
+  # Segunda pasada: precio del pack de 1, mejor precio por unidad y ahorro.
+  assign base_price = null
+  assign best_unit_price = 999999999
+  assign best_count = 0
+  assign best_units = 0
+  assign any_savings = false
   if pack_mode
     assign units_array = units_list | split: ','
-    for value in pack_option.values
+    assign ids_array = variant_ids | split: ','
+    for id_token in ids_array
       assign units = units_array[forloop.index0] | plus: 0
-      assign pack_variant = value.variant
-      if pack_variant == blank
-        assign option_key = 'option' | append: pack_option.position
-        assign pack_variant = product.variants | where: option_key, value.name | first
+      assign target_id = id_token | plus: 0
+      if units == 1 and target_id > 0
+        for candidate in product.variants
+          if candidate.id == target_id
+            assign base_price = candidate.price
+            break
+          endif
+        endfor
       endif
-      assign reference_price = base_price | times: units
-      if units > 1 and pack_variant.available and reference_price > pack_variant.price
-        assign any_savings = true
+    endfor
+    for id_token in ids_array
+      assign units = units_array[forloop.index0] | plus: 0
+      assign target_id = id_token | plus: 0
+      if target_id == 0
+        continue
       endif
+      for candidate in product.variants
+        if candidate.id == target_id
+          assign unit_price = candidate.price | times: 1.0 | divided_by: units | round
+          if unit_price < best_unit_price
+            assign best_unit_price = unit_price
+            assign best_count = 1
+            assign best_units = units
+          elsif unit_price == best_unit_price
+            assign best_count = best_count | plus: 1
+          endif
+          if base_price != null and units > 1 and candidate.available
+            assign reference_price = base_price | times: units
+            if reference_price > candidate.price
+              assign any_savings = true
+            endif
+          endif
+          break
+        endif
+      endfor
     endfor
   endif
 
@@ -189,59 +253,30 @@
     assign show_badge = true
   endif
 
-  # Avisos que no bloquean los packs (solo en el editor de temas).
+  # Avisos que no bloquean (solo en el editor de temas).
   assign pack_notice = ''
   if pack_mode and first_units != 1
     assign pack_notice = 'order'
   endif
+  assign combinations = 1
+  if pack_mode
+    for option in product.options_with_values
+      assign combinations = combinations | times: option.values.size
+    endfor
+  endif
 -%}
 
 {%- if request.design_mode -%}
-  {%- if pack_issue != '' or pack_notice != '' or product_unassigned -%}
-    <div class="g-packs-diagnostic" role="note">
-      {%- if pack_issue != '' -%}
-        <p class="g-packs-diagnostic__title">Configuración de Shopify pendiente o incorrecta para packs</p>
-        <p>
-          Las tarjetas de packs no se muestran para «{{ product.title | escape }}» y se usa el selector estándar.
-          {%- case pack_issue -%}
-            {%- when 'single_variant' %}
-              El producto solo tiene una variante. Crea la opción «Pack» con los valores «1 unidad», «2 unidades» y
-              «3 unidades» (en ese orden) y pon sus precios.
-            {%- when 'option_name' %}
-              El producto no tiene ninguna opción llamada «{{ block.settings.option_name | escape }}». Revisa el ajuste
-              «Nombre de la opción de Shopify» o déjalo vacío.
-            {%- when 'multi_option' %}
-              El producto tiene más de una opción con varios valores. Deja una sola opción, «Pack», con «1 unidad»,
-              «2 unidades» y «3 unidades».
-            {%- when 'pack_units' %}
-              «Unidades de cada pack» no tiene tantos números como valores tiene la opción.
-            {%- when 'units' %}
-              El valor «{{ pack_issue_value | escape }}» no contiene el número de unidades. Renómbralo, p. ej.
-              «2 unidades».
-            {%- when 'duplicate' %}
-              El valor «{{ pack_issue_value | escape }}» repite un número de unidades de otro pack.
-            {%- when 'variant' %}
-              No hay variante para el valor «{{ pack_issue_value | escape }}».
-            {%- when 'no_single' %}
-              Falta el pack de «1 unidad»: es la referencia para calcular el ahorro de los demás packs.
-          {%- endcase -%}
-        </p>
-      {%- endif -%}
-      {%- if pack_notice == 'order' -%}
-        <p>
-          Ordena los valores de la opción como «1 unidad», «2 unidades», «3 unidades» para que «1 unidad» salga
-          seleccionada por defecto.
-        </p>
-      {%- endif -%}
-      {%- if product_unassigned -%}
-        <p>
-          Esta sección no tiene producto elegido y muestra el primero del catálogo («{{ product.title | escape }}»).
-          Elige el sérum en el ajuste «Producto» de la sección.
-        </p>
-      {%- endif -%}
-      <p class="g-packs-diagnostic__foot">Aviso visible solo en el editor de temas.</p>
-    </div>
-  {%- endif -%}
+  {%- render 'garelon-packs-diagnostic',
+    product: product,
+    block: block,
+    pack_issue: pack_issue,
+    pack_issue_value: pack_issue_value,
+    pack_notice: pack_notice,
+    pack_mode: pack_mode,
+    combinations: combinations,
+    product_unassigned: product_unassigned
+  -%}
 {%- endif -%}
 
 {%- if pack_mode -%}
@@ -258,148 +293,176 @@
     {% # theme-check-enable %}
     {{ block.shopify_attributes }}
   >
-    {%- for option in product.options_with_values -%}
-      {%- if option.name != pack_option.name -%}
-        {%- comment -%} Opción de un solo valor (p. ej. importada de CJ): va marcada y oculta. {%- endcomment -%}
-        <fieldset class="g-packs__fixed" hidden>
-          <legend>{{ option.name | escape }}</legend>
-          {%- assign fixed_value = option.values.first -%}
-          <input
-            type="radio"
-            id="{{ section.id }}-{{ option.position }}-0"
-            name="{{ option.name | escape }}-{{ option.position }}"
-            value="{{ fixed_value | escape }}"
-            data-option-value-id="{{ fixed_value.id }}"
-            data-option-name="{{ option.name | escape }}"
-            checked
-          >
-        </fieldset>
-        {%- continue -%}
+    {%- comment -%} 1) Opciones que no son el pack: botones (varios valores) u opciones fijas (ocultas). {%- endcomment -%}
+    {%- render 'garelon-choice',
+      product: product,
+      block: block,
+      pack_option_name: pack_option.name,
+      product_form_id: product_form_id
+    -%}
+
+    {%- comment -%} 2) Packs. {%- endcomment -%}
+    {%- if any_savings and block.settings.offer_label != blank -%}
+      <p class="g-packs__offer">{{ block.settings.offer_label | escape }}</p>
+    {%- endif -%}
+    <fieldset class="product-form__input g-packs__fieldset">
+      <legend class="g-packs__legend">
+        {{- block.settings.heading | default: pack_option.name | escape -}}
+      </legend>
+      {%- if block.settings.intro != blank -%}
+        <p class="g-packs__intro">{{ block.settings.intro | escape }}</p>
       {%- endif -%}
+      <div class="g-packs__list">
+        {%- for value in pack_option.values -%}
+          {%- liquid
+            assign units = units_array[forloop.index0] | plus: 0
+            assign target_id = ids_array[forloop.index0] | plus: 0
+            assign pack_variant = null
+            if target_id > 0
+              for candidate in product.variants
+                if candidate.id == target_id
+                  assign pack_variant = candidate
+                  break
+                endif
+              endfor
+            endif
+            assign pack_available = false
+            if pack_variant and pack_variant.available
+              assign pack_available = true
+            endif
 
-      {%- if any_savings and block.settings.offer_label != blank -%}
-        <p class="g-packs__offer">{{ block.settings.offer_label | escape }}</p>
-      {%- endif -%}
-      <fieldset class="product-form__input g-packs__fieldset">
-        <legend class="g-packs__legend">
-          {{- block.settings.heading | default: pack_option.name | escape -}}
-        </legend>
-        {%- if block.settings.intro != blank -%}
-          <p class="g-packs__intro">{{ block.settings.intro | escape }}</p>
-        {%- endif -%}
-        <div class="g-packs__list">
-          {%- for value in pack_option.values -%}
-            {%- liquid
-              assign units = units_array[forloop.index0] | plus: 0
-              assign pack_variant = value.variant
-              if pack_variant == blank
-                assign option_key = 'option' | append: pack_option.position
-                assign pack_variant = product.variants | where: option_key, value.name | first
-              endif
+            if units == 1
+              assign unit_word = block.settings.unit_singular
+            else
+              assign unit_word = block.settings.unit_plural
+            endif
+            if unit_word != blank
+              assign pack_label = units | append: ' ' | append: unit_word
+            else
+              assign pack_label = value.name
+            endif
 
-              if units == 1
-                assign unit_word = block.settings.unit_singular
-              else
-                assign unit_word = block.settings.unit_plural
-              endif
-              if unit_word != blank
-                assign pack_label = units | append: ' ' | append: unit_word
-              else
-                assign pack_label = value.name
-              endif
+            assign pack_tag = blank
+            case units
+              when 1
+                assign pack_tag = block.settings.tag_1
+              when 2
+                assign pack_tag = block.settings.tag_2
+              when 3
+                assign pack_tag = block.settings.tag_3
+            endcase
 
+            assign savings = 0
+            assign card_savings = false
+            if pack_variant
               assign unit_price = pack_variant.price | times: 1.0 | divided_by: units | round
-              assign reference_price = base_price | times: units
-              assign savings = 0
-              if units > 1
+              if base_price != null and units > 1
+                assign reference_price = base_price | times: units
                 assign savings = reference_price | minus: pack_variant.price
                 if savings > 0
                   assign savings_percent = savings | times: 100.0 | divided_by: reference_price | round
                 endif
               endif
-              assign card_savings = false
-              if block.settings.show_savings and savings > 0 and pack_variant.available
+              if block.settings.show_savings and savings > 0 and pack_available
                 assign card_savings = true
               endif
+            endif
 
-              assign card_badge = false
-              if show_badge and units == best_units and pack_variant.available
-                assign card_badge = true
-              endif
+            assign card_badge = false
+            if show_badge and units == best_units and pack_available
+              assign card_badge = true
+            endif
 
-              assign unit_name = block.settings.unit_singular | default: 'unidad'
-              assign input_id = section.id | append: '-' | append: pack_option.position | append: '-' | append: forloop.index0
-            -%}
-            <div class="g-packs__item">
-              <input
-                type="radio"
-                class="g-packs__input"
-                id="{{ input_id }}"
-                name="{{ pack_option.name | escape }}-{{ pack_option.position }}"
-                value="{{ value | escape }}"
-                form="{{ product_form_id }}"
-                data-product-url="{{ value.product_url }}"
-                data-option-value-id="{{ value.id }}"
-                data-option-name="{{ pack_option.name | escape }}"
-                data-pack-units="{{ units }}"
-                data-pack-label="{{ pack_label | escape }}"
-                {% if value.selected %}
-                  checked
-                {% endif %}
-                {% unless pack_variant.available %}
-                  disabled
-                {% endunless %}
-              >
-              <label
-                class="g-pack{% if card_badge %} g-pack--badge{% endif %}{% unless pack_variant.available %} g-pack--soldout{% endunless %}"
-                for="{{ input_id }}"
-              >
-                {%- if card_badge -%}
-                  <span class="g-pack__badge">{{ block.settings.badge_text | escape }}</span>
-                {%- endif -%}
-                <span class="g-pack__radio" aria-hidden="true"></span>
-                <span class="g-pack__body">
-                  <span class="g-pack__head">
+            assign unit_name = block.settings.unit_singular | default: 'unidad'
+            assign input_id = section.id | append: '-' | append: pack_option.position | append: '-' | append: forloop.index0
+          -%}
+          <div class="g-packs__item">
+            <input
+              type="radio"
+              class="g-packs__input"
+              id="{{ input_id }}"
+              name="{{ pack_option.name | escape }}-{{ pack_option.position }}"
+              value="{{ value | escape }}"
+              form="{{ product_form_id }}"
+              data-product-url="{{ value.product_url }}"
+              data-option-value-id="{{ value.id }}"
+              data-option-name="{{ pack_option.name | escape }}"
+              data-pack-units="{{ units }}"
+              data-pack-label="{{ pack_label | escape }}"
+              data-choice-label="{{ pack_label | escape }}"
+              {% if value.selected %}
+                checked
+              {% endif %}
+              {% unless pack_available %}
+                disabled
+              {% endunless %}
+            >
+            <label
+              class="g-pack{% if card_badge %} g-pack--badge{% endif %}{% unless pack_available %} g-pack--soldout{% endunless %}"
+              for="{{ input_id }}"
+            >
+              {%- if card_badge -%}
+                <span class="g-pack__badge">{{ block.settings.badge_text | escape }}</span>
+              {%- endif -%}
+              <span class="g-pack__radio" aria-hidden="true"></span>
+              <span class="g-pack__body">
+                <span class="g-pack__head">
+                  <span class="g-pack__title">
                     <span class="g-pack__name">{{ pack_label | escape }}</span>
-                    <span class="g-pack__price">{{ pack_variant.price | money }}</span>
-                  </span>
-                  {%- if block.settings.show_unit_price -%}
-                    <span class="g-pack__unit">
-                      {{- unit_price | money -}}
-                      <span aria-hidden="true">/{{ unit_name | escape }}</span>
-                      <span class="visually-hidden"> por {{ unit_name | escape }}</span>
-                    </span>
-                  {%- endif -%}
-                  {%- if card_savings -%}
-                    <span class="g-pack__save">
-                      Ahorra {{ savings | money -}}
-                      {%- if block.settings.show_percent -%}
-                        <span aria-hidden="true"> · </span><span class="g-pack__percent">-{{ savings_percent }}&nbsp;%</span>
-                      {%- endif -%}
-                    </span>
-                    {%- if block.settings.show_reference and block.settings.reference_label != blank -%}
-                      <span class="g-pack__ref">
-                        {{- block.settings.reference_label | escape }}
-                        {{ reference_price | money -}}
-                      </span>
-                    {%- else -%}
-                      <span class="visually-hidden">
-                        frente a comprar {{ pack_label | escape }} por separado ({{ reference_price | money }})</span
-                      >
+                    {%- if pack_tag != blank -%}
+                      <span class="g-pack__tag">{{ pack_tag | escape }}</span>
                     {%- endif -%}
-                  {%- elsif units == 1 and any_savings and pack_variant.available and block.settings.single_note != blank -%}
-                    <span class="g-pack__plain">{{ block.settings.single_note | escape }}</span>
+                  </span>
+                  {%- if pack_variant -%}
+                    <span class="g-pack__price">{{ pack_variant.price | money }}</span>
                   {%- endif -%}
-                  {%- unless pack_variant.available -%}
-                    <span class="g-pack__status">{{ 'products.product.sold_out' | t }}</span>
-                  {%- endunless -%}
                 </span>
-              </label>
-            </div>
-          {%- endfor -%}
-        </div>
-      </fieldset>
-    {%- endfor -%}
+                {%- liquid
+                  assign card_unit_price = false
+                  if block.settings.show_unit_price and pack_variant
+                    if block.settings.unit_price_only_savings == false or any_savings
+                      assign card_unit_price = true
+                    endif
+                  endif
+                -%}
+                {%- if card_unit_price -%}
+                  <span class="g-pack__unit">
+                    {{- unit_price | money -}}
+                    <span aria-hidden="true">/{{ unit_name | escape }}</span>
+                    <span class="visually-hidden"> por {{ unit_name | escape }}</span>
+                  </span>
+                {%- endif -%}
+                {%- if card_savings -%}
+                  <span class="g-pack__save">
+                    Ahorra {{ savings | money -}}
+                    {%- if block.settings.show_percent -%}
+                      {{ ' ' }}<span class="g-pack__percent">(-{{ savings_percent }}&nbsp;%)</span>
+                    {%- endif -%}
+                  </span>
+                  {%- if block.settings.show_reference and block.settings.reference_label != blank -%}
+                    <span class="g-pack__ref">
+                      {{- block.settings.reference_label | escape }}
+                      {{ reference_price | money -}}
+                    </span>
+                  {%- else -%}
+                    <span class="visually-hidden">
+                      frente a comprar {{ pack_label | escape }} por separado ({{ reference_price | money }})</span
+                    >
+                  {%- endif -%}
+                {%- elsif units == 1 and any_savings and pack_available and block.settings.single_note != blank -%}
+                  <span class="g-pack__plain">{{ block.settings.single_note | escape }}</span>
+                {%- endif -%}
+                {%- if pack_variant == null -%}
+                  <span class="g-pack__status">No disponible</span>
+                {%- elsif pack_available == false -%}
+                  <span class="g-pack__status">{{ 'products.product.sold_out' | t }}</span>
+                {%- endif -%}
+              </span>
+            </label>
+          </div>
+        {%- endfor -%}
+      </div>
+    </fieldset>
     {%- if any_savings and block.settings.savings_note != blank -%}
       <p class="g-packs__note">{{ block.settings.savings_note | escape }}</p>
     {%- endif -%}
@@ -408,7 +471,9 @@
     </script>
   </variant-selects>
 {%- else -%}
-  <!-- GARELON packs: selector estándar (motivo: {{ pack_issue }}) -->
+  {%- if request.design_mode -%}
+    <!-- GARELON packs: selector estándar (motivo: {{ pack_issue }}) -->
+  {%- endif -%}
   {%- render 'product-variant-picker', product: product, block: block, product_form_id: product_form_id -%}
 {%- endif -%}
 {%- comment -%}
