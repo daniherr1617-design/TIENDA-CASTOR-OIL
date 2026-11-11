@@ -103,6 +103,8 @@
                             height="{{ 150 | divided_by: item.image.aspect_ratio | ceil }}"
                           >
                         </div>
+                      {% else %}
+                        {%- render 'garelon-cart-thumb', item: item -%}
                       {% endif %}
                     </td>
 

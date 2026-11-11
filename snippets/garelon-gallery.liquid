@@ -1,16 +1,20 @@
 {%- comment -%}
-  GARELON · Galería de la zona de compra de la home.
+  GARELON · Galería del producto con las imágenes del tema (compra de la home y ficha).
 
-  Muestra las imágenes del producto incluidas en el tema, en el orden de la historia:
-  producto (IMAGEN 1) → presentación y beneficios (IMAGEN 10) → técnica con roller (IMAGEN 7)
-  → ingredientes (IMAGEN 5) → cómo usarlo (IMAGEN 4) → tamaño (IMAGEN 9).
+  Muestra las imágenes del producto incluidas en el tema. La roja es la protagonista:
+  roja de cerca (imagen2 recortada en la taza, para no repetir la foto completa de la
+  portada) → los tres colores (imagen1) → blanca (imagen3) → marrón (imagen4).
+  Cada foto de un solo color lleva data-g-color (rojo | blanco | marron): al elegir ese color
+  en el selector, garelon.js desliza el carrusel hasta su foto.
+  Se usa en la compra de la home y, si así se elige, en la ficha (en lugar de la multimedia de Shopify).
 
   Usa el carrusel de Dawn (<slider-component>, definido en global.js): se desliza con el
-  dedo en móvil y tiene flechas y contador en todos los tamaños. Todas las imágenes se
-  cargan en diferido porque la sección está lejos de la primera pantalla.
+  dedo en móvil y tiene flechas y contador en todos los tamaños. En la home todas las imágenes
+  se cargan en diferido; en la ficha la primera es la imagen principal (eager: true).
 
   Accepts:
   - section_id: {String} id de la sección, para que los ids del carrusel sean únicos
+  - eager: {Boolean} (opcional) carga prioritaria de la primera imagen (ficha de producto)
 
   Usage:
   {% render 'garelon-gallery', section_id: section.id %}
@@ -18,18 +22,33 @@
 {{ 'component-slider.css' | asset_url | stylesheet_tag }}
 
 {%- liquid
-  assign keys = 'img01-producto,img10-presentacion,img07-roller,img05-ingredientes,img04-uso,img09-tamano' | split: ','
+  assign keys = 'roja,colores,blanco,marron' | split: ','
+  assign colors = 'rojo,-,blanco,marron' | split: ','
   assign slider_id = 'Slider-GGallery-' | append: section_id
 -%}
 
 <slider-component class="g-gallery">
   <ul id="{{ slider_id }}" class="g-gallery__track slider slider--everywhere" role="list">
     {%- for key in keys -%}
-      <li id="Slide-GGallery-{{ section_id }}-{{ forloop.index }}" class="g-gallery__slide slider__slide">
+      {%- liquid
+        assign slide_color = colors[forloop.index0]
+        assign slide_eager = false
+        if eager and forloop.first
+          assign slide_eager = true
+        endif
+      -%}
+      <li
+        id="Slide-GGallery-{{ section_id }}-{{ forloop.index }}"
+        class="g-gallery__slide slider__slide"
+        {% if slide_color != '-' %}
+          data-g-color="{{ slide_color }}"
+        {% endif %}
+      >
         {%- render 'garelon-fallback-image',
           fallback: key,
-          sizes: '(min-width: 1200px) 560px, (min-width: 750px) 50vw, calc(100vw - 3rem)',
-          class: 'g-gallery__img'
+          sizes: '(min-width: 1200px) 560px, (min-width: 750px) 50vw, 100vw',
+          class: 'g-gallery__img',
+          eager: slide_eager
         -%}
       </li>
     {%- endfor -%}

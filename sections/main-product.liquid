@@ -73,11 +73,28 @@
   {%- endif -%}
 
   {% assign variant_images = product.images | where: 'attached_to_variant?', true | map: 'src' %}
+  {%- comment -%}
+    GARELON: galería con las imágenes del tema (fieles y en el orden de venta) en lugar de la
+    multimedia de Shopify, que al importar desde el proveedor puede traer fotos que no
+    coinciden con el producto real. «auto» = solo si el producto no tiene multimedia.
+  {%- endcomment -%}
+  {%- liquid
+    assign garelon_gallery = false
+    if section.settings.garelon_gallery == 'always'
+      assign garelon_gallery = true
+    elsif section.settings.garelon_gallery == 'auto' and product.media.size == 0
+      assign garelon_gallery = true
+    endif
+  -%}
   <product-component view-event-payload="{{ product | standard_event_data: 'view', context: 'page' | escape }}">
     <div class="page-width">
-      <div class="product product--{{ section.settings.media_size }} product--{{ section.settings.media_position }} product--{{ section.settings.gallery_layout }} product--mobile-{{ section.settings.mobile_thumbnails }} grid grid--1-col {% if product.media.size > 0 %}grid--2-col-tablet{% else %}product--no-media{% endif %}">
+      <div class="product product--{{ section.settings.media_size }} product--{{ section.settings.media_position }} product--{{ section.settings.gallery_layout }} product--mobile-{{ section.settings.mobile_thumbnails }} grid grid--1-col {% if product.media.size > 0 or garelon_gallery %}grid--2-col-tablet{% else %}product--no-media{% endif %}{% if garelon_gallery %} g-product--gallery{% endif %}">
         <div class="grid__item product__media-wrapper">
-          {% render 'product-media-gallery', variant_images: variant_images %}
+          {%- if garelon_gallery -%}
+            {%- render 'garelon-gallery', section_id: section.id, eager: true -%}
+          {%- else -%}
+            {% render 'product-media-gallery', variant_images: variant_images %}
+          {%- endif -%}
         </div>
         <div class="product__info-wrapper grid__item{% if settings.page_width > 1400 and section.settings.media_size == "small" %} product__info-wrapper--extra-padding{% endif %}{% if settings.animations_reveal_on_scroll %} scroll-trigger animate--slide-in{% endif %}">
           <section
@@ -905,14 +922,13 @@
       "settings": [
         {
           "type": "paragraph",
-          "content": "Oferta de packs sobre las VARIANTES REALES del producto («1 unidad», «2 unidades», «3 unidades»). Cada tarjeta selecciona su variante con cantidad 1; este bloque sustituye al selector de variantes y al de cantidad. Precio, ahorro y precio por unidad salen de los precios de Shopify. Si el producto no cumple las condiciones, se usa el selector estándar y el editor muestra el motivo."
+          "content": "Color × Pack sobre las VARIANTES REALES del producto (p. ej. Color: Rojo / Blanco / Marrón y Pack: «1 unidad», «2 unidades», «3 unidades»). Cada combinación es una variante con cantidad 1, así que un pack siempre es del mismo color. Este bloque sustituye al selector de variantes y al de cantidad. Precio, ahorro y precio por unidad salen de los precios de Shopify del color elegido. Si el producto no cumple las condiciones, se usa el selector estándar y el editor muestra el motivo."
         },
         {
           "type": "text",
           "id": "offer_label",
           "label": "Etiqueta de oferta",
-          "info": "Se muestra sobre el título si algún pack tiene ahorro. Vacío = sin etiqueta. No añadas fechas ni cuentas atrás que no sean reales.",
-          "default": "Oferta limitada"
+          "info": "Se muestra sobre el título si algún pack tiene ahorro. Vacío = sin etiqueta (recomendado). No uses «Oferta limitada», fechas ni cuentas atrás si no son reales."
         },
         {
           "type": "text",
@@ -929,13 +945,29 @@
         },
         {
           "type": "header",
+          "content": "Color"
+        },
+        {
+          "type": "text",
+          "id": "style_heading",
+          "label": "Título del color",
+          "info": "Para la opción que no es el pack (p. ej. «Color»). Vacío = nombre de la opción en Shopify."
+        },
+        {
+          "type": "text",
+          "id": "style_intro",
+          "label": "Texto bajo el color",
+          "info": "Vacío = sin texto."
+        },
+        {
+          "type": "header",
           "content": "Packs"
         },
         {
           "type": "text",
           "id": "option_name",
           "label": "Nombre de la opción de Shopify (opcional)",
-          "info": "Vacío = la única opción con varios valores (recomendado: una sola opción «Pack»). Cada valor debe incluir su número de unidades: «1 unidad», «2 unidades», «3 unidades». Tiene que existir el pack de 1 unidad."
+          "info": "Vacío = se detecta sola (opción «Pack», «Cantidad» o la única cuyos valores llevan número). Cada valor debe incluir su número de unidades: «1 unidad», «2 unidades», «3 unidades». Tiene que existir el pack de 1 unidad."
         },
         {
           "type": "text",
@@ -969,7 +1001,7 @@
           "type": "checkbox",
           "id": "show_savings",
           "label": "Mostrar ahorro («Ahorra 4,98 €»)",
-          "info": "Se calcula frente al precio real de la variante de 1 unidad × unidades del pack. No usa el precio comparado.",
+          "info": "Se calcula frente al precio real de la variante de 1 unidad del mismo color × unidades del pack. No usa el precio comparado.",
           "default": true
         },
         {
@@ -997,6 +1029,24 @@
           "label": "Texto del pack de 1 unidad",
           "info": "Se muestra en el pack de 1 unidad cuando otros packs tienen ahorro. Vacío = sin texto.",
           "default": "Sin descuento"
+        },
+        {
+          "type": "text",
+          "id": "tag_1",
+          "label": "Etiqueta del pack de 1 unidad",
+          "info": "Texto editorial bajo el nombre del pack (p. ej. «Individual»). Vacío = sin etiqueta."
+        },
+        {
+          "type": "text",
+          "id": "tag_2",
+          "label": "Etiqueta del pack de 2",
+          "info": "P. ej. «Para compartir». Nunca «Más vendido» sin datos reales."
+        },
+        {
+          "type": "text",
+          "id": "tag_3",
+          "label": "Etiqueta del pack de 3",
+          "info": "Vacío = sin etiqueta. La insignia de mejor precio por unidad se calcula sola."
         },
         {
           "type": "text",
@@ -1095,25 +1145,22 @@
       "settings": [
         {
           "type": "paragraph",
-          "content": "Plazos orientativos junto a la compra. Escribe estimaciones («estimada», «aproximadamente»), nunca «entrega garantizada», y no muestres costes internos del proveedor."
+          "content": "Opcional. La Taza Fondue no lo usa: debajo de la compra solo aparece «Envío gratis» y los plazos viven en la política de envío. Si lo añades, escribe estimaciones que coincidan con tu política, nunca «entrega garantizada», y no muestres costes internos del proveedor."
         },
         {
           "type": "text",
           "id": "preparation",
-          "label": "Preparación",
-          "default": "Preparación estimada: 1–3 días."
+          "label": "Preparación"
         },
         {
           "type": "text",
           "id": "delivery",
-          "label": "Entrega",
-          "default": "Entrega estimada en España: aproximadamente 8–16 días."
+          "label": "Entrega"
         },
         {
           "type": "text",
           "id": "note",
-          "label": "Nota",
-          "default": "Los plazos pueden variar según destino y transporte."
+          "label": "Nota"
         },
         {
           "type": "text",
@@ -2515,6 +2562,18 @@
       ],
       "default": "left",
       "label": "t:sections.main-product.settings.media_position.label"
+    },
+    {
+      "type": "select",
+      "id": "garelon_gallery",
+      "label": "Galería (GARELON)",
+      "options": [
+        { "value": "always", "label": "Imágenes del tema" },
+        { "value": "auto", "label": "Del tema si no hay multimedia" },
+        { "value": "shopify", "label": "Multimedia de Shopify" }
+      ],
+      "default": "auto",
+      "info": "«Imágenes del tema»: taza roja, los tres colores, blanca y marrón; al elegir un color se muestra su foto. Usa «Multimedia de Shopify» cuando hayas subido tus fotos al producto y asignado una a cada color."
     },
     {
       "type": "select",

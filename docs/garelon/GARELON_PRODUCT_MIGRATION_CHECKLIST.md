@@ -11,7 +11,8 @@
 ## 0. Antes de empezar
 
 - [ ] 🅲 La base es Dawn 16.0.0 con la capa GARELON → `config/settings_schema.json`: `theme_version` 16.0.0 y `theme_name` «GARELON (Dawn)».
-- [ ] 🅲 Existen las 9 secciones `sections/garelon-*.liquid` y los 13 snippets `snippets/garelon-*.liquid` (§6).
+- [ ] 🅲 Existen las 12 secciones `sections/garelon-*.liquid` y los 17 snippets `snippets/garelon-*.liquid` (§6; desde la 1.6 incluyen `garelon-choice` y `garelon-packs-diagnostic`; desde la 1.8, `garelon-features`, `garelon-colors` y `garelon-cart-thumb`).
+- [ ] 🅲 Paleta, tipografía y botones: se deciden **para el producto nuevo** (§7). No se heredan del anterior por defecto ni se convierten en regla.
 - [ ] 🅲 Línea base de Theme Check: 0 errores y 9 avisos de Dawn (§ anexo B.4).
 - [ ] 🅲 El validador de plantillas da `OK` antes de tocar nada (§ anexo B.2).
 - [ ] 🅲/🆂 Se sabe si el tema publicado tiene cambios del editor que no están en el repositorio. Si los tiene, se han incorporado.
@@ -45,7 +46,9 @@
 - [ ] 🅲 Selección de 5-8 imágenes, cada una responde a una pregunta distinta.
 - [ ] 🅲 El orden de la galería sigue la historia comercial: producto → beneficio → problema → funcionamiento → composición → uso → detalles/medidas. Nunca por nombre ni por fecha.
 - [ ] 🅲 Ninguna imagen se repite en dos secciones del cuerpo de la home (sí puede repetirse en su sección + la galería).
-- [ ] 🅲 Assets WebP en 480, 720 y 1080 px, sin recortes, filtros ni ampliaciones. Peso de 1080 px ≤ ~200 KB.
+- [ ] 🅲 Assets WebP en 480, 720 y 1080 px, sin filtros ni ampliaciones (los recortes solo para acercar el producto o quitar elementos falsos). Peso de 1080 px ≤ ~200 KB.
+- [ ] 🅲 Si el producto tiene colores: muestras `garelon-fondue-swatch-<color>.webp` (160 px) para el selector, la compra fija y el carrito, y las claves de color de `garelon-choice`, `garelon-gallery` (`data-g-color`), `garelon-cart-thumb` y la compra fija adaptadas.
+- [ ] 🅲 Infografías generadas: no se publican si tienen claims sin prueba, texto físico distinto o piezas de más. Se reconstruyen en HTML (`garelon-how-to-use` con iconos, `garelon-features`) y, como mucho, se aprovecha una franja de foto corregida.
 - [ ] 🅲 A la vez, sin claves huérfanas:
   - las claves de `garelon-fallback-image`;
   - `keys` de `garelon-gallery`;
@@ -77,14 +80,14 @@
   - `garelon_gallery` según §18.7;
   - antetítulo y subtítulo nuevos;
   - bloques de Dawn intactos;
-  - `garelon_stock` presente;
+  - sin `garelon_stock` (desde la plantilla 1.8.2 bajo los botones solo va «Envío gratis»; si el producto lo necesita, el stock va sin cifras);
   - `garelon_packs` y `garelon_shipping` presentes si el producto tiene packs (sin `variant_picker` ni `quantity_selector`);
   - `garelon_free_shipping` justo después de `buy_buttons` (solo «Envío gratis», §10.15);
   - la sección va justo después de la portada, con `garelon_mobile_info_first: true`.
 - [ ] 🅲 **Opiniones** (`garelon-reviews`, §10.16) **justo después de la compra**: home `product_cta` → `reviews` → `trust`; ficha `main` → `reviews` → `service`. Sin contenido de ejemplo; título «Opiniones · Lo que opinan nuestros clientes» (o equivalente). En la home, el ajuste «Producto de la valoración media» apunta al producto nuevo. Sin datos reales no deja hueco.
 - [ ] 🅲 **FAQ** (`garelon-faq`): 6-10 preguntas. Se mantienen «¿Qué es…?» (con la aclaración de fabricante externo), la de envío (→ política) y la de dudas (→ contacto + devoluciones).
 - [ ] 🅲 **Cierre** (`garelon-final-cta`): isotipo, frase breve, precio y CTA → `/#comprar`.
-- [ ] 🅲 Alternancia de esquemas crema/arena mantenida, como mucho 2 seguidas iguales (§8).
+- [ ] 🅲 Alternancia de esquemas (fondo principal / alterno) mantenida, como mucho 2 seguidas iguales (§8).
 - [ ] 🅲 Máximo 3 CTAs de compra en la home.
 - [ ] 🅲 Secciones sin contenido real eliminadas, no vacías.
 
@@ -93,14 +96,17 @@
 - [ ] 🅲 El antetítulo (`eyebrow`) y el subtítulo (`subtitle`) son nuevos.
 - [ ] 🅲 Los destacados (`highlights`, `icon-with-text`) son nuevos, con iconos de Dawn adecuados.
 - [ ] 🅲 Las pestañas `tab_ingredientes` y `tab_uso` están adaptadas: título, icono y contenido. `tab_envios` sin cambios.
-- [ ] 🅲 El bloque `inventory` sigue con `inventory_threshold: 0` y `show_inventory_quantity: false`.
+- [ ] 🅲 Sin bloque `inventory` en la compra (plantilla 1.8.2). Si se añade, con `inventory_threshold: 0` y `show_inventory_quantity: false`.
 - [ ] 🅲 Packs (§10.11): si el producto se vende en packs, el bloque `packs` está activo, sin `variant_picker` ni `quantity_selector` en la plantilla; si no, se quita (o muestra el selector estándar).
-- [ ] 🅲 Home: «Oferta limitada · Elige tu pack» y las 3 tarjetas con su ahorro visibles **antes** de «Añadir al carrito», justo tras la portada. El ahorro nunca aparece solo en el carrito.
+- [ ] 🅲 Home: (Color →) «Elige tu pack» y las 3 tarjetas con su ahorro visibles **antes** de «Añadir al carrito», justo tras la portada, **sin** «Oferta limitada» (1.6). El ahorro nunca aparece solo en el carrito.
+- [ ] 🅲 Si el producto tiene colores (Color × Pack): los 3 colores como botones, el ahorro se recalcula frente a 1 unidad **del mismo color**, combinación inexistente = «No disponible», agotada = «Agotado», la compra fija dice «Color · N unidades» y el carrito «Color: X · Pack: N unidades» × 1.
 - [ ] 🅲 Regresión de cantidad: con `quantity_selector` añadido a la vez que los packs, el selector no se pinta y el formulario envía un solo `quantity=1`.
 - [ ] 🅲 La sección de compra de la home tiene el **producto elegido** explícitamente (no «el primero del catálogo»).
-- [ ] 🅲 El bloque `shipping` (plazos) tiene textos de estimación prudentes y los mismos plazos que la pestaña «Envíos y devoluciones» y la FAQ.
+- [ ] 🅲 Plazos de envío: o bien en el bloque opcional `shipping` (estimación prudente, mismos plazos que la pestaña «Envíos y devoluciones», la FAQ y la política), o bien —como la Taza Fondue (1.8.1)— solo en la política de envío, enlazada desde la FAQ, la pestaña y la barra de confianza, sin días en la home ni en la ficha.
+- [ ] 🅲 Datos secundarios (capacidad, lo que no incluye, detalles técnicos) una sola vez, en su pregunta de la FAQ, si el dueño lo decide así (maestra §17.5). Búsqueda global en `sections`, `snippets`, `templates`, `config`, `assets` y `locales` de cada término retirado (incluidos los textos alternativos) con resultado clasificado en el informe.
 - [ ] 🅲 La barra de servicio (`service`: Atención · Envío · Devoluciones) no ha cambiado (sin «Pago seguro» desde la 1.5).
-- [ ] 🅲 `benefits`, `how_to` y `faq` están actualizados; `sticky` presente.
+- [ ] 🅲 `benefits`, `how_to`, `features` y `faq` están actualizados; `sticky` presente (ficha y home).
+- [ ] 🅲 Galería de la ficha (`garelon_gallery` de `main-product`): «Imágenes del tema» mientras la multimedia de Shopify no esté revisada; «Multimedia de Shopify» cuando cada color tenga su foto.
 - [ ] 🆂 El título y la descripción del producto en el Admin están limpios: en español, sin claims prohibidos y sin ingredientes o datos falsos importados.
 
 ## 5. Claims, fidelidad y honestidad
@@ -125,10 +131,11 @@
 - [ ] 🆂 El precio se ve igual en portada, compra, cierre, ficha, carrito y checkout (es el de Shopify).
 - [ ] 🆂 Precio comparado tachado solo si existe en Shopify.
 - [ ] 🆂 Las variantes aparecen con sus nombres reales. Al cambiar de variante se actualizan precio, stock, botón y multimedia (en la ficha).
-- [ ] 🆂 El stock dice «En stock» o «Agotado» según el inventario real, sin cifras.
+- [ ] 🆂 Con una variante agotada en Shopify, el botón (y la compra fija) dice «Agotado» y queda desactivado, y su tarjeta de pack/color aparece «Agotado»; nunca hay cifras de stock.
 - [ ] 🆂 Proveedor: producto importado o conectado; cada variante emparejada con la suya (packs: «1 unidad» → CJ «1 unidad», «2 unidades» → CJ «2 unidades», «3 unidades» → CJ «3 piezas»); SKU correcto; no sobrescribe título, descripción, imágenes, nombres de variante ni precios editados.
+- [ ] 🆂 Color × Pack en Shopify (si hay colores): opciones «Color» y «Pack», **todas** las combinaciones creadas (Taza Fondue: 3 × 3 = 9) y el editor sin el aviso «Faltan combinaciones». Cada combinación emparejada en el proveedor con **N unidades del mismo color**.
 - [ ] 🆂 Packs en Shopify: opción «Pack» con «1 unidad» como primera variante; precio real en cada variante; **precio comparado vacío**; sin descuentos automáticos («Compra X y obtén Y», segunda unidad, packs) que se acumulen.
-- [ ] 🆂 Descuentos antiguos **desactivados**: con el pack de 2 en el carrito, total 35,00 € sin línea de descuento; con el de 3, 48,00 €. Si al subir la cantidad aparece un descuento, sigue activo uno antiguo.
+- [ ] 🆂 Descuentos antiguos **desactivados**: con el pack de 2 en el carrito, total igual al precio de la variante sin línea de descuento (Taza Fondue: 39,99 €; con el de 3, 54,99 €; sérum: 35,00 € / 48,00 €). Si al subir la cantidad aparece un descuento, sigue activo uno antiguo.
 - [ ] 🆂 Editor de temas **sin** el aviso rojo «Configuración de Shopify pendiente o incorrecta para packs» en la home ni en la ficha.
 - [ ] 🆂 **Envío gratis real (obligatorio):** Shopify Admin → Configuración → **Envío y entrega** → en cada zona donde GARELON ofrece envío gratis, la tarifa es **0 €** (o «Gratis»). Qué zonas están incluidas (Península, Baleares, Canarias, Ceuta, Melilla, otros países…) lo decide el dueño y depende de las zonas configuradas; si no son todas, escribir la aclaración en el bloque (`free_shipping_note`). Comprobar en un checkout de prueba que el envío sale a 0 €.
 - [ ] 🆂 **Métodos de pago:** se configuran en Configuración → Pagos y el cliente los ve en el checkout oficial de Shopify. El tema no los muestra (R21); no hay nada que ajustar en el editor para ello.
@@ -143,11 +150,11 @@
 - [ ] 🆂 Carrito: imagen, título, variante, cantidad (+/−), eliminar, precio, subtotal y «Finalizar compra».
 - [ ] 🆂 El carrito no añade nada automáticamente (sin seguros, regalos ni upsells).
 - [ ] 🆂 «Finalizar compra» lleva al checkout de Shopify. Los botones de pago dinámico (Shop Pay, PayPal, Apple Pay, Google Pay…) aparecen según la configuración de Pagos.
-- [ ] 🅲 Bajo los botones de compra: solo «Envío gratis»; ningún «Pago seguro», icono de pago ni diagnóstico de métodos (probar con Shopify devolviendo varios métodos). El botón de pago dinámico sigue igual y los plazos de envío siguen debajo.
+- [ ] 🅲 Bajo los botones de compra: solo «Envío gratis»; ningún «Pago seguro», icono de pago ni diagnóstico de métodos (probar con Shopify devolviendo varios métodos). El botón de pago dinámico sigue igual; los plazos solo debajo si el producto usa el bloque opcional de plazos.
 - [ ] 🅲 Sin CSS, JS ni manipulación del DOM del checkout.
 - [ ] 🆂 Estado agotado: el botón se desactiva y la compra fija lo refleja. La tarjeta del pack agotado dice «Agotado» y no se puede elegir.
 - [ ] 🆂 Cada pack llega al carrito como **una línea «Pack: N unidades» × 1** (nunca «N unidades» × N) y la compra fija muestra el pack elegido.
-- [ ] 🆂 Pedido de prueba de cada pack (o, como mínimo, mapping revisado): el proveedor recibe la variante correcta, cantidad 1, la dirección y el método de envío (hoy CJPacket Euro Cosmetic Line). Tracking confirmado antes de lanzar campañas.
+- [ ] 🆂 Pedido de prueba de cada pack (o, como mínimo, mapping revisado): el proveedor recibe la variante correcta, cantidad 1, la dirección y el método de envío (el que se configure en CJ; con el sérum era CJPacket Euro Cosmetic Line). Tracking confirmado antes de lanzar campañas.
 - [ ] 🆂 Carrito vacío → «Seguir comprando» lleva a la home.
 
 ## 8. Cabecera y navegación
@@ -167,7 +174,7 @@
 
 ## 9. Barra superior
 
-- [ ] 🅲 Texto simple y verdadero, sin urgencia. Hoy «Envío disponible a toda España» + bandera (`show_flag_es`).
+- [ ] 🅲 Texto simple y verdadero, sin urgencia. Hoy «Envío gratis disponible en España» + bandera (`show_flag_es`), solo con la tarifa real de 0 € configurada.
 - [ ] 🅲 Una sola línea (~38 px) de 320 a 1440 px.
 - [ ] 🆂 El texto coincide con las zonas de envío configuradas en Shopify.
 
@@ -178,7 +185,7 @@
 - [ ] 🅲 Enlaces legales en orden: Contacto · Envíos · Devoluciones y reembolsos · Privacidad · Cookies (si existe la página) · Términos y condiciones · Aviso legal.
 - [ ] 🆂 La página de **contacto** es la misma de siempre (no se ha creado otra), usa la plantilla `contact` y el formulario envía.
 - [ ] 🆂 Cada política enlazada existe y tiene contenido. Si falta la de cookies, no se enlaza.
-- [ ] 🆂 La política de envío del Admin dice los mismos plazos estimados que la tienda y no nombra al proveedor.
+- [ ] 🆂 La política de envío del Admin contiene los plazos estimados (es el único sitio donde están si la tienda solo la enlaza), coincide con lo que diga la tienda y no nombra al proveedor. El tema no la reescribe.
 - [ ] 🅲/🆂 Preguntas de §19 respondidas (devoluciones, envíos, higiene, seguridad, garantía, edad). Las políticas afectadas están revisadas por el dueño; las demás, intactas.
 - [ ] 🅲 Ningún NIF/CIF, domicilio, teléfono, email ni razón social inventado en el tema.
 
@@ -209,7 +216,7 @@
 - [ ] 🅲 FAQ con `details`/`summary`; pasos con «Paso N:» oculto; galería con botones etiquetados; stock con `role="status"`.
 - [ ] 🅲 Iconos, bandera e isotipos decorativos con `aria-hidden` o `alt=""`.
 - [ ] 🅲 Valoración de opiniones con `aria-label` («4,6 de 5 estrellas»), nunca solo estrellas. (Si en el futuro se vuelven a mostrar iconos de pago: lista con `aria-label` y cada SVG de Shopify con su título.)
-- [ ] 🅲 Contraste: texto pequeño dorado con `--g-gold-text` (#7A5A24), nunca `#B88A3B` sobre crema.
+- [ ] 🅲 Contraste AA: color de acción con texto blanco ≥ 4,5:1 y texto pequeño de acento ≥ 4,5:1 sobre los fondos usados (Taza Fondue: `#B3161E`, 6,9:1).
 - [ ] 🅲 Objetivos táctiles ≥ 44 px (botones de 50 px).
 - [ ] 🅲 Con `prefers-reduced-motion` no hay transiciones GARELON.
 
@@ -225,7 +232,7 @@
 
 | Ancho | Sin scroll horizontal | Cabecera OK | Barra en 1 línea | Precio + CTA en 1.ª pantalla | Secciones legibles |
 |---|---|---|---|---|---|
-| 320 px | [ ] | [ ] | [ ] | (tolerado: CTA ~28 px por debajo) | [ ] |
+| 320 px (640 alto) | [ ] | [ ] | [ ] | [ ] | [ ] |
 | 360 px | [ ] | [ ] | [ ] | [ ] | [ ] |
 | 375 px (667 alto) | [ ] | [ ] | [ ] | [ ] | [ ] |
 | 390 px | [ ] | [ ] | [ ] | [ ] | [ ] |

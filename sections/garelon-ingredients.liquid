@@ -37,6 +37,9 @@
               class: 'g-media__img'
             -%}
           </div>
+          {%- if section.settings.image_caption != blank -%}
+            <p class="g-media__caption">{{ section.settings.image_caption | escape }}</p>
+          {%- endif -%}
         </div>
       {%- endif -%}
 
@@ -67,26 +70,26 @@
 
 {% schema %}
 {
-  "name": "GARELON Ingredientes",
+  "name": "GARELON Detalles",
   "tag": "section",
   "class": "section",
   "max_blocks": 12,
   "settings": [
     {
       "type": "paragraph",
-      "content": "Incluye solo ingredientes confirmados por el proveedor o por el envase. No añadas ingredientes por suposición."
+      "content": "Incluye solo datos confirmados por el proveedor. No añadas nada por suposición."
     },
     {
       "type": "text",
       "id": "eyebrow",
       "label": "Antetítulo",
-      "default": "Ingredientes"
+      "default": "Detalles"
     },
     {
       "type": "text",
       "id": "heading",
       "label": "Título",
-      "default": "Una fórmula sencilla para tu rutina"
+      "default": "Qué incluye"
     },
     {
       "type": "richtext",
@@ -97,17 +100,28 @@
       "type": "image_picker",
       "id": "image",
       "label": "Imagen de la sección",
-      "info": "Vacía = la imagen del tema elegida abajo. La lista de ingredientes se mantiene siempre como texto."
+      "info": "Vacía = la imagen del tema elegida abajo. La lista se mantiene siempre como texto."
     },
     {
       "type": "select",
       "id": "fallback_image",
       "label": "Imagen del tema si no eliges ninguna",
       "options": [
-        { "value": "img05-ingredientes", "label": "IMAGEN 5 · Ingredientes principales" },
+        { "value": "principal", "label": "Imagen principal (taza roja)" },
+        { "value": "roja", "label": "Taza roja de cerca" },
+        { "value": "colores", "label": "Los tres colores" },
+        { "value": "blanco", "label": "Taza blanca" },
+        { "value": "marron", "label": "Taza marrón" },
+        { "value": "usos", "label": "Tres tazas con acompañamientos" },
         { "value": "none", "label": "Ninguna (solo la lista)" }
       ],
-      "default": "img05-ingredientes"
+      "default": "none"
+    },
+    {
+      "type": "text",
+      "id": "image_caption",
+      "label": "Pie de imagen (opcional)",
+      "info": "Por ejemplo, qué incluye realmente cada unidad."
     },
     {
       "type": "checkbox",
@@ -119,7 +133,7 @@
       "type": "text",
       "id": "note",
       "label": "Nota",
-      "default": "Ingredientes según la información facilitada por el proveedor. Consulta siempre el envase del producto."
+      "default": "Datos según la información facilitada por el proveedor."
     },
     {
       "type": "color_scheme",
@@ -131,7 +145,7 @@
       "type": "text",
       "id": "anchor",
       "label": "ID de ancla",
-      "default": "ingredientes"
+      "default": "que-incluye"
     },
     {
       "type": "range",
@@ -157,18 +171,19 @@
   "blocks": [
     {
       "type": "ingredient",
-      "name": "Ingrediente",
+      "name": "Elemento",
       "settings": [
         {
           "type": "text",
           "id": "name",
           "label": "Nombre",
-          "default": "Ingrediente"
+          "default": "Elemento"
         },
         {
           "type": "text",
           "id": "inci",
-          "label": "Denominación INCI (opcional)"
+          "label": "Línea técnica (opcional)",
+          "info": "P. ej. una medida, un material o una cantidad."
         },
         {
           "type": "textarea",
@@ -181,13 +196,11 @@
   ],
   "presets": [
     {
-      "name": "GARELON Ingredientes",
+      "name": "GARELON Detalles",
       "blocks": [
-        { "type": "ingredient", "settings": { "name": "Aceite de ricino", "inci": "Ricinus Communis (Castor) Seed Oil", "text": "Aceite vegetal obtenido de las semillas de ricino." } },
-        { "type": "ingredient", "settings": { "name": "Acetyl Tripeptide-1", "inci": "Acetyl Tripeptide-1", "text": "Péptido de uso cosmético." } },
-        { "type": "ingredient", "settings": { "name": "Colágeno", "inci": "Collagen", "text": "Proteína de uso habitual en el cuidado de la piel." } },
-        { "type": "ingredient", "settings": { "name": "Extracto de Boswellia Serrata", "inci": "Boswellia Serrata Extract", "text": "Extracto vegetal procedente de la resina del árbol Boswellia serrata." } },
-        { "type": "ingredient", "settings": { "name": "Agua", "inci": "Aqua", "text": "" } }
+        { "type": "ingredient", "settings": { "name": "Elemento 1" } },
+        { "type": "ingredient", "settings": { "name": "Elemento 2" } },
+        { "type": "ingredient", "settings": { "name": "Elemento 3" } }
       ]
     }
   ]

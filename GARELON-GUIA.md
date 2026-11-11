@@ -1,5 +1,7 @@
 # GARELON · Guía del theme
 
+> **Documento histórico · baseline GARELON Sérum** (rama `baseline/garelon-serum`, commit `f08f9bb`). Describe la tienda del sérum de contorno de ojos, no la Taza Fondue actual. La migración a la taza está en `GARELON-CAMBIOS-FONDUE.md`.
+
 Theme basado en **Dawn 16.0.0** (theme oficial de Shopify, Online Store 2.0), con una capa de marca GARELON encima.
 No hay ningún dato comercial fijo en el código: precio, precio comparado, variantes, stock, imágenes de la galería y SKU salen siempre del producto de Shopify que conecta el proveedor (hoy CJ Dropshipping).
 

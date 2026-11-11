@@ -1,0 +1,31 @@
+{%- comment -%}
+  GARELON · Miniatura de respaldo en el carrito (cart drawer y /cart) cuando la línea no tiene
+  imagen en Shopify (producto sin multimedia): foto del color elegido incluida en el tema.
+  Solo visual: no cambia la línea, la cantidad ni el checkout.
+
+  Accepts:
+  - item: {Object} línea del carrito
+
+  Usage:
+  {% render 'garelon-cart-thumb', item: item %}
+{%- endcomment -%}
+{%- liquid
+  assign thumb_key = ''
+  for option in item.options_with_values
+    assign value_key = option.value | handleize
+    if value_key == 'rojo' or value_key == 'blanco' or value_key == 'marron'
+      assign thumb_key = value_key
+    endif
+  endfor
+-%}
+{%- if thumb_key != '' -%}
+  <a href="{{ item.url }}" class="cart-item__link" tabindex="-1" aria-hidden="true"> </a>
+  <img
+    class="cart-item__image"
+    src="{{ 'garelon-fondue-swatch-' | append: thumb_key | append: '.webp' | asset_url }}"
+    alt=""
+    loading="lazy"
+    width="150"
+    height="150"
+  >
+{%- endif -%}

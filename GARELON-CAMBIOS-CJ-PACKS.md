@@ -1,5 +1,7 @@
 # GARELON · Cambios: confianza en la compra, packs visibles en la home, variantes reales y proveedor CJ Dropshipping
 
+> **Documento histórico · baseline GARELON Sérum** (rama `baseline/garelon-serum`, commit `f08f9bb`). Describe la tienda del sérum de contorno de ojos, no la Taza Fondue actual. La migración a la taza está en `GARELON-CAMBIOS-FONDUE.md`.
+
 > **Septiembre 2026 · rama `claude/great-lamport-8mb0rc`.** El producto no cambia: sigue siendo el mismo sérum de contorno de ojos (marca física Baafven).
 > - **Simplificación (C18, la más reciente):** opiniones **justo después de la compra** y **ningún icono de pago ni «Pago seguro»** en la tienda. Donde las partes anteriores hablen de iconos de pago, «Pago seguro» o del bloque `garelon_payment_trust`, manda C18.
 > - **Parte C:** confianza y conversión: «Envío gratis» + «Pago seguro» con los métodos de pago **habilitados en Shopify** bajo los botones de compra, y una sección de **opiniones solo reales**.

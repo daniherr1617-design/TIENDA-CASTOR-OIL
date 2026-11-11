@@ -26,14 +26,6 @@
             class: 'g-media__img'
           -%}
         </div>
-        {%- if section.settings.show_massage_lines -%}
-          <svg class="g-massage-lines" viewBox="0 0 120 70" aria-hidden="true" focusable="false">
-            <path d="M8 22 C 35 4, 85 4, 112 22" />
-            <path d="M104 14 L112 22 L101 25" />
-            <path d="M112 48 C 85 66, 35 66, 8 48" />
-            <path d="M16 56 L8 48 L19 45" />
-          </svg>
-        {%- endif -%}
       </div>
     {%- endif -%}
 
@@ -78,15 +70,15 @@
       "id": "fallback_image",
       "label": "Imagen del tema si no eliges ninguna",
       "options": [
-        { "value": "img01-producto", "label": "IMAGEN 1 · Producto (frasco, caja y tapón)" },
-        { "value": "img10-presentacion", "label": "IMAGEN 10 · Presentación y beneficios" },
-        { "value": "img07-roller", "label": "IMAGEN 7 · Técnica de masaje con roller" },
-        { "value": "img05-ingredientes", "label": "IMAGEN 5 · Ingredientes" },
-        { "value": "img04-uso", "label": "IMAGEN 4 · Cómo usarlo" },
-        { "value": "img09-tamano", "label": "IMAGEN 9 · Tamaño del producto" },
+        { "value": "principal", "label": "Imagen principal (taza roja)" },
+        { "value": "roja", "label": "Taza roja de cerca" },
+        { "value": "colores", "label": "Los tres colores" },
+        { "value": "blanco", "label": "Taza blanca" },
+        { "value": "marron", "label": "Taza marrón" },
+        { "value": "usos", "label": "Tres tazas con acompañamientos" },
         { "value": "none", "label": "Ninguna (solo texto)" }
       ],
-      "default": "img01-producto"
+      "default": "principal"
     },
     {
       "type": "select",
@@ -111,12 +103,6 @@
       "default": "left"
     },
     {
-      "type": "checkbox",
-      "id": "show_massage_lines",
-      "label": "Mostrar líneas de dirección del masaje",
-      "default": false
-    },
-    {
       "type": "header",
       "content": "Texto"
     },
@@ -129,13 +115,13 @@
       "type": "text",
       "id": "heading",
       "label": "Título",
-      "default": "Cuidado diario. Aplicación sencilla."
+      "default": "Título"
     },
     {
       "type": "richtext",
       "id": "text",
       "label": "Texto",
-      "default": "<p>Su formato roller permite distribuir el sérum directamente sobre el contorno de ojos mientras realizas un masaje suave.</p>"
+      "default": "<p>Cuenta en dos o tres frases lo que muestra la imagen.</p>"
     },
     {
       "type": "header",

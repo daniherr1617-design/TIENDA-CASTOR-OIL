@@ -2,13 +2,21 @@
   GARELON · Muestra la imagen elegida en el editor o, si está vacía, una de las
   imágenes del producto incluidas en los assets del tema.
 
-  Los assets garelon-imgNN-*.webp son IMAGEN 1, 4, 5, 7, 9 y 10 (carpeta referencias/)
-  redimensionadas a 480, 720 y 1080 px: sin recortes, sin filtros y sin cambios de texto.
+  Los assets garelon-fondue-*.webp salen de las imágenes de la raíz del repositorio,
+  redimensionadas a 480, 720 y 1080 px y sin filtros:
+  - principal = imagen2 · roja = imagen2 recortada en la taza (misma foto, más cerca)
+  - colores = imagen1 · blanco = imagen3 · marron = imagen4
+  - usos = franja central de imagen7 (las tres tazas con fresas, chocolate, gofres, plátano y
+    nubes), SIN la cabecera de iconos (tenía «Cerámica resistente · Duradera», que no se puede
+    demostrar) ni las etiquetas de color, y sin los corazones dibujados sobre las tazas (la taza
+    real solo lleva «Chocolat...»). Es horizontal: 1080 × 426.
+  imagen8 («Cómo funciona») no se usa como imagen: sus tazas dicen «Chocolat» sin los puntos y la
+  escena central lleva dos tenedores; la sección se construye en HTML con sus mismos pasos.
+  La vela que aparece encendida no viene con la taza: se explica solo en la FAQ «¿Qué incluye cada taza?».
 
   Accepts:
   - image: {Object} imagen del image_picker
-  - fallback: {String} img01-producto | img10-presentacion | img07-roller | img05-ingredientes
-              | img04-uso | img09-tamano | none
+  - fallback: {String} principal | roja | colores | blanco | marron | usos | none
   - alt: {String} texto alternativo si la imagen elegida no tiene uno
   - sizes: {String}
   - class: {String}
@@ -17,31 +25,41 @@
 {%- liquid
   assign asset_name = blank
   assign asset_alt = blank
+  assign asset_height = 1080
   case fallback
-    when 'img01-producto'
-      assign asset_name = 'garelon-img01-producto'
-      assign asset_alt = 'Sérum para el contorno de ojos: frasco roller de vidrio ámbar de 10 ml con bola metálica, tapón negro y su caja'
-    when 'img10-presentacion'
-      assign asset_name = 'garelon-img10-presentacion'
-      assign asset_alt = 'Sérum contorno de ojos con roller metálico de 10 ml: ayuda a reducir la apariencia de ojeras y de bolsas, suaviza la apariencia de líneas finas, hidrata y aporta confort'
-    when 'img07-roller'
-      assign asset_name = 'garelon-img07-roller'
-      assign asset_alt = 'Técnica de masaje con roller para el contorno de ojos: primeros planos de bolsas y ojeras, el frasco con su caja y tres ventajas: aplicador metálico, uso cómodo y cuidado diario'
-    when 'img05-ingredientes'
-      assign asset_name = 'garelon-img05-ingredientes'
-      assign asset_alt = 'Ingredientes principales: aceite de ricino, Acetyl Tripeptide-1, colágeno, extracto de Boswellia Serrata y agua'
-    when 'img04-uso'
-      assign asset_name = 'garelon-img04-modo-de-uso'
-      assign asset_alt = 'Cómo usarlo en 3 pasos: limpia y seca el contorno de ojos, aplica el sérum con el roller y masajea con la bola metálica'
-    when 'img09-tamano'
-      assign asset_name = 'garelon-img09-tamano'
-      assign asset_alt = 'Tamaño del producto: caja de 8,7 cm de alto, 2,2 cm de ancho y 2,2 cm de fondo; frasco de 8,4 cm de alto y 1,9 cm de ancho'
+    when 'principal'
+      assign asset_name = 'garelon-fondue-principal'
+      assign asset_alt = 'Taza Fondue roja de cerámica con el texto «Chocolat...», chocolate fundido, tenedor de fondue en el asa, vela encendida en el hueco inferior y fresas al lado'
+    when 'roja'
+      assign asset_name = 'garelon-fondue-roja'
+      assign asset_alt = 'Taza Fondue roja de cerámica de cerca, con el texto «Chocolat...», chocolate fundido, tenedor de fondue en el asa y vela encendida en el hueco inferior'
+    when 'colores'
+      assign asset_name = 'garelon-fondue-colores'
+      assign asset_alt = 'Las tres Tazas Fondue: roja, blanca y marrón, cada una con su tenedor de fondue, chocolate fundido y vela encendida, junto a fresas y chocolate'
+    when 'blanco'
+      assign asset_name = 'garelon-fondue-blanco'
+      assign asset_alt = 'Taza Fondue blanca con el texto «Chocolat...», chocolate fundido, tenedor de fondue en el asa y vela encendida en el hueco inferior'
+    when 'marron'
+      assign asset_name = 'garelon-fondue-marron'
+      assign asset_alt = 'Taza Fondue marrón con el texto «Chocolat...», chocolate fundido, tenedor de fondue en el asa, vela encendida, fresas y chocolate'
+    when 'usos'
+      assign asset_name = 'garelon-fondue-usos'
+      assign asset_height = 426
+      assign asset_alt = 'Las tres Tazas Fondue, marrón, blanca y roja, con una fresa bañada en chocolate, rodeadas de fresas, chocolate, gofres, plátano y nubes'
   endcase
 
   assign final_alt = alt
   if image == blank and asset_alt != blank
     assign final_alt = asset_alt
   endif
-
-  render 'garelon-image', image: image, fallback: asset_name, fallback_widths: '480,720,1080', fallback_height: 1080, alt: final_alt, sizes: sizes, class: class, eager: eager
+-%}
+{%- render 'garelon-image',
+  image: image,
+  fallback: asset_name,
+  fallback_widths: '480,720,1080',
+  fallback_height: asset_height,
+  alt: final_alt,
+  sizes: sizes,
+  class: class,
+  eager: eager
 -%}
