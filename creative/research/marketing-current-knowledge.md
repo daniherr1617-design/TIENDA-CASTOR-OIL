@@ -1,6 +1,6 @@
 # Conocimiento de marketing vigente · GARELON
 
-> **Última actualización:** 2026-11-09 (`reports/2026-11-09.md`: K-META-07 reescrita, condiciones pausadas; K-ECO-02, K-MED-05 y K-ECO-01 actualizadas).
+> **Última actualización:** 2026-11-16 (`reports/2026-11-16.md`: K-META-08 y K-META-09 nuevas; K-REG-02 reescrita; K-MED-05 corregida; K-META-07 y K-ECO-02 con detalles).
 >
 > Aquí solo queda lo que **sigue siendo útil y vigente** para GARELON. Lo que se queda viejo o se contradice **no convive** con lo nuevo: sale del cuerpo y pasa al «Historial de cambios», que explica qué decía antes, qué dice ahora y por qué.
 
@@ -87,12 +87,31 @@ Un resumen de buscador **nunca** cuenta como verificación. Desde el 2026-10-07,
 
 ### [K-META-07] Condiciones de Meta: la cláusula de IA del 2026-11-20 está pausada; los retoques de IA no deseados, no
 - **Tema:** Meta · condiciones comerciales y funciones de IA
-- **Fecha:** actualización pausada el 2026-11-05, sin nueva fecha (iba a entrar en vigor el 2026-11-20) · comprobado 2026-11-09
+- **Fecha:** actualización pausada el 2026-11-05, sin nueva fecha (iba a entrar en vigor el 2026-11-20) · comprobado 2026-11-16
 - **Fuente:** ppc.land, shiftdelete.net (citan a The Verge y Reuters), adweek.com, glossy.co, marketingbrew.com (2026-04-21)
 - **Evidencia:** Medio especializado · FUENTE SECUNDARIA (sin aviso de Meta ni texto de las condiciones leídos)
 - **Estado:** vigente
 - **Afirmación:** Meta paralizó la actualización de sus condiciones comerciales, de catálogo de productos, de anuncios de autoservicio y de IA generativa para creatividades tras consultas de la Comisión Europea y de la CMA; siguen las condiciones anteriores. La versión pausada hacía al anunciante único responsable de los riesgos de las funciones de IA de Meta y permitía rastrear las webs de los anunciantes. Aparte de las condiciones, hay anunciantes que denuncian retoques de IA pese a haberse excluido; Meta dice que «AI creative testing» se desactiva en la configuración de la cuenta publicitaria.
+- **Detalles (FUENTE SECUNDARIA, mediapost.com, niemanlab.org, `reports/2026-11-16.md`):** el 2026-10-16 Meta quitó «entrenar» del texto y limitó el uso de lo rastreado a «productos publicitarios y de negocio»; tribunales de Noruega y Brasil dictaron medidas cautelares contra las condiciones.
 - **Impacto GARELON:** antes de la primera campaña: comprobar qué condiciones están en vigor, desactivar «AI creative testing» en la cuenta y las mejoras de Advantage+ por anuncio (K-META-01), y revisar cada semana los anuncios publicados (R1).
+
+### [K-META-08] Meta puede añadir a los anuncios ofertas que detecta en la web
+- **Tema:** Meta · promociones automáticas
+- **Fecha:** visto por anunciantes el 2026-11-06 · comprobado 2026-11-16
+- **Fuente:** ppc.land, socialmediatoday.com
+- **Evidencia:** Medio especializado · FUENTE SECUNDARIA
+- **Estado:** dudoso (no se sabe si viene activado por defecto ni si afecta a anuncios en circulación)
+- **Afirmación:** la casilla «Detected offers» de Commerce Manager (Configuración → «Offer merchandising») permite a Meta mostrar en los anuncios descuentos que encuentra en la web del anunciante, incluso en copias de anuncios con las promociones desactivadas.
+- **Impacto GARELON:** desmarcarla antes de lanzar y no dejar en la tienda ofertas que no se quieran ver en los anuncios (R3, R9).
+
+### [K-META-09] Ubicaciones automáticas en las campañas de ventas
+- **Tema:** Meta · ubicaciones
+- **Fecha:** anunciado a cuentas desde el 2026-08-21, despliegue gradual · comprobado 2026-11-16
+- **Fuente:** jonloomer.com, ppc.land (citan una página de ayuda de Meta)
+- **Evidencia:** Medio especializado · FUENTE SECUNDARIA
+- **Estado:** vigente
+- **Afirmación:** en Ventas, Clientes potenciales, Interacción y Promoción de apps ya no se eligen ubicaciones a mano en el conjunto de anuncios; quedan las exclusiones a nivel de cuenta (por objetivo) y las reglas de valor (bajan la puja hasta un 90 %, no apagan la ubicación).
+- **Impacto GARELON:** los vídeos de ventas deben funcionar en todas las ubicaciones: zona segura universal de `safe-zones.json`; excluir a nivel de cuenta lo que no encaje.
 
 ## 3. TikTok
 
@@ -248,12 +267,12 @@ Un resumen de buscador **nunca** cuenta como verificación. Desde el 2026-10-07,
 
 ### [K-MED-05] Píxel de Meta: enriquecimiento por IA y eventos automáticos por defecto
 - **Tema:** Meta · píxel y medición
-- **Fecha:** anunciado el 2026-04-15; eventos automáticos por defecto en píxeles añadidos desde el 2026-08-03 · comprobado 2026-11-09
+- **Fecha:** anunciado el 2026-04-15; eventos automáticos por defecto en píxeles añadidos desde el 2026-08-03 · comprobado 2026-11-16
 - **Fuente:** adexchanger.com, insights.vaizle.com, segwise.ai
 - **Evidencia:** Medio especializado · FUENTE SECUNDARIA
 - **Estado:** dudoso (las fechas varían entre fuentes; documentación de Meta sin leer)
 - **Afirmación:** el píxel añade por IA datos del producto y de la página a los eventos (desactivable en Events Manager), y los eventos automáticos vienen activados en los píxeles nuevos. Hay anunciantes que reportan eventos duplicados entre píxel y API de conversiones.
-- **Medición en el dispositivo (FUENTE SECUNDARIA, `reports/2026-11-09.md`):** el ajuste «Measure conversions on customer devices» de Events Manager empezaría a medir el 2026-11-12 (blogs de agencias).
+- **Medición en el dispositivo (FUENTE SECUNDARIA, ppc.land, relevantaudience.com, `reports/2026-11-16.md`):** el ajuste «Measure conversions on customer devices» se activa por defecto desde el 2026-11-12, pero no funciona para personas en la UE ni en el Reino Unido: no afecta a GARELON.
 - **Impacto GARELON:** al instalar el píxel, revisar los eventos que crea la IA y que píxel y API de conversiones compartan event ID.
 
 ## 7. E-commerce, Shopify y logística
@@ -269,12 +288,13 @@ Un resumen de buscador **nunca** cuenta como verificación. Desde el 2026-10-07,
 
 ### [K-ECO-02] UE: arancel de 3 € por partida en envíos de menos de 150 €
 - **Tema:** Logística · aduanas UE
-- **Fecha:** desde el 2026-07-01, provisional hasta el 2028-07-01 · comprobado 2026-11-09
+- **Fecha:** desde el 2026-07-01, provisional hasta el 2028-07-01 · comprobado 2026-11-16
 - **Fuente:** avalara.com, trans.info
 - **Evidencia:** Medio especializado · FUENTE SECUNDARIA (el reglamento no se ha leído)
 - **Estado:** vigente
 - **Tasa de tramitación (Oficial · FUENTE OFICIAL NO ACCESIBLE DIRECTAMENTE, `reports/2026-11-02.md`):** 2 € desde el 2026-11-01 según la página de la reforma aduanera de la Comisión (taxation-customs.ec.europa.eu, vista solo en resúmenes), además del arancel de 3 €. Según DHL y nShift, se cobra por artículo o línea de declaración, lleva IVA, y desde el mismo día la declaración exige un identificador de producto. Algunos países añaden tasas propias (Italia, Francia, Rumanía).
 - **Unidad de cobro (Oficial · FUENTE OFICIAL NO ACCESIBLE DIRECTAMENTE, `reports/2026-11-09.md`):** según la Agencia Tributaria (sede.agenciatributaria.gob.es, vista solo en resúmenes), 2 € por categoría de artículo del envío, junto con los 3 € de arancel por categoría; reglamento delegado C(2026) 6694 del 2026-09-21. La pagan los declarantes y pueden repercutirla.
+- **Base legal (FUENTE SECUNDARIA, garrigues.com, `reports/2026-11-16.md`):** Reglamento Delegado (UE) 2026/2152, aplicable desde el 2026-11-01; tasa no reembolsable e independiente del arancel de 3 €; se aplica en la Península, Baleares y Canarias.
 - **Impacto GARELON:** calcular con 5 € más IVA por pedido de una categoría de artículo (3 € + 2 €) desde el 2026-11-01 y comprobar con un pedido real de AliExpress el coste y el plazo antes de fijar el CPA de break-even.
 
 ### [K-ECO-03] Shopify retira los script tags
@@ -297,13 +317,14 @@ Un resumen de buscador **nunca** cuenta como verificación. Desde el 2026-10-07,
 - **Según la fuente oficial:** las obligaciones del art. 50 se aplican desde el 2026-08-02 (los sistemas puestos en el mercado antes tienen transición hasta el 2026-12-02). El art. 50.4 obliga a quien despliega un sistema que genera o manipula deepfakes a revelar que el contenido es artificial, y el art. 50.5 exige que la información se dé «de forma clara y distinguible, a más tardar en el momento de la primera interacción o exposición» y conforme a los requisitos de accesibilidad. El Código de prácticas es **voluntario** y no crea obligaciones nuevas: quien no lo firme debe demostrar el cumplimiento por otros medios equivalentes. Las guías incluyen ejemplos directamente aplicables a anuncios: **es deepfake** una imagen de IA de un producto que pueda engañar sobre su aspecto, características o uso reales (p. ej. que no parezca idéntico al real o parezca de más calidad), y también un vídeo con un avatar realista de una persona; **no es deepfake** un producto real sobre un fondo o entorno generado con IA mientras el anuncio no engañe sobre el producto, ni la corrección de color, el recorte, la compresión o la sustitución de fondos con fines estéticos (apdo. 116).
 - **Impacto GARELON:** registrar el origen de cada material (ya lo hace `lab ingest --origen`) y decidir el aviso anuncio a anuncio. Como R1 obliga a que el producto se vea tal cual, un fondo de IA con la pulsera real no sería deepfake según las guías; en cambio una pulsera generada o retocada con IA sí lo sería, y entonces el aviso debe verse desde la primera exposición, no solo en los metadatos.
 
-### [K-REG-02] Digital Fairness Act
-- **Tema:** Regulación UE · dark patterns
-- **Fecha:** propuesta prevista para el cuarto trimestre de 2026 · comprobado 2026-10-07
-- **Fuente:** eff.org (abril de 2026)
-- **Evidencia:** Medio especializado · FUENTE SECUNDARIA
-- **Estado:** dudoso (es una previsión; no hay texto)
-- **Impacto GARELON:** ninguno práctico. R9 ya prohíbe la urgencia y la escasez falsas.
+### [K-REG-02] Digital Fairness Act: propuesta de la Comisión del 2026-11-11
+- **Tema:** Regulación UE · prácticas comerciales y patrones oscuros
+- **Fecha:** propuesta publicada el 2026-11-11; pendiente de negociación en el Parlamento y el Consejo · comprobado 2026-11-16
+- **Fuente:** euronews.com (2026-11-11), lewissilkin.com (2026-11-11)
+- **Evidencia:** Medio especializado · FUENTE SECUNDARIA (texto de la Comisión sin leer)
+- **Estado:** vigente (como propuesta; aún no es ley)
+- **Afirmación:** reglamento que sustituiría a la Directiva de prácticas comerciales desleales de 2005: lista negra de patrones oscuros, prohibición de la escasez falsa dirigida a menores, botón de cancelación en toda suscripción online y, en una reforma de aplicación aparte, multas de hasta el 6 % de la facturación mundial.
+- **Impacto GARELON:** ninguno práctico mientras se cumpla R9 (sin urgencia, recuentos ni escasez falsos). Seguir la negociación.
 
 ## 9. IA y herramientas del Creative Engine
 
@@ -365,3 +386,7 @@ Cuando una entrada cambia de criterio, se explica aquí: qué decía antes, qué
 | 2026-11-09 | K-META-07 | Condiciones en vigor desde el 2026-11-20 con la cláusula de riesgos de IA para el anunciante | Actualización pausada desde el 2026-11-05 sin nueva fecha; siguen las condiciones anteriores; se mantiene el riesgo de retoques de IA | Meta la paralizó tras consultas de la Comisión Europea y la CMA (`reports/2026-11-09.md`) |
 | 2026-11-09 | K-ECO-02 | Tasa de 2 € «por artículo o por línea de declaración» | 2 € por categoría de artículo, según la Agencia Tributaria | `reports/2026-11-09.md` |
 | 2026-11-09 | K-MED-05 · K-ECO-01 | — | Medición en el dispositivo del píxel; pedidos referidos por IA en Shopify | `reports/2026-11-09.md` |
+| 2026-11-16 | K-REG-02 | Propuesta prevista para el cuarto trimestre de 2026 (dudoso) | Propuesta publicada el 2026-11-11 (vigente como propuesta) | La Comisión presentó la Digital Fairness Act (`reports/2026-11-16.md`) |
+| 2026-11-16 | K-MED-05 | Medición en el dispositivo desde el 2026-11-12, sin mencionar la UE | No funciona en la UE ni en el Reino Unido | Corrección con nuevas fuentes (`reports/2026-11-16.md`) |
+| 2026-11-16 | K-META-08 · K-META-09 | — | Entradas nuevas (K-META-08 dudoso) | Ofertas detectadas y ubicaciones automáticas (`reports/2026-11-16.md`) |
+| 2026-11-16 | K-META-07 · K-ECO-02 | — | Detalles añadidos (cautelares; Reglamento Delegado 2026/2152) | `reports/2026-11-16.md` |
